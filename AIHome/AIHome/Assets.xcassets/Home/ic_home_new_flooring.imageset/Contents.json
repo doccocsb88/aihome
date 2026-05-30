@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "High-end minimalist architectural photography, crisp lighting, luxury residential design, a serene modern patio with bamboo walls and soft ambient glowing orbs at night, focus on the polished dark floor textures@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "High-end minimalist architectural photography, crisp lighting, luxury residential design, a serene modern patio with bamboo walls and soft ambient glowing orbs at night, focus on the polished dark floor textures@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

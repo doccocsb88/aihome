@@ -8,15 +8,38 @@ struct HomeView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 
-                Text("Dashboard")
-                    .font(.DesignSystem.title1)
-                    .padding(.horizontal)
+                HStack {
+                    Text("Home")
+                        .font(.system(size: 36, weight: .bold))
+                        .foregroundColor(.DesignSystem.textPrimary)
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 8) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "sparkles")
+                                .foregroundColor(Color(red: 255/255, green: 45/255, blue: 85/255))
+                            Text("3/3")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundColor(.DesignSystem.textPrimary)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(20)
+                        
+                        Text("PRO")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color(red: 255/255, green: 45/255, blue: 85/255))
+                            .cornerRadius(20)
+                    }
+                }
+                .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Primary Tools")
-                        .font(.DesignSystem.title2)
-                        .padding(.horizontal)
-                    
                     ForEach(viewModel.primaryTools) { tool in
                         HomeToolRow(tool: tool) {
                             handleNavigation(for: tool)
@@ -25,9 +48,12 @@ struct HomeView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Advanced Editing")
-                        .font(.DesignSystem.title2)
+                    Text("ADVANCED EDITING")
+                        .font(.caption.weight(.bold))
+                        .foregroundColor(Color(UIColor.systemGray2))
+                        .kerning(1.2)
                         .padding(.horizontal)
+                        .padding(.top, 8)
                     
                     ForEach(viewModel.advancedTools) { tool in
                         HomeToolRow(tool: tool) {
@@ -65,49 +91,52 @@ struct HomeToolRow: View {
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 16) {
-                Image(systemName: tool.iconName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 32, height: 32)
-                    .foregroundColor(.DesignSystem.primary)
-                    .padding(12)
-                    .background(Color.DesignSystem.surface)
-                    .cornerRadius(12)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(tool.title)
-                        .font(.DesignSystem.headline)
-                        .foregroundColor(.DesignSystem.textPrimary)
-                    
-                    Text(tool.subtitle)
-                        .font(.DesignSystem.caption)
-                        .foregroundColor(.DesignSystem.textSecondary)
-                }
-                
-                Spacer()
-                
-                if tool.isPro {
-                    Text("PRO")
-                        .font(.caption2)
-                        .bold()
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.DesignSystem.accent)
-                        .foregroundColor(.white)
-                        .cornerRadius(4)
-                }
-                
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.DesignSystem.textSecondary)
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            .background(Color.DesignSystem.background)
+            Image(tool.imageName)
+                .resizable()
+                .scaledToFill()
+                .frame(height: 240)
+                .frame(maxWidth: .infinity)
+                .clipped()
+                .overlay(
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.85)],
+                        startPoint: .center,
+                        endPoint: .bottom
+                    )
+                )
+                .overlay(
+                    VStack {
+                        Spacer()
+                        HStack(alignment: .bottom) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: tool.iconName)
+                                        .font(.headline)
+                                    Text(tool.title)
+                                        .font(.headline.weight(.bold))
+                                }
+                                .foregroundColor(.white)
+                                
+                                Text(tool.subtitle)
+                                    .font(.subheadline)
+                                    .foregroundColor(.white.opacity(0.9))
+                            }
+                            Spacer()
+                            Image(systemName: "arrow.up.right")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        }
+                        .padding(20)
+                    }
+                )
+                .cornerRadius(24)
+                .padding(.horizontal)
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
 #Preview {
     HomeView()
+        .environment(AppCoordinator())
 }

@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "High-end minimalist architectural photography, crisp lighting, luxury landscape design, a lush modern garden with stone paths and mood lighting@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "High-end minimalist architectural photography, crisp lighting, luxury landscape design, a lush modern garden with stone paths and mood lighting@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
