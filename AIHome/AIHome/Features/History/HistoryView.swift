@@ -98,34 +98,95 @@ struct HistoryView: View {
     }
     
     private var projectList: some View {
-        List {
-            ForEach(viewModel.projects) { project in
-                HStack {
-                    RoundedRectangle(cornerRadius: 8)
+        ZStack(alignment: .bottomTrailing) {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
+                    ForEach(viewModel.projects) { project in
+                        projectCard(for: project)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 100)
+            }
+            
+            Button(action: {
+                // Filter action
+            }) {
+                Image(systemName: "line.3.horizontal.decrease")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(width: 60, height: 60)
+                    .background(Color(red: 255/255, green: 45/255, blue: 85/255))
+                    .clipShape(Circle())
+                    .shadow(color: Color(red: 255/255, green: 45/255, blue: 85/255).opacity(0.4), radius: 8, x: 0, y: 4)
+            }
+            .padding(.trailing, 24)
+            .padding(.bottom, 24)
+        }
+    }
+    
+    private func projectCard(for project: LocalProject) -> some View {
+        ZStack {
+            Group {
+                if let path = project.selectedGeneratedImagePath, let uiImage = UIImage(contentsOfFile: path) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                } else if let uiImage = UIImage(contentsOfFile: project.originalImagePath) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(width: 60, height: 60)
-                        .overlay {
+                        .overlay(
                             Image(systemName: "photo")
-                                .foregroundColor(.secondary)
-                        }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(project.title)
-                            .font(.headline)
+                                .font(.largeTitle)
+                                .foregroundColor(.gray)
+                        )
+                }
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(project.title.uppercased())
+                            .font(.system(size: 11, weight: .bold))
                             .foregroundColor(.DesignSystem.textPrimary)
+                            .lineLimit(1)
                         
                         if let style = project.styleName {
                             Text(style)
-                                .font(.subheadline)
+                                .font(.system(size: 11))
                                 .foregroundColor(.secondary)
+                                .lineLimit(1)
                         }
                     }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        // Toggle favorite
+                    }) {
+                        Image(systemName: project.isFavorite ? "heart.fill" : "heart")
+                            .font(.system(size: 12))
+                            .foregroundColor(project.isFavorite ? Color(red: 255/255, green: 45/255, blue: 85/255) : .secondary)
+                    }
                 }
-                .listRowBackground(Color.DesignSystem.background)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial)
+                .cornerRadius(12)
+                .padding(8)
             }
-            .onDelete(perform: viewModel.deleteProject)
         }
-        .listStyle(.plain)
+        .aspectRatio(0.85, contentMode: .fit)
+        .cornerRadius(24)
+        .clipped()
     }
 }
 

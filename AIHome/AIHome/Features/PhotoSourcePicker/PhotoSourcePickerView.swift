@@ -8,17 +8,19 @@ struct PhotoSourcePickerView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            Text(viewModel.title)
-                .font(.title)
-                .fontWeight(.bold)
-            
-            if let subtitle = viewModel.subtitle {
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(viewModel.title)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.DesignSystem.textPrimary)
+                
+                if let subtitle = viewModel.subtitle {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 24)
             
             if let selectedImage = viewModel.selectedImage {
                 Image(uiImage: selectedImage)
@@ -36,40 +38,74 @@ struct PhotoSourcePickerView: View {
                         alignment: .topTrailing
                     )
             } else {
-                VStack(spacing: 16) {
-                    PhotosPicker(selection: $viewModel.imageSelection, matching: .images) {
-                        HStack {
-                            Image(systemName: "photo.on.rectangle")
-                            Text("Gallery")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(10)
+                VStack(spacing: 24) {
+                    VStack(spacing: 12) {
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.system(size: 24))
+                            .foregroundColor(.blue)
+                            .frame(width: 56, height: 56)
+                            .background(Color.blue.opacity(0.1))
+                            .clipShape(Circle())
+                        
+                        Text("Choose your photo.\nFor better results, use a horizontal\ndirection.")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
                     }
+                    .padding(.top, 16)
                     
-                    Button(action: {
-                        // In a real app we would use a camera view here
-                        viewModel.showCamera = true
-                    }) {
-                        HStack {
-                            Image(systemName: "camera")
-                            Text("Camera")
+                    VStack(spacing: 16) {
+                        PhotosPicker(selection: $viewModel.imageSelection, matching: .images) {
+                            HStack {
+                                Image(systemName: "photo")
+                                Text("Gallery")
+                                    .fontWeight(.semibold)
+                            }
+                            .foregroundColor(.DesignSystem.background)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.DesignSystem.textPrimary)
+                            .cornerRadius(12)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(10)
+                        
+                        Button(action: {
+                            viewModel.showCamera = true
+                        }) {
+                            HStack {
+                                Image(systemName: "camera")
+                                Text("Camera")
+                                    .fontWeight(.semibold)
+                            }
+                            .foregroundColor(.DesignSystem.textPrimary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.DesignSystem.background)
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                            )
+                        }
                     }
                 }
-                .padding(.horizontal, 32)
+                .padding(24)
+                .background(Color.DesignSystem.background)
+                .cornerRadius(24)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [6]))
+                        .foregroundColor(Color.gray.opacity(0.3))
+                )
+                .padding(.horizontal, 24)
             }
             
             if viewModel.allowsSample && viewModel.selectedImage == nil && !viewModel.sampleImages.isEmpty {
-                VStack(alignment: .leading) {
-                    Text("Try a sample")
-                        .font(.headline)
-                        .padding(.horizontal)
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("OR TRY A SAMPLE")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.gray)
+                        .kerning(1.2)
+                        .padding(.horizontal, 24)
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
@@ -80,14 +116,15 @@ struct PhotoSourcePickerView: View {
                                     Image(sample)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: 80, height: 80)
-                                        .cornerRadius(8)
+                                        .frame(width: 72, height: 72)
+                                        .cornerRadius(12)
                                 }
                             }
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal, 24)
                     }
                 }
+                .padding(.top, 8)
             }
             
             if !hideCTA {
@@ -99,20 +136,19 @@ struct PhotoSourcePickerView: View {
                     }
                 }) {
                     Text(viewModel.ctaTitle)
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(viewModel.canContinue ? Color.blue : Color.gray)
-                        .cornerRadius(10)
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                        .foregroundColor(viewModel.canContinue ? Color.DesignSystem.background : .white)
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .background(viewModel.canContinue ? Color.DesignSystem.textPrimary : Color.gray.opacity(0.3))
+                        .cornerRadius(16)
                 }
                 .disabled(!viewModel.canContinue)
-                .padding()
+                .padding(.horizontal, 32)
+                .padding(.bottom, 36)
             }
         }
         .padding(.vertical)
         .sheet(isPresented: $viewModel.showCamera) {
-            // Placeholder for camera view
             Text("Camera View Placeholder")
         }
     }
