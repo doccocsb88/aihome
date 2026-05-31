@@ -4,46 +4,96 @@ struct HistoryView: View {
     @State private var viewModel = HistoryViewModel()
     
     var body: some View {
-        Group {
-            Group {
-                if viewModel.projects.isEmpty {
-                    emptyState
-                } else {
-                    projectList
-                }
+        VStack(spacing: 0) {
+            headerView
+            
+            if viewModel.projects.isEmpty {
+                emptyState
+            } else {
+                projectList
             }
-            .navigationTitle("History")
         }
+        .background(Color.DesignSystem.background.ignoresSafeArea())
+        .navigationBarHidden(true)
+    }
+    
+    private var headerView: some View {
+        HStack {
+            Text("History")
+                .font(.system(size: 36, weight: .bold))
+                .foregroundColor(.DesignSystem.textPrimary)
+            
+            Spacer()
+            
+            HStack(spacing: 8) {
+                HStack(spacing: 4) {
+                    Image(systemName: "sparkles")
+                        .foregroundColor(Color(red: 255/255, green: 45/255, blue: 85/255))
+                    Text("3/3")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundColor(.DesignSystem.textPrimary)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color(UIColor.systemGray6))
+                .cornerRadius(20)
+                
+                Text("PRO")
+                    .font(.subheadline.weight(.bold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Color(red: 255/255, green: 45/255, blue: 85/255))
+                    .cornerRadius(20)
+            }
+        }
+        .padding(.horizontal)
+        .padding(.top, 16)
+        .padding(.bottom, 16)
     }
     
     private var emptyState: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "folder")
-                .font(.system(size: 64))
-                .foregroundColor(.secondary)
+        VStack(spacing: 24) {
+            Spacer()
             
-            Text("Start your first project")
-                .font(.title2)
-                .fontWeight(.semibold)
+            Image("ic_history_start_project")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 260)
             
-            Text("Create a new space and watch your ideas come to life.")
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
+            VStack(spacing: 8) {
+                Text("Start your first project")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.DesignSystem.textPrimary)
+                
+                Text("Create a new space and watch your\nideas come to life.")
+                    .font(.body)
+                    .foregroundColor(Color(UIColor.systemGray))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
             
             Button(action: {
                 // Route to Create New Project
             }) {
-                Text("Create New Project")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(12)
+                HStack(spacing: 8) {
+                    Image(systemName: "plus.circle")
+                        .font(.system(size: 18))
+                    Text("Create New Project")
+                        .font(.headline)
+                }
+                .foregroundColor(.DesignSystem.background)
+                .padding(.vertical, 16)
+                .frame(maxWidth: .infinity)
+                .background(Color.DesignSystem.textPrimary)
+                .cornerRadius(16)
             }
             .padding(.horizontal, 32)
-            .padding(.top, 16)
+            .padding(.top, 8)
+            
+            Spacer()
+            Spacer()
         }
     }
     
@@ -62,6 +112,7 @@ struct HistoryView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(project.title)
                             .font(.headline)
+                            .foregroundColor(.DesignSystem.textPrimary)
                         
                         if let style = project.styleName {
                             Text(style)
@@ -70,6 +121,7 @@ struct HistoryView: View {
                         }
                     }
                 }
+                .listRowBackground(Color.DesignSystem.background)
             }
             .onDelete(perform: viewModel.deleteProject)
         }

@@ -1,0 +1,9 @@
+fonts:
+  inputs:
+    - AIHome/Resources/Fonts
+  outputs:
+    - templateName: swift5
+      output: AIHome/Resources/Fonts/Fonts.swift
+      params:
+        fontAliasName: CustomFont
+

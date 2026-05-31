@@ -7,11 +7,36 @@ protocol InspirationServiceProtocol {
 
 final class MockInspirationService: InspirationServiceProtocol {
     private var items: [InspirationItem] = [
-        InspirationItem(id: "1", title: "THE CURVE LOFT", subtitle: "Modern Workspace", category: .interior, spaceType: "Living room", styleTag: "Minimalist", imageNameOrURL: "dummy_image_1", isLiked: false),
-        InspirationItem(id: "2", title: "MODERN LOFT", subtitle: "Urban Living", category: .interior, spaceType: "Bedroom", styleTag: "Industrial", imageNameOrURL: "dummy_image_2", isLiked: true),
-        InspirationItem(id: "3", title: "MONOLITH KITCHEN", subtitle: "Dark Stone", category: .interior, spaceType: "Kitchen", styleTag: "Modern", imageNameOrURL: "dummy_image_3", isLiked: false),
-        InspirationItem(id: "4", title: "VILLA FACADE", subtitle: "Luxury Exterior", category: .exterior, spaceType: "Villa", styleTag: "Luxury", imageNameOrURL: "dummy_image_4", isLiked: false),
-        InspirationItem(id: "5", title: "ZEN GARDEN", subtitle: "Peaceful Retreat", category: .garden, spaceType: "Garden", styleTag: "Zen", imageNameOrURL: "dummy_image_5", isLiked: true)
+        InspirationItem(
+            id: "1", 
+            title: "THE CURVE LOFT", 
+            subtitle: "A fluid architectural approach where organic shapes meet rigid industrial structures.", 
+            category: .interior, 
+            spaceType: "Loft", 
+            styleTag: "Modern", 
+            imageNameOrURL: "ic_Inspiration_the_curve_loft", 
+            isLiked: false
+        ),
+        InspirationItem(
+            id: "2", 
+            title: "MODERN VILLA", 
+            subtitle: "Clean lines and expansive glass walls create a seamless transition to nature.", 
+            category: .exterior, 
+            spaceType: "Villa", 
+            styleTag: "Modern", 
+            imageNameOrURL: "ic_home_exterior", // Reusing home asset
+            isLiked: true
+        ),
+        InspirationItem(
+            id: "3", 
+            title: "ZEN RETREAT", 
+            subtitle: "Minimalist garden design focused on tranquility and natural materials.", 
+            category: .garden, 
+            spaceType: "Garden", 
+            styleTag: "Zen", 
+            imageNameOrURL: "ic_home_garden", // Reusing home asset
+            isLiked: false
+        )
     ]
     
     func getInspirations() -> [InspirationItem] {
