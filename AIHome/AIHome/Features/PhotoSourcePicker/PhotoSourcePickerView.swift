@@ -101,7 +101,7 @@ struct PhotoSourcePickerView: View {
             
             if viewModel.allowsSample && viewModel.selectedImage == nil && !viewModel.sampleImages.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("OR TRY A SAMPLE")
+                    Text(viewModel.sampleTitle)
                         .font(.system(size: 11, weight: .bold))
                         .foregroundColor(.gray)
                         .kerning(1.2)

@@ -9,6 +9,7 @@ class PhotoSourcePickerViewModel {
     var selectedImage: UIImage?
     var allowsSample: Bool
     var sampleImages: [String] // Asset names
+    var sampleTitle: String
     var ctaTitle: String
     var canContinue: Bool { selectedImage != nil }
     
@@ -23,11 +24,12 @@ class PhotoSourcePickerViewModel {
         }
     }
     
-    init(title: String, subtitle: String? = nil, allowsSample: Bool = true, sampleImages: [String] = [], ctaTitle: String = "Get Started") {
+    init(title: String, subtitle: String? = nil, allowsSample: Bool = true, sampleImages: [String] = [], sampleTitle: String = "OR TRY A SAMPLE", ctaTitle: String = "Get Started") {
         self.title = title
         self.subtitle = subtitle
         self.allowsSample = allowsSample
         self.sampleImages = sampleImages
+        self.sampleTitle = sampleTitle
         self.ctaTitle = ctaTitle
     }
     
