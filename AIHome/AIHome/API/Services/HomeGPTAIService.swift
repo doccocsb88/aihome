@@ -1,6 +1,15 @@
 import Foundation
 
 public class HomeGPTAIService: HomeGPTAIServiceProtocol {
+    public static let shared: HomeGPTAIService = {
+        let config = HomeDesignsAPIConfig(
+            baseURL: APIConstants.homeDesignsBaseURL,
+            authMode: .bearer(token: APIConstants.homeDesignsAPIKey)
+        )
+        let client = HomeDesignsAPIClient(config: config)
+        return HomeGPTAIService(client: client)
+    }()
+    
     private let client: HomeDesignsAPIClientProtocol
     
     public init(client: HomeDesignsAPIClientProtocol) {
@@ -39,6 +48,9 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
             customInstruction: request.customInstruction
         )
         let queue = try await client.perfectRedesign(req)
+        if let msg = queue.message, queue.resolvedQueueId == nil {
+            throw HomeDesignsAPIError.apiMessage(msg)
+        }
         guard let qid = queue.resolvedQueueId else { throw HomeDesignsAPIError.apiMessage("No queue ID") }
         return try await pollForRedesignResult(queueId: qid)
     }

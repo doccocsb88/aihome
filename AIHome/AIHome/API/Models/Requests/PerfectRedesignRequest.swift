@@ -31,7 +31,7 @@ extension PerfectRedesignRequest {
         builder.appendImageSource(image, fieldName: "image")
         builder.appendField(name: "design_type", value: designType.rawValue)
         builder.appendField(name: "ai_intervention", value: aiIntervention.rawValue)
-        builder.appendField(name: "no_design", value: "\\(noDesign)")
+        builder.appendField(name: "no_design", value: "\(noDesign)")
         builder.appendField(name: "design_style", value: designStyle)
         
         if let roomType = roomType {

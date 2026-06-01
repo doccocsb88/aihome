@@ -20,7 +20,7 @@ extension MaterialSwapRequest {
     func appendTo(builder: inout MultipartFormDataBuilder) {
         builder.appendImageSource(image, fieldName: "image")
         builder.appendImageSource(maskedImage, fieldName: "masked_image")
-        builder.appendField(name: "no_design", value: "\\(noDesign)")
+        builder.appendField(name: "no_design", value: "\(noDesign)")
         builder.appendImageSource(textureImage, fieldName: "texture_image")
         builder.appendField(name: "no_of_texture", value: noOfTexture)
     }

@@ -12,6 +12,22 @@ public enum HomeDesignsAPIError: Error, Equatable {
     case underlying(String)
 }
 
+extension HomeDesignsAPIError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidURL: return "Invalid URL"
+        case .invalidImage: return "Invalid Image Data"
+        case .invalidResponse: return "Invalid API Response"
+        case .unauthorized: return "Unauthorized. Check API Key."
+        case .server(let code, let msg): return "Server Error \(code): \(msg ?? "")"
+        case .decodingFailed(let msg): return "Decoding Failed: \(msg)"
+        case .queueExpired: return "Queue Expired"
+        case .apiMessage(let msg): return "API Error: \(msg)"
+        case .underlying(let msg): return "Underlying Error: \(msg)"
+        }
+    }
+}
+
 public enum HomeDesignsAuthMode {
     case bearer(token: String)
     case customHeader(name: String, value: String)

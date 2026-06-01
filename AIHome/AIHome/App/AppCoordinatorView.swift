@@ -40,7 +40,7 @@ struct AppCoordinatorRouter {
         case .mainTab:
             EmptyView() // Handled by AppCoordinatorView's root switch
         case .interiorFlow:
-            InteriorFlowView { _ in }
+            InteriorFlowContainerView()
         case .exteriorFlow:
             ExteriorFlowView { _ in }
         case .gardenFlow:

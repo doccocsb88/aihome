@@ -9,7 +9,7 @@ struct GardenFlowView: View {
     var body: some View {
         Group {
             VStack {
-                Text("Step \\(viewModel.currentStep.rawValue)/4")
+                Text("Step \(viewModel.currentStep.rawValue)/4")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .padding(.top)

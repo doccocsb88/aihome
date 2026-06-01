@@ -238,7 +238,7 @@ struct InteriorFlowView: View {
         switch style {
         case "Custom style": return "ic_interior_style_custom"
         case "Contemporary": return "ic_interior_style_contemporaty"
-        case "Luxe": return "ic_interior_style_luxe"
+        case "Luxurious": return "ic_interior_style_luxe"
         case "St. Valentines": return "ic_interior_style_st_valentines"
         default: return nil
         }

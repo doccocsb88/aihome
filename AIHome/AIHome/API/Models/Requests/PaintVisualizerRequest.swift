@@ -20,7 +20,7 @@ extension PaintVisualizerRequest {
     func appendTo(builder: inout MultipartFormDataBuilder) {
         builder.appendImageSource(image, fieldName: "image")
         builder.appendImageSource(maskedImage, fieldName: "masked_image")
-        builder.appendField(name: "no_design", value: "\\(noDesign)")
+        builder.appendField(name: "no_design", value: "\(noDesign)")
         
         if let colorImage = colorImage {
             builder.appendImageSource(colorImage, fieldName: "color_image")

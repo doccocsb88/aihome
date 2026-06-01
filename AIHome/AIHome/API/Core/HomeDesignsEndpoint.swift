@@ -16,7 +16,7 @@ enum HomeDesignsEndpoint {
     var path: String {
         switch self {
         case .perfectRedesign: return "/perfect_redesign"
-        case .perfectRedesignStatus(let queueId): return "/perfect_redesign/status_check/\\(queueId)"
+        case .perfectRedesignStatus(let queueId): return "/perfect_redesign/status_check/\(queueId)"
         case .designTransfer: return "/design_transfer"
         case .createMaskImage: return "/create_maskimage"
         case .furnitureRemoval: return "/furniture_removal"

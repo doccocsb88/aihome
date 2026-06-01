@@ -16,7 +16,7 @@ class InteriorFlowViewModel {
     
     // Styles from PDF
     let designStyles = [
-        "Custom style", "Contemporary", "Luxe",
+        "Custom style", "Contemporary", "Luxurious",
         "St. Valentines", "Industrial", "Cozy Cabin"
     ]
     

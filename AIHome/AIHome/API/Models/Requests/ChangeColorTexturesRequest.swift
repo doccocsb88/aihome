@@ -25,7 +25,7 @@ extension ChangeColorTexturesRequest {
         builder.appendField(name: "design_type", value: designType.rawValue)
         builder.appendImageSource(image, fieldName: "image")
         builder.appendImageSource(maskedImage, fieldName: "masked_image")
-        builder.appendField(name: "no_design", value: "\\(noDesign)")
+        builder.appendField(name: "no_design", value: "\(noDesign)")
         
         if let prompt = prompt {
             builder.appendField(name: "prompt", value: prompt)

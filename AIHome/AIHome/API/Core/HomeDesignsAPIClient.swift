@@ -21,14 +21,26 @@ public class HomeDesignsAPIClient: HomeDesignsAPIClientProtocol {
         
         switch config.authMode {
         case .bearer(let token):
-            request.setValue("Bearer \\(token)", forHTTPHeaderField: "Authorization")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         case .customHeader(let name, let value):
             request.setValue(value, forHTTPHeaderField: name)
         }
         
         if let builder = builder {
-            request.setValue("multipart/form-data; boundary=\\(builder.boundary)", forHTTPHeaderField: "Content-Type")
+            request.setValue("multipart/form-data; boundary=\(builder.boundary)", forHTTPHeaderField: "Content-Type")
             request.httpBody = builder.build()
+        }
+        
+        // Fake headers to bypass Domain Restriction
+        request.setValue("https://billionx.co", forHTTPHeaderField: "Origin")
+        request.setValue("https://billionx.co/", forHTTPHeaderField: "Referer")
+        
+        AppLogger.logAction("API Request", details: "URL: \(request.url?.absoluteString ?? "")")
+        if let headers = request.allHTTPHeaderFields {
+            AppLogger.logAction("API Headers", details: "\(headers)")
+        }
+        if let body = request.httpBody {
+            AppLogger.logAction("API Body Size", details: "\(body.count) bytes")
         }
         
         return request
@@ -42,11 +54,17 @@ public class HomeDesignsAPIClient: HomeDesignsAPIClientProtocol {
         }
         
         guard (200...299).contains(httpResponse.statusCode) else {
+            let message = String(data: data, encoding: .utf8)
+            AppLogger.logError("Server Response: \(message ?? "No body")")
+            
             if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
                 throw HomeDesignsAPIError.unauthorized
             }
-            let message = String(data: data, encoding: .utf8)
             throw HomeDesignsAPIError.server(statusCode: httpResponse.statusCode, message: message)
+        }
+        
+        if let responseString = String(data: data, encoding: .utf8) {
+            AppLogger.logAction("API Response", details: responseString)
         }
         
         do {

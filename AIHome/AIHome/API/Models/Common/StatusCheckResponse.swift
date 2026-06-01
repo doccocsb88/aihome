@@ -14,6 +14,9 @@ public struct StatusCheckResponse: Codable, Equatable {
     }
 
     public var resolvedStatus: GenerationStatus {
-        GenerationStatus(apiRawValue: status)
+        if let out = outputImages, !out.isEmpty {
+            return .success
+        }
+        return GenerationStatus(apiRawValue: status)
     }
 }
