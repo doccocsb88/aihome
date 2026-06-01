@@ -9,136 +9,209 @@ struct ResultView: View {
     var onSaveArchive: () -> Void
     var onRemoveWatermark: () -> Void
     var onToolSelected: (AdvancedTool, UIImage) -> Void
+    var onClose: () -> Void
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Header
-                Text(viewModel.isPro ? "Pro Result" : "Result")
+        VStack(spacing: 0) {
+            // Header
+            HStack {
+                if viewModel.isPro {
+                    Text("PRO")
+                        .font(.system(size: 11, weight: .black))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.pink)
+                        .clipShape(Capsule())
+                        .shadow(color: Color.pink.opacity(0.5), radius: 5, x: 0, y: 3)
+                } else {
+                    Spacer().frame(width: 40)
+                }
+                
+                Spacer()
+                Text("Result")
                     .font(.headline)
-                    .padding(.top)
+                Spacer()
                 
-                // Image Pager
-                if let selectedImage = viewModel.selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .cornerRadius(12)
-                        .padding(.horizontal)
+                Button(action: onClose) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 20))
+                        .foregroundColor(.primary)
                 }
-                
-                // Thumbnail Picker
-                if viewModel.generatedImages.count > 1 {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(0..<viewModel.generatedImages.count, id: \.self) { index in
-                                Image(uiImage: viewModel.generatedImages[index])
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 60, height: 60)
-                                    .cornerRadius(8)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(viewModel.selectedIndex == index ? Color.blue : Color.clear, lineWidth: 2)
-                                    )
-                                    .onTapGesture {
-                                        viewModel.selectedIndex = index
+            }
+            .padding(.horizontal)
+            .padding(.top, 16)
+            .padding(.bottom, 20)
+            
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Image Section
+                    if let selectedImage = viewModel.selectedImage {
+                        ZStack {
+                            Image(uiImage: selectedImage)
+                                .resizable()
+                                .aspectRatio(1, contentMode: .fill)
+                                .frame(maxWidth: .infinity)
+                                .clipped()
+                                .cornerRadius(24)
+                            
+                            // Top left overlay
+                            VStack {
+                                HStack {
+                                    Button(action: {}) {
+                                        Image(systemName: "square.split.2x1")
+                                            .font(.system(size: 16, weight: .semibold))
+                                            .foregroundColor(.white)
+                                            .padding(12)
+                                            .background(Color.black.opacity(0.4))
+                                            .clipShape(Circle())
                                     }
+                                    Spacer()
+                                }
+                                Spacer()
                             }
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-                
-                if viewModel.hasWatermark {
-                    Button(action: onRemoveWatermark) {
-                        Text("Remove Watermark")
-                            .font(.subheadline)
-                            .foregroundColor(.blue)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 16)
-                            .background(Color.blue.opacity(0.1))
-                            .cornerRadius(20)
-                    }
-                }
-                
-                // Advanced Tools
-                if !viewModel.availableAdvancedTools.isEmpty {
-                    VStack(alignment: .leading) {
-                        Text("Advanced Tools")
-                            .font(.headline)
-                            .padding(.horizontal)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 12) {
-                                ForEach(viewModel.availableAdvancedTools) { tool in
-                                    Button(action: {
-                                        if let image = viewModel.selectedImage {
-                                            onToolSelected(tool, image)
+                            .padding(16)
+                            
+                            // Bottom overlays
+                            VStack {
+                                Spacer()
+                                HStack(alignment: .bottom) {
+                                    HStack(spacing: 8) {
+                                        Button(action: {}) {
+                                            Image(systemName: "hand.thumbsup.fill")
+                                                .foregroundColor(.white)
+                                                .padding(12)
+                                                .background(Color.black.opacity(0.4))
+                                                .clipShape(Circle())
                                         }
-                                    }) {
-                                        VStack {
-                                            Image(systemName: tool.iconName)
-                                                .font(.title2)
-                                                .frame(height: 30)
-                                            Text(tool.rawValue)
-                                                .font(.caption)
+                                        Button(action: {}) {
+                                            Image(systemName: "hand.thumbsdown.fill")
+                                                .foregroundColor(.white)
+                                                .padding(12)
+                                                .background(Color.black.opacity(0.4))
+                                                .clipShape(Circle())
                                         }
-                                        .frame(width: 80, height: 80)
-                                        .background(Color(UIColor.secondarySystemBackground))
-                                        .cornerRadius(12)
-                                        .foregroundColor(.primary)
+                                    }
+                                    Spacer()
+                                    VStack(alignment: .trailing, spacing: 6) {
+                                        Text("HomeGPT")
+                                            .font(.system(size: 14, weight: .bold))
+                                            .foregroundColor(.white.opacity(0.9))
+                                            
+                                        if viewModel.hasWatermark {
+                                            Button(action: onRemoveWatermark) {
+                                                HStack(spacing: 4) {
+                                                    Image(systemName: "bolt.fill")
+                                                        .font(.system(size: 10))
+                                                    Text("REMOVE WATERMARK")
+                                                        .font(.system(size: 10, weight: .bold))
+                                                }
+                                                .foregroundColor(.white)
+                                                .padding(.horizontal, 10)
+                                                .padding(.vertical, 6)
+                                                .background(Color.white.opacity(0.3))
+                                                .clipShape(Capsule())
+                                            }
+                                        }
                                     }
                                 }
                             }
-                            .padding(.horizontal)
+                            .padding(16)
                         }
+                        .padding(.horizontal, 16)
+                        .shadow(color: Color.black.opacity(0.15), radius: 15, x: 0, y: 10)
                     }
-                }
-                
-                // Bottom Actions
-                VStack(spacing: 12) {
-                    HStack(spacing: 16) {
-                        Button(action: onRegenerate) {
-                            actionButtonLabel(title: "Regenerate", icon: "arrow.clockwise")
-                        }
-                        Button(action: {
-                            if let img = viewModel.selectedImage {
-                                onDownload(img)
+                    
+                    // Advanced Tools
+                    if !viewModel.availableAdvancedTools.isEmpty {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Advanced Tools")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    ForEach(viewModel.availableAdvancedTools) { tool in
+                                        Button(action: {
+                                            if let image = viewModel.selectedImage {
+                                                onToolSelected(tool, image)
+                                            }
+                                        }) {
+                                            HStack {
+                                                Image("ic_result_\(tool.rawValue.lowercased())")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 20, height: 20)
+                                                    .foregroundColor(.primary)
+                                                Text(tool.rawValue)
+                                                    .font(.subheadline)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(.primary)
+                                            }
+                                            .padding(.horizontal, 20)
+                                            .padding(.vertical, 12)
+                                            .background(RoundedRectangle(cornerRadius: 16).stroke(Color(UIColor.systemGray4), lineWidth: 1))
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal)
                             }
-                        }) {
-                            actionButtonLabel(title: "Download", icon: "arrow.down.to.line")
                         }
                     }
                     
-                    HStack(spacing: 16) {
-                        Button(action: {
-                            if let img = viewModel.selectedImage {
-                                onShare(img)
-                            }
-                        }) {
-                            actionButtonLabel(title: "Share", icon: "square.and.arrow.up")
-                        }
-                        Button(action: onSaveArchive) {
-                            actionButtonLabel(title: "Save to Archive", icon: "archivebox")
-                        }
+                    // Action Buttons (Regenerate, Download, Share)
+                    HStack(spacing: 0) {
+                        actionCircleButton(title: "REGENERATE", icon: "ic_result_regenerate", action: onRegenerate)
+                        Spacer()
+                        actionCircleButton(title: "DOWNLOAD", icon: "ic_result_download", action: {
+                            if let img = viewModel.selectedImage { onDownload(img) }
+                        })
+                        Spacer()
+                        actionCircleButton(title: "SHARE", icon: "ic_result_share", action: {
+                            if let img = viewModel.selectedImage { onShare(img) }
+                        })
                     }
+                    .padding(.horizontal, 40)
+                    .padding(.top, 10)
+                    
+                    // Save to Archive Button
+                    Button(action: onSaveArchive) {
+                        Text("SAVE TO ARCHIVE")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.black)
+                            .clipShape(Capsule())
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+                    .padding(.bottom, 40)
                 }
-                .padding()
             }
         }
+        .navigationBarHidden(true)
+        .toolbar(.hidden, for: .tabBar)
     }
     
     @ViewBuilder
-    private func actionButtonLabel(title: String, icon: String) -> some View {
-        HStack {
-            Image(systemName: icon)
+    private func actionCircleButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+        VStack(spacing: 12) {
+            Button(action: action) {
+                Image(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(.primary)
+                    .padding(24)
+                    .background(Circle().fill(Color(UIColor.systemGray6)))
+            }
             Text(title)
+                .font(.system(size: 10, weight: .bold))
+                .kerning(0.5)
+                .foregroundColor(Color(UIColor.systemGray2))
         }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color(UIColor.systemGray6))
-        .cornerRadius(10)
-        .foregroundColor(.primary)
     }
 }

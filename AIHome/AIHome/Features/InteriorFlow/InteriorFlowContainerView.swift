@@ -32,7 +32,8 @@ struct InteriorFlowContainerView: View {
                     onShare: { _ in },
                     onSaveArchive: { },
                     onRemoveWatermark: { },
-                    onToolSelected: { _, _ in }
+                    onToolSelected: { _, _ in },
+                    onClose: { dismiss() }
                 )
             }
         }
@@ -58,7 +59,7 @@ struct InteriorFlowContainerView: View {
 
         AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType), Style: \(actualStyle), Intervention: \(aiIntervention.rawValue)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: "Generating...", canCancel: true)
+        let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {
@@ -112,7 +113,11 @@ struct InteriorFlowContainerView: View {
                     project: mockProject,
                     originalImage: sourceImage,
                     generatedImages: downloadedImages,
-                    availableAdvancedTools: [],
+                    availableAdvancedTools: [
+                        .edit,
+                        .replace,
+                        .remove
+                    ],
                     isPro: true, 
                     hasWatermark: false
                 )
