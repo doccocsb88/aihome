@@ -87,7 +87,7 @@ struct GenerationLoadingView: View {
                     Text("Generation Failed")
                         .font(.system(size: 20, weight: .bold))
                     
-                    Text(viewModel.errorMessage ?? "We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
+                    Text("We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
                         .font(.system(size: 15))
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
