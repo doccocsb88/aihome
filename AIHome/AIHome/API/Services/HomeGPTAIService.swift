@@ -160,7 +160,7 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
                 image: request.image,
                 maskedImage: .pngData(maskData, filename: "mask.png"),
                 noDesign: 1, // Defaulting to 1 for fallback
-                prompt: request.prompt
+                prompt: "Change the floor to: \(request.prompt)"
             )
             let result = try await client.changeColorTextures(changeReq)
             return result.outputImages
@@ -183,7 +183,7 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
             image: request.image,
             maskedImage: .pngData(maskData, filename: "mask.png"),
             noDesign: request.noDesign,
-            prompt: request.prompt
+            prompt: "Change the wall to: \(request.prompt)"
         )
         let result = try await client.changeColorTextures(changeReq)
         return result.outputImages
