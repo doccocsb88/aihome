@@ -9,11 +9,13 @@ struct PhotoSourcePickerView: View {
     var body: some View {
         VStack(spacing: 24) {
             VStack(alignment: .leading, spacing: 8) {
-                Text(viewModel.title)
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.DesignSystem.textPrimary)
+                if !viewModel.title.isEmpty {
+                    Text(viewModel.title)
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.DesignSystem.textPrimary)
+                }
                 
-                if let subtitle = viewModel.subtitle {
+                if let subtitle = viewModel.subtitle, !subtitle.isEmpty {
                     Text(subtitle)
                         .font(.subheadline)
                         .foregroundColor(.gray)

@@ -101,9 +101,14 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
         
         let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
         let maskRes = try await client.createMaskImage(maskReq)
-        guard let maskUrl = maskRes.maskedImageURL else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+        if let error = maskRes.error {
+            throw HomeDesignsAPIError.apiMessage(error)
+        }
+        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
         
-        let removalReq = FurnitureRemovalRequest(image: request.image, maskedImage: .remoteURL(maskUrl))
+        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
+        
+        let removalReq = FurnitureRemovalRequest(image: request.image, maskedImage: .pngData(maskData, filename: "mask.png"))
         let result = try await client.furnitureRemoval(removalReq)
         return result.outputImages
     }
@@ -114,13 +119,18 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
         
         let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
         let maskRes = try await client.createMaskImage(maskReq)
-        guard let maskUrl = maskRes.maskedImageURL else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+        if let error = maskRes.error {
+            throw HomeDesignsAPIError.apiMessage(error)
+        }
+        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+        
+        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
         
         // Use change_color_textures
         let changeReq = ChangeColorTexturesRequest(
             designType: .interior,
             image: request.image,
-            maskedImage: .remoteURL(maskUrl),
+            maskedImage: .pngData(maskData, filename: "mask.png"),
             noDesign: request.noDesign,
             prompt: request.prompt
         )
@@ -138,12 +148,17 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
             let labels = ["floor"]
             let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
             let maskRes = try await client.createMaskImage(maskReq)
-            guard let maskUrl = maskRes.maskedImageURL else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+            if let error = maskRes.error {
+            throw HomeDesignsAPIError.apiMessage(error)
+        }
+        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+        
+        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
             
             let changeReq = ChangeColorTexturesRequest(
                 designType: .interior,
                 image: request.image,
-                maskedImage: .remoteURL(maskUrl),
+                maskedImage: .pngData(maskData, filename: "mask.png"),
                 noDesign: 1, // Defaulting to 1 for fallback
                 prompt: request.prompt
             )
@@ -156,13 +171,18 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
         let labels = ["wall"]
         let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
         let maskRes = try await client.createMaskImage(maskReq)
-        guard let maskUrl = maskRes.maskedImageURL else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+        if let error = maskRes.error {
+            throw HomeDesignsAPIError.apiMessage(error)
+        }
+        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
+        
+        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
         
         let rgb = ColorPromptMapper.rgb(for: request.prompt)
         
         let paintReq = PaintVisualizerRequest(
             image: request.image,
-            maskedImage: .remoteURL(maskUrl),
+            maskedImage: .pngData(maskData, filename: "mask.png"),
             noDesign: request.noDesign,
             rgbColor: rgb
         )

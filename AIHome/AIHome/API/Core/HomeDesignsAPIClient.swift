@@ -5,9 +5,16 @@ public class HomeDesignsAPIClient: HomeDesignsAPIClientProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
     
-    public init(config: HomeDesignsAPIConfig, session: URLSession = .shared) {
+    public init(config: HomeDesignsAPIConfig, session: URLSession? = nil) {
         self.config = config
-        self.session = session
+        if let session = session {
+            self.session = session
+        } else {
+            let sessionConfig = URLSessionConfiguration.default
+            sessionConfig.timeoutIntervalForRequest = 180
+            sessionConfig.timeoutIntervalForResource = 300
+            self.session = URLSession(configuration: sessionConfig)
+        }
         self.decoder = JSONDecoder()
     }
     

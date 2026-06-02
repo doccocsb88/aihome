@@ -8,12 +8,14 @@ class GenerationLoadingViewModel {
     var progressText: String
     var canCancel: Bool
     var inputImage: UIImage?
+    var errorMessage: String?
     
-    init(projectType: ProjectType, status: JobStatus = .generating, progressText: String = "Generating...", canCancel: Bool = false, inputImage: UIImage? = nil) {
+    init(projectType: ProjectType, status: JobStatus = .generating, progressText: String = "Generating...", canCancel: Bool = false, inputImage: UIImage? = nil, errorMessage: String? = nil) {
         self.projectType = projectType
         self.status = status
         self.progressText = progressText
         self.canCancel = canCancel
         self.inputImage = inputImage
+        self.errorMessage = errorMessage
     }
 }

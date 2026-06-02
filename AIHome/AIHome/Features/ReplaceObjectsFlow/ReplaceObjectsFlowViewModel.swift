@@ -6,9 +6,9 @@ class ReplaceObjectsFlowViewModel {
     var draft = ReplaceObjectsDraft()
     
     var photoPickerViewModel = PhotoSourcePickerViewModel(
-        title: "Replace Objects",
-        subtitle: "Choose an image to modify.",
-        allowsSample: true,
+        title: "",
+        subtitle: nil,
+        allowsSample: false,
         sampleImages: [],
         ctaTitle: "Continue"
     )

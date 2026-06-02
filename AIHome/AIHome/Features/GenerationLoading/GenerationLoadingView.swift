@@ -72,5 +72,65 @@ struct GenerationLoadingView: View {
         .onAppear {
             progress = 0.9 // Animate to 90% over 15 seconds
         }
+        .overlay {
+            if viewModel.status == .failed {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 24) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(red: 1, green: 0.92, blue: 0.92))
+                            .frame(width: 80, height: 80)
+                        
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 32))
+                            .foregroundColor(.red)
+                        
+                        Image(systemName: "exclamationmark.circle.fill")
+                            .foregroundColor(.red)
+                            .background(Circle().fill(.white))
+                            .offset(x: 24, y: -24)
+                    }
+                    .padding(.top, 16)
+                    
+                    Text("Generation Failed")
+                        .font(.system(size: 20, weight: .bold))
+                    
+                    Text(viewModel.errorMessage ?? "We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
+                        .font(.system(size: 15))
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                    
+                    VStack(spacing: 16) {
+                        Button(action: {
+                            onCancel?()
+                        }) {
+                            Text("TRY AGAIN")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(Color.black)
+                                .cornerRadius(12)
+                        }
+                        
+                        Button(action: {
+                            onCancel?()
+                        }) {
+                            Text("BACK TO DESIGN")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 24)
+                }
+                .background(Color.white)
+                .cornerRadius(24)
+                .padding(.horizontal, 40)
+            }
+        }
     }
 }
