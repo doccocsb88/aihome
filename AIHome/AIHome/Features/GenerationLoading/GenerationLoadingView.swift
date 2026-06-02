@@ -14,17 +14,19 @@ struct GenerationLoadingView: View {
             // Image with blur and scanner
             ZStack {
                 if let inputImage = viewModel.inputImage {
-                    Image(uiImage: inputImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 300, height: 300)
-                        .clipped()
-                        .cornerRadius(24)
-                        .blur(radius: 20)
+                    Color.clear
+                        .aspectRatio(1, contentMode: .fit)
+                        .overlay(
+                            Image(uiImage: inputImage)
+                                .resizable()
+                                .scaledToFill()
+                                .blur(radius: 20)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
                 } else {
                     RoundedRectangle(cornerRadius: 24)
                         .fill(Color(UIColor.systemGray5))
-                        .frame(width: 300, height: 300)
+                        .aspectRatio(1, contentMode: .fit)
                 }
                 
                 // Scanner brackets (mock animation)
@@ -34,6 +36,7 @@ struct GenerationLoadingView: View {
                     .scaleEffect(bracketScale)
                     .animation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: bracketScale)
             }
+            .padding(.horizontal, 32)
             .onAppear {
                 bracketScale = 1.2
             }
@@ -43,39 +46,28 @@ struct GenerationLoadingView: View {
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         Capsule()
-                            .fill(Color(UIColor.systemGray5))
-                            .frame(height: 6)
-                        
-                        Capsule()
                             .fill(Color.primary)
                             .frame(width: geo.size.width * progress, height: 6)
                             .animation(.linear(duration: 15), value: progress)
                     }
                 }
-                .frame(width: 150, height: 6)
+                .frame(height: 6)
                 
                 Text("\(Int(progress * 100))%")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .frame(width: 40, alignment: .leading)
+                    .font(.system(size: 14))
+                    .foregroundColor(.gray)
+                    .frame(width: 40, alignment: .trailing)
             }
+            .padding(.horizontal, 32)
             
             Text(viewModel.progressText)
-                .font(.headline)
+                .font(.system(size: 14, weight: .medium))
                 .foregroundColor(.primary)
-            
-            if viewModel.canCancel {
-                Button(action: {
-                    onCancel?()
-                }) {
-                    Text("Cancel")
-                        .foregroundColor(.red)
-                        .padding()
-                }
-            }
             
             Spacer()
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
             progress = 0.9 // Animate to 90% over 15 seconds
