@@ -6,9 +6,9 @@ class NewWallsFlowViewModel {
     var draft = NewWallsDraft()
     
     var photoPickerViewModel = PhotoSourcePickerViewModel(
-        title: "New Walls",
-        subtitle: "Choose a room to update the walls.",
-        allowsSample: true,
+        title: "",
+        subtitle: nil,
+        allowsSample: false,
         sampleImages: [],
         ctaTitle: "Continue"
     )

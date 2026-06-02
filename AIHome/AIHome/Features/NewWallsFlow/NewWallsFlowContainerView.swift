@@ -1,13 +1,13 @@
 import SwiftUI
 
-enum NewFlooringFlowState {
+enum NewWallsFlowState {
     case input
     case loading(GenerationLoadingViewModel)
     case result(ResultViewModel)
 }
 
-struct NewFlooringFlowContainerView: View {
-    @State private var state: NewFlooringFlowState = .input
+struct NewWallsFlowContainerView: View {
+    @State private var state: NewWallsFlowState = .input
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -15,7 +15,7 @@ struct NewFlooringFlowContainerView: View {
         Group {
             switch state {
             case .input:
-                NewFlooringFlowView(onGenerate: { draft in
+                NewWallsFlowView(onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
@@ -39,15 +39,15 @@ struct NewFlooringFlowContainerView: View {
         }
     }
 
-    private func startGeneration(with draft: NewFlooringDraft) {
+    private func startGeneration(with draft: NewWallsDraft) {
         guard let sourceImage = draft.sourceImage else {
             AppLogger.logError("Missing required draft data")
             return
         }
 
-        AppLogger.logAction("Start New Flooring Generation", details: "Prompt: \(draft.prompt)")
+        AppLogger.logAction("Start New Walls Generation", details: "Prompt: \(draft.prompt)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .newFlooring, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .newWalls, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {
@@ -56,14 +56,13 @@ struct NewFlooringFlowContainerView: View {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
-                let request = NewFlooringInput(
+                let request = NewWallsInput(
                     image: .jpegData(imageData),
-                    textureImage: nil,
-                    noOfTexture: "1",
-                    prompt: draft.prompt
+                    prompt: draft.prompt,
+                    noDesign: 1
                 )
 
-                let imageUrls = try await HomeGPTAIService.shared.generateNewFlooring(request: request)
+                let imageUrls = try await HomeGPTAIService.shared.generateNewWalls(request: request)
                 AppLogger.logAction("Received image URLs from API", details: "\(imageUrls.count) images")
 
                 var downloadedImages: [UIImage] = []
@@ -84,8 +83,8 @@ struct NewFlooringFlowContainerView: View {
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
-                    type: .newFlooring,
-                    title: "New Flooring",
+                    type: .newWalls,
+                    title: "New Walls",
                     styleName: "Custom",
                     roomType: "Room",
                     createdAt: Date(),

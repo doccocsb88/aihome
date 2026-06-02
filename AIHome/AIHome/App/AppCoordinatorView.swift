@@ -54,7 +54,7 @@ struct AppCoordinatorRouter {
         case .newFlooringFlow:
             NewFlooringFlowContainerView()
         case .newWallsFlow:
-            NewWallsFlowView { _ in }
+            NewWallsFlowContainerView()
         }
     }
 }
