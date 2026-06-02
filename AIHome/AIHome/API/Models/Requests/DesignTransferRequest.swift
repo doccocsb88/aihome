@@ -15,7 +15,7 @@ public struct DesignTransferRequest {
 extension DesignTransferRequest {
     func appendTo(builder: inout MultipartFormDataBuilder) {
         builder.appendImageSource(image, fieldName: "image")
-        builder.appendImageSource(styleImage, fieldName: "Style_image")
+        builder.appendImageSource(styleImage, fieldName: "style_image")
         builder.appendField(name: "ai_intervention", value: aiIntervention.rawValue)
     }
 }

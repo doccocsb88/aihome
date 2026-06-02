@@ -46,7 +46,7 @@ struct AppCoordinatorRouter {
         case .gardenFlow:
             GardenFlowView { _ in }
         case .referenceStyleFlow:
-            ReferenceStyleFlowView { _ in }
+            ReferenceStyleFlowContainerView()
         case .removeObjectsFlow:
             RemoveObjectsFlowView { _ in }
         case .replaceObjectsFlow:
