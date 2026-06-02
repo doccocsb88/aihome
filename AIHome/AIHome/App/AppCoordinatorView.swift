@@ -48,11 +48,11 @@ struct AppCoordinatorRouter {
         case .referenceStyleFlow:
             ReferenceStyleFlowContainerView()
         case .removeObjectsFlow:
-            RemoveObjectsFlowView { _ in }
+            RemoveObjectsFlowContainerView()
         case .replaceObjectsFlow:
             ReplaceObjectsFlowContainerView()
         case .newFlooringFlow:
-            NewFlooringFlowView { _ in }
+            NewFlooringFlowContainerView()
         case .newWallsFlow:
             NewWallsFlowView { _ in }
         }

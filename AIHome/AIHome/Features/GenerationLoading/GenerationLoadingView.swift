@@ -78,21 +78,11 @@ struct GenerationLoadingView: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 24) {
-                    ZStack {
-                        Circle()
-                            .fill(Color(red: 1, green: 0.92, blue: 0.92))
-                            .frame(width: 80, height: 80)
-                        
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 32))
-                            .foregroundColor(.red)
-                        
-                        Image(systemName: "exclamationmark.circle.fill")
-                            .foregroundColor(.red)
-                            .background(Circle().fill(.white))
-                            .offset(x: 24, y: -24)
-                    }
-                    .padding(.top, 16)
+                    Image("ic_generate_failed")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .padding(.top, 16)
                     
                     Text("Generation Failed")
                         .font(.system(size: 20, weight: .bold))

@@ -6,9 +6,9 @@ class RemoveObjectsFlowViewModel {
     var draft = RemoveObjectsDraft()
     
     var photoPickerViewModel = PhotoSourcePickerViewModel(
-        title: "Remove Objects",
-        subtitle: "Choose an image to clean up.",
-        allowsSample: true,
+        title: "",
+        subtitle: nil,
+        allowsSample: false,
         sampleImages: [],
         ctaTitle: "Continue"
     )

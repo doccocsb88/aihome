@@ -6,9 +6,9 @@ class NewFlooringFlowViewModel {
     var draft = NewFlooringDraft()
     
     var photoPickerViewModel = PhotoSourcePickerViewModel(
-        title: "New Flooring",
-        subtitle: "Choose a room to update the flooring.",
-        allowsSample: true,
+        title: "",
+        subtitle: nil,
+        allowsSample: false,
         sampleImages: [],
         ctaTitle: "Continue"
     )
