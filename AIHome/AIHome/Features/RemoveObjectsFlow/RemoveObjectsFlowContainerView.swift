@@ -8,6 +8,7 @@ enum RemoveObjectsFlowState {
 
 struct RemoveObjectsFlowContainerView: View {
     @State private var state: RemoveObjectsFlowState = .input
+    @State private var currentDraft: RemoveObjectsDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -19,9 +20,17 @@ struct RemoveObjectsFlowContainerView: View {
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
-                GenerationLoadingView(viewModel: viewModel) {
-                    state = .input
-                }
+                GenerationLoadingView(
+                    viewModel: viewModel,
+                    onRetry: {
+                        if let draft = currentDraft {
+                            startGeneration(with: draft)
+                        }
+                    },
+                    onCancel: {
+                        state = .input
+                    }
+                )
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -40,6 +49,7 @@ struct RemoveObjectsFlowContainerView: View {
     }
 
     private func startGeneration(with draft: RemoveObjectsDraft) {
+        self.currentDraft = draft
         guard let sourceImage = draft.sourceImage else {
             AppLogger.logError("Missing required draft data")
             return

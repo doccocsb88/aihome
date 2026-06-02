@@ -2,7 +2,8 @@ import SwiftUI
 
 struct GenerationLoadingView: View {
     let viewModel: GenerationLoadingViewModel
-    var onCancel: (() -> Void)?
+    var onRetry: (() -> Void)? = nil
+    var onCancel: (() -> Void)? = nil
     
     @State private var progress: CGFloat = 0.1
     @State private var bracketScale: CGFloat = 1.0
@@ -95,7 +96,11 @@ struct GenerationLoadingView: View {
                     
                     VStack(spacing: 16) {
                         Button(action: {
-                            onCancel?()
+                            if let onRetry = onRetry {
+                                onRetry()
+                            } else {
+                                onCancel?()
+                            }
                         }) {
                             Text("TRY AGAIN")
                                 .font(.system(size: 14, weight: .semibold))

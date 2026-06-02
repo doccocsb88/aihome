@@ -8,6 +8,7 @@ enum ReferenceStyleFlowState {
 
 struct ReferenceStyleFlowContainerView: View {
     @State private var state: ReferenceStyleFlowState = .input
+    @State private var currentDraft: ReferenceStyleDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -19,9 +20,17 @@ struct ReferenceStyleFlowContainerView: View {
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
-                GenerationLoadingView(viewModel: viewModel) {
-                    state = .input
-                }
+                GenerationLoadingView(
+                    viewModel: viewModel,
+                    onRetry: {
+                        if let draft = currentDraft {
+                            startGeneration(with: draft)
+                        }
+                    },
+                    onCancel: {
+                        state = .input
+                    }
+                )
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -40,14 +49,16 @@ struct ReferenceStyleFlowContainerView: View {
     }
 
     private func startGeneration(with draft: ReferenceStyleDraft) {
+        self.currentDraft = draft
         guard let sourceImage = draft.sourceImage,
-              let referenceImage = draft.referenceImage else {
+              let referenceImage = draft.referenceImage,
+              let interventionLevel = draft.intervention else {
             AppLogger.logError("Missing required draft data")
             return
         }
 
         let aiIntervention: AIIntervention
-        switch draft.intervention {
+        switch interventionLevel {
         case .light: aiIntervention = .low
         case .medium: aiIntervention = .mid
         case .high: aiIntervention = .extreme
@@ -55,19 +66,19 @@ struct ReferenceStyleFlowContainerView: View {
 
         AppLogger.logAction("Start Reference Style Generation", details: "Intervention: \(aiIntervention.rawValue)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .referenceStyle, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {
             do {
-                guard let imageData = sourceImage.jpegData(compressionQuality: 0.8),
-                      let styleImageData = referenceImage.jpegData(compressionQuality: 0.8) else {
+                guard let sourceImageData = sourceImage.jpegData(compressionQuality: 0.8),
+                      let referenceImageData = referenceImage.jpegData(compressionQuality: 0.8) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
                 let request = ReferenceStyleInput(
-                    image: .jpegData(imageData),
-                    styleImage: .jpegData(styleImageData),
+                    image: .jpegData(sourceImageData),
+                    styleImage: .jpegData(referenceImageData),
                     aiIntervention: aiIntervention
                 )
 
@@ -92,7 +103,7 @@ struct ReferenceStyleFlowContainerView: View {
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
-                    type: .interior, // Using interior type as default for reference style
+                    type: .referenceStyle,
                     title: "Reference Style",
                     styleName: "Custom",
                     roomType: "Room",
@@ -120,9 +131,11 @@ struct ReferenceStyleFlowContainerView: View {
                     self.state = .result(resultVM)
                 }
             } catch {
+                let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 await MainActor.run {
-                    self.state = .input
+                    loadingVM.status = .failed
+                    loadingVM.errorMessage = errorMessage
                 }
             }
         }

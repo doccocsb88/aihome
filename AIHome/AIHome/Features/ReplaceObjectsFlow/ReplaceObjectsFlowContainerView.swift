@@ -8,6 +8,7 @@ enum ReplaceObjectsFlowState {
 
 struct ReplaceObjectsFlowContainerView: View {
     @State private var state: ReplaceObjectsFlowState = .input
+    @State private var currentDraft: ReplaceObjectsDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -19,9 +20,17 @@ struct ReplaceObjectsFlowContainerView: View {
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
-                GenerationLoadingView(viewModel: viewModel) {
-                    state = .input
-                }
+                GenerationLoadingView(
+                    viewModel: viewModel,
+                    onRetry: {
+                        if let draft = currentDraft {
+                            startGeneration(with: draft)
+                        }
+                    },
+                    onCancel: {
+                        state = .input
+                    }
+                )
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -40,6 +49,7 @@ struct ReplaceObjectsFlowContainerView: View {
     }
 
     private func startGeneration(with draft: ReplaceObjectsDraft) {
+        self.currentDraft = draft
         guard let sourceImage = draft.sourceImage else {
             AppLogger.logError("Missing required draft data")
             return

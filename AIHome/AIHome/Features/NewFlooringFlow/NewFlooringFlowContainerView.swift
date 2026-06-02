@@ -8,6 +8,7 @@ enum NewFlooringFlowState {
 
 struct NewFlooringFlowContainerView: View {
     @State private var state: NewFlooringFlowState = .input
+    @State private var currentDraft: NewFlooringDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -19,9 +20,17 @@ struct NewFlooringFlowContainerView: View {
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
-                GenerationLoadingView(viewModel: viewModel) {
-                    state = .input
-                }
+                GenerationLoadingView(
+                    viewModel: viewModel,
+                    onRetry: {
+                        if let draft = currentDraft {
+                            startGeneration(with: draft)
+                        }
+                    },
+                    onCancel: {
+                        state = .input
+                    }
+                )
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -40,6 +49,7 @@ struct NewFlooringFlowContainerView: View {
     }
 
     private func startGeneration(with draft: NewFlooringDraft) {
+        self.currentDraft = draft
         guard let sourceImage = draft.sourceImage else {
             AppLogger.logError("Missing required draft data")
             return

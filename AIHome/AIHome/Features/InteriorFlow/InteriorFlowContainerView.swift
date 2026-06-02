@@ -8,6 +8,7 @@ enum InteriorFlowState {
 
 struct InteriorFlowContainerView: View {
     @State private var state: InteriorFlowState = .input
+    @State private var currentDraft: InteriorDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -19,9 +20,17 @@ struct InteriorFlowContainerView: View {
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
-                GenerationLoadingView(viewModel: viewModel) {
-                    state = .input
-                }
+                GenerationLoadingView(
+                    viewModel: viewModel,
+                    onRetry: {
+                        if let draft = currentDraft {
+                            startGeneration(with: draft)
+                        }
+                    },
+                    onCancel: {
+                        state = .input
+                    }
+                )
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -40,6 +49,7 @@ struct InteriorFlowContainerView: View {
     }
 
     private func startGeneration(with draft: InteriorDraft) {
+        self.currentDraft = draft
         guard let sourceImage = draft.sourceImage,
               let roomType = draft.roomType,
               let designStyle = draft.designStyle,
@@ -126,9 +136,11 @@ struct InteriorFlowContainerView: View {
                     self.state = .result(resultVM)
                 }
             } catch {
+                let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 await MainActor.run {
-                    self.state = .input
+                    loadingVM.status = .failed
+                    loadingVM.errorMessage = errorMessage
                 }
             }
         }
