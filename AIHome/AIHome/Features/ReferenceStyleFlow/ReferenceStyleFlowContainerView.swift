@@ -51,12 +51,12 @@ struct ReferenceStyleFlowContainerView: View {
     private func startGeneration(with draft: ReferenceStyleDraft) {
         self.currentDraft = draft
         guard let sourceImage = draft.sourceImage,
-              let referenceImage = draft.referenceImage,
-              let interventionLevel = draft.intervention else {
+              let referenceImage = draft.referenceImage else {
             AppLogger.logError("Missing required draft data")
             return
         }
 
+        let interventionLevel = draft.intervention
         let aiIntervention: AIIntervention
         switch interventionLevel {
         case .light: aiIntervention = .low

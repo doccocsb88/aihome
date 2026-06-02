@@ -178,16 +178,14 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
         
         let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
         
-        let rgb = ColorPromptMapper.rgb(for: request.prompt)
-        
-        let paintReq = PaintVisualizerRequest(
+        let changeReq = ChangeColorTexturesRequest(
+            designType: .interior,
             image: request.image,
             maskedImage: .pngData(maskData, filename: "mask.png"),
             noDesign: request.noDesign,
-            rgbColor: rgb
+            prompt: request.prompt
         )
-        
-        let result = try await client.paintVisualizer(paintReq)
+        let result = try await client.changeColorTextures(changeReq)
         return result.outputImages
     }
     
