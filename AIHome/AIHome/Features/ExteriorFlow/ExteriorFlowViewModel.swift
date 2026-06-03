@@ -5,18 +5,14 @@ import SwiftUI
 class ExteriorFlowViewModel {
     var draft = ExteriorDraft()
     var photoPickerViewModel = PhotoSourcePickerViewModel(
-        title: "Exterior Redesign",
-        subtitle: "Choose your photo. For better results, use a horizontal direction.",
-        allowsSample: true,
+        title: "",
+        subtitle: nil,
+        allowsSample: false,
         sampleImages: [],
-        ctaTitle: "Generate"
+        ctaTitle: "Continue"
     )
     
     var canGenerate: Bool {
-        return photoPickerViewModel.selectedImage != nil
-    }
-    
-    func prepareDraft() {
-        draft.sourceImage = photoPickerViewModel.selectedImage
+        return photoPickerViewModel.selectedImage != nil && !draft.prompt.isEmpty
     }
 }

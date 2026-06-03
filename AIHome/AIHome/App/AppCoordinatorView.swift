@@ -42,9 +42,9 @@ struct AppCoordinatorRouter {
         case .interiorFlow:
             InteriorFlowContainerView()
         case .exteriorFlow:
-            ExteriorFlowView { _ in }
+            ExteriorFlowContainerView()
         case .gardenFlow:
-            GardenFlowView { _ in }
+            GardenFlowContainerView()
         case .referenceStyleFlow:
             ReferenceStyleFlowContainerView()
         case .removeObjectsFlow:
