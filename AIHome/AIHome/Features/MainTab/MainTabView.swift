@@ -5,42 +5,38 @@ struct MainTabView: View {
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
-        TabView(selection: $viewModel.selectedTab) {
-            NavigationStack(path: Bindable(coordinator).path) {
-                HomeView()
-                    .navigationDestination(for: AppRoute.self) { route in
-                        AppCoordinatorRouter.view(for: route)
-                    }
+        VStack(spacing: 0) {
+            TabView(selection: $viewModel.selectedTab) {
+                NavigationStack(path: Bindable(coordinator).path) {
+                    HomeView()
+                        .navigationDestination(for: AppRoute.self) { route in
+                            AppCoordinatorRouter.view(for: route)
+                        }
+                }
+                .id("HomeNavStack")
+                .toolbar(.hidden, for: .tabBar)
+                .tag(MainTab.home)
+                
+                NavigationStack {
+                    InspirationView()
+                }
+                .toolbar(.hidden, for: .tabBar)
+                .tag(MainTab.inspiration)
+                
+                NavigationStack {
+                    HistoryView()
+                }
+                .toolbar(.hidden, for: .tabBar)
+                .tag(MainTab.history)
+                
+                NavigationStack {
+                    SettingsView()
+                }
+                .toolbar(.hidden, for: .tabBar)
+                .tag(MainTab.settings)
             }
-            .id("HomeNavStack")
-            .tabItem {
-                Label("Home", systemImage: "house")
-            }
-            .tag(MainTab.home)
             
-            NavigationStack {
-                InspirationView()
-            }
-            .tabItem {
-                Label("Inspiration", systemImage: "sparkles")
-            }
-            .tag(MainTab.inspiration)
-            
-            NavigationStack {
-                HistoryView()
-            }
-            .tabItem {
-                Label("History", systemImage: "clock")
-            }
-            .tag(MainTab.history)
-            
-            NavigationStack {
-                SettingsView()
-            }
-            .tabItem {
-                Label("Settings", systemImage: "gearshape")
-            }
-            .tag(MainTab.settings)
+            CustomTabBar(selectedTab: $viewModel.selectedTab)
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -69,6 +65,66 @@ struct MainTabView: View {
         .onAppear {
             AppLogger.logScreen("MainTabView")
         }
+    }
+}
+
+struct CustomTabBar: View {
+    @Binding var selectedTab: MainTab
+    
+    var body: some View {
+        HStack {
+            TabBarItem(
+                iconName: "ic_tab_home",
+                isActive: selectedTab == .home,
+                action: { selectedTab = .home }
+            )
+            TabBarItem(
+                iconName: "ic_tab_inspiration",
+                isActive: selectedTab == .inspiration,
+                action: { selectedTab = .inspiration }
+            )
+            TabBarItem(
+                iconName: "ic_tab_history",
+                isActive: selectedTab == .history,
+                action: { selectedTab = .history }
+            )
+            TabBarItem(
+                iconName: "ic_tab_setting",
+                isActive: selectedTab == .settings,
+                action: { selectedTab = .settings }
+            )
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
+        .padding(.bottom, 8)
+        .background(
+            Color(uiColor: .systemBackground)
+                .ignoresSafeArea(edges: .bottom)
+                .shadow(color: Color.black.opacity(0.04), radius: 8, y: -4)
+        )
+    }
+}
+
+struct TabBarItem: View {
+    let iconName: String
+    let isActive: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 2) {
+                Image(iconName)
+                    .renderingMode(.template)
+                    .foregroundColor(isActive ? .primary : Color(uiColor: .systemGray2))
+                
+                Image("ic_tab_active")
+                    .opacity(isActive ? 1 : 0)
+            }
+            .offset(y: isActive ? -6 : 0)
+            .animation(.easeOut(duration: 0.2), value: isActive)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 48) // Fixed height to prevent layout jumps when offsetting
     }
 }
 
