@@ -57,7 +57,7 @@ struct GardenFlowContainerView: View {
 
         AppLogger.logAction("Start Garden Generation", details: "Prompt: \(draft.prompt)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .landscape, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .garden, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {
@@ -68,7 +68,7 @@ struct GardenFlowContainerView: View {
                 
                 let request = GardenGenerationInput(
                     image: .jpegData(imageData),
-                    aiIntervention: .medium, // Default
+                    aiIntervention: .mid, // Default
                     noDesign: 1,
                     designStyle: "Modern", // Default
                     gardenType: "Backyard", // Default
@@ -96,7 +96,7 @@ struct GardenFlowContainerView: View {
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
-                    type: .landscape,
+                    type: .garden,
                     title: "Garden Redesign",
                     styleName: "Modern",
                     roomType: "Garden",

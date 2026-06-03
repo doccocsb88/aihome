@@ -68,7 +68,7 @@ struct ExteriorFlowContainerView: View {
                 
                 let request = ExteriorGenerationInput(
                     image: .jpegData(imageData),
-                    aiIntervention: .medium, // Default
+                    aiIntervention: .mid, // Default
                     noDesign: 1,
                     designStyle: "Modern", // Default
                     houseAngle: "Front of house", // Default
