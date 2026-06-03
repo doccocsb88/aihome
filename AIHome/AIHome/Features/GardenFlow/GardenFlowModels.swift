@@ -3,6 +3,7 @@ import UIKit
 
 struct GardenDraft {
     var sourceImage: UIImage?
+    var prompt: String = ""
     var gardenType: String?
     var customStyle: String?
     var designStyle: String?
