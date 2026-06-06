@@ -4,6 +4,9 @@ struct HomeView: View {
     @State private var viewModel = HomeViewModel()
     @State private var isShowingHomeRating = false
     @State private var hasShownHomeRating = false
+#if DEBUG || DEBUB
+    @State private var isShowingPhotoTips = false
+#endif
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
@@ -12,7 +15,7 @@ struct HomeView: View {
                 
                 HStack {
                     Text("Home")
-                        .font(.system(size: 36, weight: .bold))
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 36))
                         .foregroundColor(.DesignSystem.textPrimary)
                     
                     Spacer()
@@ -20,22 +23,22 @@ struct HomeView: View {
                     HStack(spacing: 8) {
                         HStack(spacing: 4) {
                             Image(systemName: "sparkles")
-                                .foregroundColor(Color(red: 255/255, green: 45/255, blue: 85/255))
+                                .foregroundColor(.DesignSystem.homeAccent)
                             Text("3/3")
-                                .font(.subheadline.weight(.semibold))
+                                .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
                                 .foregroundColor(.DesignSystem.textPrimary)
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(Color(UIColor.systemGray6))
+                        .background(Color.DesignSystem.homeQuotaBackground)
                         .cornerRadius(20)
                         
                         Text("PRO")
-                            .font(.subheadline.weight(.bold))
+                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
                             .foregroundColor(.white)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)
-                            .background(Color(red: 255/255, green: 45/255, blue: 85/255))
+                            .background(Color.DesignSystem.homeAccent)
                             .cornerRadius(20)
                     }
                 }
@@ -51,8 +54,8 @@ struct HomeView: View {
                 
                 VStack(alignment: .leading, spacing: 16) {
                     Text("ADVANCED EDITING")
-                        .font(.caption.weight(.bold))
-                        .foregroundColor(Color(UIColor.systemGray2))
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                        .foregroundColor(.DesignSystem.homeSectionTitle)
                         .kerning(1.2)
                         .padding(.horizontal)
                         .padding(.top, 8)
@@ -74,7 +77,15 @@ struct HomeView: View {
         .onAppear {
             AppLogger.logScreen("HomeView")
             presentHomeRatingIfNeeded()
+#if DEBUG || DEBUB
+            isShowingPhotoTips = true
+#endif
         }
+#if DEBUG || DEBUB
+        .sheet(isPresented: $isShowingPhotoTips) {
+            PhotoTipsView()
+        }
+#endif
     }
     
     private func handleNavigation(for tool: HomeToolItem) {
@@ -125,12 +136,12 @@ struct HomeToolRow: View {
                                     Image(systemName: tool.iconName)
                                         .font(.headline)
                                     Text(tool.title)
-                                        .font(.headline.weight(.bold))
+                                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                                 }
                                 .foregroundColor(.white)
                                 
                                 Text(tool.subtitle)
-                                    .font(.subheadline)
+                                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                                     .foregroundColor(.white.opacity(0.9))
                             }
                             Spacer()

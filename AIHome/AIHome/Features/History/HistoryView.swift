@@ -28,7 +28,7 @@ struct HistoryView: View {
             HStack(spacing: 8) {
                 HStack(spacing: 4) {
                     Image(systemName: "sparkles")
-                        .foregroundColor(Color(red: 255/255, green: 45/255, blue: 85/255))
+                        .foregroundColor(.DesignSystem.historyAccent)
                     Text("3/3")
                         .font(.subheadline.weight(.semibold))
                         .foregroundColor(.DesignSystem.textPrimary)
@@ -43,7 +43,7 @@ struct HistoryView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(Color(red: 255/255, green: 45/255, blue: 85/255))
+                    .background(Color.DesignSystem.historyAccent)
                     .cornerRadius(20)
             }
         }
@@ -117,9 +117,9 @@ struct HistoryView: View {
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
                     .frame(width: 60, height: 60)
-                    .background(Color(red: 255/255, green: 45/255, blue: 85/255))
+                    .background(Color.DesignSystem.historyAccent)
                     .clipShape(Circle())
-                    .shadow(color: Color(red: 255/255, green: 45/255, blue: 85/255).opacity(0.4), radius: 8, x: 0, y: 4)
+                    .shadow(color: Color.DesignSystem.historyAccent.opacity(0.4), radius: 8, x: 0, y: 4)
             }
             .padding(.trailing, 24)
             .padding(.bottom, 24)
@@ -140,13 +140,13 @@ struct HistoryView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(project.title.uppercased())
                             .font(FontFamily.Roboto.bold.swiftUIFont(size: 9))
-                            .foregroundColor(.DesignSystem.textPrimary)
+                            .foregroundColor(.DesignSystem.historyCardTitle)
                             .lineLimit(1)
                         
                         if let style = project.styleName {
                             Text(style)
                                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 8))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.DesignSystem.historyCardStyle)
                                 .lineLimit(1)
                         }
                     }
@@ -158,7 +158,7 @@ struct HistoryView: View {
                     }) {
                         Image(systemName: project.isFavorite ? "heart.fill" : "heart")
                             .font(.system(size: 12))
-                            .foregroundColor(project.isFavorite ? Color(red: 255/255, green: 45/255, blue: 85/255) : .secondary)
+                            .foregroundColor(project.isFavorite ? Color.DesignSystem.historyAccent : .secondary)
                     }
                 }
                 .padding(12)
