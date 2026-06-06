@@ -24,9 +24,18 @@ class PhotoSourcePickerViewModel {
         }
     }
     
-    init(title: String, subtitle: String? = nil, allowsSample: Bool = true, sampleImages: [String] = [], sampleTitle: String = "OR TRY A SAMPLE", ctaTitle: String = "Get Started") {
+    init(
+        title: String,
+        subtitle: String? = nil,
+        selectedImage: UIImage? = nil,
+        allowsSample: Bool = true,
+        sampleImages: [String] = [],
+        sampleTitle: String = "OR TRY A SAMPLE",
+        ctaTitle: String = "Get Started"
+    ) {
         self.title = title
         self.subtitle = subtitle
+        self.selectedImage = selectedImage
         self.allowsSample = allowsSample
         self.sampleImages = sampleImages
         self.sampleTitle = sampleTitle

@@ -19,6 +19,7 @@ struct InteriorFlowView: View {
                         viewModel: PhotoSourcePickerViewModel(
                             title: "Start with a photo",
                             subtitle: "Upload or select from template to try",
+                            selectedImage: viewModel.draft.sourceImage,
                             allowsSample: true,
                             sampleImages: [
                                 "ic_interior_sample_01",

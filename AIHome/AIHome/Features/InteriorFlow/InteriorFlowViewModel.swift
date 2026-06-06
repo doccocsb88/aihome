@@ -35,7 +35,6 @@ class InteriorFlowViewModel {
     func applyInitialSourceImage(_ image: UIImage) {
         guard draft.sourceImage == nil else { return }
         draft.sourceImage = image
-        currentStep = .roomType
     }
     
     var canContinue: Bool {

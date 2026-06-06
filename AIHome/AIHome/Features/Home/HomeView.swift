@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
+    @State private var isShowingHomeRating = false
+    @State private var hasShownHomeRating = false
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
@@ -66,8 +68,12 @@ struct HomeView: View {
             .padding(.vertical)
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
+        .ratingPopup(isPresented: $isShowingHomeRating, kind: .homeEnjoyment) {
+            AppLogger.logAction("Home Rating", details: "Rate on App Store")
+        }
         .onAppear {
             AppLogger.logScreen("HomeView")
+            presentHomeRatingIfNeeded()
         }
     }
     
@@ -82,6 +88,12 @@ struct HomeView: View {
         case .newFlooring: coordinator.push(.newFlooringFlow)
         case .newWalls: coordinator.push(.newWallsFlow)
         }
+    }
+
+    private func presentHomeRatingIfNeeded() {
+        guard !hasShownHomeRating else { return }
+        hasShownHomeRating = true
+        isShowingHomeRating = true
     }
 }
 

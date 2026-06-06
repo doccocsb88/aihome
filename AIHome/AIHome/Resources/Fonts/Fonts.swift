@@ -20,6 +20,13 @@ internal typealias CustomFont = FontConvertible.Font
 
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum FontFamily {
+  internal enum Inter24pt {
+    internal static let bold = FontConvertible(name: "Inter24pt-Bold", family: "Inter 24pt", path: "Inter_24pt-Bold.ttf")
+    internal static let medium = FontConvertible(name: "Inter24pt-Medium", family: "Inter 24pt", path: "Inter_24pt-Medium.ttf")
+    internal static let regular = FontConvertible(name: "Inter24pt-Regular", family: "Inter 24pt", path: "Inter_24pt-Regular.ttf")
+    internal static let semiBold = FontConvertible(name: "Inter24pt-SemiBold", family: "Inter 24pt", path: "Inter_24pt-SemiBold.ttf")
+    internal static let all: [FontConvertible] = [bold, medium, regular, semiBold]
+  }
   internal enum Roboto {
     internal static let black = FontConvertible(name: "Roboto-Black", family: "Roboto", path: "Roboto-Black.ttf")
     internal static let blackItalic = FontConvertible(name: "Roboto-BlackItalic", family: "Roboto", path: "Roboto-BlackItalic.ttf")
@@ -41,7 +48,7 @@ internal enum FontFamily {
     internal static let thinItalic = FontConvertible(name: "Roboto-ThinItalic", family: "Roboto", path: "Roboto-ThinItalic.ttf")
     internal static let all: [FontConvertible] = [black, blackItalic, bold, boldItalic, extraBold, extraBoldItalic, extraLight, extraLightItalic, italic, light, lightItalic, medium, mediumItalic, regular, semiBold, semiBoldItalic, thin, thinItalic]
   }
-  internal static let allCustomFonts: [FontConvertible] = [Roboto.all].flatMap { $0 }
+  internal static let allCustomFonts: [FontConvertible] = [Inter24pt.all, Roboto.all].flatMap { $0 }
   internal static func registerAllCustomFonts() {
     allCustomFonts.forEach { $0.register() }
   }
