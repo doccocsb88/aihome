@@ -3,49 +3,251 @@ import SwiftUI
 struct InspirationFilterView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = InspirationFilterViewModel()
-    
+    var onApply: (() -> Void)?
+
     var body: some View {
-        NavigationStack {
-            Form {
-                Section(header: Text("Favourite")) {
-                    Toggle("Liked Only", isOn: $viewModel.showLikedOnly)
+        VStack(spacing: 0) {
+            dragHandle
+
+            HStack(alignment: .center) {
+                Text("Filters")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(Color.DesignSystem.textPrimary)
+
+                Spacer()
+
+                Button("Reset") {
+                    viewModel.reset()
                 }
-                
-                Section(header: Text("Interior Spaces")) {
-                    Picker("Space", selection: $viewModel.selectedInteriorSpace) {
+                .font(.system(size: 16, weight: .regular))
+                .foregroundStyle(Color(hex: "#6B7280"))
+            }
+            .padding(.top, 52)
+
+            VStack(alignment: .leading, spacing: 38) {
+                FilterSection(title: "FAVOURITE") {
+                    HStack(spacing: 8) {
+                        FilterChip(
+                            title: "All",
+                            isSelected: !viewModel.showLikedOnly,
+                            action: { viewModel.showLikedOnly = false }
+                        )
+
+                        FilterChip(
+                            title: "Liked",
+                            isSelected: viewModel.showLikedOnly,
+                            action: { viewModel.showLikedOnly = true }
+                        )
+                    }
+                }
+
+                FilterSection(title: "INTERIOR SPACES") {
+                    ChipFlow(spacing: 8, rowSpacing: 9) {
                         ForEach(viewModel.interiorSpaces, id: \.self) { space in
-                            Text(space).tag(space)
+                            FilterChip(
+                                title: space,
+                                isSelected: viewModel.selectedInteriorSpace == space,
+                                action: { viewModel.selectedInteriorSpace = space }
+                            )
                         }
                     }
                 }
-                
-                Section(header: Text("Exterior Spaces")) {
-                    Picker("Space", selection: $viewModel.selectedExteriorSpace) {
+
+                FilterSection(title: "EXTERIOR SPACES") {
+                    ChipFlow(spacing: 8, rowSpacing: 9) {
                         ForEach(viewModel.exteriorSpaces, id: \.self) { space in
-                            Text(space).tag(space)
+                            FilterChip(
+                                title: space,
+                                isSelected: viewModel.selectedExteriorSpace == space,
+                                action: { viewModel.selectedExteriorSpace = space }
+                            )
                         }
                     }
                 }
             }
-            .navigationTitle("Filter")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Reset") {
-                        viewModel.reset()
-                    }
+            .padding(.top, 34)
+
+            Spacer(minLength: 50)
+
+            Button {
+                if let onApply {
+                    onApply()
+                } else {
+                    dismiss()
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Apply") {
-                        dismiss()
-                    }
-                    .fontWeight(.bold)
-                }
+            } label: {
+                Text("Apply")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(.black, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .shadow(color: .black.opacity(0.16), radius: 22, x: 0, y: 12)
             }
+            .buttonStyle(.plain)
+            .padding(.bottom, 32)
+        }
+        .padding(.horizontal, 32)
+        .background(Color(hex: "#FAFAFB"))
+        .clipShape(
+            UnevenRoundedRectangle(
+                topLeadingRadius: 34,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 34,
+                style: .continuous
+            )
+        )
+    }
+
+    private var dragHandle: some View {
+        Capsule()
+            .fill(Color(hex: "#E5E7EB"))
+            .frame(width: 48, height: 4)
+            .padding(.top, 34)
+    }
+}
+
+private struct FilterSection<Content: View>: View {
+    let title: String
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 28) {
+            Text(title)
+                .font(.system(size: 12, weight: .bold))
+                .tracking(3)
+                .foregroundStyle(Color(hex: "#6B7280"))
+
+            content
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct FilterChip: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(isSelected ? .white : Color(hex: "#6B7280"))
+                .lineLimit(1)
+                .padding(.horizontal, 17)
+                .frame(height: 34)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? .black : Color(hex: "#F9FAFB"))
+                )
+                .overlay {
+                    Capsule()
+                        .stroke(isSelected ? .black : Color(hex: "#E5E7EB"), lineWidth: 1)
+                }
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct ChipFlow<Content: View>: View {
+    let spacing: CGFloat
+    let rowSpacing: CGFloat
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        FlowLayout(spacing: spacing, rowSpacing: rowSpacing) {
+            content
         }
     }
 }
 
+private struct FlowLayout: Layout {
+    var spacing: CGFloat
+    var rowSpacing: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        let maxWidth = proposal.width ?? 0
+        let rows = rows(for: subviews, maxWidth: maxWidth)
+        let height = rows.reduce(CGFloat.zero) { partial, row in
+            partial + row.height
+        } + CGFloat(max(rows.count - 1, 0)) * rowSpacing
+
+        return CGSize(width: maxWidth, height: height)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        var origin = bounds.origin
+
+        for row in rows(for: subviews, maxWidth: bounds.width) {
+            origin.x = bounds.minX
+
+            for item in row.items {
+                item.subview.place(
+                    at: origin,
+                    proposal: ProposedViewSize(item.size)
+                )
+                origin.x += item.size.width + spacing
+            }
+
+            origin.y += row.height + rowSpacing
+        }
+    }
+
+    private func rows(for subviews: Subviews, maxWidth: CGFloat) -> [FlowRow] {
+        var rows: [FlowRow] = []
+        var currentItems: [FlowItem] = []
+        var currentWidth: CGFloat = 0
+        var currentHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            let nextWidth = currentItems.isEmpty ? size.width : currentWidth + spacing + size.width
+
+            if nextWidth > maxWidth, !currentItems.isEmpty {
+                rows.append(FlowRow(items: currentItems, height: currentHeight))
+                currentItems = [FlowItem(subview: subview, size: size)]
+                currentWidth = size.width
+                currentHeight = size.height
+            } else {
+                currentItems.append(FlowItem(subview: subview, size: size))
+                currentWidth = nextWidth
+                currentHeight = max(currentHeight, size.height)
+            }
+        }
+
+        if !currentItems.isEmpty {
+            rows.append(FlowRow(items: currentItems, height: currentHeight))
+        }
+
+        return rows
+    }
+
+    private struct FlowRow {
+        let items: [FlowItem]
+        let height: CGFloat
+    }
+
+    private struct FlowItem {
+        let subview: LayoutSubview
+        let size: CGSize
+    }
+}
+
 #Preview {
-    InspirationFilterView()
+    Color.gray.opacity(0.45)
+        .ignoresSafeArea()
+        .sheet(isPresented: .constant(true)) {
+            InspirationFilterView()
+        }
 }

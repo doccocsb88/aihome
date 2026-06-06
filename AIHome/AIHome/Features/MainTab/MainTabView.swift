@@ -2,41 +2,55 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var viewModel = MainTabViewModel()
+    @State private var showingInspirationFilter = false
+    @State private var showingInspirationDetail = false
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
-        VStack(spacing: 0) {
-            TabView(selection: $viewModel.selectedTab) {
-                NavigationStack(path: Bindable(coordinator).path) {
-                    HomeView()
-                        .navigationDestination(for: AppRoute.self) { route in
-                            AppCoordinatorRouter.view(for: route)
-                        }
+        ZStack(alignment: .bottom) {
+            VStack(spacing: 0) {
+                TabView(selection: $viewModel.selectedTab) {
+                    NavigationStack(path: Bindable(coordinator).path) {
+                        HomeView()
+                            .navigationDestination(for: AppRoute.self) { route in
+                                AppCoordinatorRouter.view(for: route)
+                            }
+                    }
+                    .id("HomeNavStack")
+                    .toolbar(.hidden, for: .tabBar)
+                    .tag(MainTab.home)
+                    
+                    NavigationStack {
+                        InspirationView(
+                            showingFilter: $showingInspirationFilter,
+                            showingDetail: $showingInspirationDetail
+                        )
+                    }
+                    .toolbar(.hidden, for: .tabBar)
+                    .tag(MainTab.inspiration)
+                    
+                    NavigationStack {
+                        HistoryView()
+                    }
+                    .toolbar(.hidden, for: .tabBar)
+                    .tag(MainTab.history)
+                    
+                    NavigationStack {
+                        SettingsView()
+                    }
+                    .toolbar(.hidden, for: .tabBar)
+                    .tag(MainTab.settings)
                 }
-                .id("HomeNavStack")
-                .toolbar(.hidden, for: .tabBar)
-                .tag(MainTab.home)
                 
-                NavigationStack {
-                    InspirationView()
+                if !showingInspirationDetail {
+                    CustomTabBar(selectedTab: $viewModel.selectedTab)
                 }
-                .toolbar(.hidden, for: .tabBar)
-                .tag(MainTab.inspiration)
-                
-                NavigationStack {
-                    HistoryView()
-                }
-                .toolbar(.hidden, for: .tabBar)
-                .tag(MainTab.history)
-                
-                NavigationStack {
-                    SettingsView()
-                }
-                .toolbar(.hidden, for: .tabBar)
-                .tag(MainTab.settings)
             }
-            
-            CustomTabBar(selectedTab: $viewModel.selectedTab)
+
+            if showingInspirationFilter {
+                InspirationFilterOverlay(isPresented: $showingInspirationFilter)
+                    .zIndex(1)
+            }
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -64,6 +78,37 @@ struct MainTabView: View {
         }
         .onAppear {
             AppLogger.logScreen("MainTabView")
+        }
+    }
+}
+
+private struct InspirationFilterOverlay: View {
+    @Binding var isPresented: Bool
+
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .bottom) {
+                Rectangle()
+                    .fill(.black.opacity(0.45))
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        close()
+                    }
+
+                InspirationFilterView(onApply: close)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 678 + proxy.safeAreaInsets.bottom)
+                    .ignoresSafeArea(edges: .bottom)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .ignoresSafeArea(edges: .bottom)
+    }
+
+    private func close() {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
+            isPresented = false
         }
     }
 }

@@ -21,6 +21,11 @@ final class InspirationViewModel {
         service.toggleLike(for: item.id)
         fetchItems()
     }
+
+    func selectCategory(_ category: InspirationCategory) {
+        guard selectedCategory != category else { return }
+        selectedCategory = category
+    }
     
     var filteredItems: [InspirationItem] {
         items.filter { $0.category == selectedCategory }
