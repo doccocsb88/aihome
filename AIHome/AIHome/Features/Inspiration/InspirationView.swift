@@ -31,9 +31,6 @@ struct InspirationView: View {
                             },
                             onOpenDetail: {
                                 showingDetail = true
-                            },
-                            onCloseDetail: {
-                                showingDetail = false
                             }
                         )
                     }
@@ -49,6 +46,9 @@ struct InspirationView: View {
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            showingDetail = false
+        }
     }
 
     private var header: some View {
@@ -131,13 +131,11 @@ private struct InspirationCardContainer: View {
     let item: InspirationItem
     let onLike: () -> Void
     let onOpenDetail: () -> Void
-    let onCloseDetail: () -> Void
 
     var body: some View {
         NavigationLink {
             InspirationDetailView(viewModel: InspirationDetailViewModel(item: item))
                 .onAppear(perform: onOpenDetail)
-                .onDisappear(perform: onCloseDetail)
         } label: {
             InspirationCardContent(
                 item: item,

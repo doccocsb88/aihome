@@ -4,6 +4,7 @@ struct InteriorFlowView: View {
     @State private var viewModel = InteriorFlowViewModel()
     @Environment(\.dismiss) var dismiss
     
+    var initialImage: UIImage?
     var onGenerate: (InteriorDraft) -> Void
     
     var body: some View {
@@ -50,6 +51,11 @@ struct InteriorFlowView: View {
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
         .ignoresSafeArea(.container, edges: .bottom)
+        .onAppear {
+            if let initialImage {
+                viewModel.applyInitialSourceImage(initialImage)
+            }
+        }
     }
     
     private var progressHeader: some View {

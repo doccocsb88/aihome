@@ -11,12 +11,13 @@ struct GardenFlowContainerView: View {
     @State private var currentDraft: GardenDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
+    var initialImage: UIImage?
 
     var body: some View {
         Group {
             switch state {
             case .input:
-                GardenFlowView(onGenerate: { draft in
+                GardenFlowView(initialImage: initialImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):

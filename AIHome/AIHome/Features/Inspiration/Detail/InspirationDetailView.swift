@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct InspirationDetailView: View {
     @Environment(\.dismiss) private var dismiss
@@ -6,11 +7,11 @@ struct InspirationDetailView: View {
     @State private var showingBefore = false
 
     private let advancedTools = [
-        InspirationAdvancedTool(title: "Reference", icon: "skew"),
-        InspirationAdvancedTool(title: "Replace", icon: "arrow.triangle.2.circlepath.circle"),
-        InspirationAdvancedTool(title: "Remove", icon: "eraser"),
-        InspirationAdvancedTool(title: "New Wall", icon: "paintroller"),
-        InspirationAdvancedTool(title: "New Flooring", icon: "square.stack.3d.up")
+        InspirationAdvancedTool(title: "Reference", iconAsset: "ic_inspiration_tool_reference"),
+        InspirationAdvancedTool(title: "Replace", iconAsset: "ic_inspiration_tool_replace"),
+        InspirationAdvancedTool(title: "Remove", iconAsset: "ic_inspiration_tool_remove"),
+        InspirationAdvancedTool(title: "New Wall", iconAsset: "ic_inspiration_tool_newwall"),
+        InspirationAdvancedTool(title: "New Flooring", iconAsset: "ic_inspiration_tool_newflooring")
     ]
 
     var body: some View {
@@ -144,8 +145,8 @@ struct InspirationDetailView: View {
                 .foregroundStyle(Color(hex: "#6B7280"))
                 .frame(maxWidth: .infinity)
 
-            Button {
-                AppLogger.logAction("Inspiration Redesign", details: viewModel.item.id)
+            NavigationLink {
+                redesignDestination
             } label: {
                 Text("REDESIGN")
                     .font(.system(size: 13, weight: .bold))
@@ -156,6 +157,9 @@ struct InspirationDetailView: View {
                     .background(.black, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .shadow(color: .black.opacity(0.18), radius: 24, x: 0, y: 14)
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                AppLogger.logAction("Inspiration Redesign", details: viewModel.item.id)
+            })
             .buttonStyle(.plain)
             .padding(.horizontal, 35)
             .padding(.top, 64)
@@ -165,12 +169,26 @@ struct InspirationDetailView: View {
         .background(.white)
         .clipped()
     }
+
+    @ViewBuilder
+    private var redesignDestination: some View {
+        let beforeImage = UIImage(named: viewModel.item.beforeImageName)
+
+        switch viewModel.item.category {
+        case .interior:
+            InteriorFlowContainerView(initialImage: beforeImage)
+        case .exterior:
+            ExteriorFlowContainerView(initialImage: beforeImage)
+        case .garden:
+            GardenFlowContainerView(initialImage: beforeImage)
+        }
+    }
 }
 
 private struct InspirationAdvancedTool: Identifiable {
     let id = UUID()
     let title: String
-    let icon: String
+    let iconAsset: String
 }
 
 private struct AdvancedToolCard: View {
@@ -180,9 +198,9 @@ private struct AdvancedToolCard: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 18) {
-                Image(systemName: tool.icon)
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(hex: "#6B7280"))
+                Image(tool.iconAsset)
+                    .resizable()
+                    .scaledToFit()
                     .frame(width: 22, height: 22)
 
                 Text(tool.title)

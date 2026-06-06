@@ -11,12 +11,13 @@ struct InteriorFlowContainerView: View {
     @State private var currentDraft: InteriorDraft? = nil
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
+    var initialImage: UIImage?
 
     var body: some View {
         Group {
             switch state {
             case .input:
-                InteriorFlowView(onGenerate: { draft in
+                InteriorFlowView(initialImage: initialImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
