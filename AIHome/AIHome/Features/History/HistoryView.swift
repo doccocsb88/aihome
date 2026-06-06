@@ -128,25 +128,9 @@ struct HistoryView: View {
     
     private func projectCard(for project: LocalProject) -> some View {
         ZStack {
-            Group {
-                if let path = project.selectedGeneratedImagePath, let uiImage = UIImage(contentsOfFile: path) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                } else if let uiImage = UIImage(contentsOfFile: project.originalImagePath) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                } else {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .overlay(
-                            Image(systemName: "photo")
-                                .font(.largeTitle)
-                                .foregroundColor(.gray)
-                        )
-                }
-            }
+            Image("history_thumb_default")
+                .resizable()
+                .scaledToFill()
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             
             VStack {
@@ -155,13 +139,13 @@ struct HistoryView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(project.title.uppercased())
-                            .font(.system(size: 11, weight: .bold))
+                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 9))
                             .foregroundColor(.DesignSystem.textPrimary)
                             .lineLimit(1)
                         
                         if let style = project.styleName {
                             Text(style)
-                                .font(.system(size: 11))
+                                .font(FontFamily.Roboto.regular.swiftUIFont(size: 8))
                                 .foregroundColor(.secondary)
                                 .lineLimit(1)
                         }
@@ -177,14 +161,24 @@ struct HistoryView: View {
                             .foregroundColor(project.isFavorite ? Color(red: 255/255, green: 45/255, blue: 85/255) : .secondary)
                     }
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
-                .padding(8)
+                .padding(12)
+                .background {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .background {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(.white.opacity(0.7))
+                        }
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(.white.opacity(0.3), lineWidth: 1)
+                }
+                .padding(.horizontal, 8)
+                .padding(.bottom, 8)
             }
         }
-        .aspectRatio(0.85, contentMode: .fit)
+        .aspectRatio(1, contentMode: .fit)
         .cornerRadius(24)
         .clipped()
     }
