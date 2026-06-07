@@ -32,7 +32,7 @@ final class AdaptyPurchaseService {
 
     private enum Defaults {
         static let publicSDKKey = "public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l"
-        static let placementId = "main"
+        static let placementId = "top_bar_ios"
         static let accessLevelId = "premium"
     }
 
@@ -69,10 +69,10 @@ final class AdaptyPurchaseService {
         }
     }
 
-    func loadPaywallProducts() async throws -> [AdaptyPaywallProduct] {
+    func loadPaywallProducts(placementId: String? = nil) async throws -> [AdaptyPaywallProduct] {
         try await ensureActivated()
 
-        let paywall = try await loadPaywall()
+        let paywall = try await loadPaywall(placementId: placementId)
         let products = try await Adapty.getPaywallProducts(paywall: paywall)
 
         guard !products.isEmpty else {
@@ -82,19 +82,21 @@ final class AdaptyPurchaseService {
         return products
     }
 
-    func loadSDKPaywallConfiguration() async throws -> AdaptyUI.PaywallConfiguration {
+    func loadSDKPaywallConfiguration(placementId: String? = nil) async throws -> AdaptyUI.PaywallConfiguration {
         try await ensureActivated()
 
-        let paywall = try await loadPaywall()
+        let paywall = try await loadPaywall(placementId: placementId)
         return try await AdaptyUI.getPaywallConfiguration(forPaywall: paywall)
     }
 
-    private func loadPaywall() async throws -> AdaptyPaywall {
-        guard !placementId.isEmpty else {
+    private func loadPaywall(placementId: String? = nil) async throws -> AdaptyPaywall {
+        let resolvedPlacementId = placementId ?? self.placementId
+
+        guard !resolvedPlacementId.isEmpty else {
             throw PurchaseServiceError.missingPlacementId
         }
 
-        return try await Adapty.getPaywall(placementId: placementId)
+        return try await Adapty.getPaywall(placementId: resolvedPlacementId)
     }
 
     func makePurchase(product: AdaptyPaywallProduct) async throws -> PurchaseActivationResult {

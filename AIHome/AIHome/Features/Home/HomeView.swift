@@ -3,6 +3,8 @@ import AdaptyUI
 import SwiftUI
 
 struct HomeView: View {
+    private let homePaywallPlacementId = "top_bar_ios"
+
     @State private var viewModel = HomeViewModel()
     @State private var isShowingHomeRating = false
     @State private var hasShownHomeRating = false
@@ -157,7 +159,9 @@ struct HomeView: View {
         defer { isLoadingAdaptyPaywall = false }
 
         do {
-            adaptyPaywallConfiguration = try await AdaptyPurchaseService.shared.loadSDKPaywallConfiguration()
+            adaptyPaywallConfiguration = try await AdaptyPurchaseService.shared.loadSDKPaywallConfiguration(
+                placementId: homePaywallPlacementId
+            )
             isShowingAdaptyPaywall = true
         } catch {
             paywallErrorMessage = error.localizedDescription
