@@ -82,10 +82,34 @@ extension ProjectType {
         .furnitureFinder
     ]
 
+    var advancedToolsForType: [ProjectType] {
+        switch self {
+        case .interior:
+            return [.edit, .replaceObjects, .removeObjects, .newWalls, .newFlooring]
+        case .exterior, .garden:
+            return [.edit, .replaceObjects, .removeObjects]
+        case .replaceObjects:
+            return [.edit, .removeObjects, .newWalls, .newFlooring]
+        case .removeObjects:
+            return [.edit, .replaceObjects, .newWalls, .newFlooring]
+        case .newFlooring:
+            return [.edit, .replaceObjects, .removeObjects, .newWalls]
+        case .newWalls:
+            return [.edit, .replaceObjects, .removeObjects, .newFlooring]
+        case .referenceStyle:
+            return [.edit, .replaceObjects, .removeObjects, .newWalls, .newFlooring]
+        case .edit, .furnitureFinder:
+            return []
+        }
+    }
+
+
     var advancedToolTitle: String {
         switch self {
         case .referenceStyle:
             "Reference"
+        case .edit:
+            "Edit"
         case .replaceObjects:
             "Replace"
         case .removeObjects:
@@ -113,6 +137,8 @@ extension ProjectType {
             "ic_inspiration_tool_newwall"
         case .newFlooring:
             "ic_inspiration_tool_newflooring"
+        case .edit:
+            "ic_result_edit"
         case .interior, .exterior, .garden, .furnitureFinder:
             ""
         }
@@ -122,7 +148,7 @@ extension ProjectType {
         switch self {
         case .furnitureFinder:
             "magnifyingglass"
-        case .interior, .exterior, .garden, .referenceStyle, .replaceObjects, .removeObjects, .newFlooring, .newWalls:
+        case .interior, .exterior, .garden, .referenceStyle, .replaceObjects, .removeObjects, .newFlooring, .newWalls, .edit:
             nil
         }
     }

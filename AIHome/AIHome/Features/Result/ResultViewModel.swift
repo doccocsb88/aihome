@@ -20,7 +20,7 @@ class ResultViewModel {
         self.project = project
         self.originalImage = originalImage
         self.generatedImages = generatedImages
-        self.availableAdvancedTools = availableAdvancedTools
+        self.availableAdvancedTools = project.type.advancedToolsForType
         self.isPro = isPro
         self.hasWatermark = hasWatermark
     }
