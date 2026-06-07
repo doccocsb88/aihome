@@ -30,7 +30,7 @@ struct PhotoTipsView: View {
 
                     exampleSection(
                         title: "BAD EXAMPLES:",
-                        iconName: "xmark",
+                        iconName: "ic_tips_bad",
                         iconColor: .DesignSystem.photoTipsDanger,
                         examples: ["ic_tips_bad_01", "ic_tips_bad_02"],
                         isBadExample: true
@@ -38,7 +38,7 @@ struct PhotoTipsView: View {
 
                     exampleSection(
                         title: "GOOD EXAMPLES:",
-                        iconName: "checkmark",
+                        iconName: "ic_tips_good",
                         iconColor: .DesignSystem.photoTipsSuccess,
                         examples: ["ic_tips_good_01", "ic_tips_good_02"],
                         isBadExample: false
@@ -52,7 +52,7 @@ struct PhotoTipsView: View {
             gotItButton
                 .padding(.horizontal, 40)
                 .padding(.top, 16)
-                .padding(.bottom, 34)
+                .padding(.bottom, 0)
         }
         .background(Color.DesignSystem.photoTipsBackground)
         .clipShape(
@@ -122,14 +122,8 @@ struct PhotoTipsView: View {
     ) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 8) {
-                Image(systemName: iconName)
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundStyle(iconColor)
+                Image(iconName)
                     .frame(width: 16, height: 16)
-                    .overlay {
-                        Circle()
-                            .stroke(iconColor, lineWidth: 2)
-                    }
 
                 Text(title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 16))
