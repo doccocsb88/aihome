@@ -16,19 +16,7 @@ struct InteriorFlowView: View {
                 switch viewModel.currentStep {
                 case .photoSelection:
                     PhotoSourcePickerView(
-                        viewModel: PhotoSourcePickerViewModel(
-                            title: "Start with a photo",
-                            subtitle: "Upload or select from template to try",
-                            selectedImage: viewModel.draft.sourceImage,
-                            allowsSample: true,
-                            sampleImages: [
-                                "ic_interior_sample_01",
-                                "ic_interior_sample_02",
-                                "ic_interior_sample_03",
-                                "ic_interior_sample_04"
-                            ],
-                            ctaTitle: "GET STARTED"
-                        ),
+                        viewModel: viewModel.photoPickerViewModel,
                         onContinue: { image in
                             viewModel.draft.sourceImage = image
                             viewModel.nextStep()

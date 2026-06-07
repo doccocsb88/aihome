@@ -6,12 +6,11 @@ struct AdvancedToolsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("ADVANCED TOOLS")
-                .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
-                .tracking(4)
-                .foregroundStyle(Color.DesignSystem.slateGray)
-                .padding(.horizontal, 35)
-                .padding(.top, 35)
+            Text("Advanced Tools")
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
+                .foregroundStyle(Color.DesignSystem.textPrimary)
+                .padding(.horizontal, 16)
+                .padding(.top, 24)
 
             ScrollView(.horizontal) {
                 HStack(spacing: 18) {
@@ -21,8 +20,8 @@ struct AdvancedToolsSection: View {
                         }
                     }
                 }
-                .padding(.horizontal, 35)
-                .padding(.vertical, 27)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 24)
             }
             .scrollIndicators(.hidden)
             .frame(maxWidth: .infinity)

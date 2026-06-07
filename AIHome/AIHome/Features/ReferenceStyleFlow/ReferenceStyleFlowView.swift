@@ -14,19 +14,7 @@ struct ReferenceStyleFlowView: View {
                 switch viewModel.currentStep {
                 case .sourceImage:
                     PhotoSourcePickerView(
-                        viewModel: PhotoSourcePickerViewModel(
-                            title: "Upload your room",
-                            subtitle: "Choose a photo of your current space",
-                            allowsSample: true,
-                            sampleImages: [
-                                "ic_interior_sample_01",
-                                "ic_interior_sample_02",
-                                "ic_interior_sample_03",
-                                "ic_interior_sample_04"
-                            ],
-                            sampleTitle: "OR TRY A TEMPLATE",
-                            ctaTitle: "CONTINUE"
-                        ),
+                        viewModel: viewModel.sourcePhotoPickerViewModel,
                         onContinue: { image in
                             viewModel.draft.sourceImage = image
                             viewModel.nextStep()
@@ -34,19 +22,7 @@ struct ReferenceStyleFlowView: View {
                     )
                 case .referenceImage:
                     PhotoSourcePickerView(
-                        viewModel: PhotoSourcePickerViewModel(
-                            title: "Upload reference style",
-                            subtitle: "Choose an image with the style you want to apply",
-                            allowsSample: true,
-                            sampleImages: [
-                                "ic_interior_sample_01",
-                                "ic_interior_sample_02",
-                                "ic_interior_sample_03",
-                                "ic_interior_sample_04"
-                            ],
-                            sampleTitle: "OR TRY A TEMPLATE",
-                            ctaTitle: "CONTINUE"
-                        ),
+                        viewModel: viewModel.referencePhotoPickerViewModel,
                         onContinue: { image in
                             viewModel.draft.referenceImage = image
                             viewModel.nextStep()

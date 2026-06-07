@@ -13,160 +13,201 @@ struct ResultView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Header
-            HStack {
-                if viewModel.isPro {
-                    Text("PRO")
-                        .font(FontFamily.Roboto.black.swiftUIFont(size: 11))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.pink)
-                        .clipShape(Capsule())
-                        .shadow(color: Color.pink.opacity(0.5), radius: 5, x: 0, y: 3)
-                } else {
-                    Spacer().frame(width: 40)
-                }
-                
-                Spacer()
-                Text("Result")
-                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
-                Spacer()
-                
-                Button(action: onClose) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 20))
-                        .foregroundColor(.primary)
-                }
-            }
-            .padding(.horizontal)
-            .padding(.top, 16)
-            .padding(.bottom, 20)
+            headerView
             
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Image Section
-                    if let selectedImage = viewModel.selectedImage {
-                        ZStack {
-                            Image(uiImage: selectedImage)
-                                .resizable()
-                                .aspectRatio(1, contentMode: .fill)
-                                .frame(maxWidth: .infinity)
-                                .clipped()
-                                .cornerRadius(24)
-                            
-                            // Top left overlay
-                            VStack {
-                                HStack {
-                                    Button(action: {}) {
-                                        Image(systemName: "square.split.2x1")
-                                            .font(.system(size: 16, weight: .semibold))
-                                            .foregroundColor(.white)
-                                            .padding(12)
-                                            .background(Color.black.opacity(0.4))
-                                            .clipShape(Circle())
-                                    }
-                                    Spacer()
-                                }
-                                Spacer()
-                            }
-                            .padding(16)
-                            
-                            // Bottom overlays
-                            VStack {
-                                Spacer()
-                                HStack(alignment: .bottom) {
-                                    HStack(spacing: 8) {
-                                        Button(action: {}) {
-                                            Image(systemName: "hand.thumbsup.fill")
-                                                .foregroundColor(.white)
-                                                .padding(12)
-                                                .background(Color.black.opacity(0.4))
-                                                .clipShape(Circle())
-                                        }
-                                        Button(action: {}) {
-                                            Image(systemName: "hand.thumbsdown.fill")
-                                                .foregroundColor(.white)
-                                                .padding(12)
-                                                .background(Color.black.opacity(0.4))
-                                                .clipShape(Circle())
-                                        }
-                                    }
-                                    Spacer()
-                                    VStack(alignment: .trailing, spacing: 6) {
-                                        Text("HomeGPT")
-                                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
-                                            .foregroundColor(.white.opacity(0.9))
-                                            
-                                        if viewModel.hasWatermark {
-                                            Button(action: onRemoveWatermark) {
-                                                HStack(spacing: 4) {
-                                                    Image(systemName: "bolt.fill")
-                                                        .font(.system(size: 10))
-                                                    Text("REMOVE WATERMARK")
-                                                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 10))
-                                                }
-                                                .foregroundColor(.white)
-                                                .padding(.horizontal, 10)
-                                                .padding(.vertical, 6)
-                                                .background(Color.white.opacity(0.3))
-                                                .clipShape(Capsule())
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            .padding(16)
-                        }
-                        .padding(.horizontal, 16)
-                        .shadow(color: Color.black.opacity(0.15), radius: 15, x: 0, y: 10)
-                    }
-                    
-                    // Advanced Tools
-                    if !viewModel.availableAdvancedTools.isEmpty {
-                        AdvancedToolsSection(
-                            tools: viewModel.availableAdvancedTools,
-                            onSelect: { tool in
-                                if let image = viewModel.selectedImage {
-                                    onToolSelected(tool, image)
-                                }
-                            }
-                        )
-                    }
-                    
-                    // Action Buttons (Regenerate, Download, Share)
-                    HStack(spacing: 0) {
-                        actionCircleButton(title: "REGENERATE", icon: "ic_result_regenerate", action: onRegenerate)
-                        Spacer()
-                        actionCircleButton(title: "DOWNLOAD", icon: "ic_result_download", action: {
-                            if let img = viewModel.selectedImage { onDownload(img) }
-                        })
-                        Spacer()
-                        actionCircleButton(title: "SHARE", icon: "ic_result_share", action: {
-                            if let img = viewModel.selectedImage { onShare(img) }
-                        })
-                    }
-                    .padding(.horizontal, 40)
-                    .padding(.top, 10)
-                    
-                    // Save to Archive Button
-                    Button(action: onSaveArchive) {
-                        Text("SAVE TO ARCHIVE")
-                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(Color.black)
-                            .clipShape(Capsule())
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    .padding(.bottom, 40)
-                }
+            VStack(spacing: 4) {
+                imageSection
+                advancedToolsSection
+                actionButtonsSection
+                
+                Spacer(minLength: 16)
+                
+                saveToArchiveButton
             }
         }
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
+    }
+    
+    @ViewBuilder
+    private var headerView: some View {
+        HStack {
+            if viewModel.isPro {
+                Text("PRO")
+                    .font(FontFamily.Roboto.black.swiftUIFont(size: 11))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.pink)
+                    .clipShape(Capsule())
+                    .shadow(color: Color.pink.opacity(0.5), radius: 5, x: 0, y: 3)
+            } else {
+                Spacer().frame(width: 40)
+            }
+            
+            Spacer()
+            Text("Result")
+                .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
+            Spacer()
+            
+            Button(action: onClose) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 20))
+                    .foregroundColor(.primary)
+            }
+        }
+        .padding(.horizontal)
+        .padding(.top, 16)
+        .padding(.bottom, 20)
+    }
+    
+    @ViewBuilder
+    private var imageSection: some View {
+        if let selectedImage = viewModel.selectedImage {
+            ZStack {
+                Image(uiImage: selectedImage)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
+                    .frame(maxWidth: .infinity)
+                    .clipped()
+                    .cornerRadius(24)
+                
+                // Top left overlay
+                VStack {
+                    HStack {
+                        Button(action: {}) {
+                            Image(systemName: "square.split.2x1")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                                .padding(12)
+                                .background(Color.black.opacity(0.4))
+                                .clipShape(Circle())
+                        }
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .padding(16)
+                
+                // Bottom overlays
+                VStack {
+                    Spacer()
+                    HStack(alignment: .bottom) {
+                        HStack(spacing: 8) {
+                            Button(action: {}) {
+                                Image(systemName: "hand.thumbsup.fill")
+                                    .foregroundColor(.white)
+                                    .padding(12)
+                                    .background(
+                                        Circle()
+                                            .fill(.ultraThinMaterial)
+                                            .environment(\.colorScheme, .dark)
+                                            .overlay(Circle().fill(Color.black.opacity(0.25)))
+                                    )
+                                    .overlay(
+                                        Circle().stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                    )
+                            }
+                            Button(action: {}) {
+                                Image(systemName: "hand.thumbsdown.fill")
+                                    .foregroundColor(.white)
+                                    .padding(12)
+                                    .background(
+                                        Circle()
+                                            .fill(.ultraThinMaterial)
+                                            .environment(\.colorScheme, .dark)
+                                            .overlay(Circle().fill(Color.black.opacity(0.25)))
+                                    )
+                                    .overlay(
+                                        Circle().stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                    )
+                            }
+                        }
+                        Spacer()
+                        VStack(alignment: .trailing, spacing: 6) {
+                            if viewModel.hasWatermark {
+                                Button(action: onRemoveWatermark) {
+                                    HStack(spacing: 4) {
+                                        Image("ic_result_watermark")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 14, height: 14)
+                                        Text("REMOVE WATERMARK")
+                                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 10))
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding(8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(.ultraThinMaterial)
+                                            .environment(\.colorScheme, .light)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 20)
+                                                    .fill(Color.white.opacity(0.4))
+                                            )
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                .padding(16)
+            }
+            .padding(.horizontal, 16)
+            .shadow(color: Color.black.opacity(0.15), radius: 15, x: 0, y: 10)
+        }
+    }
+    
+    @ViewBuilder
+    private var advancedToolsSection: some View {
+        if !viewModel.availableAdvancedTools.isEmpty {
+            AdvancedToolsSection(
+                tools: viewModel.availableAdvancedTools,
+                onSelect: { tool in
+                    if let image = viewModel.selectedImage {
+                        onToolSelected(tool, image)
+                    }
+                }
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private var actionButtonsSection: some View {
+        HStack(spacing: 0) {
+            actionCircleButton(title: "REGENERATE", icon: "ic_result_regenerate", action: onRegenerate)
+            Spacer()
+            actionCircleButton(title: "DOWNLOAD", icon: "ic_result_download", action: {
+                if let img = viewModel.selectedImage { onDownload(img) }
+            })
+            Spacer()
+            actionCircleButton(title: "SHARE", icon: "ic_result_share", action: {
+                if let img = viewModel.selectedImage { onShare(img) }
+            })
+        }
+        .padding(.horizontal, 40)
+        .padding(.top, 10)
+    }
+    
+    @ViewBuilder
+    private var saveToArchiveButton: some View {
+        Button(action: onSaveArchive) {
+            Text("SAVE TO ARCHIVE")
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(Color.black)
+                .cornerRadius(20)
+                .shadow(color: Color(red: 17/255, green: 24/255, blue: 39/255).opacity(0.15), radius: 30, x: 0, y: 10)
+        }
+        .padding(.horizontal)
+        .padding(.top, 20)
+        .padding(.bottom, 8)
     }
     
     @ViewBuilder

@@ -6,6 +6,19 @@ class InteriorFlowViewModel {
     var draft = InteriorDraft()
     var currentStep: InteriorStep = .photoSelection
     
+    var photoPickerViewModel = PhotoSourcePickerViewModel(
+        title: "Start with a photo",
+        subtitle: "Upload or select from template to try",
+        allowsSample: true,
+        sampleImages: [
+            "ic_interior_sample_01",
+            "ic_interior_sample_02",
+            "ic_interior_sample_03",
+            "ic_interior_sample_04"
+        ],
+        ctaTitle: "GET STARTED"
+    )
+    
     // Room types from PDF
     let roomTypes = [
         "Dining room", "Bathroom", "Bedroom", "Home office",
@@ -35,11 +48,12 @@ class InteriorFlowViewModel {
     func applyInitialSourceImage(_ image: UIImage) {
         guard draft.sourceImage == nil else { return }
         draft.sourceImage = image
+        photoPickerViewModel.selectedImage = image
     }
     
     var canContinue: Bool {
         switch currentStep {
-        case .photoSelection: return draft.sourceImage != nil
+        case .photoSelection: return photoPickerViewModel.selectedImage != nil
         case .roomType: return draft.roomType != nil
         case .designStyle: return draft.designStyle != nil && (draft.designStyle != "Custom style" || (draft.customStyle?.isEmpty == false))
         case .intervention: return draft.intervention != nil
