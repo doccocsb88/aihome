@@ -79,6 +79,9 @@ struct MainTabView: View {
         .onAppear {
             AppLogger.logScreen("MainTabView")
         }
+        .task {
+            await viewModel.refreshPremiumStatus()
+        }
     }
 
     private var shouldShowCustomTabBar: Bool {

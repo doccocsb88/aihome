@@ -3,8 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
+
+/* Begin PBXBuildFile section */
+		04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7712FCACE0006B5B51 /* Adapty */; };
+		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
+/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		04428BE82FCACDD7006B5B51 /* AIHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -21,10 +26,10 @@
 /* Begin PBXFrameworksBuildPhase section */
 		04428BE52FCACDD7006B5B51 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
+				04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */,
+				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -58,13 +63,13 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				04428BEA2FCACDD7006B5B51 /* AIHome */,
 			);
 			name = AIHome;
 			packageProductDependencies = (
+				04ADA7712FCACE0006B5B51 /* Adapty */,
+				04ADA7742FCACE0006B5B51 /* AdaptyUI */,
 			);
 			productName = AIHome;
 			productReference = 04428BE82FCACDD7006B5B51 /* AIHome.app */;
@@ -94,7 +99,10 @@
 			);
 			mainGroup = 04428BDF2FCACDD7006B5B51;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
+			packageReferences = (
+				04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
+			);
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 04428BE92FCACDD7006B5B51 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -107,25 +115,21 @@
 /* Begin PBXResourcesBuildPhase section */
 		04428BE62FCACDD7006B5B51 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		04428BE42FCACDD7006B5B51 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		04428BF32FCACDD9006B5B51 /* Debug */ = {
+		04428BF32FCACDD9006B5B51 /* Debug configuration for PBXProject "AIHome" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -189,7 +193,7 @@
 			};
 			name = Debug;
 		};
-		04428BF42FCACDD9006B5B51 /* Release */ = {
+		04428BF42FCACDD9006B5B51 /* Release configuration for PBXProject "AIHome" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -246,7 +250,7 @@
 			};
 			name = Release;
 		};
-		04428BF62FCACDD9006B5B51 /* Debug */ = {
+		04428BF62FCACDD9006B5B51 /* Debug configuration for PBXNativeTarget "AIHome" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -256,6 +260,9 @@
 				DEVELOPMENT_TEAM = F59XSVKP6X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
+				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = main;
+				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -266,7 +273,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.hai.aihome.AIHome;
+				PRODUCT_BUNDLE_IDENTIFIER = com.homegpt.ai.interior.redesign;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -278,7 +285,7 @@
 			};
 			name = Debug;
 		};
-		04428BF72FCACDD9006B5B51 /* Release */ = {
+		04428BF72FCACDD9006B5B51 /* Release configuration for PBXNativeTarget "AIHome" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -288,6 +295,9 @@
 				DEVELOPMENT_TEAM = F59XSVKP6X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
+				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = main;
+				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -298,7 +308,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.hai.aihome.AIHome;
+				PRODUCT_BUNDLE_IDENTIFIER = com.homegpt.ai.interior.redesign;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -316,22 +326,44 @@
 		04428BE32FCACDD7006B5B51 /* Build configuration list for PBXProject "AIHome" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				04428BF32FCACDD9006B5B51 /* Debug */,
-				04428BF42FCACDD9006B5B51 /* Release */,
+				04428BF32FCACDD9006B5B51 /* Debug configuration for PBXProject "AIHome" */,
+				04428BF42FCACDD9006B5B51 /* Release configuration for PBXProject "AIHome" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		04428BF52FCACDD9006B5B51 /* Build configuration list for PBXNativeTarget "AIHome" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				04428BF62FCACDD9006B5B51 /* Debug */,
-				04428BF72FCACDD9006B5B51 /* Release */,
+				04428BF62FCACDD9006B5B51 /* Debug configuration for PBXNativeTarget "AIHome" */,
+				04428BF72FCACDD9006B5B51 /* Release configuration for PBXNativeTarget "AIHome" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/adaptyteam/AdaptySDK-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.15.7;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		04ADA7712FCACE0006B5B51 /* Adapty */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */;
+			productName = Adapty;
+		};
+		04ADA7742FCACE0006B5B51 /* AdaptyUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */;
+			productName = AdaptyUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04428BE02FCACDD7006B5B51 /* Project object */;
 }

@@ -23,6 +23,10 @@ struct AIHomeApp: App {
         }
     }()
 
+    init() {
+        AdaptyPurchaseService.shared.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
             AppCoordinatorView()

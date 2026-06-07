@@ -24,4 +24,12 @@ final class MainTabViewModel {
         }
         self.isPro = UserDefaults.standard.bool(forKey: "isProCached")
     }
+
+    func refreshPremiumStatus() async {
+        do {
+            isPro = try await AdaptyPurchaseService.shared.refreshPremiumStatus()
+        } catch {
+            isPro = UserDefaults.standard.bool(forKey: "isProCached")
+        }
+    }
 }

@@ -9,8 +9,12 @@ struct SettingsView: View {
                 // Restore Purchase
                 SettingRow(
                     icon: "arrow.2.circlepath",
-                    title: "Restore Purchase",
-                    action: { viewModel.restorePurchase() }
+                    title: viewModel.isRestoringPurchase ? "Restoring..." : "Restore Purchase",
+                    action: {
+                        Task {
+                            await viewModel.restorePurchase()
+                        }
+                    }
                 )
                 
                 // Language
@@ -89,6 +93,17 @@ struct SettingsView: View {
         .background(Color(uiColor: .systemBackground))
         .navigationTitle("Setting")
         .navigationBarTitleDisplayMode(.inline)
+        .alert(
+            "Restore Purchase",
+            isPresented: Binding(
+                get: { viewModel.purchaseMessage != nil },
+                set: { if !$0 { viewModel.purchaseMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(viewModel.purchaseMessage ?? "")
+        }
     }
 }
 
