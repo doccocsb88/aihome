@@ -8,6 +8,8 @@ struct SharedObjectModificationView: View {
     @Bindable var photoPickerViewModel: PhotoSourcePickerViewModel
     let canGenerate: Bool
     
+    @State private var showingPhotoTips = false
+    
     let onBack: () -> Void
     let onGenerate: () -> Void
     
@@ -45,7 +47,7 @@ struct SharedObjectModificationView: View {
                 Spacer()
                 
                 Button(action: {
-                    // Info action
+                    showingPhotoTips = true
                 }) {
                     Image(systemName: "info.circle")
                         .font(.system(size: 24))
@@ -129,5 +131,8 @@ struct SharedObjectModificationView: View {
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
         .ignoresSafeArea(.container, edges: .bottom)
+        .sheet(isPresented: $showingPhotoTips) {
+            PhotoTipsView()
+        }
     }
 }

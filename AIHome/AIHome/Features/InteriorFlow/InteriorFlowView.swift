@@ -3,6 +3,7 @@ import SwiftUI
 struct InteriorFlowView: View {
     @State private var viewModel = InteriorFlowViewModel()
     @Environment(\.dismiss) var dismiss
+    @State private var showingPhotoTips = false
     
     var initialImage: UIImage?
     var onGenerate: (InteriorDraft) -> Void
@@ -45,6 +46,9 @@ struct InteriorFlowView: View {
                 viewModel.applyInitialSourceImage(initialImage)
             }
         }
+        .sheet(isPresented: $showingPhotoTips) {
+            PhotoTipsView()
+        }
     }
     
     private var progressHeader: some View {
@@ -79,6 +83,8 @@ struct InteriorFlowView: View {
                 Button(action: {
                     if viewModel.currentStep != .photoSelection {
                         dismiss()
+                    } else {
+                        showingPhotoTips = true
                     }
                 }) {
                     Image(systemName: viewModel.currentStep == .photoSelection ? "info.circle" : "xmark")

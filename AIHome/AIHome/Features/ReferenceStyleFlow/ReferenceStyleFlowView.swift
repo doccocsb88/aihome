@@ -3,6 +3,7 @@ import SwiftUI
 struct ReferenceStyleFlowView: View {
     @State private var viewModel = ReferenceStyleFlowViewModel()
     @Environment(\.dismiss) var dismiss
+    @State private var showingPhotoTips = false
     
     var onGenerate: (ReferenceStyleDraft) -> Void
     
@@ -39,6 +40,9 @@ struct ReferenceStyleFlowView: View {
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
         .ignoresSafeArea(.container, edges: .bottom)
+        .sheet(isPresented: $showingPhotoTips) {
+            PhotoTipsView()
+        }
     }
     
     private var progressHeader: some View {
@@ -71,7 +75,11 @@ struct ReferenceStyleFlowView: View {
                 Spacer()
                 
                 Button(action: {
-                    dismiss()
+                    if viewModel.currentStep != .sourceImage {
+                        dismiss()
+                    } else {
+                        showingPhotoTips = true
+                    }
                 }) {
                     Image(systemName: viewModel.currentStep == .sourceImage ? "info.circle" : "xmark")
                         .font(.system(size: 24))
