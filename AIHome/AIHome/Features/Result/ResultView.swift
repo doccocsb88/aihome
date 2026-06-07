@@ -17,7 +17,7 @@ struct ResultView: View {
             HStack {
                 if viewModel.isPro {
                     Text("PRO")
-                        .font(.system(size: 11, weight: .black))
+                        .font(FontFamily.Roboto.black.swiftUIFont(size: 11))
                         .foregroundColor(.white)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
@@ -30,7 +30,7 @@ struct ResultView: View {
                 
                 Spacer()
                 Text("Result")
-                    .font(.headline)
+                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                 Spacer()
                 
                 Button(action: onClose) {
@@ -95,7 +95,7 @@ struct ResultView: View {
                                     Spacer()
                                     VStack(alignment: .trailing, spacing: 6) {
                                         Text("HomeGPT")
-                                            .font(.system(size: 14, weight: .bold))
+                                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                                             .foregroundColor(.white.opacity(0.9))
                                             
                                         if viewModel.hasWatermark {
@@ -104,7 +104,7 @@ struct ResultView: View {
                                                     Image(systemName: "bolt.fill")
                                                         .font(.system(size: 10))
                                                     Text("REMOVE WATERMARK")
-                                                        .font(.system(size: 10, weight: .bold))
+                                                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 10))
                                                 }
                                                 .foregroundColor(.white)
                                                 .padding(.horizontal, 10)
@@ -126,8 +126,7 @@ struct ResultView: View {
                     if !viewModel.availableAdvancedTools.isEmpty {
                         VStack(alignment: .leading, spacing: 16) {
                             Text("Advanced Tools")
-                                .font(.title2)
-                                .fontWeight(.bold)
+                                .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
                                 .padding(.horizontal)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -145,8 +144,7 @@ struct ResultView: View {
                                                     .frame(width: 20, height: 20)
                                                     .foregroundColor(.primary)
                                                 Text(tool.rawValue)
-                                                    .font(.subheadline)
-                                                    .fontWeight(.bold)
+                                                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
                                                     .foregroundColor(.primary)
                                             }
                                             .padding(.horizontal, 20)
@@ -178,8 +176,7 @@ struct ResultView: View {
                     // Save to Archive Button
                     Button(action: onSaveArchive) {
                         Text("SAVE TO ARCHIVE")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -209,7 +206,7 @@ struct ResultView: View {
                     .background(Circle().fill(Color(UIColor.systemGray6)))
             }
             Text(title)
-                .font(.system(size: 10, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 10))
                 .kerning(0.5)
                 .foregroundColor(Color(UIColor.systemGray2))
         }

@@ -54,7 +54,7 @@ struct InspirationView: View {
     private var header: some View {
         HStack(alignment: .center, spacing: 12) {
             Text("Inspiration")
-                .font(.system(size: 32, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
                 .foregroundStyle(Color.DesignSystem.textPrimary)
 
             Spacer()
@@ -62,10 +62,10 @@ struct InspirationView: View {
             generationPill
 
             Text("PRO")
-                .font(.system(size: 12, weight: .black))
+                .font(FontFamily.Roboto.black.swiftUIFont(size: 12))
                 .foregroundStyle(.white)
                 .frame(width: 52, height: 34)
-                .background(Color(hex: "#FF2D5B"), in: Capsule())
+                .background(Color.DesignSystem.inspirationAccent, in: Capsule())
         }
         .padding(.horizontal, 22)
     }
@@ -77,8 +77,8 @@ struct InspirationView: View {
                     viewModel.selectCategory(category)
                 } label: {
                     Text(category.rawValue.uppercased())
-                        .font(.system(size: 12, weight: .black))
-                        .foregroundStyle(viewModel.selectedCategory == category ? Color.DesignSystem.textPrimary : Color(hex: "#9CA3AF"))
+                        .font(FontFamily.Roboto.black.swiftUIFont(size: 12))
+                        .foregroundStyle(viewModel.selectedCategory == category ? Color.DesignSystem.textPrimary : Color.DesignSystem.inspirationTabInactive)
                         .frame(maxWidth: .infinity)
                         .frame(height: 32)
                         .background(
@@ -91,7 +91,7 @@ struct InspirationView: View {
             }
         }
         .padding(4)
-        .background(Color(hex: "#F4F4F6"), in: Capsule())
+        .background(Color.DesignSystem.inspirationPillBackground, in: Capsule())
         .padding(.horizontal, 22)
     }
 
@@ -99,14 +99,14 @@ struct InspirationView: View {
         HStack(spacing: 5) {
             Image(systemName: "sparkles")
                 .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(Color(hex: "#FF2D5B"))
+                .foregroundStyle(Color.DesignSystem.inspirationAccent)
 
             Text("3/3")
-                .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(Color(hex: "#4B5563"))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                .foregroundStyle(Color.DesignSystem.inspirationTextSecondary)
         }
         .frame(width: 68, height: 34)
-        .background(Color(hex: "#F4F4F6"), in: Capsule())
+        .background(Color.DesignSystem.inspirationPillBackground, in: Capsule())
     }
 
     private var filterButton: some View {
@@ -119,8 +119,8 @@ struct InspirationView: View {
                 .font(.system(size: 22, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(width: 58, height: 58)
-                .background(Color(hex: "#FF2D5B"), in: Circle())
-                .shadow(color: Color(hex: "#FF2D5B").opacity(0.35), radius: 16, x: 0, y: 8)
+                .background(Color.DesignSystem.inspirationAccent, in: Circle())
+                .shadow(color: Color.DesignSystem.inspirationAccent.opacity(0.35), radius: 16, x: 0, y: 8)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Filter inspirations")
@@ -185,7 +185,7 @@ private struct InspirationCardContent: View {
         VStack(alignment: .leading, spacing: 22) {
             HStack(alignment: .top, spacing: 12) {
                 Text(item.title.capitalized)
-                    .font(.system(size: 20, weight: .black))
+                    .font(FontFamily.Roboto.black.swiftUIFont(size: 20))
                     .foregroundStyle(Color.DesignSystem.textPrimary)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -203,8 +203,8 @@ private struct InspirationCardContent: View {
             }
 
             Text(item.subtitle)
-                .font(.system(size: 13))
-                .foregroundStyle(Color(hex: "#6B7280"))
+                .font(FontFamily.Roboto.regular.swiftUIFont(size: 13))
+                .foregroundStyle(Color.DesignSystem.inspirationBody)
                 .lineSpacing(5)
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -241,15 +241,15 @@ private struct InspirationTag: View {
 
     var body: some View {
         Text(title.uppercased())
-            .font(.system(size: 10, weight: .black))
-            .foregroundStyle(isProminent ? Color(hex: "#FF2D5B") : Color(hex: "#4B5563"))
+            .font(FontFamily.Roboto.black.swiftUIFont(size: 10))
+            .foregroundStyle(isProminent ? Color.DesignSystem.inspirationAccent : Color.DesignSystem.inspirationTextSecondary)
             .lineLimit(1)
             .minimumScaleFactor(0.82)
             .padding(.horizontal, 14)
             .padding(.vertical, 7)
             .background(
                 Capsule()
-                    .fill(isProminent ? Color(hex: "#FFEEF3") : Color(hex: "#F3F4F6"))
+                    .fill(isProminent ? Color.DesignSystem.inspirationProminentTagBackground : Color.DesignSystem.inspirationTagBackground)
             )
     }
 }

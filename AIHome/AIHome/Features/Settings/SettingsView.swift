@@ -27,10 +27,10 @@ struct SettingsView: View {
                         
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Language")
-                                .font(.system(size: 16, weight: .semibold))
+                                .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
                                 .foregroundColor(.primary)
                             Text(viewModel.selectedLanguage.uppercased())
-                                .font(.system(size: 12))
+                                .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                                 .foregroundColor(.secondary)
                         }
                         
@@ -43,7 +43,7 @@ struct SettingsView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 24)
-                            .stroke(Color(hex: "#F3F4F6"), lineWidth: 1)
+                            .stroke(Color.DesignSystem.settingsRowBorder, lineWidth: 1)
                             .background(RoundedRectangle(cornerRadius: 24).fill(Color(uiColor: .systemBackground)))
                     )
                 }
@@ -73,12 +73,11 @@ struct SettingsView: View {
                 // Footer
                 VStack(spacing: 8) {
                     Text("HOMEGPT - AI INTERIOR DESIGN")
-                        .font(.caption)
-                        .fontWeight(.bold)
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                         .foregroundColor(.secondary)
                         .tracking(1.5)
                     Text("Version 2.4.0 (2026)")
-                        .font(.caption2)
+                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 11))
                         .foregroundColor(.gray)
                 }
                 .padding(.top, 32)
@@ -109,7 +108,7 @@ struct SettingRow: View {
                     .clipShape(Circle())
                 
                 Text(title)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
                     .foregroundColor(.primary)
                 
                 Spacer()
@@ -121,7 +120,7 @@ struct SettingRow: View {
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(Color(hex: "#F3F4F6"), lineWidth: 1)
+                    .stroke(Color.DesignSystem.settingsRowBorder, lineWidth: 1)
                     .background(RoundedRectangle(cornerRadius: 24).fill(Color(uiColor: .systemBackground)))
             )
         }

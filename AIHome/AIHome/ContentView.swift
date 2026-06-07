@@ -18,8 +18,10 @@ struct ContentView: View {
                 ForEach(items) { item in
                     NavigationLink {
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -36,6 +38,7 @@ struct ContentView: View {
             }
         } detail: {
             Text("Select an item")
+                .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
         }
     }
 

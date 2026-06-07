@@ -55,14 +55,14 @@ struct GenerationLoadingView: View {
                 .frame(height: 6)
                 
                 Text("\(Int(progress * 100))%")
-                    .font(.system(size: 14))
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 14))
                     .foregroundColor(.gray)
                     .frame(width: 40, alignment: .trailing)
             }
             .padding(.horizontal, 32)
             
             Text(viewModel.progressText)
-                .font(.system(size: 14, weight: .medium))
+                .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
                 .foregroundColor(.primary)
             
             Spacer()
@@ -86,10 +86,10 @@ struct GenerationLoadingView: View {
                         .padding(.top, 16)
                     
                     Text("Generation Failed")
-                        .font(.system(size: 20, weight: .bold))
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
                     
                     Text("We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
-                        .font(.system(size: 15))
+                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 24)
@@ -103,7 +103,7 @@ struct GenerationLoadingView: View {
                             }
                         }) {
                             Text("TRY AGAIN")
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 16)
@@ -115,7 +115,7 @@ struct GenerationLoadingView: View {
                             onCancel?()
                         }) {
                             Text("BACK TO DESIGN")
-                                .font(.system(size: 12, weight: .medium))
+                                .font(FontFamily.Roboto.medium.swiftUIFont(size: 12))
                                 .foregroundColor(.gray)
                         }
                     }

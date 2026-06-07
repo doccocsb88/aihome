@@ -95,7 +95,7 @@ struct PopupRatingView: View {
 
     var body: some View {
         ZStack {
-            Color(hex: "#1A1A1A").opacity(0.34)
+            Color.DesignSystem.primary.opacity(0.34)
                 .ignoresSafeArea()
                 .accessibilityHidden(true)
 
@@ -107,7 +107,7 @@ struct PopupRatingView: View {
                     .scaledToFit()
                     .frame(width: 48, height: 48, alignment: .center)
                     .frame(width: 80, height: 80, alignment: .center)
-                    .background(Color(hex: "#FEF2F2"), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .background(Color.DesignSystem.popupRatingIconBackground, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                     .padding(.top, kind == .homeEnjoyment ? 10 : 8)
 
                 if kind == .homeEnjoyment {
@@ -137,9 +137,9 @@ struct PopupRatingView: View {
                         .frame(height: kind == .homeEnjoyment ? 58 : 64)
                         .background(
                             RoundedRectangle(cornerRadius: kind == .homeEnjoyment ? 16 : 18, style: .continuous)
-                                .fill(Color(hex: "#FF2D55"))
+                                .fill(Color.DesignSystem.historyAccent)
                         )
-                        .shadow(color: Color(hex: "#FF2D55").opacity(0.28), radius: 13, x: 0, y: 10)
+                        .shadow(color: Color.DesignSystem.historyAccent.opacity(0.28), radius: 13, x: 0, y: 10)
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(kind.buttonTitle)
@@ -149,7 +149,7 @@ struct PopupRatingView: View {
             }
             .frame(maxWidth: kind.cardMaxWidth)
             .background(.white, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
-            .shadow(color: Color(hex: "#1A1A1A").opacity(0.22), radius: 28, x: 0, y: 18)
+            .shadow(color: Color.DesignSystem.primary.opacity(0.22), radius: 28, x: 0, y: 18)
             .padding(.horizontal, kind.outerHorizontalPadding)
             .accessibilityAddTraits(.isModal)
         }
@@ -159,7 +159,7 @@ struct PopupRatingView: View {
         Text(kind.title)
             .font(FontFamily.Inter24pt.bold.swiftUIFont(size: kind.titleFontSize))
             .multilineTextAlignment(.center)
-            .foregroundStyle(Color(hex: "#1A1A1A"))
+            .foregroundStyle(Color.DesignSystem.primary)
             .lineSpacing(2)
             .padding(.horizontal, 20)
     }
@@ -167,7 +167,7 @@ struct PopupRatingView: View {
     private var messageView: some View {
         Text(kind.message)
             .font(FontFamily.Inter24pt.regular.swiftUIFont(size: kind == .homeEnjoyment ? 13 : 14))
-            .foregroundStyle(Color(hex: "#1A1A1A").opacity(0.58))
+            .foregroundStyle(Color.DesignSystem.primary.opacity(0.58))
             .multilineTextAlignment(.center)
             .lineSpacing(kind == .homeEnjoyment ? 5 : 6)
             .fixedSize(horizontal: false, vertical: true)
@@ -184,7 +184,7 @@ struct PopupRatingView: View {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .foregroundStyle(Color(hex: "#FFCC00"))
+                        .foregroundStyle(Color.DesignSystem.popupRatingStar)
                         .frame(width: 30, height: 30)
                 }
                 .buttonStyle(.plain)

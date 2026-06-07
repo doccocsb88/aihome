@@ -3,15 +3,16 @@ import UIKit
 
 struct InspirationDetailView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppCoordinator.self) private var coordinator
     @State var viewModel: InspirationDetailViewModel
     @State private var showingBefore = false
 
-    private let advancedTools = [
-        InspirationAdvancedTool(title: "Reference", iconAsset: "ic_inspiration_tool_reference"),
-        InspirationAdvancedTool(title: "Replace", iconAsset: "ic_inspiration_tool_replace"),
-        InspirationAdvancedTool(title: "Remove", iconAsset: "ic_inspiration_tool_remove"),
-        InspirationAdvancedTool(title: "New Wall", iconAsset: "ic_inspiration_tool_newwall"),
-        InspirationAdvancedTool(title: "New Flooring", iconAsset: "ic_inspiration_tool_newflooring")
+    private let advancedTools: [ProjectType] = [
+        .referenceStyle,
+        .replaceObjects,
+        .removeObjects,
+        .newWalls,
+        .newFlooring
     ]
 
     var body: some View {
@@ -56,7 +57,7 @@ struct InspirationDetailView: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 Text(viewModel.item.title.capitalized)
-                    .font(.system(size: 25, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 25))
                     .foregroundStyle(.white)
                     .lineLimit(2)
                     .minimumScaleFactor(0.75)
@@ -64,7 +65,7 @@ struct InspirationDetailView: View {
                     .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
 
                 Text("\(viewModel.item.styleTag.uppercased())  ·  \(viewModel.item.spaceType.uppercased())")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                     .tracking(4.2)
                     .foregroundStyle(.white.opacity(0.74))
                     .lineLimit(1)
@@ -115,41 +116,24 @@ struct InspirationDetailView: View {
 
     private var actionPanel: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("ADVANCED TOOLS")
-                .font(.system(size: 11, weight: .bold))
-                .tracking(4)
-                .foregroundStyle(Color(hex: "#6B7280"))
-                .padding(.horizontal, 35)
-                .padding(.top, 35)
-
-            ScrollView(.horizontal) {
-                HStack(spacing: 18) {
-                    ForEach(advancedTools) { tool in
-                        AdvancedToolCard(tool: tool) {
-                            AppLogger.logAction("Inspiration Advanced Tool", details: tool.title)
-                        }
-                    }
-                }
-                .padding(.horizontal, 35)
-                .padding(.vertical, 27)
-            }
-            .scrollIndicators(.hidden)
-            .frame(maxWidth: .infinity)
-            .clipped()
+            AdvancedToolsSection(
+                tools: advancedTools,
+                onSelect: handleNavigation
+            )
 
             Spacer(minLength: 42)
 
             Text("OR")
-                .font(.system(size: 11, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                 .tracking(4)
-                .foregroundStyle(Color(hex: "#6B7280"))
+                .foregroundStyle(Color.DesignSystem.inspirationBody)
                 .frame(maxWidth: .infinity)
 
             NavigationLink {
                 redesignDestination
             } label: {
                 Text("REDESIGN")
-                    .font(.system(size: 13, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 13))
                     .tracking(5)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -170,6 +154,29 @@ struct InspirationDetailView: View {
         .clipped()
     }
 
+    private func handleNavigation(for tool: ProjectType) {
+        AppLogger.logAction("Inspiration Advanced Tool", details: tool.inspirationToolTitle)
+
+        switch tool {
+        case .interior:
+            coordinator.push(.interiorFlow)
+        case .exterior:
+            coordinator.push(.exteriorFlow)
+        case .garden:
+            coordinator.push(.gardenFlow)
+        case .referenceStyle:
+            coordinator.push(.referenceStyleFlow)
+        case .removeObjects:
+            coordinator.push(.removeObjectsFlow)
+        case .replaceObjects:
+            coordinator.push(.replaceObjectsFlow)
+        case .newFlooring:
+            coordinator.push(.newFlooringFlow)
+        case .newWalls:
+            coordinator.push(.newWallsFlow)
+        }
+    }
+
     @ViewBuilder
     private var redesignDestination: some View {
         let beforeImage = UIImage(named: viewModel.item.beforeImageName)
@@ -185,26 +192,51 @@ struct InspirationDetailView: View {
     }
 }
 
-private struct InspirationAdvancedTool: Identifiable {
-    let id = UUID()
-    let title: String
-    let iconAsset: String
+private struct AdvancedToolsSection: View {
+    let tools: [ProjectType]
+    let onSelect: (ProjectType) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("ADVANCED TOOLS")
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
+                .tracking(4)
+                .foregroundStyle(Color.DesignSystem.inspirationBody)
+                .padding(.horizontal, 35)
+                .padding(.top, 35)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 18) {
+                    ForEach(tools, id: \.self) { tool in
+                        AdvancedToolCard(tool: tool) {
+                            onSelect(tool)
+                        }
+                    }
+                }
+                .padding(.horizontal, 35)
+                .padding(.vertical, 27)
+            }
+            .scrollIndicators(.hidden)
+            .frame(maxWidth: .infinity)
+            .clipped()
+        }
+    }
 }
 
 private struct AdvancedToolCard: View {
-    let tool: InspirationAdvancedTool
+    let tool: ProjectType
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack(spacing: 18) {
-                Image(tool.iconAsset)
+                Image(tool.inspirationToolIconAsset)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 22, height: 22)
 
-                Text(tool.title)
-                    .font(.system(size: 14, weight: .bold))
+                Text(tool.inspirationToolTitle)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                     .foregroundStyle(Color.DesignSystem.textPrimary)
                     .lineLimit(1)
             }
@@ -213,11 +245,47 @@ private struct AdvancedToolCard: View {
             .background(.white, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color(hex: "#E5E7EB"), lineWidth: 1)
+                    .stroke(Color.DesignSystem.inspirationBorder, lineWidth: 1)
             }
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
         }
         .buttonStyle(.plain)
+    }
+}
+
+private extension ProjectType {
+    var inspirationToolTitle: String {
+        switch self {
+        case .referenceStyle:
+            "Reference"
+        case .replaceObjects:
+            "Replace"
+        case .removeObjects:
+            "Remove"
+        case .newWalls:
+            "New Wall"
+        case .newFlooring:
+            "New Flooring"
+        case .interior, .exterior, .garden:
+            rawValue.capitalized
+        }
+    }
+
+    var inspirationToolIconAsset: String {
+        switch self {
+        case .referenceStyle:
+            "ic_inspiration_tool_reference"
+        case .replaceObjects:
+            "ic_inspiration_tool_replace"
+        case .removeObjects:
+            "ic_inspiration_tool_remove"
+        case .newWalls:
+            "ic_inspiration_tool_newwall"
+        case .newFlooring:
+            "ic_inspiration_tool_newflooring"
+        case .interior, .exterior, .garden:
+            ""
+        }
     }
 }
 

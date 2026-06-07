@@ -11,13 +11,13 @@ struct PhotoSourcePickerView: View {
             VStack(alignment: .leading, spacing: 8) {
                 if !viewModel.title.isEmpty {
                     Text(viewModel.title)
-                        .font(.system(size: 24, weight: .bold))
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                         .foregroundColor(.DesignSystem.textPrimary)
                 }
                 
                 if let subtitle = viewModel.subtitle, !subtitle.isEmpty {
                     Text(subtitle)
-                        .font(.subheadline)
+                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                         .foregroundColor(.gray)
                 }
             }
@@ -50,7 +50,7 @@ struct PhotoSourcePickerView: View {
                             .clipShape(Circle())
                         
                         Text("Choose your photo.\nFor better results, use a horizontal\ndirection.")
-                            .font(.subheadline)
+                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
                     }
@@ -61,7 +61,7 @@ struct PhotoSourcePickerView: View {
                             HStack {
                                 Image(systemName: "photo")
                                 Text("Gallery")
-                                    .fontWeight(.semibold)
+                                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                             }
                             .foregroundColor(.DesignSystem.background)
                             .frame(maxWidth: .infinity)
@@ -76,7 +76,7 @@ struct PhotoSourcePickerView: View {
                             HStack {
                                 Image(systemName: "camera")
                                 Text("Camera")
-                                    .fontWeight(.semibold)
+                                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                             }
                             .foregroundColor(.DesignSystem.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -104,7 +104,7 @@ struct PhotoSourcePickerView: View {
             if viewModel.allowsSample && viewModel.selectedImage == nil && !viewModel.sampleImages.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(viewModel.sampleTitle)
-                        .font(.system(size: 11, weight: .bold))
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                         .foregroundColor(.gray)
                         .kerning(1.2)
                         .padding(.horizontal, 24)
@@ -152,6 +152,7 @@ struct PhotoSourcePickerView: View {
         .padding(.vertical)
         .sheet(isPresented: $viewModel.showCamera) {
             Text("Camera View Placeholder")
+                .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
         }
     }
 }

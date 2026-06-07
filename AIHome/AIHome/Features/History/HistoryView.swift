@@ -20,7 +20,7 @@ struct HistoryView: View {
     private var headerView: some View {
         HStack {
             Text("History")
-                .font(.system(size: 36, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 36))
                 .foregroundColor(.DesignSystem.textPrimary)
             
             Spacer()
@@ -30,16 +30,16 @@ struct HistoryView: View {
                     Image(systemName: "sparkles")
                         .foregroundColor(.DesignSystem.historyAccent)
                     Text("3/3")
-                        .font(.subheadline.weight(.semibold))
+                        .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
                         .foregroundColor(.DesignSystem.textPrimary)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background(Color(UIColor.systemGray6))
+                .background(Color.DesignSystem.historyQuotaBackground)
                 .cornerRadius(20)
                 
                 Text("PRO")
-                    .font(.subheadline.weight(.bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
@@ -63,13 +63,12 @@ struct HistoryView: View {
             
             VStack(spacing: 8) {
                 Text("Start your first project")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
                     .foregroundColor(.DesignSystem.textPrimary)
                 
                 Text("Create a new space and watch your\nideas come to life.")
-                    .font(.body)
-                    .foregroundColor(Color(UIColor.systemGray))
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
+                    .foregroundColor(.DesignSystem.historyEmptyMessage)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }
@@ -81,7 +80,7 @@ struct HistoryView: View {
                     Image(systemName: "plus.circle")
                         .font(.system(size: 18))
                     Text("Create New Project")
-                        .font(.headline)
+                        .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                 }
                 .foregroundColor(.DesignSystem.background)
                 .padding(.vertical, 16)

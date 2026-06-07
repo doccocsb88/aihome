@@ -83,8 +83,7 @@ struct InteriorFlowView: View {
                 Spacer()
                 
                 Text("Step \(viewModel.currentStep.rawValue)/4")
-                    .font(.headline)
-                    .fontWeight(.bold)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                     .foregroundColor(.DesignSystem.textPrimary)
                 
                 Spacer()
@@ -121,7 +120,7 @@ struct InteriorFlowView: View {
     private func roomTypeStep() -> some View {
         VStack(spacing: 24) {
             Text("Pick a room type")
-                .font(.system(size: 24, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                 .foregroundColor(.DesignSystem.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
@@ -141,7 +140,7 @@ struct InteriorFlowView: View {
                                 .cornerRadius(16)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .stroke(viewModel.draft.roomType == room ? Color(red: 255/255, green: 45/255, blue: 85/255) : Color.clear, lineWidth: 2)
+                                        .stroke(viewModel.draft.roomType == room ? Color.DesignSystem.flowSelectionAccent : Color.clear, lineWidth: 2)
                                 )
                         }
                     }
@@ -171,7 +170,7 @@ struct InteriorFlowView: View {
     private func designStyleStep() -> some View {
         VStack(spacing: 24) {
             Text("Pick a design style")
-                .font(.system(size: 24, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                 .foregroundColor(.DesignSystem.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
@@ -205,7 +204,7 @@ struct InteriorFlowView: View {
                             .cornerRadius(16)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .stroke(viewModel.draft.designStyle == style ? Color(red: 255/255, green: 45/255, blue: 85/255) : Color.gray.opacity(0.2), lineWidth: viewModel.draft.designStyle == style ? 2 : 1)
+                                    .stroke(viewModel.draft.designStyle == style ? Color.DesignSystem.flowSelectionAccent : Color.gray.opacity(0.2), lineWidth: viewModel.draft.designStyle == style ? 2 : 1)
                             )
                         }
                     }
@@ -256,11 +255,11 @@ struct InteriorFlowView: View {
         VStack(spacing: 24) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("AI Intervention")
-                    .font(.system(size: 24, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
                 
                 Text("How much of the original layout should we keep?")
-                    .font(.subheadline)
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                     .foregroundColor(.gray)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -318,7 +317,7 @@ struct InteriorFlowView: View {
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                         .foregroundColor(.DesignSystem.textPrimary)
                     Text(description)
-                        .font(.system(size: 12))
+                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.leading)
                 }
@@ -329,7 +328,7 @@ struct InteriorFlowView: View {
             .cornerRadius(24)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(viewModel.draft.intervention == level ? Color(red: 255/255, green: 45/255, blue: 85/255) : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
+                    .stroke(viewModel.draft.intervention == level ? Color.DesignSystem.flowSelectionAccent : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
             )
         }
     }

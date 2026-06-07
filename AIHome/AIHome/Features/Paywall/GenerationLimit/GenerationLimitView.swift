@@ -13,12 +13,11 @@ struct GenerationLimitView: View {
                 .foregroundColor(.yellow)
             
             Text("\(viewModel.freeGenerationsRemaining)/3 Free Generations Left")
-                .font(.title2)
-                .fontWeight(.bold)
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
                 .multilineTextAlignment(.center)
             
             Text("Unlock unlimited features, faster processing, and premium designs with Pro.")
-                .font(.body)
+                .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
@@ -30,7 +29,7 @@ struct GenerationLimitView: View {
                 dismiss()
             }) {
                 Text("Upgrade Now")
-                    .font(.headline)
+                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()

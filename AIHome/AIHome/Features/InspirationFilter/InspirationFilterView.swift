@@ -11,7 +11,7 @@ struct InspirationFilterView: View {
 
             HStack(alignment: .center) {
                 Text("Filters")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
                     .foregroundStyle(Color.DesignSystem.textPrimary)
 
                 Spacer()
@@ -19,8 +19,8 @@ struct InspirationFilterView: View {
                 Button("Reset") {
                     viewModel.reset()
                 }
-                .font(.system(size: 16, weight: .regular))
-                .foregroundStyle(Color(hex: "#6B7280"))
+                .font(FontFamily.Roboto.regular.swiftUIFont(size: 16))
+                .foregroundStyle(Color.DesignSystem.filterTextSecondary)
             }
             .padding(.top, 52)
 
@@ -77,7 +77,7 @@ struct InspirationFilterView: View {
                 }
             } label: {
                 Text("Apply")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 18))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
@@ -88,7 +88,7 @@ struct InspirationFilterView: View {
             .padding(.bottom, 32)
         }
         .padding(.horizontal, 32)
-        .background(Color(hex: "#FAFAFB"))
+        .background(Color.DesignSystem.filterSheetBackground)
         .clipShape(
             UnevenRoundedRectangle(
                 topLeadingRadius: 34,
@@ -102,7 +102,7 @@ struct InspirationFilterView: View {
 
     private var dragHandle: some View {
         Capsule()
-            .fill(Color(hex: "#E5E7EB"))
+            .fill(Color.DesignSystem.filterBorder)
             .frame(width: 48, height: 4)
             .padding(.top, 34)
     }
@@ -115,9 +115,9 @@ private struct FilterSection<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 28) {
             Text(title)
-                .font(.system(size: 12, weight: .bold))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                 .tracking(3)
-                .foregroundStyle(Color(hex: "#6B7280"))
+                .foregroundStyle(Color.DesignSystem.filterTextSecondary)
 
             content
         }
@@ -133,18 +133,18 @@ private struct FilterChip: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 14, weight: .bold))
-                .foregroundStyle(isSelected ? .white : Color(hex: "#6B7280"))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
+                .foregroundStyle(isSelected ? .white : Color.DesignSystem.filterTextSecondary)
                 .lineLimit(1)
                 .padding(.horizontal, 17)
                 .frame(height: 34)
                 .background(
                     Capsule()
-                        .fill(isSelected ? .black : Color(hex: "#F9FAFB"))
+                        .fill(isSelected ? .black : Color.DesignSystem.filterChipBackground)
                 )
                 .overlay {
                     Capsule()
-                        .stroke(isSelected ? .black : Color(hex: "#E5E7EB"), lineWidth: 1)
+                        .stroke(isSelected ? .black : Color.DesignSystem.filterBorder, lineWidth: 1)
                 }
         }
         .buttonStyle(.plain)

@@ -20,11 +20,14 @@ struct MainTabView: View {
                     .toolbar(.hidden, for: .tabBar)
                     .tag(MainTab.home)
                     
-                    NavigationStack {
+                    NavigationStack(path: Bindable(coordinator).path) {
                         InspirationView(
                             showingFilter: $showingInspirationFilter,
                             showingDetail: $showingInspirationDetail
                         )
+                        .navigationDestination(for: AppRoute.self) { route in
+                            AppCoordinatorRouter.view(for: route)
+                        }
                     }
                     .toolbar(.hidden, for: .tabBar)
                     .tag(MainTab.inspiration)
@@ -42,7 +45,7 @@ struct MainTabView: View {
                     .tag(MainTab.settings)
                 }
                 
-                if !showingInspirationDetail {
+                if shouldShowCustomTabBar {
                     CustomTabBar(selectedTab: $viewModel.selectedTab)
                 }
             }
@@ -58,8 +61,7 @@ struct MainTabView: View {
                 HStack {
                     if viewModel.isPro {
                         Text("PRO")
-                            .font(.caption)
-                            .bold()
+                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(Color.DesignSystem.accent)
@@ -67,7 +69,7 @@ struct MainTabView: View {
                             .cornerRadius(8)
                     } else {
                         Text("\(viewModel.freeGenerationsRemaining)/3")
-                            .font(.caption)
+                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(Color.DesignSystem.surface)
@@ -79,6 +81,10 @@ struct MainTabView: View {
         .onAppear {
             AppLogger.logScreen("MainTabView")
         }
+    }
+
+    private var shouldShowCustomTabBar: Bool {
+        !showingInspirationDetail && coordinator.path.isEmpty
     }
 }
 

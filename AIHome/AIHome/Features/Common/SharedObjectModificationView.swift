@@ -39,7 +39,7 @@ struct SharedObjectModificationView: View {
                 Spacer()
                 
                 Text(title)
-                    .font(.system(size: 24, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
                 
                 Spacer()
@@ -66,7 +66,7 @@ struct SharedObjectModificationView: View {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         TextField(promptPlaceholder, text: $prompt, axis: .vertical)
-                            .font(.system(size: 14))
+                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 14))
                             .foregroundColor(.primary)
                             .lineLimit(4...6)
                             .padding(20)
@@ -83,7 +83,7 @@ struct SharedObjectModificationView: View {
                     if photoPickerViewModel.selectedImage == nil {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Try a sample")
-                                .font(.system(size: 14, weight: .bold))
+                                .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                                 .foregroundColor(.DesignSystem.textPrimary)
                                 .padding(.horizontal, 24)
                             
@@ -114,7 +114,7 @@ struct SharedObjectModificationView: View {
                 onGenerate()
             }) {
                 Text("GENERATE")
-                    .font(.system(size: 12, weight: .bold))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                     .kerning(1.2)
                     .foregroundColor(canGenerate ? Color.DesignSystem.background : .white)
                     .frame(maxWidth: .infinity, minHeight: 56)

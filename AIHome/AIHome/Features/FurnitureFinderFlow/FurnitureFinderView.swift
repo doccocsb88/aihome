@@ -28,7 +28,7 @@ struct FurnitureFinderView: View {
                                     Image(systemName: "photo.on.rectangle.angled")
                                         .font(.largeTitle)
                                     Text("Tap to select image")
-                                        .font(.headline)
+                                        .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                                 }
                                 .foregroundColor(.secondary)
                             }
@@ -47,7 +47,7 @@ struct FurnitureFinderView: View {
                     viewModel.findFurniture()
                 }) {
                     Text("Find Furniture")
-                        .font(.headline)
+                        .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -58,7 +58,10 @@ struct FurnitureFinderView: View {
                 .padding()
                 
                 if viewModel.isGenerating {
-                    ProgressView("Searching...")
+                    ProgressView {
+                        Text("Searching...")
+                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
+                    }
                         .padding()
                 } else {
                     List(viewModel.products) { product in
@@ -73,9 +76,9 @@ struct FurnitureFinderView: View {
                             
                             VStack(alignment: .leading) {
                                 Text(product.title)
-                                    .font(.headline)
+                                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                                 Text(product.sourceName ?? "Unknown source")
-                                    .font(.subheadline)
+                                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                                     .foregroundColor(.secondary)
                             }
                             
@@ -83,7 +86,7 @@ struct FurnitureFinderView: View {
                             
                             if let price = product.priceText {
                                 Text(price)
-                                    .fontWeight(.bold)
+                                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                             }
                         }
                     }
