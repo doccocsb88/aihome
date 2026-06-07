@@ -8,7 +8,7 @@ struct ResultView: View {
     var onShare: (UIImage) -> Void
     var onSaveArchive: () -> Void
     var onRemoveWatermark: () -> Void
-    var onToolSelected: (AdvancedTool, UIImage) -> Void
+    var onToolSelected: (ProjectType, UIImage) -> Void
     var onClose: () -> Void
     
     var body: some View {
@@ -124,38 +124,14 @@ struct ResultView: View {
                     
                     // Advanced Tools
                     if !viewModel.availableAdvancedTools.isEmpty {
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Advanced Tools")
-                                .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
-                                .padding(.horizontal)
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 12) {
-                                    ForEach(viewModel.availableAdvancedTools) { tool in
-                                        Button(action: {
-                                            if let image = viewModel.selectedImage {
-                                                onToolSelected(tool, image)
-                                            }
-                                        }) {
-                                            HStack {
-                                                Image("ic_result_\(tool.rawValue.lowercased())")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 20, height: 20)
-                                                    .foregroundColor(.primary)
-                                                Text(tool.rawValue)
-                                                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
-                                                    .foregroundColor(.primary)
-                                            }
-                                            .padding(.horizontal, 20)
-                                            .padding(.vertical, 12)
-                                            .background(RoundedRectangle(cornerRadius: 16).stroke(Color(UIColor.systemGray4), lineWidth: 1))
-                                        }
-                                    }
+                        AdvancedToolsSection(
+                            tools: viewModel.availableAdvancedTools,
+                            onSelect: { tool in
+                                if let image = viewModel.selectedImage {
+                                    onToolSelected(tool, image)
                                 }
-                                .padding(.horizontal)
                             }
-                        }
+                        )
                     }
                     
                     // Action Buttons (Regenerate, Download, Share)

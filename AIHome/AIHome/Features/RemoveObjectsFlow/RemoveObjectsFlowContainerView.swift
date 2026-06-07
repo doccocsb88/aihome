@@ -107,11 +107,7 @@ struct RemoveObjectsFlowContainerView: View {
                     project: mockProject,
                     originalImage: sourceImage,
                     generatedImages: downloadedImages,
-                    availableAdvancedTools: [
-                        .edit,
-                        .replace,
-                        .remove
-                    ],
+                    availableAdvancedTools: ProjectType.resultAdvancedTools,
                     isPro: true, 
                     hasWatermark: false
                 )

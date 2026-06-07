@@ -155,7 +155,7 @@ struct InspirationDetailView: View {
     }
 
     private func handleNavigation(for tool: ProjectType) {
-        AppLogger.logAction("Inspiration Advanced Tool", details: tool.inspirationToolTitle)
+        AppLogger.logAction("Inspiration Advanced Tool", details: tool.advancedToolTitle)
 
         switch tool {
         case .interior:
@@ -174,6 +174,8 @@ struct InspirationDetailView: View {
             coordinator.push(.newFlooringFlow)
         case .newWalls:
             coordinator.push(.newWallsFlow)
+        case .furnitureFinder:
+            coordinator.push(.furnitureFinderFlow)
         }
     }
 
@@ -188,103 +190,6 @@ struct InspirationDetailView: View {
             ExteriorFlowContainerView(initialImage: beforeImage)
         case .garden:
             GardenFlowContainerView(initialImage: beforeImage)
-        }
-    }
-}
-
-private struct AdvancedToolsSection: View {
-    let tools: [ProjectType]
-    let onSelect: (ProjectType) -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("ADVANCED TOOLS")
-                .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
-                .tracking(4)
-                .foregroundStyle(Color.DesignSystem.slateGray)
-                .padding(.horizontal, 35)
-                .padding(.top, 35)
-
-            ScrollView(.horizontal) {
-                HStack(spacing: 18) {
-                    ForEach(tools, id: \.self) { tool in
-                        AdvancedToolCard(tool: tool) {
-                            onSelect(tool)
-                        }
-                    }
-                }
-                .padding(.horizontal, 35)
-                .padding(.vertical, 27)
-            }
-            .scrollIndicators(.hidden)
-            .frame(maxWidth: .infinity)
-            .clipped()
-        }
-    }
-}
-
-private struct AdvancedToolCard: View {
-    let tool: ProjectType
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 18) {
-                Image(tool.inspirationToolIconAsset)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22, height: 22)
-
-                Text(tool.inspirationToolTitle)
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
-                    .foregroundStyle(Color.DesignSystem.textPrimary)
-                    .lineLimit(1)
-            }
-            .padding(.horizontal, 19)
-            .frame(height: 57)
-            .background(.white, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.DesignSystem.platinum, lineWidth: 1)
-            }
-            .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-private extension ProjectType {
-    var inspirationToolTitle: String {
-        switch self {
-        case .referenceStyle:
-            "Reference"
-        case .replaceObjects:
-            "Replace"
-        case .removeObjects:
-            "Remove"
-        case .newWalls:
-            "New Wall"
-        case .newFlooring:
-            "New Flooring"
-        case .interior, .exterior, .garden:
-            rawValue.capitalized
-        }
-    }
-
-    var inspirationToolIconAsset: String {
-        switch self {
-        case .referenceStyle:
-            "ic_inspiration_tool_reference"
-        case .replaceObjects:
-            "ic_inspiration_tool_replace"
-        case .removeObjects:
-            "ic_inspiration_tool_remove"
-        case .newWalls:
-            "ic_inspiration_tool_newwall"
-        case .newFlooring:
-            "ic_inspiration_tool_newflooring"
-        case .interior, .exterior, .garden:
-            ""
         }
     }
 }

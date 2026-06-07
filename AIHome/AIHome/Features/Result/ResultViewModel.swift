@@ -7,7 +7,7 @@ class ResultViewModel {
     var originalImage: UIImage
     var generatedImages: [UIImage]
     var selectedIndex: Int = 0
-    var availableAdvancedTools: [AdvancedTool]
+    var availableAdvancedTools: [ProjectType]
     var isPro: Bool
     var hasWatermark: Bool
     
@@ -16,7 +16,7 @@ class ResultViewModel {
         return generatedImages[selectedIndex]
     }
     
-    init(project: LocalProject, originalImage: UIImage, generatedImages: [UIImage], availableAdvancedTools: [AdvancedTool], isPro: Bool = false, hasWatermark: Bool = true) {
+    init(project: LocalProject, originalImage: UIImage, generatedImages: [UIImage], availableAdvancedTools: [ProjectType], isPro: Bool = false, hasWatermark: Bool = true) {
         self.project = project
         self.originalImage = originalImage
         self.generatedImages = generatedImages

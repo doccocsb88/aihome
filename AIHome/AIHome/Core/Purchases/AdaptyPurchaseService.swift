@@ -30,9 +30,24 @@ enum PurchaseServiceError: LocalizedError {
 final class AdaptyPurchaseService {
     static let shared = AdaptyPurchaseService()
 
+    enum Placement: String, CaseIterable {
+        case vipSupport = "vip_support_ios"
+        case watermark = "watermark_ios"
+        case result = "result_ios"
+        case referenceLimit = "reference_limit_ios"
+        case retouchLimit = "retouch_limit_ios"
+        case exteriorLimit = "exterior_limit_ios"
+        case interiorLimit = "interior_limit_ios"
+        case speed = "speed_ios"
+        case topBar = "top_bar_ios"
+        case session = "session_ios"
+        case homePopup = "home_popup_ios"
+        case onboarding = "onboarding_ios"
+    }
+
     private enum Defaults {
         static let publicSDKKey = "public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l"
-        static let placementId = "top_bar_ios"
+        static let placementId = Placement.topBar.rawValue
         static let accessLevelId = "premium"
     }
 
@@ -82,11 +97,23 @@ final class AdaptyPurchaseService {
         return products
     }
 
+    func loadPaywallProducts(placement: Placement) async throws -> [AdaptyPaywallProduct] {
+        try await loadPaywallProducts(placementId: placement.rawValue)
+    }
+
     func loadSDKPaywallConfiguration(placementId: String? = nil) async throws -> AdaptyUI.PaywallConfiguration {
         try await ensureActivated()
 
         let paywall = try await loadPaywall(placementId: placementId)
         return try await AdaptyUI.getPaywallConfiguration(forPaywall: paywall)
+    }
+
+    func loadSDKPaywallConfiguration(placement: Placement) async throws -> AdaptyUI.PaywallConfiguration {
+        try await loadSDKPaywallConfiguration(placementId: placement.rawValue)
+    }
+
+    func availablePlacementIds() -> [String] {
+        Placement.allCases.map(\.rawValue)
     }
 
     private func loadPaywall(placementId: String? = nil) async throws -> AdaptyPaywall {

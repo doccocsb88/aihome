@@ -17,4 +17,5 @@ enum AppRoute: Hashable {
     case replaceObjectsFlow
     case newFlooringFlow
     case newWallsFlow
+    case furnitureFinderFlow
 }

@@ -66,22 +66,7 @@ struct InspirationView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .center, spacing: 12) {
-            Text("Inspiration")
-                .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
-                .foregroundStyle(Color.DesignSystem.textPrimary)
-
-            Spacer()
-
-            generationPill
-
-            Text("PRO")
-                .font(FontFamily.Roboto.black.swiftUIFont(size: 12))
-                .foregroundStyle(.white)
-                .frame(width: 52, height: 34)
-                .background(Color.DesignSystem.amaranth, in: Capsule())
-        }
-        .padding(.horizontal, 22)
+        MainTabHeaderView(title: "Inspiration", titleSize: 32)
     }
 
     private var categoryTabs: some View {
@@ -107,20 +92,6 @@ struct InspirationView: View {
         .padding(4)
         .background(Color.DesignSystem.cultured, in: Capsule())
         .padding(.horizontal, 22)
-    }
-
-    private var generationPill: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "sparkles")
-                .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(Color.DesignSystem.amaranth)
-
-            Text("3/3")
-                .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                .foregroundStyle(Color.DesignSystem.darkSlate)
-        }
-        .frame(width: 68, height: 34)
-        .background(Color.DesignSystem.cultured, in: Capsule())
     }
 
     private var filterButton: some View {

@@ -9,6 +9,7 @@ enum ProjectType: String, Codable, CaseIterable {
     case removeObjects
     case newFlooring
     case newWalls
+    case furnitureFinder
 }
 
 enum UIInterventionLevel: String, Codable, CaseIterable {

@@ -18,36 +18,7 @@ struct HistoryView: View {
     }
     
     private var headerView: some View {
-        HStack {
-            Text("History")
-                .font(FontFamily.Roboto.bold.swiftUIFont(size: 36))
-                .foregroundColor(.DesignSystem.textPrimary)
-            
-            Spacer()
-            
-            HStack(spacing: 8) {
-                HStack(spacing: 4) {
-                    Image(systemName: "sparkles")
-                        .foregroundColor(.DesignSystem.folly)
-                    Text("3/3")
-                        .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
-                        .foregroundColor(.DesignSystem.textPrimary)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color.DesignSystem.ghostWhite)
-                .cornerRadius(20)
-                
-                Text("PRO")
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(Color.DesignSystem.folly)
-                    .cornerRadius(20)
-            }
-        }
-        .padding(.horizontal)
+        MainTabHeaderView(title: "History")
         .padding(.top, 16)
         .padding(.bottom, 16)
     }

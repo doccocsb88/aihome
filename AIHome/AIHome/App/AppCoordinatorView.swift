@@ -55,6 +55,8 @@ struct AppCoordinatorRouter {
             NewFlooringFlowContainerView()
         case .newWallsFlow:
             NewWallsFlowContainerView()
+        case .furnitureFinderFlow:
+            FurnitureFinderView()
         }
     }
 }
