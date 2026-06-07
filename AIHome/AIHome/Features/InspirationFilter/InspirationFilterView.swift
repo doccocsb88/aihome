@@ -20,7 +20,7 @@ struct InspirationFilterView: View {
                     viewModel.reset()
                 }
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 16))
-                .foregroundStyle(Color.DesignSystem.filterTextSecondary)
+                .foregroundStyle(Color.DesignSystem.slateGray)
             }
             .padding(.top, 52)
 
@@ -88,7 +88,7 @@ struct InspirationFilterView: View {
             .padding(.bottom, 32)
         }
         .padding(.horizontal, 32)
-        .background(Color.DesignSystem.filterSheetBackground)
+        .background(Color.DesignSystem.snow)
         .clipShape(
             UnevenRoundedRectangle(
                 topLeadingRadius: 34,
@@ -102,7 +102,7 @@ struct InspirationFilterView: View {
 
     private var dragHandle: some View {
         Capsule()
-            .fill(Color.DesignSystem.filterBorder)
+            .fill(Color.DesignSystem.platinum)
             .frame(width: 48, height: 4)
             .padding(.top, 34)
     }
@@ -117,7 +117,7 @@ private struct FilterSection<Content: View>: View {
             Text(title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                 .tracking(3)
-                .foregroundStyle(Color.DesignSystem.filterTextSecondary)
+                .foregroundStyle(Color.DesignSystem.slateGray)
 
             content
         }
@@ -134,17 +134,17 @@ private struct FilterChip: View {
         Button(action: action) {
             Text(title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
-                .foregroundStyle(isSelected ? .white : Color.DesignSystem.filterTextSecondary)
+                .foregroundStyle(isSelected ? .white : Color.DesignSystem.slateGray)
                 .lineLimit(1)
                 .padding(.horizontal, 17)
                 .frame(height: 34)
                 .background(
                     Capsule()
-                        .fill(isSelected ? .black : Color.DesignSystem.filterChipBackground)
+                        .fill(isSelected ? .black : Color.DesignSystem.alabaster)
                 )
                 .overlay {
                     Capsule()
-                        .stroke(isSelected ? .black : Color.DesignSystem.filterBorder, lineWidth: 1)
+                        .stroke(isSelected ? .black : Color.DesignSystem.platinum, lineWidth: 1)
                 }
         }
         .buttonStyle(.plain)

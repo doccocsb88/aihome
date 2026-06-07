@@ -28,14 +28,14 @@ struct HistoryView: View {
             HStack(spacing: 8) {
                 HStack(spacing: 4) {
                     Image(systemName: "sparkles")
-                        .foregroundColor(.DesignSystem.historyAccent)
+                        .foregroundColor(.DesignSystem.folly)
                     Text("3/3")
                         .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
                         .foregroundColor(.DesignSystem.textPrimary)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background(Color.DesignSystem.historyQuotaBackground)
+                .background(Color.DesignSystem.ghostWhite)
                 .cornerRadius(20)
                 
                 Text("PRO")
@@ -43,7 +43,7 @@ struct HistoryView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(Color.DesignSystem.historyAccent)
+                    .background(Color.DesignSystem.folly)
                     .cornerRadius(20)
             }
         }
@@ -68,7 +68,7 @@ struct HistoryView: View {
                 
                 Text("Create a new space and watch your\nideas come to life.")
                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
-                    .foregroundColor(.DesignSystem.historyEmptyMessage)
+                    .foregroundColor(.DesignSystem.gray)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }
@@ -116,9 +116,9 @@ struct HistoryView: View {
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
                     .frame(width: 60, height: 60)
-                    .background(Color.DesignSystem.historyAccent)
+                    .background(Color.DesignSystem.folly)
                     .clipShape(Circle())
-                    .shadow(color: Color.DesignSystem.historyAccent.opacity(0.4), radius: 8, x: 0, y: 4)
+                    .shadow(color: Color.DesignSystem.folly.opacity(0.4), radius: 8, x: 0, y: 4)
             }
             .padding(.trailing, 24)
             .padding(.bottom, 24)
@@ -139,13 +139,13 @@ struct HistoryView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(project.title.uppercased())
                             .font(FontFamily.Roboto.bold.swiftUIFont(size: 9))
-                            .foregroundColor(.DesignSystem.historyCardTitle)
+                            .foregroundColor(.DesignSystem.darkKnight)
                             .lineLimit(1)
                         
                         if let style = project.styleName {
                             Text(style)
                                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 8))
-                                .foregroundColor(.DesignSystem.historyCardStyle)
+                                .foregroundColor(.DesignSystem.slateGray)
                                 .lineLimit(1)
                         }
                     }
@@ -157,7 +157,7 @@ struct HistoryView: View {
                     }) {
                         Image(systemName: project.isFavorite ? "heart.fill" : "heart")
                             .font(.system(size: 12))
-                            .foregroundColor(project.isFavorite ? Color.DesignSystem.historyAccent : .secondary)
+                            .foregroundColor(project.isFavorite ? Color.DesignSystem.folly : .secondary)
                     }
                 }
                 .padding(12)

@@ -107,7 +107,7 @@ struct PopupRatingView: View {
                     .scaledToFit()
                     .frame(width: 48, height: 48, alignment: .center)
                     .frame(width: 80, height: 80, alignment: .center)
-                    .background(Color.DesignSystem.popupRatingIconBackground, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .background(Color.DesignSystem.mistyRose, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                     .padding(.top, kind == .homeEnjoyment ? 10 : 8)
 
                 if kind == .homeEnjoyment {
@@ -137,9 +137,9 @@ struct PopupRatingView: View {
                         .frame(height: kind == .homeEnjoyment ? 58 : 64)
                         .background(
                             RoundedRectangle(cornerRadius: kind == .homeEnjoyment ? 16 : 18, style: .continuous)
-                                .fill(Color.DesignSystem.historyAccent)
+                                .fill(Color.DesignSystem.folly)
                         )
-                        .shadow(color: Color.DesignSystem.historyAccent.opacity(0.28), radius: 13, x: 0, y: 10)
+                        .shadow(color: Color.DesignSystem.folly.opacity(0.28), radius: 13, x: 0, y: 10)
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(kind.buttonTitle)
@@ -184,7 +184,7 @@ struct PopupRatingView: View {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .foregroundStyle(Color.DesignSystem.popupRatingStar)
+                        .foregroundStyle(Color.DesignSystem.cyberYellow)
                         .frame(width: 30, height: 30)
                 }
                 .buttonStyle(.plain)

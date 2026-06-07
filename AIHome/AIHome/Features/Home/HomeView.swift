@@ -23,14 +23,14 @@ struct HomeView: View {
                     HStack(spacing: 8) {
                         HStack(spacing: 4) {
                             Image(systemName: "sparkles")
-                                .foregroundColor(.DesignSystem.homeAccent)
+                                .foregroundColor(.DesignSystem.folly)
                             Text("3/3")
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
                                 .foregroundColor(.DesignSystem.textPrimary)
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(Color.DesignSystem.homeQuotaBackground)
+                        .background(Color.DesignSystem.ghostWhite)
                         .cornerRadius(20)
                         
                         Text("PRO")
@@ -38,7 +38,7 @@ struct HomeView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)
-                            .background(Color.DesignSystem.homeAccent)
+                            .background(Color.DesignSystem.folly)
                             .cornerRadius(20)
                     }
                 }
@@ -55,7 +55,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     Text("ADVANCED EDITING")
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                        .foregroundColor(.DesignSystem.homeSectionTitle)
+                        .foregroundColor(.DesignSystem.silverSand)
                         .kerning(1.2)
                         .padding(.horizontal)
                         .padding(.top, 8)

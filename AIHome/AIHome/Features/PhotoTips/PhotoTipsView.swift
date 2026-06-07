@@ -31,7 +31,7 @@ struct PhotoTipsView: View {
                     exampleSection(
                         title: "BAD EXAMPLES:",
                         iconName: "ic_tips_bad",
-                        iconColor: .DesignSystem.photoTipsDanger,
+                        iconColor: .DesignSystem.folly,
                         examples: ["ic_tips_bad_01", "ic_tips_bad_02"],
                         isBadExample: true
                     )
@@ -39,7 +39,7 @@ struct PhotoTipsView: View {
                     exampleSection(
                         title: "GOOD EXAMPLES:",
                         iconName: "ic_tips_good",
-                        iconColor: .DesignSystem.photoTipsSuccess,
+                        iconColor: .DesignSystem.emerald,
                         examples: ["ic_tips_good_01", "ic_tips_good_02"],
                         isBadExample: false
                     )
@@ -54,7 +54,7 @@ struct PhotoTipsView: View {
                 .padding(.top, 16)
                 .padding(.bottom, 0)
         }
-        .background(Color.DesignSystem.photoTipsBackground)
+        .background(Color.DesignSystem.white)
         .clipShape(
             UnevenRoundedRectangle(
                 topLeadingRadius: 34,
@@ -70,7 +70,7 @@ struct PhotoTipsView: View {
         ZStack {
             Text("Photo Tips")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
-                .foregroundStyle(Color.DesignSystem.photoTipsTitle)
+                .foregroundStyle(Color.DesignSystem.darkKnight)
 
             HStack {
                 Spacer()
@@ -78,9 +78,9 @@ struct PhotoTipsView: View {
                 Button(action: close) {
                     Image(systemName: "xmark")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(Color.DesignSystem.photoTipsCloseIcon)
+                        .foregroundStyle(Color.DesignSystem.slateGray)
                         .frame(width: 40, height: 40)
-                        .background(Color.DesignSystem.photoTipsCloseBackground, in: Circle())
+                        .background(Color.DesignSystem.brightGray, in: Circle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Close")
@@ -90,7 +90,7 @@ struct PhotoTipsView: View {
         .frame(height: 96)
         .overlay(alignment: .bottom) {
             Rectangle()
-                .fill(Color.DesignSystem.photoTipsSeparator)
+                .fill(Color.DesignSystem.brightGray)
                 .frame(height: 1)
         }
     }
@@ -100,14 +100,14 @@ struct PhotoTipsView: View {
             Text("GOT IT")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                 .tracking(4)
-                .foregroundStyle(Color.DesignSystem.photoTipsBackground)
+                .foregroundStyle(Color.DesignSystem.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 66)
                 .background(
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(Color.DesignSystem.photoTipsButtonBackground)
+                        .fill(Color.DesignSystem.black)
                 )
-                .shadow(color: Color.DesignSystem.photoTipsButtonShadow.opacity(0.18), radius: 22, x: 0, y: 12)
+                .shadow(color: Color.DesignSystem.black.opacity(0.18), radius: 22, x: 0, y: 12)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Got it")
@@ -128,7 +128,7 @@ struct PhotoTipsView: View {
                 Text(title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 16))
                     .tracking(1)
-                    .foregroundStyle(Color.DesignSystem.photoTipsTitle)
+                    .foregroundStyle(Color.DesignSystem.darkKnight)
             }
 
             HStack(spacing: 14) {
@@ -173,18 +173,18 @@ private struct PhotoTipsSection<Content: View>: View {
             Text(title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 16))
                 .tracking(1)
-                .foregroundStyle(Color.DesignSystem.photoTipsTitle)
+                .foregroundStyle(Color.DesignSystem.darkKnight)
 
             content
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 16))
-                .foregroundStyle(Color.DesignSystem.photoTipsBody)
+                .foregroundStyle(Color.DesignSystem.darkSlate)
                 .lineSpacing(6)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 24)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.DesignSystem.photoTipsSectionBackground)
+                        .fill(Color.DesignSystem.alabaster)
                 )
         }
     }

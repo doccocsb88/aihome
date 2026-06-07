@@ -126,7 +126,7 @@ struct InspirationDetailView: View {
             Text("OR")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                 .tracking(4)
-                .foregroundStyle(Color.DesignSystem.inspirationBody)
+                .foregroundStyle(Color.DesignSystem.slateGray)
                 .frame(maxWidth: .infinity)
 
             NavigationLink {
@@ -201,7 +201,7 @@ private struct AdvancedToolsSection: View {
             Text("ADVANCED TOOLS")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                 .tracking(4)
-                .foregroundStyle(Color.DesignSystem.inspirationBody)
+                .foregroundStyle(Color.DesignSystem.slateGray)
                 .padding(.horizontal, 35)
                 .padding(.top, 35)
 
@@ -245,7 +245,7 @@ private struct AdvancedToolCard: View {
             .background(.white, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.DesignSystem.inspirationBorder, lineWidth: 1)
+                    .stroke(Color.DesignSystem.platinum, lineWidth: 1)
             }
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
         }

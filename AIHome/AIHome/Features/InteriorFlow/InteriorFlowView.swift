@@ -140,7 +140,7 @@ struct InteriorFlowView: View {
                                 .cornerRadius(16)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .stroke(viewModel.draft.roomType == room ? Color.DesignSystem.flowSelectionAccent : Color.clear, lineWidth: 2)
+                                        .stroke(viewModel.draft.roomType == room ? Color.DesignSystem.folly : Color.clear, lineWidth: 2)
                                 )
                         }
                     }
@@ -204,7 +204,7 @@ struct InteriorFlowView: View {
                             .cornerRadius(16)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .stroke(viewModel.draft.designStyle == style ? Color.DesignSystem.flowSelectionAccent : Color.gray.opacity(0.2), lineWidth: viewModel.draft.designStyle == style ? 2 : 1)
+                                    .stroke(viewModel.draft.designStyle == style ? Color.DesignSystem.folly : Color.gray.opacity(0.2), lineWidth: viewModel.draft.designStyle == style ? 2 : 1)
                             )
                         }
                     }
@@ -328,7 +328,7 @@ struct InteriorFlowView: View {
             .cornerRadius(24)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(viewModel.draft.intervention == level ? Color.DesignSystem.flowSelectionAccent : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
+                    .stroke(viewModel.draft.intervention == level ? Color.DesignSystem.folly : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
             )
         }
     }

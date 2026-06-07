@@ -2,15 +2,16 @@ import SwiftUI
 
 struct InspirationView: View {
     @State private var viewModel = InspirationViewModel()
-    @Binding private var showingFilter: Bool
+    @State private var showingFilter = false
     @Binding private var showingDetail: Bool
+    private let onFilterPresentationChanged: (Bool) -> Void
 
     init(
-        showingFilter: Binding<Bool> = .constant(false),
-        showingDetail: Binding<Bool> = .constant(false)
+        showingDetail: Binding<Bool> = .constant(false),
+        onFilterPresentationChanged: @escaping (Bool) -> Void = { _ in }
     ) {
-        _showingFilter = showingFilter
         _showingDetail = showingDetail
+        self.onFilterPresentationChanged = onFilterPresentationChanged
     }
 
     var body: some View {
@@ -30,7 +31,9 @@ struct InspirationView: View {
                                 viewModel.toggleLike(for: item)
                             },
                             onOpenDetail: {
-                                showingDetail = true
+                                withAnimation(.spring(response: 0.32, dampingFraction: 0.9)) {
+                                    showingDetail = true
+                                }
                             }
                         )
                     }
@@ -42,12 +45,23 @@ struct InspirationView: View {
             filterButton
                 .padding(.trailing, 24)
                 .padding(.bottom, 16)
+
+            if showingFilter {
+                InspirationFilterOverlay(isPresented: $showingFilter)
+                    .zIndex(1)
+            }
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             showingDetail = false
+        }
+        .onDisappear {
+            onFilterPresentationChanged(false)
+        }
+        .onChange(of: showingFilter) { _, isPresented in
+            onFilterPresentationChanged(isPresented)
         }
     }
 
@@ -65,7 +79,7 @@ struct InspirationView: View {
                 .font(FontFamily.Roboto.black.swiftUIFont(size: 12))
                 .foregroundStyle(.white)
                 .frame(width: 52, height: 34)
-                .background(Color.DesignSystem.inspirationAccent, in: Capsule())
+                .background(Color.DesignSystem.amaranth, in: Capsule())
         }
         .padding(.horizontal, 22)
     }
@@ -78,7 +92,7 @@ struct InspirationView: View {
                 } label: {
                     Text(category.rawValue.uppercased())
                         .font(FontFamily.Roboto.black.swiftUIFont(size: 12))
-                        .foregroundStyle(viewModel.selectedCategory == category ? Color.DesignSystem.textPrimary : Color.DesignSystem.inspirationTabInactive)
+                        .foregroundStyle(viewModel.selectedCategory == category ? Color.DesignSystem.textPrimary : Color.DesignSystem.coolGray)
                         .frame(maxWidth: .infinity)
                         .frame(height: 32)
                         .background(
@@ -91,7 +105,7 @@ struct InspirationView: View {
             }
         }
         .padding(4)
-        .background(Color.DesignSystem.inspirationPillBackground, in: Capsule())
+        .background(Color.DesignSystem.cultured, in: Capsule())
         .padding(.horizontal, 22)
     }
 
@@ -99,14 +113,14 @@ struct InspirationView: View {
         HStack(spacing: 5) {
             Image(systemName: "sparkles")
                 .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(Color.DesignSystem.inspirationAccent)
+                .foregroundStyle(Color.DesignSystem.amaranth)
 
             Text("3/3")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                .foregroundStyle(Color.DesignSystem.inspirationTextSecondary)
+                .foregroundStyle(Color.DesignSystem.darkSlate)
         }
         .frame(width: 68, height: 34)
-        .background(Color.DesignSystem.inspirationPillBackground, in: Capsule())
+        .background(Color.DesignSystem.cultured, in: Capsule())
     }
 
     private var filterButton: some View {
@@ -119,11 +133,42 @@ struct InspirationView: View {
                 .font(.system(size: 22, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(width: 58, height: 58)
-                .background(Color.DesignSystem.inspirationAccent, in: Circle())
-                .shadow(color: Color.DesignSystem.inspirationAccent.opacity(0.35), radius: 16, x: 0, y: 8)
+                .background(Color.DesignSystem.amaranth, in: Circle())
+                .shadow(color: Color.DesignSystem.amaranth.opacity(0.35), radius: 16, x: 0, y: 8)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Filter inspirations")
+    }
+}
+
+private struct InspirationFilterOverlay: View {
+    @Binding var isPresented: Bool
+
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .bottom) {
+                Rectangle()
+                    .fill(.black.opacity(0.45))
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        close()
+                    }
+
+                InspirationFilterView(onApply: close)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 678 + proxy.safeAreaInsets.bottom)
+                    .ignoresSafeArea(edges: .bottom)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .ignoresSafeArea(edges: .bottom)
+    }
+
+    private func close() {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
+            isPresented = false
+        }
     }
 }
 
@@ -204,7 +249,7 @@ private struct InspirationCardContent: View {
 
             Text(item.subtitle)
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 13))
-                .foregroundStyle(Color.DesignSystem.inspirationBody)
+                .foregroundStyle(Color.DesignSystem.slateGray)
                 .lineSpacing(5)
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -242,14 +287,14 @@ private struct InspirationTag: View {
     var body: some View {
         Text(title.uppercased())
             .font(FontFamily.Roboto.black.swiftUIFont(size: 10))
-            .foregroundStyle(isProminent ? Color.DesignSystem.inspirationAccent : Color.DesignSystem.inspirationTextSecondary)
+            .foregroundStyle(isProminent ? Color.DesignSystem.amaranth : Color.DesignSystem.darkSlate)
             .lineLimit(1)
             .minimumScaleFactor(0.82)
             .padding(.horizontal, 14)
             .padding(.vertical, 7)
             .background(
                 Capsule()
-                    .fill(isProminent ? Color.DesignSystem.inspirationProminentTagBackground : Color.DesignSystem.inspirationTagBackground)
+                    .fill(isProminent ? Color.DesignSystem.lavenderBlush : Color.DesignSystem.brightGray)
             )
     }
 }

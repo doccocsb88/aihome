@@ -197,7 +197,7 @@ struct ReferenceStyleFlowView: View {
             .cornerRadius(24)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(viewModel.draft.intervention == level ? Color.DesignSystem.flowSelectionAccent : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
+                    .stroke(viewModel.draft.intervention == level ? Color.DesignSystem.folly : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
             )
         }
     }

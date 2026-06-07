@@ -42,16 +42,14 @@ struct PhotoSourcePickerView: View {
             } else {
                 VStack(spacing: 24) {
                     VStack(spacing: 12) {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.system(size: 24))
-                            .foregroundColor(.blue)
-                            .frame(width: 56, height: 56)
-                            .background(Color.blue.opacity(0.1))
-                            .clipShape(Circle())
+                        Image("ic_picker_image")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 52, height: 51)
                         
                         Text("Choose your photo.\nFor better results, use a horizontal\ndirection.")
-                            .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
-                            .foregroundColor(.gray)
+                            .font(FontFamily.Inter24pt.regular.swiftUIFont(size: 14))
+                            .foregroundColor(Color.DesignSystem.coolGray)
                             .multilineTextAlignment(.center)
                     }
                     .padding(.top, 16)
@@ -59,9 +57,14 @@ struct PhotoSourcePickerView: View {
                     VStack(spacing: 16) {
                         PhotosPicker(selection: $viewModel.imageSelection, matching: .images) {
                             HStack {
-                                Image(systemName: "photo")
+                                Image("ic_picker_gallery")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
                                 Text("Gallery")
-                                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
+                                    .font(FontFamily.Inter24pt.semiBold.swiftUIFont(size: 15))
+                                    .foregroundColor(.white)
+
                             }
                             .foregroundColor(.DesignSystem.background)
                             .frame(maxWidth: .infinity)
@@ -74,9 +77,13 @@ struct PhotoSourcePickerView: View {
                             viewModel.showCamera = true
                         }) {
                             HStack {
-                                Image(systemName: "camera")
+                                Image("ic_picker_camera")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
                                 Text("Camera")
-                                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
+                                    .font(FontFamily.Inter24pt.semiBold.swiftUIFont(size: 15))
+                                    .foregroundColor(.DesignSystem.slateGray)
                             }
                             .foregroundColor(.DesignSystem.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -85,7 +92,7 @@ struct PhotoSourcePickerView: View {
                             .cornerRadius(12)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                    .stroke(Color.DesignSystem.platinum, lineWidth: 1)
                             )
                         }
                     }

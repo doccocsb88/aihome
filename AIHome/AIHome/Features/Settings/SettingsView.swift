@@ -43,7 +43,7 @@ struct SettingsView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 24)
-                            .stroke(Color.DesignSystem.settingsRowBorder, lineWidth: 1)
+                            .stroke(Color.DesignSystem.brightGray, lineWidth: 1)
                             .background(RoundedRectangle(cornerRadius: 24).fill(Color(uiColor: .systemBackground)))
                     )
                 }
@@ -120,7 +120,7 @@ struct SettingRow: View {
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(Color.DesignSystem.settingsRowBorder, lineWidth: 1)
+                    .stroke(Color.DesignSystem.brightGray, lineWidth: 1)
                     .background(RoundedRectangle(cornerRadius: 24).fill(Color(uiColor: .systemBackground)))
             )
         }

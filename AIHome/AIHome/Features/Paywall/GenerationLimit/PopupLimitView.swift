@@ -111,9 +111,9 @@ struct PopupLimitView: View {
                         .frame(height: 58)
                         .background(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(Color.DesignSystem.historyAccent)
+                                .fill(Color.DesignSystem.folly)
                         )
-                        .shadow(color: Color.DesignSystem.popupLimitButtonShadow.opacity(0.16), radius: 16, x: 0, y: 10)
+                        .shadow(color: Color.DesignSystem.royalBlue.opacity(0.16), radius: 16, x: 0, y: 10)
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Upgrade Now")
@@ -132,7 +132,7 @@ struct PopupLimitView: View {
     private var titleView: some View {
         Text(kind.title)
             .font(FontFamily.Inter24pt.bold.swiftUIFont(size: 24))
-            .foregroundStyle(Color.DesignSystem.historyCardTitle)
+            .foregroundStyle(Color.DesignSystem.darkKnight)
             .multilineTextAlignment(.center)
             .lineSpacing(2)
             .padding(.horizontal, 24)
@@ -142,7 +142,7 @@ struct PopupLimitView: View {
     private var messageView: some View {
         Text(kind.message)
             .font(FontFamily.Inter24pt.regular.swiftUIFont(size: 14))
-            .foregroundStyle(Color.DesignSystem.historyCardStyle)
+            .foregroundStyle(Color.DesignSystem.slateGray)
             .multilineTextAlignment(.center)
             .lineSpacing(5)
             .padding(.horizontal, 34)
