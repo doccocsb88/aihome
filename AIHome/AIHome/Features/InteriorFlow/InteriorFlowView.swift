@@ -217,9 +217,7 @@ struct InteriorFlowView: View {
                     .padding(.bottom, 24)
                 }
             }
-            
-            Spacer()
-            
+                        
             Button(action: { viewModel.nextStep() }) {
                 Text("CONTINUE")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
@@ -237,8 +235,36 @@ struct InteriorFlowView: View {
     private func designStyleImageName(for style: InteriorDesignStyle) -> String? {
         switch style {
         case .noStyle: return "ic_interior_style_custom"
-        case .contemporary: return "ic_interior_style_contemporaty"
-        case .luxurious: return "ic_interior_style_luxe"
+        case .transitional: return "interior_style_01"
+        case .traditional: return "interior_style_02"
+        case .scandinavian: return "interior_style_03"
+        case .organicModern: return "interior_style_04"
+        case .modernFarmHouse: return "interior_style_05"
+        case .modern: return "interior_style_06"
+        case .minimalist: return "interior_style_07"
+        case .japandi: return "interior_style_08"
+        case .vintageEclectic: return "interior_style_09"
+        case .tropical: return "interior_style_10"
+        case .rustic: return "interior_style_11"
+        case .quietLuxury: return "interior_style_12"
+        case .maximalist: return "interior_style_13"
+        case .luxurious: return "interior_style_14"
+        case .industrial: return "interior_style_15"
+        case .midcenturyModern: return "interior_style_16"
+        case .contemporary: return "interior_style_17"
+        case .coastal: return "interior_style_18"
+        case .biophilic: return "interior_style_19"
+        case .scandiBoho: return "interior_style_20"
+        case .retro: return "interior_style_21"
+        case .neon: return "interior_style_22"
+        case .modernArabic: return "interior_style_23"
+        case .mediterranean: return "interior_style_24"
+        case .kidsRoom: return "interior_style_25"
+        case .desertModernism: return "interior_style_26"
+        case .christmas: return "interior_style_27"
+        case .candyLand: return "interior_style_28"
+        case .brutalist: return "interior_style_29"
+        case .artDeco: return "interior_style_30"
         default: return nil
         }
     }
@@ -273,10 +299,9 @@ struct InteriorFlowView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 8)
-                .padding(.bottom, 24)
+                .padding(.bottom, 0)
             }
             
-            Spacer()
             
             Button(action: {
                 onGenerate(viewModel.draft)

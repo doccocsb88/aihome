@@ -29,7 +29,12 @@ class InteriorFlowViewModel {
     
     // Styles from PDF
     let designStyles: [InteriorDesignStyle] = [
-        .noStyle, .contemporary, .luxurious, .industrial
+        .noStyle, .traditional, .scandinavian, .organicModern,
+        .modernFarmHouse, .modern, .minimalist, .japandi, .vintageEclectic,
+        .tropical, .rustic, .quietLuxury, .maximalist, .luxurious,
+        .industrial, .midcenturyModern, .contemporary, .coastal, .biophilic,
+        .scandiBoho, .retro, .neon, .modernArabic, .mediterranean,
+        .kidsRoom, .desertModernism, .christmas, .candyLand, .brutalist, .artDeco
     ]
     
     func nextStep() {
