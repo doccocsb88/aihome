@@ -27,7 +27,27 @@ final class InspirationViewModel {
         selectedCategory = category
     }
     
+    var filter = InspirationFilterViewModel()
+    
     var filteredItems: [InspirationItem] {
-        items.filter { $0.category == selectedCategory }
+        items.filter { item in
+            guard item.category == selectedCategory else { return false }
+            
+            if filter.showLikedOnly && !item.isLiked { return false }
+            
+            if selectedCategory == .interior && filter.selectedInteriorSpace != "All" {
+                if item.spaceType.lowercased() != filter.selectedInteriorSpace.lowercased() {
+                    return false
+                }
+            }
+            
+            if selectedCategory == .exterior && filter.selectedExteriorSpace != "All" {
+                if item.spaceType.lowercased() != filter.selectedExteriorSpace.lowercased() {
+                    return false
+                }
+            }
+            
+            return true
+        }
     }
 }

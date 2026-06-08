@@ -7,6 +7,16 @@ protocol InspirationServiceProtocol {
 
 final class MockInspirationService: InspirationServiceProtocol {
     private var items: [InspirationItem] = InspirationData.items
+    private let likesKey = "saved_likes_ids"
+
+    init() {
+        let savedLikes = UserDefaults.standard.stringArray(forKey: likesKey) ?? []
+        for index in items.indices {
+            if savedLikes.contains(items[index].id) {
+                items[index].isLiked = true
+            }
+        }
+    }
 
     func getInspirations() -> [InspirationItem] {
         items
@@ -15,6 +25,12 @@ final class MockInspirationService: InspirationServiceProtocol {
     func toggleLike(for id: String) {
         guard let index = items.firstIndex(where: { $0.id == id }) else { return }
         items[index].isLiked.toggle()
+        saveLikes()
+    }
+
+    private func saveLikes() {
+        let likedIds = items.filter { $0.isLiked }.map { $0.id }
+        UserDefaults.standard.set(likedIds, forKey: likesKey)
     }
 }
 

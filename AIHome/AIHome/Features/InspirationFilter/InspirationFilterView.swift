@@ -2,7 +2,7 @@ import SwiftUI
 
 struct InspirationFilterView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var viewModel = InspirationFilterViewModel()
+    var viewModel: InspirationFilterViewModel
     var onApply: (() -> Void)?
 
     var body: some View {
@@ -248,6 +248,6 @@ private struct FlowLayout: Layout {
     Color.gray.opacity(0.45)
         .ignoresSafeArea()
         .sheet(isPresented: .constant(true)) {
-            InspirationFilterView()
+            InspirationFilterView(viewModel: InspirationFilterViewModel())
         }
 }

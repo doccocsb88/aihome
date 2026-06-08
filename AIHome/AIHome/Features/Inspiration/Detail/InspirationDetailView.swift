@@ -95,20 +95,7 @@ struct InspirationDetailView: View {
 
             Spacer()
 
-            Button {
-                withAnimation(.easeInOut(duration: 0.22)) {
-                    showingBefore.toggle()
-                }
-            } label: {
-                Image(showingBefore ? "ic_after" : "ic_before")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 18, height: 18)
-                    .frame(width: 44, height: 44)
-                    .background(.white.opacity(0.88), in: Circle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(showingBefore ? "Show after image" : "Show before image")
+            BeforeAfterButton(showingBefore: $showingBefore)
         }
         .padding(.horizontal, 28)
         .padding(.top, 54)
@@ -213,5 +200,31 @@ struct InspirationDetailView: View {
                 )
             )
         )
+    }
+}
+
+struct BeforeAfterButton: View {
+    @Binding var showingBefore: Bool
+    
+    var body: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.22)) {
+                showingBefore.toggle()
+            }
+        } label: {
+            Image(showingBefore ? "ic_after" : "ic_before")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18, height: 18)
+                .frame(width: 44, height: 44)
+                .background(
+                    (showingBefore ? Color(hex: "#959595") : Color(hex: "#FFFFFF"))
+                        .opacity(0.75)
+                )
+                .background(.ultraThinMaterial)
+                .clipShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(showingBefore ? "Show after image" : "Show before image")
     }
 }

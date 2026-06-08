@@ -20,17 +20,16 @@ class InteriorFlowViewModel {
     )
     
     // Room types from PDF
-    let roomTypes = [
-        "Dining room", "Bathroom", "Bedroom", "Home office",
-        "Study room", "Coffee shop", "Living room", "Kitchen",
-        "Restaurant", "Gaming room", "Attic", "Office",
-        "Toilet", "Balcony"
+    let roomTypes: [InteriorRoomType] = [
+        .diningRoom, .bathroom, .bedroom, .homeOffice,
+        .studyRoom, .coffeeShop, .livingRoom, .kitchen,
+        .restaurant, .gamingRoom, .attic, .office,
+        .balcony
     ]
     
     // Styles from PDF
-    let designStyles = [
-        "Custom style", "Contemporary", "Luxurious",
-        "St. Valentines", "Industrial", "Cozy Cabin"
+    let designStyles: [InteriorDesignStyle] = [
+        .noStyle, .contemporary, .luxurious, .industrial
     ]
     
     func nextStep() {
@@ -55,7 +54,7 @@ class InteriorFlowViewModel {
         switch currentStep {
         case .photoSelection: return photoPickerViewModel.selectedImage != nil
         case .roomType: return draft.roomType != nil
-        case .designStyle: return draft.designStyle != nil && (draft.designStyle != "Custom style" || (draft.customStyle?.isEmpty == false))
+        case .designStyle: return draft.designStyle != nil && (draft.designStyle != .noStyle || (draft.customStyle?.isEmpty == false))
         case .intervention: return draft.intervention != nil
         }
     }

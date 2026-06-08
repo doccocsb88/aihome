@@ -44,10 +44,10 @@ struct InspirationView: View {
 
             filterButton
                 .padding(.trailing, 24)
-                .padding(.bottom, 16)
+                .padding(.bottom, 80)
 
             if showingFilter {
-                InspirationFilterOverlay(isPresented: $showingFilter)
+                InspirationFilterOverlay(viewModel: viewModel.filter, isPresented: $showingFilter)
                     .zIndex(1)
             }
         }
@@ -113,6 +113,7 @@ struct InspirationView: View {
 }
 
 private struct InspirationFilterOverlay: View {
+    var viewModel: InspirationFilterViewModel
     @Binding var isPresented: Bool
 
     var body: some View {
@@ -125,7 +126,7 @@ private struct InspirationFilterOverlay: View {
                         close()
                     }
 
-                InspirationFilterView(onApply: close)
+                InspirationFilterView(viewModel: viewModel, onApply: close)
                     .frame(maxWidth: .infinity)
                     .frame(height: 678 + proxy.safeAreaInsets.bottom)
                     .ignoresSafeArea(edges: .bottom)

@@ -59,7 +59,7 @@ struct InteriorFlowContainerView: View {
             return
         }
 
-        let actualStyle = designStyle == "Custom style" ? (draft.customStyle ?? "Modern") : designStyle
+        let actualStyle = designStyle == .noStyle ? (draft.customStyle ?? "Modern") : designStyle.rawValue
 
         let aiIntervention: AIIntervention
         switch interventionLevel {
@@ -68,7 +68,7 @@ struct InteriorFlowContainerView: View {
         case .high: aiIntervention = .extreme
         }
 
-        AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType), Style: \(actualStyle), Intervention: \(aiIntervention.rawValue)")
+        AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType.rawValue), Style: \(actualStyle), Intervention: \(aiIntervention.rawValue)")
 
         let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -84,7 +84,7 @@ struct InteriorFlowContainerView: View {
                     aiIntervention: aiIntervention,
                     noDesign: 1, // Generate 1 image for MVP
                     designStyle: actualStyle,
-                    roomType: roomType,
+                    roomType: roomType.rawValue,
                     customInstruction: nil
                 )
 
@@ -112,7 +112,7 @@ struct InteriorFlowContainerView: View {
                     type: .interior,
                     title: "Interior Design",
                     styleName: actualStyle,
-                    roomType: roomType,
+                    roomType: roomType.rawValue,
                     createdAt: Date(),
                     originalImagePath: "",
                     generatedImagePaths: [],

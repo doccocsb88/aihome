@@ -125,7 +125,7 @@ struct InteriorFlowView: View {
                         Button(action: {
                             viewModel.draft.roomType = room
                         }) {
-                            Text(room)
+                            Text(room.rawValue)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 16)
@@ -188,7 +188,7 @@ struct InteriorFlowView: View {
                                         .frame(height: 160)
                                 }
                                 
-                                Text(style.uppercased())
+                                Text(style.rawValue.uppercased())
                                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                                     .foregroundColor(.DesignSystem.textPrimary)
                                     .frame(maxWidth: .infinity)
@@ -207,7 +207,7 @@ struct InteriorFlowView: View {
                 .padding(.top, 8)
                 .padding(.bottom, 24)
                 
-                if viewModel.draft.designStyle == "Custom style" {
+                if viewModel.draft.designStyle == .noStyle {
                     TextField("Enter custom style...", text: Binding(
                         get: { viewModel.draft.customStyle ?? "" },
                         set: { viewModel.draft.customStyle = $0 }
@@ -234,12 +234,11 @@ struct InteriorFlowView: View {
         }
     }
     
-    private func designStyleImageName(for style: String) -> String? {
+    private func designStyleImageName(for style: InteriorDesignStyle) -> String? {
         switch style {
-        case "Custom style": return "ic_interior_style_custom"
-        case "Contemporary": return "ic_interior_style_contemporaty"
-        case "Luxurious": return "ic_interior_style_luxe"
-        case "St. Valentines": return "ic_interior_style_st_valentines"
+        case .noStyle: return "ic_interior_style_custom"
+        case .contemporary: return "ic_interior_style_contemporaty"
+        case .luxurious: return "ic_interior_style_luxe"
         default: return nil
         }
     }
