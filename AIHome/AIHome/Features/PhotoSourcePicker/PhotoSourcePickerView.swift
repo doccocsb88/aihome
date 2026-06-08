@@ -136,27 +136,22 @@ struct PhotoSourcePickerView: View {
                 .padding(.top, 8)
             }
             
+            Spacer()
+            
             if !hideCTA {
-                Spacer()
-                
-                Button(action: {
-                    if let image = viewModel.selectedImage {
-                        onContinue?(image)
+                InteriorCTAButton(
+                    title: viewModel.ctaTitle,
+                    isEnabled: viewModel.canContinue,
+                    action: {
+                        if let image = viewModel.selectedImage {
+                            onContinue?(image)
+                        }
                     }
-                }) {
-                    Text(viewModel.ctaTitle)
-                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                        .foregroundColor(viewModel.canContinue ? Color.DesignSystem.background : .white)
-                        .frame(maxWidth: .infinity, minHeight: 56)
-                        .background(viewModel.canContinue ? Color.DesignSystem.textPrimary : Color.gray.opacity(0.3))
-                        .cornerRadius(16)
-                }
-                .disabled(!viewModel.canContinue)
+                )
                 .padding(.horizontal, 32)
                 .padding(.bottom, 36)
             }
         }
-        .padding(.vertical)
         .sheet(isPresented: $viewModel.showCamera) {
             Text("Camera View Placeholder")
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))

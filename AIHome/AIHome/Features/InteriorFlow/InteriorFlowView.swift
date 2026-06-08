@@ -146,15 +146,11 @@ struct InteriorFlowView: View {
             
             Spacer()
             
-            Button(action: { viewModel.nextStep() }) {
-                Text("GET STARTED")
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                    .foregroundColor(viewModel.canContinue ? Color.DesignSystem.background : .white)
-                    .frame(maxWidth: .infinity, minHeight: 56)
-                    .background(viewModel.canContinue ? Color.DesignSystem.textPrimary : Color.gray.opacity(0.3))
-                    .cornerRadius(16)
-            }
-            .disabled(!viewModel.canContinue)
+            InteriorCTAButton(
+                title: "GET STARTED",
+                isEnabled: viewModel.canContinue,
+                action: { viewModel.nextStep() }
+            )
             .padding(.horizontal, 32)
             .padding(.bottom, 36)
         }
@@ -162,7 +158,7 @@ struct InteriorFlowView: View {
     
     @ViewBuilder
     private func designStyleStep() -> some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 0) {
             Text("Pick a design style")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                 .foregroundColor(.DesignSystem.textPrimary)
@@ -218,15 +214,11 @@ struct InteriorFlowView: View {
                 }
             }
                         
-            Button(action: { viewModel.nextStep() }) {
-                Text("CONTINUE")
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                    .foregroundColor(viewModel.canContinue ? Color.DesignSystem.background : .white)
-                    .frame(maxWidth: .infinity, minHeight: 56)
-                    .background(viewModel.canContinue ? Color.DesignSystem.textPrimary : Color.gray.opacity(0.3))
-                    .cornerRadius(16)
-            }
-            .disabled(!viewModel.canContinue)
+            InteriorCTAButton(
+                title: "CONTINUE",
+                isEnabled: viewModel.canContinue,
+                action: { viewModel.nextStep() }
+            )
             .padding(.horizontal, 32)
             .padding(.bottom, 36)
         }
@@ -303,17 +295,11 @@ struct InteriorFlowView: View {
             }
             
             
-            Button(action: {
-                onGenerate(viewModel.draft)
-            }) {
-                Text("GENERATE")
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                    .foregroundColor(viewModel.canContinue ? Color.DesignSystem.background : .white)
-                    .frame(maxWidth: .infinity, minHeight: 56)
-                    .background(viewModel.canContinue ? Color.DesignSystem.textPrimary : Color.gray.opacity(0.3))
-                    .cornerRadius(16)
-            }
-            .disabled(!viewModel.canContinue)
+            InteriorCTAButton(
+                title: "GENERATE",
+                isEnabled: viewModel.canContinue,
+                action: { onGenerate(viewModel.draft) }
+            )
             .padding(.horizontal, 32)
             .padding(.bottom, 36)
         }
@@ -349,5 +335,23 @@ struct InteriorFlowView: View {
                     .stroke(viewModel.draft.intervention == level ? Color.DesignSystem.folly : Color.gray.opacity(0.2), lineWidth: viewModel.draft.intervention == level ? 2 : 1)
             )
         }
+    }
+}
+
+struct InteriorCTAButton: View {
+    let title: String
+    let isEnabled: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                .foregroundColor(isEnabled ? Color.DesignSystem.background : .white)
+                .frame(maxWidth: .infinity, minHeight: 56)
+                .background(isEnabled ? Color.DesignSystem.textPrimary : Color.gray.opacity(0.3))
+                .cornerRadius(16)
+        }
+        .disabled(!isEnabled)
     }
 }

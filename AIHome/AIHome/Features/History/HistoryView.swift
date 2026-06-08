@@ -80,19 +80,11 @@ struct HistoryView: View {
                 .padding(.bottom, 100)
             }
             
-            Button(action: {
+            FloatingFilterButton {
                 // Filter action
-            }) {
-                Image(systemName: "line.3.horizontal.decrease")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
-                    .frame(width: 60, height: 60)
-                    .background(Color.DesignSystem.folly)
-                    .clipShape(Circle())
-                    .shadow(color: Color.DesignSystem.folly.opacity(0.4), radius: 8, x: 0, y: 4)
             }
             .padding(.trailing, 24)
-            .padding(.bottom, 24)
+            .padding(.bottom, 80)
         }
     }
     

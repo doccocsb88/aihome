@@ -117,7 +117,7 @@ struct CustomTabBar: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 12)
-        .padding(.bottom, 8)
+        .padding(.bottom, 0)
         .background(
             Color(uiColor: .systemBackground)
                 .ignoresSafeArea(edges: .bottom)
@@ -134,18 +134,22 @@ struct TabBarItem: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 2) {
+                Spacer()
                 Image(iconName)
                     .renderingMode(.template)
                     .foregroundColor(isActive ? .primary : Color(uiColor: .systemGray2))
-                
-                Image("ic_tab_active")
-                    .opacity(isActive ? 1 : 0)
+                            .offset(y: isActive ? 0 : -10)
+
+                if isActive {
+                    Image("ic_tab_active")
+                }
             }
-            .offset(y: isActive ? -6 : 0)
             .animation(.easeOut(duration: 0.2), value: isActive)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 48) // Fixed height to prevent layout jumps when offsetting
+        .frame(height: 48)
+        .background(.clear, ignoresSafeAreaEdges: [])
+        // Fixed height to prevent layout jumps when offsetting
     }
 }
 

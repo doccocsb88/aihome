@@ -99,20 +99,11 @@ struct InspirationView: View {
     }
 
     private var filterButton: some View {
-        Button {
+        FloatingFilterButton {
             withAnimation(.spring(response: 0.34, dampingFraction: 0.88)) {
                 showingFilter = true
             }
-        } label: {
-            Image(systemName: "line.3.horizontal.decrease")
-                .font(.system(size: 22, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(width: 58, height: 58)
-                .background(Color.DesignSystem.amaranth, in: Circle())
-                .shadow(color: Color.DesignSystem.amaranth.opacity(0.35), radius: 16, x: 0, y: 8)
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Filter inspirations")
     }
 }
 
