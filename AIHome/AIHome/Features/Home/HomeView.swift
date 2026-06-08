@@ -7,11 +7,13 @@ struct HomeView: View {
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                MainTabHeaderView(title: "Home")
-                
-                VStack(alignment: .leading, spacing: 16) {
+        VStack(spacing: 0) {
+            MainTabHeaderView(title: "Home")
+                .padding(.vertical)
+            
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 24) {
+                    VStack(alignment: .leading, spacing: 16) {
                     ForEach(viewModel.primaryTools) { tool in
                         HomeToolRow(tool: tool) {
                             handleNavigation(for: tool)
@@ -37,7 +39,8 @@ struct HomeView: View {
                 Spacer(minLength: 60)
             }
             .padding(.vertical)
-        }
+            } // Close ScrollView
+        } // Close VStack
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .ratingPopup(isPresented: $isShowingHomeRating, kind: .homeEnjoyment) {
             AppLogger.logAction("Home Rating", details: "Rate on App Store")

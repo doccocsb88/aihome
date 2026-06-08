@@ -16,30 +16,32 @@ struct InspirationView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            ScrollView {
-                LazyVStack(spacing: 30) {
-                    VStack(spacing: 26) {
-                        header
-                        categoryTabs
-                    }
-                    .padding(.bottom, -4)
-
-                    ForEach(viewModel.filteredItems) { item in
-                        InspirationCardContainer(
-                            item: item,
-                            onLike: {
-                                viewModel.toggleLike(for: item)
-                            },
-                            onOpenDetail: {
-                                withAnimation(.spring(response: 0.32, dampingFraction: 0.9)) {
-                                    showingDetail = true
-                                }
-                            }
-                        )
-                    }
+            VStack(spacing: 0) {
+                VStack(spacing: 26) {
+                    header
+                    categoryTabs
                 }
-                .padding(.top, 28)
-                .padding(.bottom, 96)
+                .padding(.bottom, 24)
+                
+                ScrollView {
+                    LazyVStack(spacing: 30) {
+                        ForEach(viewModel.filteredItems) { item in
+                            InspirationCardContainer(
+                                item: item,
+                                onLike: {
+                                    viewModel.toggleLike(for: item)
+                                },
+                                onOpenDetail: {
+                                    withAnimation(.spring(response: 0.32, dampingFraction: 0.9)) {
+                                        showingDetail = true
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    .padding(.top, 4)
+                    .padding(.bottom, 96)
+                }
             }
 
             filterButton
@@ -48,6 +50,7 @@ struct InspirationView: View {
 
             if showingFilter {
                 InspirationFilterOverlay(viewModel: viewModel.filter, isPresented: $showingFilter)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
             }
         }
@@ -67,6 +70,7 @@ struct InspirationView: View {
 
     private var header: some View {
         MainTabHeaderView(title: "Inspiration", titleSize: 32)
+            .padding(.top, 16)
     }
 
     private var categoryTabs: some View {
@@ -130,7 +134,7 @@ private struct InspirationFilterOverlay: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 678 + proxy.safeAreaInsets.bottom)
                     .ignoresSafeArea(edges: .bottom)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .transition(.move(edge: .bottom))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
