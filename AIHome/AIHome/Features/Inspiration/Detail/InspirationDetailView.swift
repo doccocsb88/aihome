@@ -176,6 +176,7 @@ struct InspirationDetailView: View {
             coordinator.push(.newWallsFlow)
         case .furnitureFinder:
             coordinator.push(.furnitureFinderFlow)
+        case .edit: break
         }
     }
 

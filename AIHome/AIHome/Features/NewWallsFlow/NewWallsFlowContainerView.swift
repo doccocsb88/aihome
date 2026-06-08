@@ -16,7 +16,7 @@ struct NewWallsFlowContainerView: View {
         Group {
             switch state {
             case .input:
-                NewWallsFlowView(onGenerate: { draft in
+                NewWallsFlowView(initialImage: currentDraft?.sourceImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):

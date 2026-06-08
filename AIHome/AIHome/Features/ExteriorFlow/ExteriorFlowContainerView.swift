@@ -17,7 +17,7 @@ struct ExteriorFlowContainerView: View {
         Group {
             switch state {
             case .input:
-                ExteriorFlowView(initialImage: initialImage, onGenerate: { draft in
+                ExteriorFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):

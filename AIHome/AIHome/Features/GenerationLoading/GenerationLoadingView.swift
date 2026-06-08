@@ -31,8 +31,7 @@ struct GenerationLoadingView: View {
                 }
                 
                 // Scanner brackets (mock animation)
-                Image(systemName: "viewfinder")
-                    .font(.system(size: 60, weight: .thin))
+                ScannerBrackets()
                     .foregroundColor(.primary)
                     .scaleEffect(bracketScale)
                     .animation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: bracketScale)
@@ -43,27 +42,31 @@ struct GenerationLoadingView: View {
             }
             
             // Mock Progress Bar
-            HStack(spacing: 16) {
-                GeometryReader { geo in
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
                     ZStack(alignment: .leading) {
                         Capsule()
+                            .fill(Color(UIColor.systemGray5))
+                            .frame(width: 140, height: 4)
+                        
+                        Capsule()
                             .fill(Color.primary)
-                            .frame(width: geo.size.width * progress, height: 6)
+                            .frame(width: 140 * progress, height: 4)
                             .animation(.linear(duration: 15), value: progress)
                     }
+                    
+                    Spacer()
+                    
+                    Text("\(Int(progress * 100))%")
+                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 14))
+                        .foregroundColor(.gray)
                 }
-                .frame(height: 6)
                 
-                Text("\(Int(progress * 100))%")
-                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 14))
-                    .foregroundColor(.gray)
-                    .frame(width: 40, alignment: .trailing)
+                Text(viewModel.progressText)
+                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
+                    .foregroundColor(.primary)
             }
             .padding(.horizontal, 32)
-            
-            Text(viewModel.progressText)
-                .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
-                .foregroundColor(.primary)
             
             Spacer()
         }
@@ -127,5 +130,37 @@ struct GenerationLoadingView: View {
                 .padding(.horizontal, 40)
             }
         }
+    }
+}
+
+struct ScannerBrackets: View {
+    var body: some View {
+        Path { path in
+            let length: CGFloat = 16
+            let w: CGFloat = 48
+            let h: CGFloat = 48
+            
+            // Top Left
+            path.move(to: CGPoint(x: 0, y: length))
+            path.addLine(to: CGPoint(x: 0, y: 0))
+            path.addLine(to: CGPoint(x: length, y: 0))
+            
+            // Top Right
+            path.move(to: CGPoint(x: w - length, y: 0))
+            path.addLine(to: CGPoint(x: w, y: 0))
+            path.addLine(to: CGPoint(x: w, y: length))
+            
+            // Bottom Right
+            path.move(to: CGPoint(x: w, y: h - length))
+            path.addLine(to: CGPoint(x: w, y: h))
+            path.addLine(to: CGPoint(x: w - length, y: h))
+            
+            // Bottom Left
+            path.move(to: CGPoint(x: length, y: h))
+            path.addLine(to: CGPoint(x: 0, y: h))
+            path.addLine(to: CGPoint(x: 0, y: h - length))
+        }
+        .stroke(Color.primary, style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
+        .frame(width: 48, height: 48)
     }
 }

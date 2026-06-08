@@ -4,9 +4,6 @@ struct HomeView: View {
     @State private var viewModel = HomeViewModel()
     @State private var isShowingHomeRating = false
     @State private var hasShownHomeRating = false
-#if DEBUG || DEBUB
-    @State private var isShowingPhotoTips = false
-#endif
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
@@ -37,6 +34,7 @@ struct HomeView: View {
                     }
                 }
                 
+                Spacer(minLength: 60)
             }
             .padding(.vertical)
         }
@@ -47,15 +45,7 @@ struct HomeView: View {
         .onAppear {
             AppLogger.logScreen("HomeView")
             presentHomeRatingIfNeeded()
-#if DEBUG || DEBUB
-            isShowingPhotoTips = true
-#endif
         }
-#if DEBUG || DEBUB
-        .sheet(isPresented: $isShowingPhotoTips) {
-            PhotoTipsView()
-        }
-#endif
     }
     
     private func handleNavigation(for tool: HomeToolItem) {
@@ -69,6 +59,7 @@ struct HomeView: View {
         case .newFlooring: coordinator.push(.newFlooringFlow)
         case .newWalls: coordinator.push(.newWallsFlow)
         case .furnitureFinder: coordinator.push(.furnitureFinderFlow)
+        case .edit: break
         }
     }
 

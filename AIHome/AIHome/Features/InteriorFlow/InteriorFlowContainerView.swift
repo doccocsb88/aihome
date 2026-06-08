@@ -17,7 +17,7 @@ struct InteriorFlowContainerView: View {
         Group {
             switch state {
             case .input:
-                InteriorFlowView(initialImage: initialImage, onGenerate: { draft in
+                InteriorFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
