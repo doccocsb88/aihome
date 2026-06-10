@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HistoryView: View {
     @State private var viewModel = HistoryViewModel()
+    @State private var isShowingFilter = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -71,7 +72,7 @@ struct HistoryView: View {
         ZStack(alignment: .bottomTrailing) {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
-                    ForEach(viewModel.projects) { project in
+                    ForEach(viewModel.filteredProjects) { project in
                         projectCard(for: project)
                     }
                 }
@@ -81,10 +82,15 @@ struct HistoryView: View {
             }
             
             FloatingFilterButton {
-                // Filter action
+                isShowingFilter = true
             }
             .padding(.trailing, 24)
             .padding(.bottom, 80)
+        }
+        .sheet(isPresented: $isShowingFilter) {
+            InspirationFilterView(viewModel: viewModel.filter)
+                .presentationDetents([.fraction(0.85)])
+                .presentationDragIndicator(.hidden)
         }
     }
     
