@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var viewModel = SettingsViewModel()
+    @State private var webPageToOpen: AppWebPage?
     
     var body: some View {
         ScrollView {
@@ -57,21 +58,35 @@ struct SettingsView: View {
                 SettingRow(
                     icon: "checkmark.shield.fill",
                     title: "Privacy Policy",
-                    action: { viewModel.openPrivacyPolicy() }
+                    action: { 
+                        webPageToOpen = AppWebPage(
+                            title: "Privacy Policy",
+                            url: URL(string: "https://sites.google.com/billionx.co/homegpt-privacy-policy")!
+                        )
+                    }
                 )
                 
                 // Terms of Service
                 SettingRow(
                     icon: "doc.text.fill",
                     title: "Terms of Service",
-                    action: { viewModel.openTermsOfService() }
+                    action: { 
+                        webPageToOpen = AppWebPage(
+                            title: "Terms of Service",
+                            url: URL(string: "https://sites.google.com/billionx.co/homegpt-tos")!
+                        )
+                    }
                 )
                 
                 // Feedback
                 SettingRow(
                     icon: "ellipsis.message.fill",
                     title: "Feedback",
-                    action: { viewModel.sendFeedback() }
+                    action: { 
+                        if let url = URL(string: "mailto:support@billionx.co") {
+                            UIApplication.shared.open(url)
+                        }
+                    }
                 )
                 
                 // Footer
@@ -103,6 +118,9 @@ struct SettingsView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(viewModel.purchaseMessage ?? "")
+        }
+        .sheet(item: $webPageToOpen) { webPage in
+            AppWebView(title: webPage.title, url: webPage.url)
         }
     }
 }

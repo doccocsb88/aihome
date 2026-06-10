@@ -11,7 +11,7 @@ struct InspirationFilterView: View {
 
             HStack(alignment: .center) {
                 Text("Filters")
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundStyle(Color.DesignSystem.textPrimary)
 
                 Spacer()
@@ -22,10 +22,11 @@ struct InspirationFilterView: View {
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 16))
                 .foregroundStyle(Color.DesignSystem.slateGray)
             }
-            .padding(.top, 52)
+            .padding(.top, 24)
 
-            VStack(alignment: .leading, spacing: 38) {
-                FilterSection(title: "FAVOURITE") {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 24) {
+                    FilterSection(title: "FAVOURITE") {
                     HStack(spacing: 8) {
                         FilterChip(
                             title: "All",
@@ -64,11 +65,22 @@ struct InspirationFilterView: View {
                         }
                     }
                 }
+
+                FilterSection(title: "GARDEN SPACES") {
+                    ChipFlow(spacing: 8, rowSpacing: 9) {
+                        ForEach(viewModel.gardenSpaces, id: \.self) { space in
+                            FilterChip(
+                                title: space,
+                                isSelected: viewModel.selectedGardenSpace == space,
+                                action: { viewModel.selectedGardenSpace = space }
+                            )
+                        }
+                    }
+                }
             }
-            .padding(.top, 34)
-
-            Spacer(minLength: 50)
-
+            .padding(.top, 24)
+            .padding(.bottom, 50)
+            }
             Button {
                 if let onApply {
                     onApply()
@@ -104,7 +116,7 @@ struct InspirationFilterView: View {
         Capsule()
             .fill(Color.DesignSystem.platinum)
             .frame(width: 48, height: 4)
-            .padding(.top, 34)
+            .padding(.top, 16)
     }
 }
 
@@ -113,7 +125,7 @@ private struct FilterSection<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 28) {
+        VStack(alignment: .leading, spacing: 16) {
             Text(title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                 .tracking(3)

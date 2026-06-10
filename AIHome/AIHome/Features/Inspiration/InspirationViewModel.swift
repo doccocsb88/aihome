@@ -47,6 +47,12 @@ final class InspirationViewModel {
                 }
             }
             
+            if selectedCategory == .garden && filter.selectedGardenSpace != "All" {
+                if item.spaceType.lowercased() != filter.selectedGardenSpace.lowercased() {
+                    return false
+                }
+            }
+            
             return true
         }
     }

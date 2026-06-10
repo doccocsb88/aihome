@@ -52,6 +52,12 @@ struct InspirationView: View {
                 InspirationFilterOverlay(viewModel: viewModel.filter, isPresented: $showingFilter)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
+                    .onAppear {
+                        onFilterPresentationChanged(true)
+                    }
+                    .onDisappear {
+                        onFilterPresentationChanged(false)
+                    }
             }
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
@@ -62,9 +68,6 @@ struct InspirationView: View {
         }
         .onDisappear {
             onFilterPresentationChanged(false)
-        }
-        .onChange(of: showingFilter) { _, isPresented in
-            onFilterPresentationChanged(isPresented)
         }
     }
 
@@ -110,12 +113,14 @@ struct InspirationView: View {
 private struct InspirationFilterOverlay: View {
     var viewModel: InspirationFilterViewModel
     @Binding var isPresented: Bool
+    @State private var dragOffset: CGFloat = 0
 
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .bottom) {
                 Rectangle()
                     .fill(.black.opacity(0.45))
+                    .opacity(1.0 - Double(dragOffset / 400.0))
                     .ignoresSafeArea()
                     .onTapGesture {
                         close()
@@ -125,6 +130,24 @@ private struct InspirationFilterOverlay: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 678 + proxy.safeAreaInsets.bottom)
                     .ignoresSafeArea(edges: .bottom)
+                    .offset(y: dragOffset)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                if value.translation.height > 0 {
+                                    dragOffset = value.translation.height
+                                }
+                            }
+                            .onEnded { value in
+                                if value.translation.height > 150 || value.velocity.height > 500 {
+                                    close()
+                                } else {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
+                                        dragOffset = 0
+                                    }
+                                }
+                            }
+                    )
                     .transition(.move(edge: .bottom))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -135,6 +158,7 @@ private struct InspirationFilterOverlay: View {
     private func close() {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
             isPresented = false
+            dragOffset = 0
         }
     }
 }

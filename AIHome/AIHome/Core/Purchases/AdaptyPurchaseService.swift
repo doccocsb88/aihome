@@ -43,6 +43,9 @@ final class AdaptyPurchaseService {
         case session = "session_ios"
         case homePopup = "home_popup_ios"
         case onboarding = "onboarding_ios"
+        case proButton = "pro_button_ios"
+        case limitToken = "limit_token_ios"
+        case bannerSettings = "banner_settings_ios"
     }
 
     private enum Defaults {

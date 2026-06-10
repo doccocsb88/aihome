@@ -4,7 +4,7 @@ import SwiftUI
 
 struct MainTabHeaderView: View {
     let title: String
-    var placement: AdaptyPurchaseService.Placement = .topBar
+    var placement: AdaptyPurchaseService.Placement = .proButton
     var generationText = "3/3"
     var titleSize: CGFloat = 36
 
