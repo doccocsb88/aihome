@@ -1,0 +1,42 @@
+"settings.title" = "Einstellungen";
+"settings.restore_purchase" = "Kauf wiederherstellen";
+"settings.restoring" = "Wiederherstellen...";
+"settings.language" = "Sprache";
+"settings.privacy_policy" = "Datenschutz-Bestimmungen";
+"settings.terms_of_service" = "Nutzungsbedingungen";
+"settings.feedback" = "Rückmeldung";
+"settings.version" = "Version %@";
+
+"language.title" = "Sprache";
+"language.english" = "Englisch";
+"language.spanish" = "Spanisch";
+"language.french" = "Französisch";
+"language.german" = "Deutsch";
+
+
+"limit.generations_left.title" = "%d/%d Kostenlose Generationen
+Übrig";
+"limit.reached.title" = "Limit Erreicht";
+"limit.generations_left.message" = "Schalten Sie unbegrenzte Funktionen, Designs &
+schnellere Verarbeitung mit Pro frei.";
+"limit.reached.message" = "Sie haben alle Ihre kostenlosen Generationen aufgebraucht.
+Schalten Sie unbegrenzte Funktionen, Designs &
+schnellere Verarbeitung mit Pro frei.";
+"limit.upgrade_now" = "Jetzt Aktualisieren";
+
+"rating.home_enjoyment.title" = "Genießen Sie HomeGPT?";
+"rating.result_feedback.title" = "Ihr Feedback =
+bessere Designs";
+"rating.home_enjoyment.message" = "Bewerten Sie Ihre Erfahrung und helfen Sie uns, die Zukunft des KI-Heimdesigns aufzubauen. Es dauert nur eine Sekunde!";
+"rating.result_feedback.message" = "Wir würden uns freuen, Ihre Gedanken zu hören! Wenn Ihnen die Transformationen gefallen, ziehen Sie bitte in Betracht, eine Bewertung abzugeben. Ihr Feedback hilft uns, ein noch leistungsfähigeres KI-Erlebnis für Sie zu entwickeln.";
+"rating.rate_on_store" = "Im App Store bewerten";
+"rating.write_review" = "Eine Bewertung schreiben";
+
+"result.pro" = "PRO";
+"result.title" = "Ergebnis";
+"result.remove_watermark" = "WASSERZEICHEN ENTFERNEN";
+"result.regenerate" = "NEU GENERIEREN";
+"result.download" = "HERUNTERLADEN";
+"result.share" = "TEILEN";
+"result.save_to_archive" = "IM ARCHIV SPEICHERN";
+

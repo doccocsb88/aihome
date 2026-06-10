@@ -7,3 +7,9 @@ fonts:
       params:
         fontAliasName: CustomFont
 
+strings:
+  inputs:
+    - AIHome/Resources/Localizable/en.lproj/Localizable.strings
+  outputs:
+    - templatePath: swiftgen-strings.stencil
+      output: AIHome/Resources/Localizable/Strings.swift

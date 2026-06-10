@@ -10,7 +10,7 @@ struct SettingsView: View {
                 // Restore Purchase
                 SettingRow(
                     icon: "arrow.2.circlepath",
-                    title: viewModel.isRestoringPurchase ? "Restoring..." : "Restore Purchase",
+                    title: viewModel.isRestoringPurchase ? L10n.Settings.restoring : L10n.Settings.restorePurchase,
                     action: {
                         Task {
                             await viewModel.restorePurchase()
@@ -19,9 +19,7 @@ struct SettingsView: View {
                 )
                 
                 // Language
-                Button(action: {
-                    // Open language picker
-                }) {
+                NavigationLink(destination: LanguageView()) {
                     HStack(spacing: 16) {
                         Image(systemName: "globe")
                             .font(.system(size: 18))
@@ -31,10 +29,10 @@ struct SettingsView: View {
                             .clipShape(Circle())
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Language")
+                            Text(L10n.Settings.language)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
                                 .foregroundColor(.primary)
-                            Text(viewModel.selectedLanguage.uppercased())
+                            Text(LanguageManager.shared.localizedName(for: viewModel.selectedLanguage).uppercased())
                                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                                 .foregroundColor(.secondary)
                         }
@@ -57,7 +55,7 @@ struct SettingsView: View {
                 // Privacy Policy
                 SettingRow(
                     icon: "checkmark.shield.fill",
-                    title: "Privacy Policy",
+                    title: L10n.Settings.privacyPolicy,
                     action: { 
                         webPageToOpen = AppWebPage(
                             title: "Privacy Policy",
@@ -69,7 +67,7 @@ struct SettingsView: View {
                 // Terms of Service
                 SettingRow(
                     icon: "doc.text.fill",
-                    title: "Terms of Service",
+                    title: L10n.Settings.termsOfService,
                     action: { 
                         webPageToOpen = AppWebPage(
                             title: "Terms of Service",
@@ -81,7 +79,7 @@ struct SettingsView: View {
                 // Feedback
                 SettingRow(
                     icon: "ellipsis.message.fill",
-                    title: "Feedback",
+                    title: L10n.Settings.feedback,
                     action: { 
                         if let url = URL(string: "mailto:support@billionx.co") {
                             UIApplication.shared.open(url)
@@ -95,7 +93,7 @@ struct SettingsView: View {
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                         .foregroundColor(.secondary)
                         .tracking(1.5)
-                    Text("Version 2.4.0 (2026)")
+                    Text(L10n.Settings.version("2.4.0 (2026)"))
                         .font(FontFamily.Roboto.regular.swiftUIFont(size: 11))
                         .foregroundColor(.gray)
                 }
@@ -106,7 +104,7 @@ struct SettingsView: View {
             .padding(.top, 24)
         }
         .background(Color(uiColor: .systemBackground))
-        .navigationTitle("Setting")
+        .navigationTitle(L10n.Settings.title)
         .navigationBarTitleDisplayMode(.inline)
         .alert(
             "Restore Purchase",

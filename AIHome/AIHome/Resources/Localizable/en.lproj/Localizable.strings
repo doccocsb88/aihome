@@ -1,0 +1,42 @@
+"settings.title" = "Setting";
+"settings.restore_purchase" = "Restore Purchase";
+"settings.restoring" = "Restoring...";
+"settings.language" = "Language";
+"settings.privacy_policy" = "Privacy Policy";
+"settings.terms_of_service" = "Terms of Service";
+"settings.feedback" = "Feedback";
+"settings.version" = "Version %@";
+
+"language.title" = "Language";
+"language.english" = "English";
+"language.spanish" = "Spanish";
+"language.french" = "French";
+"language.german" = "German";
+
+
+"limit.generations_left.title" = "%d/%d Free
+Generations Left";
+"limit.reached.title" = "Limit Reached";
+"limit.generations_left.message" = "Unlock unlimited features, designs &
+faster processing with Pro.";
+"limit.reached.message" = "You've used all your free generations.
+Unlock unlimited features, designs &
+faster processing with Pro.";
+"limit.upgrade_now" = "Upgrade Now";
+
+"rating.home_enjoyment.title" = "Enjoying HomeGPT?";
+"rating.result_feedback.title" = "Your feedback =
+better designs";
+"rating.home_enjoyment.message" = "Rate your experience and help us build the future of AI home design. It only takes a second!";
+"rating.result_feedback.message" = "We'd love to hear your thoughts! If you're enjoying the transformations, please consider leaving a rating. Your feedback helps us build a more powerful AI experience for you.";
+"rating.rate_on_store" = "Rate on App Store";
+"rating.write_review" = "Write a Review";
+
+"result.pro" = "PRO";
+"result.title" = "Result";
+"result.remove_watermark" = "REMOVE WATERMARK";
+"result.regenerate" = "REGENERATE";
+"result.download" = "DOWNLOAD";
+"result.share" = "SHARE";
+"result.save_to_archive" = "SAVE TO ARCHIVE";
+

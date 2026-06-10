@@ -3,7 +3,9 @@ import Observation
 
 @Observable
 final class SettingsViewModel {
-    var selectedLanguage: String = "ENGLISH"
+    var selectedLanguage: String {
+        LanguageManager.shared.selectedLanguage
+    }
     var isRestoringPurchase: Bool = false
     var purchaseMessage: String?
     

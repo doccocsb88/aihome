@@ -16,18 +16,18 @@ enum PopupLimitKind: Equatable {
     var title: String {
         switch self {
         case let .generationsLeft(remaining, total):
-            "\(remaining)/\(total) Free\nGenerations Left"
+            L10n.Limit.GenerationsLeft.title(remaining, total)
         case .limitReached:
-            "Limit Reached"
+            L10n.Limit.Reached.title
         }
     }
 
     var message: String {
         switch self {
         case .generationsLeft:
-            "Unlock unlimited features, designs &\nfaster processing with Pro."
+            L10n.Limit.GenerationsLeft.message
         case .limitReached:
-            "You've used all your free generations.\nUnlock unlimited features, designs &\nfaster processing with Pro."
+            L10n.Limit.Reached.message
         }
     }
 
@@ -104,7 +104,7 @@ struct PopupLimitView: View {
                     .padding(.top, kind.messageTopPadding)
 
                 Button(action: onUpgrade) {
-                    Text("Upgrade Now")
+                    Text(L10n.Limit.upgradeNow)
                         .font(FontFamily.Inter24pt.bold.swiftUIFont(size: 18))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)

@@ -8,27 +8,27 @@ enum PopupRatingKind {
     var title: String {
         switch self {
         case .homeEnjoyment:
-            "Enjoying HomeGPT?"
+            L10n.Rating.HomeEnjoyment.title
         case .resultFeedback:
-            "Your feedback =\nbetter designs"
+            L10n.Rating.ResultFeedback.title
         }
     }
 
     var message: String {
         switch self {
         case .homeEnjoyment:
-            "Rate your experience and help us build the future of AI home design. It only takes a second!"
+            L10n.Rating.HomeEnjoyment.message
         case .resultFeedback:
-            "We'd love to hear your thoughts! If you're enjoying the transformations, please consider leaving a rating. Your feedback helps us build a more powerful AI experience for you."
+            L10n.Rating.ResultFeedback.message
         }
     }
 
     var buttonTitle: String {
         switch self {
         case .homeEnjoyment:
-            "Rate on App Store"
+            L10n.Rating.rateOnStore
         case .resultFeedback:
-            "Write a Review"
+            L10n.Rating.writeReview
         }
     }
 

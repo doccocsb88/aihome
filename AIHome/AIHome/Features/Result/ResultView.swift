@@ -35,7 +35,7 @@ struct ResultView: View {
     private var headerView: some View {
         HStack {
             if viewModel.isPro {
-                Text("PRO")
+                Text(L10n.Result.pro)
                     .font(FontFamily.Roboto.black.swiftUIFont(size: 11))
                     .foregroundColor(.white)
                     .padding(.horizontal, 12)
@@ -48,7 +48,7 @@ struct ResultView: View {
             }
             
             Spacer()
-            Text("Result")
+            Text(L10n.Result.title)
                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
             Spacer()
             
@@ -134,7 +134,7 @@ struct ResultView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 14, height: 14)
-                                        Text("REMOVE WATERMARK")
+                                        Text(L10n.Result.removeWatermark)
                                             .font(FontFamily.Roboto.bold.swiftUIFont(size: 10))
                                     }
                                     .foregroundColor(.white)
@@ -183,13 +183,13 @@ struct ResultView: View {
     @ViewBuilder
     private var actionButtonsSection: some View {
         HStack(spacing: 0) {
-            actionCircleButton(title: "REGENERATE", icon: "ic_result_regenerate", action: onRegenerate)
+            actionCircleButton(title: L10n.Result.regenerate, icon: "ic_result_regenerate", action: onRegenerate)
             Spacer()
-            actionCircleButton(title: "DOWNLOAD", icon: "ic_result_download", action: {
+            actionCircleButton(title: L10n.Result.download, icon: "ic_result_download", action: {
                 if let img = viewModel.selectedImage { onDownload(img) }
             })
             Spacer()
-            actionCircleButton(title: "SHARE", icon: "ic_result_share", action: {
+            actionCircleButton(title: L10n.Result.share, icon: "ic_result_share", action: {
                 if let img = viewModel.selectedImage { onShare(img) }
             })
         }
@@ -200,7 +200,7 @@ struct ResultView: View {
     @ViewBuilder
     private var saveToArchiveButton: some View {
         Button(action: onSaveArchive) {
-            Text("SAVE TO ARCHIVE")
+            Text(L10n.Result.saveToArchive)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)

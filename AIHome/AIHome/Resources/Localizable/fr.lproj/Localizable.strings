@@ -1,0 +1,42 @@
+"settings.title" = "Paramètres";
+"settings.restore_purchase" = "Restaurer l'achat";
+"settings.restoring" = "Restauration...";
+"settings.language" = "Langue";
+"settings.privacy_policy" = "Politique de confidentialité";
+"settings.terms_of_service" = "Conditions d'utilisation";
+"settings.feedback" = "Commentaires";
+"settings.version" = "Version %@";
+
+"language.title" = "Langue";
+"language.english" = "Anglais";
+"language.spanish" = "Espagnol";
+"language.french" = "Français";
+"language.german" = "Allemand";
+
+
+"limit.generations_left.title" = "%d/%d Générations Gratuites
+Restantes";
+"limit.reached.title" = "Limite Atteinte";
+"limit.generations_left.message" = "Débloquez des fonctionnalités illimitées, des designs et
+un traitement plus rapide avec Pro.";
+"limit.reached.message" = "Vous avez utilisé toutes vos générations gratuites.
+Débloquez des fonctionnalités illimitées, des designs et
+un traitement plus rapide avec Pro.";
+"limit.upgrade_now" = "Mettre à Niveau";
+
+"rating.home_enjoyment.title" = "Vous aimez HomeGPT ?";
+"rating.result_feedback.title" = "Vos commentaires =
+de meilleurs designs";
+"rating.home_enjoyment.message" = "Évaluez votre expérience et aidez-nous à construire l'avenir de la conception de maisons par IA. Cela ne prend qu'une seconde !";
+"rating.result_feedback.message" = "Nous serions ravis d'entendre vos pensées ! Si vous appréciez les transformations, veuillez envisager de laisser une note. Vos commentaires nous aident à construire une expérience IA plus puissante pour vous.";
+"rating.rate_on_store" = "Évaluer sur l'App Store";
+"rating.write_review" = "Écrire un Avis";
+
+"result.pro" = "PRO";
+"result.title" = "Résultat";
+"result.remove_watermark" = "SUPPRIMER LE FILIGRANE";
+"result.regenerate" = "RÉGÉNÉRER";
+"result.download" = "TÉLÉCHARGER";
+"result.share" = "PARTAGER";
+"result.save_to_archive" = "ENREGISTRER DANS LES ARCHIVES";
+
