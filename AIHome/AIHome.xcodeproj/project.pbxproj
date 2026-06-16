@@ -267,6 +267,7 @@
 				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
 				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = top_bar_ios;
 				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow AIHome to save generated designs to your photo gallery.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -304,6 +305,7 @@
 				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
 				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = top_bar_ios;
 				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow AIHome to save generated designs to your photo gallery.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

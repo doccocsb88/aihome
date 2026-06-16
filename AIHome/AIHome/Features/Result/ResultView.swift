@@ -1,9 +1,11 @@
+import Photos
 import SwiftUI
 
 struct ResultView: View {
     @Bindable var viewModel: ResultViewModel
     @Environment(AppCoordinator.self) private var coordinator
-    
+    @State private var shareItem: ResultShareItem?
+    @State private var alertItem: ResultAlertItem?
     
     var onRegenerate: () -> Void
     var onDownload: (UIImage) -> Void
@@ -29,6 +31,16 @@ struct ResultView: View {
         }
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
+        .sheet(item: $shareItem) { item in
+            ResultShareSheet(activityItems: [item.image])
+        }
+        .alert(item: $alertItem) { item in
+            Alert(
+                title: Text(item.title),
+                message: Text(item.message),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
     
     @ViewBuilder
@@ -186,11 +198,15 @@ struct ResultView: View {
             actionCircleButton(title: L10n.Result.regenerate, icon: "ic_result_regenerate", action: onRegenerate)
             Spacer()
             actionCircleButton(title: L10n.Result.download, icon: "ic_result_download", action: {
-                if let img = viewModel.selectedImage { onDownload(img) }
+                if let img = viewModel.selectedImage {
+                    handleDownload(img)
+                }
             })
             Spacer()
             actionCircleButton(title: L10n.Result.share, icon: "ic_result_share", action: {
-                if let img = viewModel.selectedImage { onShare(img) }
+                if let img = viewModel.selectedImage {
+                    handleShare(img)
+                }
             })
         }
         .padding(.horizontal, 40)
@@ -232,12 +248,12 @@ struct ResultView: View {
                 .foregroundColor(Color(UIColor.systemGray2))
         }
     }
-    
+
     private func handleNavigation(for tool: ProjectType) {
         if tool != .edit {
             coordinator.popToRoot()
         }
-        
+
         switch tool {
         case .interior: coordinator.push(.interiorFlow)
         case .exterior: coordinator.push(.exteriorFlow)
@@ -250,6 +266,90 @@ struct ResultView: View {
         case .furnitureFinder: coordinator.push(.furnitureFinderFlow)
         case .edit:
             onRegenerate()
+        }
+    }
+
+    private func handleDownload(_ image: UIImage) {
+        Task {
+            do {
+                try await ResultPhotoLibrarySaver.save(image)
+                onDownload(image)
+                alertItem = ResultAlertItem(
+                    title: "Saved",
+                    message: "The image has been saved to your photo gallery."
+                )
+                AppLogger.logAction("Result Image Downloaded")
+            } catch {
+                alertItem = ResultAlertItem(
+                    title: "Save Failed",
+                    message: error.localizedDescription
+                )
+                AppLogger.logError("Result Image Download Failed", error: error)
+            }
+        }
+    }
+
+    private func handleShare(_ image: UIImage) {
+        shareItem = ResultShareItem(image: image)
+        onShare(image)
+        AppLogger.logAction("Result Share Sheet Opened")
+    }
+}
+
+private struct ResultShareItem: Identifiable {
+    let id = UUID()
+    let image: UIImage
+}
+
+private struct ResultAlertItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let message: String
+}
+
+private struct ResultShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) { }
+}
+
+private enum ResultPhotoLibrarySaver {
+    static func save(_ image: UIImage) async throws {
+        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        guard status == .authorized || status == .limited else {
+            throw ResultPhotoLibraryError.accessDenied
+        }
+
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            } completionHandler: { success, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if success {
+                    continuation.resume()
+                } else {
+                    continuation.resume(throwing: ResultPhotoLibraryError.saveFailed)
+                }
+            }
+        }
+    }
+}
+
+private enum ResultPhotoLibraryError: LocalizedError {
+    case accessDenied
+    case saveFailed
+
+    var errorDescription: String? {
+        switch self {
+        case .accessDenied:
+            "Photo library access is required to save this image."
+        case .saveFailed:
+            "The image could not be saved to your photo gallery."
         }
     }
 }

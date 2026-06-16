@@ -59,7 +59,15 @@ struct InteriorFlowContainerView: View {
             return
         }
 
-        let actualStyle = designStyle == .noStyle ? (draft.customStyle ?? "Modern") : designStyle.rawValue
+        let isCustomStyle = designStyle == .noStyle
+        let customStylePrompt = draft.customStyle?.trimmingCharacters(in: .whitespacesAndNewlines)
+        if isCustomStyle && (customStylePrompt?.isEmpty ?? true) {
+            AppLogger.logError("Missing custom style prompt")
+            return
+        }
+        let requestDesignStyle = isCustomStyle ? "Modern" : designStyle.rawValue
+        let requestCustomInstruction = isCustomStyle ? customStylePrompt : nil
+        let displayStyle = isCustomStyle ? (customStylePrompt ?? "Custom Style") : designStyle.rawValue
 
         let aiIntervention: AIIntervention
         switch interventionLevel {
@@ -68,7 +76,7 @@ struct InteriorFlowContainerView: View {
         case .high: aiIntervention = .extreme
         }
 
-        AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType.rawValue), Style: \(actualStyle), Intervention: \(aiIntervention.rawValue)")
+        AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType.rawValue), Style: \(displayStyle), Intervention: \(aiIntervention.rawValue)")
 
         let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -83,9 +91,9 @@ struct InteriorFlowContainerView: View {
                     image: .jpegData(imageData),
                     aiIntervention: aiIntervention,
                     noDesign: 1, // Generate 1 image for MVP
-                    designStyle: actualStyle,
+                    designStyle: requestDesignStyle,
                     roomType: roomType.rawValue,
-                    customInstruction: nil
+                    customInstruction: requestCustomInstruction
                 )
 
                 let imageUrls = try await HomeGPTAIService.shared.generateInterior(request: request)
@@ -111,7 +119,7 @@ struct InteriorFlowContainerView: View {
                     id: UUID().uuidString,
                     type: .interior,
                     title: "Interior Design",
-                    styleName: actualStyle,
+                    styleName: displayStyle,
                     roomType: roomType.rawValue,
                     createdAt: Date(),
                     originalImagePath: "",

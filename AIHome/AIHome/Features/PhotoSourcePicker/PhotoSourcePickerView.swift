@@ -197,17 +197,24 @@ struct PhotoSourcePickerView: View {
                     .frame(width: imageSide, height: imageSide)
                     .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
 
-                Button(action: { viewModel.selectedImage = nil }) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(width: 38, height: 38)
-                        .background(Color.black.opacity(0.55))
-                        .clipShape(Circle())
+                VStack {
+                    HStack{
+                        Spacer()
+                        Button(action: { viewModel.selectedImage = nil }) {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 17, weight: .semibold))
+                                .foregroundColor(.white)
+                                .frame(width: 38, height: 38)
+                                .background(Color.black.opacity(0.55))
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.top, 18)
+                        .padding(.trailing, 18)
+                    }
+                    
+                    Spacer()
                 }
-                .buttonStyle(.plain)
-                .padding(.top, 18)
-                .padding(.trailing, 18)
             }
             .frame(width: cardSide, height: cardSide)
         }
