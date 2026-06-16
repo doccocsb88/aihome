@@ -4,40 +4,50 @@ struct InteriorFlowView: View {
     @State private var viewModel = InteriorFlowViewModel()
     @Environment(\.dismiss) var dismiss
     @State private var showingPhotoTips = false
-    
+    @State private var showingCustomStyleOverlay = false
+    @State private var customStyleText = ""
+
     var initialImage: UIImage?
     var onGenerate: (InteriorDraft) -> Void
-    
+
     var body: some View {
-        VStack(spacing: 0) {
-            progressHeader
-            
-            // Content
-            Group {
-                switch viewModel.currentStep {
-                case .photoSelection:
-                    PhotoSourcePickerView(
-                        viewModel: viewModel.photoPickerViewModel,
-                        selectedImageStyle: .fullWidthSquare,
-                        onContinue: { image in
-                            viewModel.draft.sourceImage = image
-                            viewModel.nextStep()
-                        }
-                    )
-                    
-                case .roomType:
-                    roomTypeStep()
-                    
-                case .designStyle:
-                    designStyleStep()
-                    
-                case .intervention:
-                    interventionStep()
+        ZStack {
+            VStack(spacing: 0) {
+                progressHeader
+
+                // Content
+                Group {
+                    switch viewModel.currentStep {
+                    case .photoSelection:
+                        PhotoSourcePickerView(
+                            viewModel: viewModel.photoPickerViewModel,
+                            selectedImageStyle: .fullWidthSquare,
+                            onContinue: { image in
+                                viewModel.draft.sourceImage = image
+                                viewModel.nextStep()
+                            }
+                        )
+
+                    case .roomType:
+                        roomTypeStep()
+
+                    case .designStyle:
+                        designStyleStep()
+
+                    case .intervention:
+                        interventionStep()
+                    }
                 }
+                .frame(maxHeight: .infinity, alignment: .top)
+                .padding(.top, 24)
             }
-            .frame(maxHeight: .infinity, alignment: .top)
-            .padding(.top, 24)
+
+            if showingCustomStyleOverlay {
+                customStyleOverlay
+                    .transition(.opacity)
+            }
         }
+        .animation(.easeInOut(duration: 0.18), value: showingCustomStyleOverlay)
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
@@ -51,7 +61,7 @@ struct InteriorFlowView: View {
             PhotoTipsView()
         }
     }
-    
+
     private var progressHeader: some View {
         VStack(spacing: 16) {
             HStack {
@@ -72,15 +82,15 @@ struct InteriorFlowView: View {
                             Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1)
                         )
                 }
-                
+
                 Spacer()
-                
+
                 Text("Step \(viewModel.currentStep.rawValue)/4")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                     .foregroundColor(.DesignSystem.textPrimary)
-                
+
                 Spacer()
-                
+
                 Button(action: {
                     if viewModel.currentStep != .photoSelection {
                         dismiss()
@@ -95,7 +105,7 @@ struct InteriorFlowView: View {
                 }
             }
             .padding(.horizontal)
-            
+
             // Progress Bar
             HStack(spacing: 4) {
                 ForEach(1...4, id: \.self) { step in
@@ -108,9 +118,9 @@ struct InteriorFlowView: View {
         }
         .padding(.top, 8)
     }
-    
+
     // MARK: - Steps Views
-    
+
     @ViewBuilder
     private func roomTypeStep() -> some View {
         VStack(spacing: 24) {
@@ -119,7 +129,7 @@ struct InteriorFlowView: View {
                 .foregroundColor(.DesignSystem.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
-            
+
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
                     ForEach(viewModel.roomTypes, id: \.self) { room in
@@ -144,9 +154,9 @@ struct InteriorFlowView: View {
                 .padding(.top, 8)
                 .padding(.bottom, 24)
             }
-            
+
             Spacer()
-            
+
             InteriorCTAButton(
                 title: "GET STARTED",
                 isEnabled: viewModel.canContinue,
@@ -156,7 +166,7 @@ struct InteriorFlowView: View {
             .padding(.bottom, 36)
         }
     }
-    
+
     @ViewBuilder
     private func designStyleStep() -> some View {
         VStack(spacing: 0) {
@@ -165,12 +175,17 @@ struct InteriorFlowView: View {
                 .foregroundColor(.DesignSystem.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
-            
+
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
                     ForEach(viewModel.designStyles, id: \.self) { style in
                         Button(action: {
-                            viewModel.draft.designStyle = style
+                            if style == .noStyle {
+                                customStyleText = viewModel.draft.customStyle ?? ""
+                                showingCustomStyleOverlay = true
+                            } else {
+                                viewModel.draft.designStyle = style
+                            }
                         }) {
                             VStack(spacing: 0) {
                                 if let imgName = designStyleImageName(for: style) {
@@ -184,7 +199,7 @@ struct InteriorFlowView: View {
                                         .fill(Color.gray.opacity(0.3))
                                         .frame(height: 160)
                                 }
-                                
+
                                 Text(style.rawValue.uppercased())
                                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                                     .foregroundColor(.DesignSystem.textPrimary)
@@ -203,18 +218,8 @@ struct InteriorFlowView: View {
                 .padding(.horizontal, 24)
                 .padding(.top, 8)
                 .padding(.bottom, 24)
-                
-                if viewModel.draft.designStyle == .noStyle {
-                    TextField("Enter custom style...", text: Binding(
-                        get: { viewModel.draft.customStyle ?? "" },
-                        set: { viewModel.draft.customStyle = $0 }
-                    ))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 24)
-                }
             }
-                        
+
             InteriorCTAButton(
                 title: "CONTINUE",
                 isEnabled: viewModel.canContinue,
@@ -224,7 +229,119 @@ struct InteriorFlowView: View {
             .padding(.bottom, 36)
         }
     }
-    
+
+    private var customStyleOverlay: some View {
+        ZStack {
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .ignoresSafeArea()
+
+            Color.black.opacity(0.38)
+                .ignoresSafeArea()
+
+            ZStack(alignment: .topTrailing) {
+                VStack(spacing: 0) {
+                    Image(systemName: "wand.and.stars")
+                        .font(.system(size: 36, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 64, height: 64)
+                        .background(Color.black)
+                        .clipShape(Circle())
+
+                    Text("Custom Style")
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
+                        .foregroundColor(.DesignSystem.textPrimary)
+                        .padding(.top, 18)
+
+                    customStyleTextEditor
+                        .padding(.top, 30)
+
+                    Button(action: {
+                        let trimmedStyle = customStyleText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        viewModel.draft.designStyle = .noStyle
+                        viewModel.draft.customStyle = trimmedStyle
+                        showingCustomStyleOverlay = false
+                    }) {
+                        Text("Apply")
+                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, minHeight: 68)
+                            .background(Color.black)
+                            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                            .shadow(color: Color.black.opacity(0.18), radius: 18, x: 0, y: 10)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 32)
+                    .padding(.top, 32)
+                    .padding(.bottom, 32)
+                }
+                .padding(.top, 48)
+
+                Button(action: {
+                    showingCustomStyleOverlay = false
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 19, weight: .medium))
+                        .foregroundColor(Color.DesignSystem.coolGray)
+                        .frame(width: 32, height: 32)
+                        .background(Color(UIColor.systemGray6))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 24)
+                .padding(.trailing, 24)
+            }
+            .background(Color.DesignSystem.background)
+            .clipShape(RoundedRectangle(cornerRadius: 36, style: .continuous))
+            .shadow(color: Color.black.opacity(0.2), radius: 28, x: 0, y: 16)
+            .padding(.horizontal, 32)
+        }
+    }
+
+    private var customStyleTextEditor: some View {
+        ZStack(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(Color(UIColor.systemGray6))
+
+            TextEditor(text: $customStyleText)
+                .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
+                .foregroundColor(.DesignSystem.textPrimary)
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
+                .padding(.horizontal, 21)
+                .padding(.vertical, 20)
+                .onChange(of: customStyleText) { _, newValue in
+                    if newValue.count > 150 {
+                        customStyleText = String(newValue.prefix(150))
+                    }
+                }
+
+            if customStyleText.isEmpty {
+                Text("Describe your dream interior style\n(e.g. Modern Japanese Zen with\ndark wood accents)...")
+                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
+                    .foregroundColor(Color.DesignSystem.coolGray)
+                    .lineSpacing(8)
+                    .padding(.top, 25)
+                    .padding(.leading, 21)
+                    .allowsHitTesting(false)
+            }
+
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Text("\(customStyleText.count)/150")
+                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
+                        .foregroundColor(Color.DesignSystem.coolGray.opacity(0.45))
+                        .padding(.trailing, 28)
+                        .padding(.bottom, 24)
+                }
+            }
+        }
+        .frame(height: 186)
+        .padding(.horizontal, 32)
+    }
+
     private func designStyleImageName(for style: InteriorDesignStyle) -> String? {
         switch style {
         case .noStyle: return "ic_interior_style_custom"
@@ -261,7 +378,7 @@ struct InteriorFlowView: View {
         default: return nil
         }
     }
-    
+
     @ViewBuilder
     private func interventionStep() -> some View {
         VStack(spacing: 24) {
@@ -269,21 +386,21 @@ struct InteriorFlowView: View {
                 Text("AI Intervention")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
-                
+
                 Text("How much of the original layout should we keep?")
                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                     .foregroundColor(.gray)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
-            
+
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 24) {
                     Image("ic_interior_Intervention_preview")
                         .resizable()
                         .scaledToFit()
                         .cornerRadius(16)
-                    
+
                     VStack(spacing: 16) {
                         interventionOption(level: .high, title: "HIGH", description: "Creative redesign with high innovation, low preservation.", iconName: "ic_interior_Intervention_high")
                         interventionOption(level: .medium, title: "MEIDUM", description: "Balanced redesign with key room elements preserved.", iconName: "ic_interior_Intervention_meidum")
@@ -294,8 +411,8 @@ struct InteriorFlowView: View {
                 .padding(.top, 8)
                 .padding(.bottom, 0)
             }
-            
-            
+
+
             InteriorCTAButton(
                 title: "GENERATE",
                 isEnabled: viewModel.canContinue,
@@ -305,7 +422,7 @@ struct InteriorFlowView: View {
             .padding(.bottom, 36)
         }
     }
-    
+
     @ViewBuilder
     private func interventionOption(level: UIInterventionLevel, title: String, description: String, iconName: String) -> some View {
         Button(action: {
@@ -316,7 +433,7 @@ struct InteriorFlowView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 56, height: 56)
-                
+
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
@@ -343,7 +460,7 @@ struct InteriorCTAButton: View {
     let title: String
     let isEnabled: Bool
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             Text(title)
