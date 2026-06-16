@@ -18,6 +18,7 @@ struct InteriorFlowView: View {
                 case .photoSelection:
                     PhotoSourcePickerView(
                         viewModel: viewModel.photoPickerViewModel,
+                        selectedImageStyle: .fullWidthSquare,
                         onContinue: { image in
                             viewModel.draft.sourceImage = image
                             viewModel.nextStep()

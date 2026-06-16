@@ -44,6 +44,50 @@ internal enum L10n {
       internal static let title = L10n.tr("Localizable", "limit.reached.title", fallback: "Limit Reached")
     }
   }
+  internal enum Onboarding {
+    /// Continue
+    internal static let `continue` = L10n.tr("Localizable", "onboarding.continue", fallback: "Continue")
+    internal enum Exterior {
+      /// Reimagine your facade
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.exterior.subtitle", fallback: "Reimagine your facade")
+      /// Exterior Design
+      internal static let title = L10n.tr("Localizable", "onboarding.exterior.title", fallback: "Exterior Design")
+    }
+    internal enum Interior {
+      /// Redesign your space instantly
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.interior.subtitle", fallback: "Redesign your space instantly")
+      /// Interior Design
+      internal static let title = L10n.tr("Localizable", "onboarding.interior.title", fallback: "Interior Design")
+    }
+    internal enum Landscape {
+      /// Refresh your garden with AI
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.landscape.subtitle", fallback: "Refresh your garden with AI")
+      /// Landscape Design
+      internal static let title = L10n.tr("Localizable", "onboarding.landscape.title", fallback: "Landscape Design")
+    }
+    internal enum TrialEnabled {
+      /// Start Designing
+      internal static let startDesigning = L10n.tr("Localizable", "onboarding.trial_enabled.start_designing", fallback: "Start Designing")
+      /// You now have full access to all premium features.
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.trial_enabled.subtitle", fallback: "You now have full access to all premium features.")
+      /// 3-day free trial is enabled!
+      internal static let title = L10n.tr("Localizable", "onboarding.trial_enabled.title", fallback: "3-day free trial is enabled!")
+    }
+    internal enum Welcome {
+      /// Get Started
+      internal static let getStarted = L10n.tr("Localizable", "onboarding.welcome.get_started", fallback: "Get Started")
+      /// Privacy Policy
+      internal static let privacyPolicy = L10n.tr("Localizable", "onboarding.welcome.privacy_policy", fallback: "Privacy Policy")
+      /// Subscription Terms
+      internal static let subscriptionTerms = L10n.tr("Localizable", "onboarding.welcome.subscription_terms", fallback: "Subscription Terms")
+      /// Transform your space with AI
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.welcome.subtitle", fallback: "Transform your space with AI")
+      /// Terms of use
+      internal static let termsOfUse = L10n.tr("Localizable", "onboarding.welcome.terms_of_use", fallback: "Terms of use")
+      /// Welcome to HomeGPT
+      internal static let title = L10n.tr("Localizable", "onboarding.welcome.title", fallback: "Welcome to HomeGPT")
+    }
+  }
   internal enum Rating {
     /// Rate on App Store
     internal static let rateOnStore = L10n.tr("Localizable", "rating.rate_on_store", fallback: "Rate on App Store")

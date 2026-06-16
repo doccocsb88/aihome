@@ -1,0 +1,823 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "2F057CEA",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6777677408",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "3K3C8W9QSC",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 803279747.459813,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "22140661",
+      "localizations" : [
+
+      ],
+      "name" : "GPTHome",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "24.99",
+          "familyShareable" : false,
+          "groupNumber" : 4,
+          "internalID" : "6778299914",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Pretvorite bilo koju sobu — mjesečni premium pristup",
+              "displayName" : "Premium Mjesečno",
+              "locale" : "hr"
+            },
+            {
+              "description" : "どんな部屋も変身 — 月額プレミアムアクセス",
+              "displayName" : "プレミアム月額",
+              "locale" : "ja"
+            },
+            {
+              "description" : "Transforma cualquier habitación — acceso premium",
+              "displayName" : "Premium Mensual",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Transforma cualquier habitación — acceso premium",
+              "displayName" : "Premium Mensual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Omdan ethvert rum — månedlig premium adgang",
+              "displayName" : "Premium Månedligt",
+              "locale" : "da"
+            },
+            {
+              "description" : "เปลี่ยนทุกห้อง — เข้าถึงพรีเมียมรายเดือน",
+              "displayName" : "พรีเมียมรายเดือน",
+              "locale" : "th"
+            },
+            {
+              "description" : "Transform any room — monthly premium access",
+              "displayName" : "Premium Monthly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Transforma orice cameră — acces premium lunar",
+              "displayName" : "Premium Lunar",
+              "locale" : "ro"
+            },
+            {
+              "description" : "Ubah mana-mana bilik — akses premium bulanan",
+              "displayName" : "Premium Bulanan",
+              "locale" : "ms"
+            },
+            {
+              "description" : "Förvandla vilket rum som helst — månatlig premium",
+              "displayName" : "Premium Månadsvis",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Alakítsa át bármelyik szobát — havi prémium hozzáférés",
+              "displayName" : "Premium Havi",
+              "locale" : "hu"
+            },
+            {
+              "description" : "Μεταμορφώστε κάθε δωμάτιο — μηνιαία πρόσβαση premium",
+              "displayName" : "Premium Μηνιαίο",
+              "locale" : "el"
+            },
+            {
+              "description" : "Jeden Raum verwandeln — monatlicher Premium-Zugang",
+              "displayName" : "Premium Monatlich",
+              "locale" : "de"
+            },
+            {
+              "description" : "Proměňte každou místnost — měsíční prémiový přístup",
+              "displayName" : "Premium Měsíčně",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Her odayı dönüştürün — aylık premium erişim",
+              "displayName" : "Premium Aylık",
+              "locale" : "tr"
+            },
+            {
+              "description" : "Преобразите любую комнату — ежемесячный премиум-доступ",
+              "displayName" : "Премиум ежемесячно",
+              "locale" : "ru"
+            },
+            {
+              "description" : "모든 공간을 변신시키는 월간 프리미엄",
+              "displayName" : "프리미엄 월간",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Premeňte každú miestnosť — mesačný prémiový prístup",
+              "displayName" : "Premium Mesačne",
+              "locale" : "sk"
+            },
+            {
+              "description" : "Transform any room — monthly premium access",
+              "displayName" : "Premium Monthly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Transform any room — monthly premium access",
+              "displayName" : "Premium Monthly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "किसी भी कमरे को बदलें — मासिक प्रीमियम पहुंच",
+              "displayName" : "प्रीमियम मासिक",
+              "locale" : "hi"
+            },
+            {
+              "description" : "Transforme qualquer divisão — acesso premium mensal",
+              "displayName" : "Premium Mensal",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Transformez n'importe quelle pièce — accès premium",
+              "displayName" : "Premium Mensuel",
+              "locale" : "fr_CA"
+            },
+            {
+              "description" : "Transform any room — monthly premium access",
+              "displayName" : "Premium Monthly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Transforme qualquer cômodo — acesso premium mensal",
+              "displayName" : "Premium Mensal",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "שנה כל חדר — גישת פרימיום חודשית",
+              "displayName" : "פרימיום חודשי",
+              "locale" : "he"
+            },
+            {
+              "description" : "改变任何房间 — 月度高级访问",
+              "displayName" : "高级月度会员",
+              "locale" : "zh_Hans"
+            },
+            {
+              "description" : "Trasforma qualsiasi stanza — accesso premium mensile",
+              "displayName" : "Premium Mensile",
+              "locale" : "it"
+            },
+            {
+              "description" : "تحويل أي غرفة — وصول مميز شهري",
+              "displayName" : "اشتراك بريميوم شهري",
+              "locale" : "ar"
+            },
+            {
+              "description" : "Ubah ruangan apa pun — akses premium bulanan",
+              "displayName" : "Premium Bulanan",
+              "locale" : "id"
+            },
+            {
+              "description" : "改變任何房間 — 月度高級訪問",
+              "displayName" : "高級月度會員",
+              "locale" : "zh_Hant"
+            },
+            {
+              "description" : "Transforma qualsevol habitació — accés premium mensual",
+              "displayName" : "Premium Mensual",
+              "locale" : "ca"
+            },
+            {
+              "description" : "Muuta mikä tahansa huone — kuukausittainen premium",
+              "displayName" : "Premium Kuukausi",
+              "locale" : "fi"
+            },
+            {
+              "description" : "Transformez n'importe quelle pièce — accès premium",
+              "displayName" : "Premium Mensuel",
+              "locale" : "fr"
+            }
+          ],
+          "productID" : "com.homegpt.ai.interior.redesign.monthly1",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "22140661",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6777714578",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Relookings hebdomadaires à portée de main",
+              "displayName" : "Premium Hebdomadaire",
+              "locale" : "fr_CA"
+            },
+            {
+              "description" : "Weekly room makeovers at your fingertips",
+              "displayName" : "Premium Weekly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Ugentlige rumforvandlinger ved hånden",
+              "displayName" : "Premium Ugentligt",
+              "locale" : "da"
+            },
+            {
+              "description" : "Renovações semanais ao alcance dos seus dedos",
+              "displayName" : "Premium Semanal",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Renovações semanais ao alcance dos seus dedos",
+              "displayName" : "Premium Semanal",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "ปรับโฉมห้องทุกสัปดาห์เพียงปลายนิ้ว",
+              "displayName" : "พรีเมียมรายสัปดาห์",
+              "locale" : "th"
+            },
+            {
+              "description" : "Tygodniowe metamorfozy pomieszczeń na wyciągnięcie ręki",
+              "displayName" : "Premium Tygodniowo",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Щотижневі перетворення кімнат під рукою",
+              "displayName" : "Преміум щотижня",
+              "locale" : "uk"
+            },
+            {
+              "description" : "Renovaciones semanales al alcance de tu mano",
+              "displayName" : "Premium Semanal",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Еженедельные преображения комнат под рукой",
+              "displayName" : "Премиум еженедельно",
+              "locale" : "ru"
+            },
+            {
+              "description" : "Perubahan ruangan mingguan di ujung jari Anda",
+              "displayName" : "Premium Mingguan",
+              "locale" : "id"
+            },
+            {
+              "description" : "Týždenné premeny miestností na dosah ruky",
+              "displayName" : "Premium Týždenne",
+              "locale" : "sk"
+            },
+            {
+              "description" : "Týdenní proměny místností na dosah ruky",
+              "displayName" : "Premium Týdně",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Relookings hebdomadaires à portée de main",
+              "displayName" : "Premium Hebdomadaire",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Veckovisa rummakeovers vid fingertopparna",
+              "displayName" : "Premium Veckovis",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Weekly room makeovers at your fingertips",
+              "displayName" : "Premium Weekly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Heti szobaátalakítások az ujjai hegyén",
+              "displayName" : "Premium Heti",
+              "locale" : "hu"
+            },
+            {
+              "description" : "每周房间改造尽在指尖",
+              "displayName" : "高级周度会员",
+              "locale" : "zh_Hans"
+            },
+            {
+              "description" : "Haftalık oda dönüşümleri parmaklarınızın ucunda",
+              "displayName" : "Premium Haftalık",
+              "locale" : "tr"
+            },
+            {
+              "description" : "Renovaciones semanales al alcance de tu mano",
+              "displayName" : "Premium Semanal",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Restyling settimanali a portata di mano",
+              "displayName" : "Premium Settimanale",
+              "locale" : "it"
+            },
+            {
+              "description" : "Weekly room makeovers at your fingertips",
+              "displayName" : "Premium Weekly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Tjedni makeoveri soba na dohvat ruke",
+              "displayName" : "Premium Tjedno",
+              "locale" : "hr"
+            },
+            {
+              "description" : "Εβδομαδιαίες ανανεώσεις δωματίων στα χέρια σας",
+              "displayName" : "Premium Εβδομαδιαίο",
+              "locale" : "el"
+            },
+            {
+              "description" : "매주 공간 변신을 손끝에서",
+              "displayName" : "프리미엄 주간",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Weekly room makeovers at your fingertips",
+              "displayName" : "Premium Weekly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "每週房間改造盡在指尖",
+              "displayName" : "高級週度會員",
+              "locale" : "zh_Hant"
+            },
+            {
+              "description" : "Viikoittaiset huonemuutokset sormiesi ulottuvilla",
+              "displayName" : "Premium Viikko",
+              "locale" : "fi"
+            },
+            {
+              "description" : "Pengubahsuaian bilik mingguan di hujung jari",
+              "displayName" : "Premium Mingguan",
+              "locale" : "ms"
+            },
+            {
+              "description" : "تجديدات أسبوعية للغرف في متناول يدك",
+              "displayName" : "بريميوم أسبوعي",
+              "locale" : "ar"
+            },
+            {
+              "description" : "毎週のルームメイクをお手元に",
+              "displayName" : "プレミアム週間",
+              "locale" : "ja"
+            },
+            {
+              "description" : "Transformări săptămânale la îndemâna ta",
+              "displayName" : "Premium Săptămânal",
+              "locale" : "ro"
+            },
+            {
+              "description" : "עיצובים שבועיים בקצות אצבעותיך",
+              "displayName" : "פרימיום שבועי",
+              "locale" : "he"
+            },
+            {
+              "description" : "साप्ताहिक कमरे का कायाकल्प आपकी उंगलियों पर",
+              "displayName" : "प्रीमियम साप्ताहिक",
+              "locale" : "hi"
+            }
+          ],
+          "productID" : "com.homegpt.ai.interior.redesign.weekly1",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Premium Weekly",
+          "subscriptionGroupID" : "22140661",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6777714871",
+          "introductoryOffer" : {
+            "internalID" : "F784D42A",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Coba desain AI gratis selama 3 hari",
+              "displayName" : "Uji Coba Premium",
+              "locale" : "id"
+            },
+            {
+              "description" : "Vyskúšajte AI dizajn zadarmo na 3 dni",
+              "displayName" : "Premium Skúšobné",
+              "locale" : "sk"
+            },
+            {
+              "description" : "Try premium AI design free for 3 days",
+              "displayName" : "Premium Weekly Trial",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "免费试用AI设计3天",
+              "displayName" : "高级试用",
+              "locale" : "zh_Hans"
+            },
+            {
+              "description" : "Experimente o design AI grátis por 3 dias",
+              "displayName" : "Teste Premium",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "جرب التصميم بالذكاء الاصطناعي مجانا 3 أيام",
+              "displayName" : "تجربة بريميوم",
+              "locale" : "ar"
+            },
+            {
+              "description" : "Essayez le design IA gratuitement 3 jours",
+              "displayName" : "Essai Premium",
+              "locale" : "fr_CA"
+            },
+            {
+              "description" : "AIデザインを3日間無料でお試し",
+              "displayName" : "プレミアムお試し",
+              "locale" : "ja"
+            },
+            {
+              "description" : "3 दिनों के लिए मुफ्त AI डिज़ाइन आज़माएं",
+              "displayName" : "प्रीमियम ट्रायल",
+              "locale" : "hi"
+            },
+            {
+              "description" : "Vyzkoušejte AI design zdarma na 3 dny",
+              "displayName" : "Zkušební Premium",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Prueba el diseño con IA gratis 3 días",
+              "displayName" : "Prueba Premium",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Kokeile AI-suunnittelua ilmaiseksi 3 päivää",
+              "displayName" : "Premium Kokeilu",
+              "locale" : "fi"
+            },
+            {
+              "description" : "AI 디자인을 3일간 무료 체험",
+              "displayName" : "프리미엄 체험",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Essayez le design IA gratuitement 3 jours",
+              "displayName" : "Essai Premium",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Prova il design AI gratis per 3 giorni",
+              "displayName" : "Prova Premium",
+              "locale" : "it"
+            },
+            {
+              "description" : "Try premium AI design free for 3 days",
+              "displayName" : "Premium Weekly Trial",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Wypróbuj projektowanie AI za darmo przez 3 dni",
+              "displayName" : "Premium Próbny",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Experimente o design AI grátis por 3 dias",
+              "displayName" : "Teste Premium",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "Спробуйте AI-дизайн безкоштовно на 3 дні",
+              "displayName" : "Преміум пробний",
+              "locale" : "uk"
+            },
+            {
+              "description" : "Try premium AI design free for 3 days",
+              "displayName" : "Premium Weekly Trial",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Try premium AI design free for 3 days",
+              "displayName" : "Premium Weekly Trial",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Próbálja ki az AI dizájnt ingyen 3 napig",
+              "displayName" : "Premium Próba",
+              "locale" : "hu"
+            },
+            {
+              "description" : "Prueba el diseño con IA gratis 3 días",
+              "displayName" : "Prueba Premium",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Isprobajte AI dizajn besplatno 3 dana",
+              "displayName" : "Premium Probno",
+              "locale" : "hr"
+            },
+            {
+              "description" : "Încearcă design AI gratuit timp de 3 zile",
+              "displayName" : "Încercare Premium",
+              "locale" : "ro"
+            },
+            {
+              "description" : "Cuba reka bentuk AI percuma selama 3 hari",
+              "displayName" : "Percubaan Premium",
+              "locale" : "ms"
+            },
+            {
+              "description" : "ลองออกแบบด้วย AI ฟรี 3 วัน",
+              "displayName" : "ทดลองใช้พรีเมียม",
+              "locale" : "th"
+            },
+            {
+              "description" : "Попробуйте AI-дизайн бесплатно на 3 дня",
+              "displayName" : "Премиум пробный",
+              "locale" : "ru"
+            },
+            {
+              "description" : "Δοκιμάστε AI σχεδιασμό δωρεάν για 3 ημέρες",
+              "displayName" : "Δοκιμή Premium",
+              "locale" : "el"
+            },
+            {
+              "description" : "נסה עיצוב בינה מלאכותית חינם 3 ימים",
+              "displayName" : "ניסיון פרימיום",
+              "locale" : "he"
+            },
+            {
+              "description" : "Prova AI-design gratis i 3 dagar",
+              "displayName" : "Premium Test",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Prøv AI design gratis i 3 dage",
+              "displayName" : "Premium Prøve",
+              "locale" : "da"
+            },
+            {
+              "description" : "AI tasarımı 3 gün ücretsiz deneyin",
+              "displayName" : "Premium Deneme",
+              "locale" : "tr"
+            },
+            {
+              "description" : "免費試用AI設計3天",
+              "displayName" : "高級試用",
+              "locale" : "zh_Hant"
+            }
+          ],
+          "productID" : "com.homegpt.ai.interior.redesign.weeklytrial1",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Premium Weekly Trial ",
+          "subscriptionGroupID" : "22140661",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "69.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "6777715051",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "연간 프리미엄 — 큰 절약, 더 많은 디자인",
+              "displayName" : "프리미엄 연간",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Premium anual — ahorra mucho, diseña más",
+              "displayName" : "Premium Anual",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Éves prémium — nagyot spórol, többet tervez",
+              "displayName" : "Premium Éves",
+              "locale" : "hu"
+            },
+            {
+              "description" : "Premium tahunan — hemat besar, desain lebih banyak",
+              "displayName" : "Premium Tahunan",
+              "locale" : "id"
+            },
+            {
+              "description" : "Year-long premium — save big, design more",
+              "displayName" : "Premium Yearly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Årligt premium — spara stort, designa mer",
+              "displayName" : "Premium Årligen",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Year-long premium — save big, design more",
+              "displayName" : "Premium Yearly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Vuoden premium — säästä isosti, suunnittele enemmän",
+              "displayName" : "Premium Vuosi",
+              "locale" : "fi"
+            },
+            {
+              "description" : "Premium tahunan — jimat besar, reka lebih banyak",
+              "displayName" : "Premium Tahunan",
+              "locale" : "ms"
+            },
+            {
+              "description" : "Premium anual — ahorra mucho, diseña más",
+              "displayName" : "Premium Anual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Ročné premium — ušetrite veľa, navrhujte viac",
+              "displayName" : "Premium Ročne",
+              "locale" : "sk"
+            },
+            {
+              "description" : "بريميوم سنوي — وفر أكثر، صمم أكثر",
+              "displayName" : "بريميوم سنوي",
+              "locale" : "ar"
+            },
+            {
+              "description" : "Year-long premium — save big, design more",
+              "displayName" : "Premium Yearly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "פרימיום שנתי — חסך הרבה, עצב יותר",
+              "displayName" : "פרימיום שנתי",
+              "locale" : "he"
+            },
+            {
+              "description" : "Premium annuale — risparmia tanto, progetta di più",
+              "displayName" : "Premium Annuale",
+              "locale" : "it"
+            },
+            {
+              "description" : "Premium annuel — économisez gros, créez plus",
+              "displayName" : "Premium Annuel",
+              "locale" : "fr_CA"
+            },
+            {
+              "description" : "Årligt premium — spar stort, design mere",
+              "displayName" : "Premium Årligt",
+              "locale" : "da"
+            },
+            {
+              "description" : "全年高级 — 大节省，更多设计",
+              "displayName" : "高级年度会员",
+              "locale" : "zh_Hans"
+            },
+            {
+              "description" : "Годовой премиум — большая экономия, больше дизайна",
+              "displayName" : "Премиум ежегодно",
+              "locale" : "ru"
+            },
+            {
+              "description" : "Roční premium — více ušetříte, více navrhnete",
+              "displayName" : "Premium Ročně",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Yıllık premium — büyük tasarruf, daha fazla tasarım",
+              "displayName" : "Premium Yıllık",
+              "locale" : "tr"
+            },
+            {
+              "description" : "Premium annuel — économisez gros, créez plus",
+              "displayName" : "Premium Annuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "全年高級 — 大節省，更多設計",
+              "displayName" : "高級年度會員",
+              "locale" : "zh_Hant"
+            },
+            {
+              "description" : "Godišnji premium — uštedite puno, dizajnirajte više",
+              "displayName" : "Premium Godišnje",
+              "locale" : "hr"
+            },
+            {
+              "description" : "Premium anual — economisești mult, proiectezi mai mult",
+              "displayName" : "Premium Anual",
+              "locale" : "ro"
+            },
+            {
+              "description" : "พรีเมียมรายปี — ประหยัดมาก ออกแบบได้มากขึ้น",
+              "displayName" : "พรีเมียมรายปี",
+              "locale" : "th"
+            },
+            {
+              "description" : "Premium anual — poupe muito, projete mais",
+              "displayName" : "Premium Anual",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Річний преміум — велика економія, більше дизайну",
+              "displayName" : "Преміум щорічно",
+              "locale" : "uk"
+            },
+            {
+              "description" : "年間プレミアム — 大きく節約、もっとデザイン",
+              "displayName" : "プレミアム年間",
+              "locale" : "ja"
+            },
+            {
+              "description" : "साल भर का प्रीमियम — बड़ी बचत, अधिक डिज़ाइन",
+              "displayName" : "प्रीमियम वार्षिक",
+              "locale" : "hi"
+            },
+            {
+              "description" : "Year-long premium — save big, design more",
+              "displayName" : "Premium Yearly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Roczny premium — oszczędzaj dużo, projektuj więcej",
+              "displayName" : "Premium Rocznie",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Premium anual — economize muito, projete mais",
+              "displayName" : "Premium Anual",
+              "locale" : "pt_BR"
+            }
+          ],
+          "productID" : "com.homegpt.ai.interior.redesign.yearly1",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Yearly",
+          "subscriptionGroupID" : "22140661",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

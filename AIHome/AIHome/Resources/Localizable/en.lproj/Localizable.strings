@@ -14,6 +14,23 @@
 "language.german" = "German";
 
 
+"onboarding.continue" = "Continue";
+"onboarding.welcome.title" = "Welcome to HomeGPT";
+"onboarding.welcome.subtitle" = "Transform your space with AI";
+"onboarding.welcome.get_started" = "Get Started";
+"onboarding.welcome.terms_of_use" = "Terms of use";
+"onboarding.welcome.subscription_terms" = "Subscription Terms";
+"onboarding.welcome.privacy_policy" = "Privacy Policy";
+"onboarding.interior.title" = "Interior Design";
+"onboarding.interior.subtitle" = "Redesign your space instantly";
+"onboarding.exterior.title" = "Exterior Design";
+"onboarding.exterior.subtitle" = "Reimagine your facade";
+"onboarding.landscape.title" = "Landscape Design";
+"onboarding.landscape.subtitle" = "Refresh your garden with AI";
+"onboarding.trial_enabled.title" = "3-day free trial is enabled!";
+"onboarding.trial_enabled.subtitle" = "You now have full access to all premium features.";
+"onboarding.trial_enabled.start_designing" = "Start Designing";
+
 "limit.generations_left.title" = "%d/%d Free
 Generations Left";
 "limit.reached.title" = "Limit Reached";
@@ -39,4 +56,3 @@ better designs";
 "result.download" = "DOWNLOAD";
 "result.share" = "SHARE";
 "result.save_to_archive" = "SAVE TO ARCHIVE";
-

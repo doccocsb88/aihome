@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var viewModel = MainTabViewModel()
+    @State private var userManager = UserManager.shared
     @State private var showingInspirationDetail = false
     @State private var showingInspirationFilter = false
     @Environment(AppCoordinator.self) private var coordinator
@@ -57,16 +58,8 @@ struct MainTabView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
-                    if viewModel.isPro {
-                        Text("PRO")
-                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.DesignSystem.accent)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    } else {
-                        Text("\(viewModel.freeGenerationsRemaining)/3")
+                    if !userManager.isPremium {
+                        Text(userManager.usageProgressText)
                             .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)

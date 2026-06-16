@@ -12,7 +12,7 @@ struct GenerationLimitView: View {
                 .font(.system(size: 80))
                 .foregroundColor(.yellow)
             
-            Text("\(viewModel.freeGenerationsRemaining)/3 Free Generations Left")
+            Text("\(viewModel.freeGenerationsRemaining)/\(viewModel.freeGenerationLimit) Free Generations Left")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
                 .multilineTextAlignment(.center)
             
@@ -25,7 +25,6 @@ struct GenerationLimitView: View {
             Spacer()
             
             Button(action: {
-                viewModel.upgradeNow()
                 dismiss()
             }) {
                 Text("Upgrade Now")
@@ -38,6 +37,9 @@ struct GenerationLimitView: View {
             }
             .padding(.horizontal, 32)
             .padding(.bottom, 32)
+        }
+        .task {
+            await viewModel.refreshPremiumStatus()
         }
     }
 }

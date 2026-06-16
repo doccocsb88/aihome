@@ -12,11 +12,11 @@ struct TrialEnabledView: View {
                 .frame(width: 80, height: 80)
                 .foregroundColor(.green)
             
-            Text("3-day free trial is enabled!")
+            Text(L10n.Onboarding.TrialEnabled.title)
                 .font(.DesignSystem.title1)
                 .multilineTextAlignment(.center)
             
-            Text("You now have full access to all premium features.")
+            Text(L10n.Onboarding.TrialEnabled.subtitle)
                 .font(.DesignSystem.body)
                 .foregroundColor(.DesignSystem.textSecondary)
                 .multilineTextAlignment(.center)
@@ -27,7 +27,7 @@ struct TrialEnabledView: View {
                 UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
                 coordinator.replaceRoot(with: .mainTab)
             }) {
-                Text("Start Designing")
+                Text(L10n.Onboarding.TrialEnabled.startDesigning)
                     .font(.DesignSystem.headline)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)

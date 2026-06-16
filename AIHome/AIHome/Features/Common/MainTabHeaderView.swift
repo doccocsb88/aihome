@@ -5,9 +5,10 @@ import SwiftUI
 struct MainTabHeaderView: View {
     let title: String
     var placement: AdaptyPurchaseService.Placement = .proButton
-    var generationText = "3/3"
+    var generationText: String?
     var titleSize: CGFloat = 36
 
+    @State private var userManager = UserManager.shared
     @State private var isShowingPaywall = false
     @State private var isLoadingPaywall = false
     @State private var paywallConfiguration: AdaptyUI.PaywallConfiguration?
@@ -24,8 +25,10 @@ struct MainTabHeaderView: View {
             Spacer(minLength: 12)
 
             HStack(spacing: 8) {
-                generationPill
-                proButton
+                if userManager.isFreeUser {
+                    generationPill
+                    proButton
+                }
             }
         }
         .padding(.horizontal, 16)
@@ -59,7 +62,7 @@ struct MainTabHeaderView: View {
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(Color.DesignSystem.folly)
 
-            Text(generationText)
+            Text(generationDisplayText)
                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
                 .foregroundStyle(Color.DesignSystem.textPrimary)
         }
@@ -121,6 +124,9 @@ struct MainTabHeaderView: View {
         guard !result.isPurchaseCancelled else { return }
         AppLogger.logAction("Adapty Paywall Purchase Completed", details: product.vendorProductId)
         isShowingPaywall = false
+        Task {
+            await userManager.refreshPremiumStatus()
+        }
     }
 
     private func handlePurchaseFailure(_ product: AdaptyPaywallProduct, error: AdaptyError) {
@@ -130,7 +136,7 @@ struct MainTabHeaderView: View {
 
     private func handleRestore(_ profile: AdaptyProfile) {
         AppLogger.logAction("Adapty Paywall Restore Completed")
-        UserDefaults.standard.set(profile.accessLevels["premium"]?.isActive ?? false, forKey: "isProCached")
+        userManager.setPremiumStatus(AdaptyPurchaseService.shared.hasPremiumAccess(profile))
     }
 
     private func handleRestoreFailure(_ error: AdaptyError) {
@@ -142,5 +148,9 @@ struct MainTabHeaderView: View {
         AppLogger.logAction("Adapty Paywall Rendering Failed", details: error.localizedDescription)
         paywallErrorMessage = error.localizedDescription
         isShowingPaywall = false
+    }
+
+    private var generationDisplayText: String {
+        return generationText ?? userManager.usageProgressText
     }
 }

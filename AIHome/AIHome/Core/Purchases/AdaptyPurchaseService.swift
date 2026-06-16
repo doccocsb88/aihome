@@ -139,7 +139,7 @@ final class AdaptyPurchaseService {
         case .pending:
             return .pending
         case let .success(profile, _):
-            let hasAccess = profile.accessLevels[accessLevelId]?.isActive ?? false
+            let hasAccess = hasPremiumAccess(profile)
             cachePremiumStatus(hasAccess)
             return hasAccess ? .active : .inactive
         }
@@ -149,7 +149,7 @@ final class AdaptyPurchaseService {
         try await ensureActivated()
 
         let profile = try await Adapty.restorePurchases()
-        let hasAccess = profile.accessLevels[accessLevelId]?.isActive ?? false
+        let hasAccess = hasPremiumAccess(profile)
         cachePremiumStatus(hasAccess)
         return hasAccess
     }
@@ -158,9 +158,13 @@ final class AdaptyPurchaseService {
         try await ensureActivated()
 
         let profile = try await Adapty.getProfile()
-        let hasAccess = profile.accessLevels[accessLevelId]?.isActive ?? false
+        let hasAccess = hasPremiumAccess(profile)
         cachePremiumStatus(hasAccess)
         return hasAccess
+    }
+
+    func hasPremiumAccess(_ profile: AdaptyProfile) -> Bool {
+        profile.accessLevels[accessLevelId]?.isActive ?? false
     }
 
     private func ensureActivated() async throws {
@@ -177,6 +181,7 @@ final class AdaptyPurchaseService {
 
     private func cachePremiumStatus(_ isActive: Bool) {
         userDefaults.set(isActive, forKey: "isProCached")
+        UserManager.shared.setPremiumStatus(isActive)
     }
 
     private func infoValue(for key: String, defaultValue: String = "") -> String {

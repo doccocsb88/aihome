@@ -3,11 +3,25 @@ import Observation
 
 @Observable
 final class GenerationLimitViewModel {
-    var freeGenerationsRemaining: Int = 3
-    var isPro: Bool = false
+    private let userManager = UserManager.shared
+
+    var freeGenerationsRemaining: Int {
+        userManager.freeUsageRemaining
+    }
+
+    var freeGenerationLimit: Int {
+        userManager.freeUsageLimit
+    }
+
+    var isPro: Bool {
+        userManager.isPremium
+    }
+
+    var isUsageLocked: Bool {
+        userManager.isUsageLocked
+    }
     
-    func upgradeNow() {
-        // Trigger purchase flow
-        isPro = true
+    func refreshPremiumStatus() async {
+        await userManager.refreshPremiumStatus()
     }
 }

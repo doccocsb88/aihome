@@ -14,6 +14,23 @@
 "language.german" = "Alemán";
 
 
+"onboarding.continue" = "Continuar";
+"onboarding.welcome.title" = "Bienvenido a HomeGPT";
+"onboarding.welcome.subtitle" = "Transforma tu espacio con IA";
+"onboarding.welcome.get_started" = "Comenzar";
+"onboarding.welcome.terms_of_use" = "Términos de uso";
+"onboarding.welcome.subscription_terms" = "Términos de suscripción";
+"onboarding.welcome.privacy_policy" = "Política de Privacidad";
+"onboarding.interior.title" = "Diseño de interiores";
+"onboarding.interior.subtitle" = "Rediseña tu espacio al instante";
+"onboarding.exterior.title" = "Diseño exterior";
+"onboarding.exterior.subtitle" = "Reimagina tu fachada";
+"onboarding.landscape.title" = "Diseño de paisaje";
+"onboarding.landscape.subtitle" = "Renueva tu jardín con IA";
+"onboarding.trial_enabled.title" = "¡La prueba gratuita de 3 días está activada!";
+"onboarding.trial_enabled.subtitle" = "Ahora tienes acceso completo a todas las funciones premium.";
+"onboarding.trial_enabled.start_designing" = "Empezar a diseñar";
+
 "limit.generations_left.title" = "%d/%d Generaciones Gratis
 Restantes";
 "limit.reached.title" = "Límite Alcanzado";
@@ -39,4 +56,3 @@ mejores diseños";
 "result.download" = "DESCARGAR";
 "result.share" = "COMPARTIR";
 "result.save_to_archive" = "GUARDAR EN ARCHIVO";
-
