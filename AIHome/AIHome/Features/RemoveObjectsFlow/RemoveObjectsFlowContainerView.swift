@@ -9,6 +9,7 @@ enum RemoveObjectsFlowState {
 struct RemoveObjectsFlowContainerView: View {
     @State private var state: RemoveObjectsFlowState = .input
     @State private var currentDraft: RemoveObjectsDraft? = nil
+    @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -46,12 +47,17 @@ struct RemoveObjectsFlowContainerView: View {
                 )
             }
         }
+        .generationUsageLimit(isPresented: $isShowingLimitPopup)
     }
 
     private func startGeneration(with draft: RemoveObjectsDraft) {
         self.currentDraft = draft
         guard let sourceImage = draft.sourceImage else {
             AppLogger.logError("Missing required draft data")
+            return
+        }
+        guard UserManager.shared.canUsePremiumFeature else {
+            isShowingLimitPopup = true
             return
         }
 
@@ -113,6 +119,11 @@ struct RemoveObjectsFlowContainerView: View {
                 )
 
                 await MainActor.run {
+                    guard UserManager.shared.consumeUsageIfAllowed() else {
+                        self.isShowingLimitPopup = true
+                        self.state = .input
+                        return
+                    }
                     self.state = .result(resultVM)
                 }
             } catch {

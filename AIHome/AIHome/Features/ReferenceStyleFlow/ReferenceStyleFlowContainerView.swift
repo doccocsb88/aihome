@@ -9,6 +9,7 @@ enum ReferenceStyleFlowState {
 struct ReferenceStyleFlowContainerView: View {
     @State private var state: ReferenceStyleFlowState = .input
     @State private var currentDraft: ReferenceStyleDraft? = nil
+    @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -46,6 +47,7 @@ struct ReferenceStyleFlowContainerView: View {
                 )
             }
         }
+        .generationUsageLimit(isPresented: $isShowingLimitPopup)
     }
 
     private func startGeneration(with draft: ReferenceStyleDraft) {
@@ -53,6 +55,10 @@ struct ReferenceStyleFlowContainerView: View {
         guard let sourceImage = draft.sourceImage,
               let referenceImage = draft.referenceImage else {
             AppLogger.logError("Missing required draft data")
+            return
+        }
+        guard UserManager.shared.canUsePremiumFeature else {
+            isShowingLimitPopup = true
             return
         }
 
@@ -124,6 +130,11 @@ struct ReferenceStyleFlowContainerView: View {
                 )
 
                 await MainActor.run {
+                    guard UserManager.shared.consumeUsageIfAllowed() else {
+                        self.isShowingLimitPopup = true
+                        self.state = .input
+                        return
+                    }
                     self.state = .result(resultVM)
                 }
             } catch {

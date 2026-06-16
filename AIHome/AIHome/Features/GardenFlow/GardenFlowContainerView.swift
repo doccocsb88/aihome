@@ -9,6 +9,7 @@ enum GardenFlowState {
 struct GardenFlowContainerView: View {
     @State private var state: GardenFlowState = .input
     @State private var currentDraft: GardenDraft? = nil
+    @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
     var initialImage: UIImage?
@@ -47,12 +48,17 @@ struct GardenFlowContainerView: View {
                 )
             }
         }
+        .generationUsageLimit(isPresented: $isShowingLimitPopup)
     }
 
     private func startGeneration(with draft: GardenDraft) {
         self.currentDraft = draft
         guard let sourceImage = draft.sourceImage else {
             AppLogger.logError("Missing required draft data")
+            return
+        }
+        guard UserManager.shared.canUsePremiumFeature else {
+            isShowingLimitPopup = true
             return
         }
 
@@ -118,6 +124,11 @@ struct GardenFlowContainerView: View {
                 )
 
                 await MainActor.run {
+                    guard UserManager.shared.consumeUsageIfAllowed() else {
+                        self.isShowingLimitPopup = true
+                        self.state = .input
+                        return
+                    }
                     self.state = .result(resultVM)
                 }
             } catch {

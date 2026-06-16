@@ -9,6 +9,7 @@ enum InteriorFlowState {
 struct InteriorFlowContainerView: View {
     @State private var state: InteriorFlowState = .input
     @State private var currentDraft: InteriorDraft? = nil
+    @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
     var initialImage: UIImage?
@@ -47,6 +48,7 @@ struct InteriorFlowContainerView: View {
                 )
             }
         }
+        .generationUsageLimit(isPresented: $isShowingLimitPopup)
     }
 
     private func startGeneration(with draft: InteriorDraft) {
@@ -63,6 +65,10 @@ struct InteriorFlowContainerView: View {
         let customStylePrompt = draft.customStyle?.trimmingCharacters(in: .whitespacesAndNewlines)
         if isCustomStyle && (customStylePrompt?.isEmpty ?? true) {
             AppLogger.logError("Missing custom style prompt")
+            return
+        }
+        guard UserManager.shared.canUsePremiumFeature else {
+            isShowingLimitPopup = true
             return
         }
         let requestDesignStyle = isCustomStyle ? "Modern" : designStyle.rawValue
@@ -138,6 +144,11 @@ struct InteriorFlowContainerView: View {
                 )
 
                 await MainActor.run {
+                    guard UserManager.shared.consumeUsageIfAllowed() else {
+                        self.isShowingLimitPopup = true
+                        self.state = .input
+                        return
+                    }
                     self.state = .result(resultVM)
                 }
             } catch {

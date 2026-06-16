@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct GenerationLoadingView: View {
@@ -5,76 +6,36 @@ struct GenerationLoadingView: View {
     var onRetry: (() -> Void)? = nil
     var onCancel: (() -> Void)? = nil
     
-    @State private var progress: CGFloat = 0.1
+    @State private var progress: CGFloat = 0
     @State private var bracketScale: CGFloat = 1.0
     
     var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
-            
-            // Image with blur and scanner
-            ZStack {
-                if let inputImage = viewModel.inputImage {
-                    Color.clear
-                        .aspectRatio(1, contentMode: .fit)
-                        .overlay(
-                            Image(uiImage: inputImage)
-                                .resizable()
-                                .scaledToFill()
-                                .blur(radius: 20)
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 24))
-                } else {
-                    RoundedRectangle(cornerRadius: 24)
-                        .fill(Color(UIColor.systemGray5))
-                        .aspectRatio(1, contentMode: .fit)
-                }
-                
-                // Scanner brackets (mock animation)
-                ScannerBrackets()
-                    .foregroundColor(.primary)
-                    .scaleEffect(bracketScale)
-                    .animation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: bracketScale)
+        GeometryReader { geometry in
+            let horizontalPadding: CGFloat = 47
+            let imageSide = min(geometry.size.width - horizontalPadding * 2, 321)
+            let topPadding = max(88, geometry.size.height * 0.145)
+
+            VStack(spacing: 0) {
+                loadingImage(size: imageSide)
+                    .padding(.top, topPadding)
+
+                progressSection
+                    .frame(width: imageSide)
+                    .padding(.top, 48)
+
+                Spacer(minLength: 0)
             }
-            .padding(.horizontal, 32)
-            .onAppear {
-                bracketScale = 1.2
-            }
-            
-            // Mock Progress Bar
-            VStack(alignment: .leading, spacing: 20) {
-                HStack {
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(Color(UIColor.systemGray5))
-                            .frame(width: 140, height: 4)
-                        
-                        Capsule()
-                            .fill(Color.primary)
-                            .frame(width: 140 * progress, height: 4)
-                            .animation(.linear(duration: 15), value: progress)
-                    }
-                    
-                    Spacer()
-                    
-                    Text("\(Int(progress * 100))%")
-                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 14))
-                        .foregroundColor(.gray)
-                }
-                
-                Text(viewModel.progressText)
-                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
-                    .foregroundColor(.primary)
-            }
-            .padding(.horizontal, 32)
-            
-            Spacer()
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
+        .background(Color.white.ignoresSafeArea())
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
-            progress = 0.9 // Animate to 90% over 15 seconds
+            bracketScale = 1.14
+        }
+        .task {
+            await runFakeProgress()
         }
         .overlay {
             if viewModel.status == .failed {
@@ -129,6 +90,77 @@ struct GenerationLoadingView: View {
                 .cornerRadius(24)
                 .padding(.horizontal, 40)
             }
+        }
+    }
+
+    private func loadingImage(size: CGFloat) -> some View {
+        ZStack {
+            if let inputImage = viewModel.inputImage {
+                Image(uiImage: inputImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .blur(radius: 18)
+                    .clipped()
+            } else {
+                Color(UIColor.systemGray5)
+                    .frame(width: size, height: size)
+            }
+
+            ScannerBrackets()
+                .scaleEffect(bracketScale)
+                .animation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true), value: bracketScale)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+    }
+
+    private var progressSection: some View {
+        VStack(alignment: .leading, spacing: 28) {
+            HStack(alignment: .center, spacing: 0) {
+                progressBar
+
+                Spacer(minLength: 16)
+
+                Text("\(Int((progress * 100).rounded()))%")
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 14))
+                    .foregroundColor(Color.DesignSystem.silverSand)
+                    .monospacedDigit()
+            }
+
+            Text(viewModel.progressText)
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
+                .foregroundColor(Color.DesignSystem.textPrimary)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+    }
+
+    private var progressBar: some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(Color(UIColor.systemGray5))
+
+                Capsule()
+                    .fill(Color.DesignSystem.textPrimary)
+                    .frame(width: proxy.size.width * progress)
+            }
+        }
+        .frame(width: 216, height: 6)
+    }
+
+    private func runFakeProgress() async {
+        let cap: CGFloat = 0.94
+        let tickNanoseconds: UInt64 = 80_000_000
+        var elapsed: TimeInterval = 0
+
+        while !Task.isCancelled && viewModel.status == .generating {
+            let easedProgress = cap * (1 - CGFloat(exp(-elapsed / 7.0)))
+            await MainActor.run {
+                progress = min(max(easedProgress, progress), cap)
+            }
+
+            try? await Task.sleep(nanoseconds: tickNanoseconds)
+            elapsed += 0.08
         }
     }
 }
