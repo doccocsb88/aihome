@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import UIKit
 
 enum PhotoSourcePickerSelectedImageStyle {
     case compact
@@ -11,6 +12,7 @@ struct PhotoSourcePickerView: View {
     var hideCTA: Bool = false
     var selectedImageStyle: PhotoSourcePickerSelectedImageStyle = .compact
     var onContinue: ((UIImage) -> Void)?
+    @State private var isShowingCameraUnavailableAlert = false
     
     var body: some View {
         VStack(spacing: 24) {
@@ -67,7 +69,11 @@ struct PhotoSourcePickerView: View {
                         }
                         
                         Button(action: {
-                            viewModel.showCamera = true
+                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                viewModel.showCamera = true
+                            } else {
+                                isShowingCameraUnavailableAlert = true
+                            }
                         }) {
                             HStack {
                                 Image("ic_picker_camera")
@@ -145,9 +151,16 @@ struct PhotoSourcePickerView: View {
                 .padding(.bottom, 36)
             }
         }
-        .sheet(isPresented: $viewModel.showCamera) {
-            Text("Camera View Placeholder")
-                .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
+        .fullScreenCover(isPresented: $viewModel.showCamera) {
+            CameraPickerView { image in
+                viewModel.selectedImage = image
+            }
+            .ignoresSafeArea()
+        }
+        .alert("Camera Unavailable", isPresented: $isShowingCameraUnavailableAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Camera is not available on this device.")
         }
     }
 
@@ -220,5 +233,46 @@ struct PhotoSourcePickerView: View {
         }
         .aspectRatio(1, contentMode: .fit)
         .padding(.horizontal, 24)
+    }
+}
+
+private struct CameraPickerView: UIViewControllerRepresentable {
+    @Environment(\.dismiss) private var dismiss
+    let onImagePicked: (UIImage) -> Void
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = context.coordinator
+        picker.allowsEditing = false
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    final class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        private let parent: CameraPickerView
+
+        init(parent: CameraPickerView) {
+            self.parent = parent
+        }
+
+        func imagePickerController(
+            _ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+        ) {
+            if let image = info[.originalImage] as? UIImage {
+                parent.onImagePicked(image)
+            }
+            parent.dismiss()
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.dismiss()
+        }
     }
 }

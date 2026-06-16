@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingIntroPage: View {
     let imageName: String
+    var beforeImageName: String?
     let title: String
     let subtitle: String
     let activeIndex: Int
@@ -57,22 +58,14 @@ struct OnboardingIntroPage: View {
     }
 
     private func headerImage(width: CGFloat, height: CGFloat) -> some View {
-        Image(imageName)
-            .resizable()
-            .scaledToFill()
-            .frame(width: width, height: height * 0.34, alignment: .top)
-            .clipped()
-            .overlay(
-                LinearGradient(
-                    colors: [
-                        Color.DesignSystem.background.opacity(0.1),
-                        Color.DesignSystem.background.opacity(0.72),
-                        Color.DesignSystem.background
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+        let imageHeight = max(height * 0.68, 560)
+
+        return OnboardingBeforeAfterHeroView(
+            beforeImageName: beforeImageName ?? imageName,
+            afterImageName: imageName,
+            height: imageHeight
+        )
+        .frame(width: width, height: imageHeight)
     }
 
     private var pageIndicator: some View {
@@ -89,6 +82,85 @@ struct OnboardingIntroPage: View {
                 }
             }
         }
+    }
+}
+
+private struct OnboardingBeforeAfterHeroView: View {
+    let beforeImageName: String
+    let afterImageName: String
+    let height: CGFloat
+    var showsRevealAnimation = true
+
+    @State private var splitProgress: CGFloat = 0.38
+
+    var body: some View {
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let splitX = width * splitProgress
+
+            ZStack(alignment: .topLeading) {
+                heroImage(beforeImageName, width: width)
+
+                heroImage(afterImageName, width: width)
+                    .mask {
+                        HStack(spacing: 0) {
+                            Spacer(minLength: 0)
+                            Rectangle()
+                                .frame(width: width - splitX)
+                        }
+                    }
+
+                Rectangle()
+                    .fill(Color.white.opacity(0.86))
+                    .frame(width: 1, height: height * 0.56)
+                    .offset(x: splitX)
+                    .opacity(0.72)
+
+                afterBadge
+                    .padding(.top, 56)
+                    .padding(.trailing, 16)
+                    .frame(width: width, alignment: .trailing)
+
+                bottomGradient
+            }
+            .clipped()
+            .onAppear {
+                guard showsRevealAnimation else { return }
+                withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
+                    splitProgress = 0.68
+                }
+            }
+        }
+    }
+
+    private func heroImage(_ name: String, width: CGFloat) -> some View {
+        Image(name)
+            .resizable()
+            .scaledToFill()
+            .frame(width: width, height: height, alignment: .top)
+            .clipped()
+    }
+
+    private var afterBadge: some View {
+        Text("After")
+            .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
+            .foregroundColor(.white)
+            .padding(.horizontal, 13)
+            .frame(height: 30)
+            .background(Color.black.opacity(0.58), in: Capsule())
+    }
+
+    private var bottomGradient: some View {
+        LinearGradient(
+            stops: [
+                .init(color: Color.DesignSystem.background.opacity(0), location: 0.44),
+                .init(color: Color.DesignSystem.background.opacity(0.9), location: 0.73),
+                .init(color: Color.DesignSystem.background, location: 1)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .allowsHitTesting(false)
     }
 }
 

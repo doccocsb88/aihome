@@ -6,6 +6,7 @@ struct ExteriorIntroView: View {
     var body: some View {
         OnboardingIntroPage(
             imageName: "onboarding_page2",
+            beforeImageName: "onboarding_page3",
             title: L10n.Onboarding.Exterior.title,
             subtitle: L10n.Onboarding.Exterior.subtitle,
             activeIndex: 1,
