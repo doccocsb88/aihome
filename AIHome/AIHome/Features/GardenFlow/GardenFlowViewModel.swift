@@ -7,8 +7,8 @@ class GardenFlowViewModel {
     var photoPickerViewModel = PhotoSourcePickerViewModel(
         title: "",
         subtitle: nil,
-        allowsSample: false,
-        sampleImages: [],
+        allowsSample: true,
+        sampleImages: PhotoSampleAssets.garden,
         ctaTitle: "Continue"
     )
     

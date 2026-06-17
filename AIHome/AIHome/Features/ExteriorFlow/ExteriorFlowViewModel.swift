@@ -7,8 +7,8 @@ class ExteriorFlowViewModel {
     var photoPickerViewModel = PhotoSourcePickerViewModel(
         title: "",
         subtitle: nil,
-        allowsSample: false,
-        sampleImages: [],
+        allowsSample: true,
+        sampleImages: PhotoSampleAssets.exterior,
         ctaTitle: "Continue"
     )
     

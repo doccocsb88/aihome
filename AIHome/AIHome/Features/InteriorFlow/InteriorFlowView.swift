@@ -19,14 +19,7 @@ struct InteriorFlowView: View {
                 Group {
                     switch viewModel.currentStep {
                     case .photoSelection:
-                        PhotoSourcePickerView(
-                            viewModel: viewModel.photoPickerViewModel,
-                            selectedImageStyle: .fullWidthSquare,
-                            onContinue: { image in
-                                viewModel.draft.sourceImage = image
-                                viewModel.nextStep()
-                            }
-                        )
+                        photoSelectionStep()
 
                     case .roomType:
                         roomTypeStep()
@@ -130,6 +123,44 @@ struct InteriorFlowView: View {
     }
 
     // MARK: - Steps Views
+
+    @ViewBuilder
+    private func photoSelectionStep() -> some View {
+        VStack(spacing: 24) {
+            PhotoSourcePickerView(
+                viewModel: viewModel.photoPickerViewModel,
+                hideCTA: true,
+                selectedImageStyle: .fullWidthSquare
+            )
+
+            if viewModel.photoPickerViewModel.allowsSample,
+               viewModel.photoPickerViewModel.selectedImage == nil,
+               !viewModel.photoPickerViewModel.sampleImages.isEmpty {
+                TrySampleView(
+                    title: viewModel.photoPickerViewModel.sampleTitle,
+                    imageNames: viewModel.photoPickerViewModel.sampleImages,
+                    onSelect: { sample in
+                        viewModel.photoPickerViewModel.selectSample(sample)
+                    }
+                )
+                .padding(.top, 8)
+            }
+
+            Spacer()
+
+            InteriorCTAButton(
+                title: viewModel.photoPickerViewModel.ctaTitle,
+                isEnabled: viewModel.canContinue,
+                action: {
+                    guard let image = viewModel.photoPickerViewModel.selectedImage else { return }
+                    viewModel.draft.sourceImage = image
+                    viewModel.nextStep()
+                }
+            )
+            .padding(.horizontal, 32)
+            .padding(.bottom, 36)
+        }
+    }
 
     @ViewBuilder
     private func roomTypeStep() -> some View {

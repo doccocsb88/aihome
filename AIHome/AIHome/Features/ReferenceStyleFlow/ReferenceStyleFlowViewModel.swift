@@ -10,12 +10,7 @@ class ReferenceStyleFlowViewModel {
         title: "Upload your room",
         subtitle: "Choose a photo of your current space",
         allowsSample: true,
-        sampleImages: [
-            "ic_interior_sample_01",
-            "ic_interior_sample_02",
-            "ic_interior_sample_03",
-            "ic_interior_sample_04"
-        ],
+        sampleImages: PhotoSampleAssets.interior,
         sampleTitle: "OR TRY A TEMPLATE",
         ctaTitle: "CONTINUE"
     )
@@ -24,12 +19,7 @@ class ReferenceStyleFlowViewModel {
         title: "Upload reference style",
         subtitle: "Choose an image with the style you want to apply",
         allowsSample: true,
-        sampleImages: [
-            "ic_interior_sample_01",
-            "ic_interior_sample_02",
-            "ic_interior_sample_03",
-            "ic_interior_sample_04"
-        ],
+        sampleImages: PhotoSampleAssets.interior,
         sampleTitle: "OR TRY A TEMPLATE",
         ctaTitle: "CONTINUE"
     )

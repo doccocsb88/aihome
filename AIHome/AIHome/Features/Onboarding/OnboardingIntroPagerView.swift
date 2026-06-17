@@ -31,7 +31,7 @@ struct OnboardingIntroPagerView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             bottomControls
-                .padding(.bottom, 32)
+                .padding(.bottom, 26)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeInOut(duration: 0.28), value: selectedIndex)
@@ -111,7 +111,7 @@ struct OnboardingIntroPagerView: View {
 
 enum OnboardingLayout {
     static let indicatorHeight: CGFloat = 6
-    static let termsHeight: CGFloat = 18
+    static let termsHeight: CGFloat = 24
     static let indicatorTopSpacing: CGFloat = 16
     static let termsBottomSpacing: CGFloat = 20
     static let bottomAccessoryHeight: CGFloat = 44

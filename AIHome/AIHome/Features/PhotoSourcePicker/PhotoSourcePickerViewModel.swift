@@ -2,6 +2,29 @@ import Foundation
 import SwiftUI
 import PhotosUI
 
+enum PhotoSampleAssets {
+    static let interior = [
+        "20_sample_01_interior_living_room",
+        "21_sample_02_interior_kitchen",
+        "22_sample_03_interior_bedroom",
+        "23_sample_04_interior_bathroom"
+    ]
+
+    static let exterior = [
+        "24_sample_05_exterior_modern_farmhouse",
+        "25_sample_06_exterior_european_townhouse",
+        "26_sample_07_exterior_coastal_villa",
+        "27_sample_08_exterior_brick_suburban"
+    ]
+
+    static let garden = [
+        "28_sample_09_garden_backyard_patio",
+        "29_sample_10_garden_english_cottage",
+        "30_sample_11_garden_poolyard",
+        "31_sample_12_garden_rooftop_terrace"
+    ]
+}
+
 @Observable
 class PhotoSourcePickerViewModel {
     var title: String

@@ -1,54 +1,78 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @State private var webPageToOpen: AppWebPage?
+
     var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                Color.DesignSystem.background
-                    .ignoresSafeArea()
-
+        ZStack(alignment: .top) {
+            OnboardingContentPage(
+                title: L10n.Onboarding.Welcome.title,
+                subtitle: L10n.Onboarding.Welcome.subtitle
+            ) {
                 WelcomeImageMarqueeView()
-                    .frame(height: max(geometry.size.height * 0.52, 380))
+                    .overlay {
+                        OnboardingBottomGradient()
+                    }
                     .padding(.top, 8)
-
-                VStack(spacing: 0) {
-                    Spacer()
-
-                    Text(L10n.Onboarding.Welcome.title)
-                        .font(.DesignSystem.title1)
-                        .multilineTextAlignment(.center)
-
-                    Text(L10n.Onboarding.Welcome.subtitle)
-                        .font(.DesignSystem.body)
-                        .foregroundColor(.DesignSystem.textSecondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 12)
-                        .padding(.horizontal, 24)
-
-                    Spacer()
-                        .frame(height: OnboardingLayout.contentBottomReserve)
-                }
-                .padding(.bottom, 8)
-
-                welcomeTerms
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-                    .padding(.bottom, OnboardingLayout.termsBottomSpacing)
             }
+
+            welcomeTerms
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom, OnboardingLayout.termsBottomSpacing)
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarBackButtonHidden()
         .ignoresSafeArea(.all)
+        .sheet(item: $webPageToOpen) { webPage in
+            AppWebView(title: webPage.title, url: webPage.url)
+        }
     }
 
     private var welcomeTerms: some View {
-        HStack(spacing: 16) {
-            Link(L10n.Onboarding.Welcome.termsOfUse, destination: URL(string: "https://example.com/terms")!)
-            Link(L10n.Onboarding.Welcome.subscriptionTerms, destination: URL(string: "https://example.com/subscription")!)
-            Link(L10n.Onboarding.Welcome.privacyPolicy, destination: URL(string: "https://example.com/privacy")!)
+        VStack(spacing: 2) {
+            HStack(spacing: 0) {
+                termsText("By continuing, you agree with ")
+                termsButton(
+                    "Terms of Use",
+                    title: "Terms of Use",
+                    urlString: "https://sites.google.com/billionx.co/homegpt-tos"
+                )
+                termsText(" and ")
+                termsButton(
+                    "Privacy Policy",
+                    title: "Privacy Policy",
+                    urlString: "https://sites.google.com/billionx.co/homegpt-privacy-policy"
+                )
+                termsText(",")
+            }
+
+            termsText("along with our use of third-party tools for app functionality.")
         }
-        .font(.DesignSystem.caption)
-        .foregroundColor(.DesignSystem.textSecondary)
+        .multilineTextAlignment(.center)
         .frame(height: OnboardingLayout.termsHeight)
+    }
+
+    private func termsText(_ text: String) -> some View {
+        Text(text)
+            .font(FontFamily.Roboto.regular.swiftUIFont(size: 9))
+            .foregroundColor(Color.DesignSystem.gray)
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+    }
+
+    private func termsButton(_ text: String, title: String, urlString: String) -> some View {
+        Button {
+            guard let url = URL(string: urlString) else { return }
+            webPageToOpen = AppWebPage(title: title, url: url)
+        } label: {
+            Text(text)
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 9))
+                .foregroundColor(Color.DesignSystem.eerieBlack)
+                .underline()
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
+        .buttonStyle(.plain)
     }
 }
 

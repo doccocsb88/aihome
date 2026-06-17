@@ -10,12 +10,7 @@ class InteriorFlowViewModel {
         title: "Start with a photo",
         subtitle: "Upload or select from template to try",
         allowsSample: true,
-        sampleImages: [
-            "ic_interior_sample_01",
-            "ic_interior_sample_02",
-            "ic_interior_sample_03",
-            "ic_interior_sample_04"
-        ],
+        sampleImages: PhotoSampleAssets.interior,
         ctaTitle: "GET STARTED"
     )
     

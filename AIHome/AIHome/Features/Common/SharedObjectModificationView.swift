@@ -13,13 +13,6 @@ struct SharedObjectModificationView: View {
     let onBack: () -> Void
     let onGenerate: () -> Void
     
-    let sampleImages = [
-        "ic_interior_sample_01",
-        "ic_interior_sample_02",
-        "ic_interior_sample_03",
-        "ic_interior_sample_04"
-    ]
-    
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -81,31 +74,17 @@ struct SharedObjectModificationView: View {
                     }
                     .padding(.horizontal, 24)
                     
-                    // Try a sample
-                    if photoPickerViewModel.selectedImage == nil {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Try a sample")
-                                .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
-                                .foregroundColor(.DesignSystem.textPrimary)
-                                .padding(.horizontal, 24)
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 12) {
-                                    ForEach(sampleImages, id: \.self) { sample in
-                                        Button(action: {
-                                            photoPickerViewModel.selectSample(sample)
-                                        }) {
-                                            Image(sample)
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: 72, height: 72)
-                                                .cornerRadius(12)
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal, 24)
+                    if photoPickerViewModel.allowsSample,
+                       photoPickerViewModel.selectedImage == nil,
+                       !photoPickerViewModel.sampleImages.isEmpty {
+                        TrySampleView(
+                            title: "Try a sample",
+                            imageNames: photoPickerViewModel.sampleImages,
+                            titleStyle: .section,
+                            onSelect: { sample in
+                                photoPickerViewModel.selectSample(sample)
                             }
-                        }
+                        )
                     }
                 }
                 .padding(.bottom, 24)

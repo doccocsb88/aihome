@@ -8,64 +8,61 @@ struct OnboardingIntroPage: View {
     let subtitle: String
 
     var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                Color.DesignSystem.background
-                    .ignoresSafeArea()
+        OnboardingContentPage(title: title, subtitle: subtitle) {
+            OnboardingBeforeAfterHeroView(
+                beforeImageName: beforeImageName,
+                afterImageName: afterImageName,
+                secondAfterImageName: secondAfterImageName
+            )
+        }
+    }
 
-                headerImage(
-                    width: geometry.size.width,
-                    height: geometry.size.height,
-                    topSafeArea: geometry.safeAreaInsets.top
-                )
-                .ignoresSafeArea(edges: .top)
+}
 
-                VStack(spacing: 0) {
-                    Spacer()
+struct OnboardingContentPage<AssetsView: View>: View {
+    let title: String
+    let subtitle: String
+    @ViewBuilder let assetsView: () -> AssetsView
 
-                    Text(title)
-                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
-                        .foregroundColor(.DesignSystem.textPrimary)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+    var body: some View {
+        ZStack(alignment: .top) {
+            Color.DesignSystem.background
+                .ignoresSafeArea()
 
-                    Text(subtitle)
-                        .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
-                        .foregroundColor(.DesignSystem.gray)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .padding(.top, 10)
+            VStack(spacing: 0) {
+                assetsView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
 
-                    Spacer()
-                        .frame(height: OnboardingLayout.contentBottomReserve)
-                }
-                .padding(.bottom, 8)
+                Text(title)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
+                    .foregroundColor(.DesignSystem.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+
+                Text(subtitle)
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
+                    .foregroundColor(.DesignSystem.gray)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .padding(.top, 10)
+                    .padding(.horizontal, 24)
+
+                Spacer()
+                    .frame(height: OnboardingLayout.contentBottomReserve)
             }
+            .padding(.bottom, 8)
         }
         .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
     }
-
-    private func headerImage(width: CGFloat, height: CGFloat, topSafeArea: CGFloat) -> some View {
-        let imageHeight = max(height * 0.68 + topSafeArea, 560 + topSafeArea)
-
-        return OnboardingBeforeAfterHeroView(
-            beforeImageName: beforeImageName,
-            afterImageName: afterImageName,
-            secondAfterImageName: secondAfterImageName,
-            height: imageHeight
-        )
-        .frame(width: width, height: imageHeight)
-    }
-
 }
 
 private struct OnboardingBeforeAfterHeroView: View {
     let beforeImageName: String
     let afterImageName: String
     let secondAfterImageName: String
-    let height: CGFloat
     var showsRevealAnimation = true
 
     @State private var afterOneSplitProgress: CGFloat = 1
@@ -77,16 +74,17 @@ private struct OnboardingBeforeAfterHeroView: View {
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
+            let height = geometry.size.height
             let dividerX = width * dividerProgress
 
             ZStack(alignment: .topLeading) {
-                heroImage(beforeImageName, width: width)
+                heroImage(beforeImageName, width: width, height: height)
 
-                heroImage(afterImageName, width: width)
+                heroImage(afterImageName, width: width, height: height)
                     .revealMask(splitProgress: afterOneSplitProgress, width: width)
                     .opacity(overlayOpacity)
 
-                heroImage(secondAfterImageName, width: width)
+                heroImage(secondAfterImageName, width: width, height: height)
                     .revealMask(splitProgress: afterTwoSplitProgress, width: width)
                     .opacity(overlayOpacity)
 
@@ -103,7 +101,7 @@ private struct OnboardingBeforeAfterHeroView: View {
                     .padding(.trailing, 16)
                     .frame(width: width, alignment: .trailing)
 
-                bottomGradient
+                OnboardingBottomGradient()
             }
             .clipped()
             .task(id: animationIdentity) {
@@ -112,7 +110,7 @@ private struct OnboardingBeforeAfterHeroView: View {
         }
     }
 
-    private func heroImage(_ name: String, width: CGFloat) -> some View {
+    private func heroImage(_ name: String, width: CGFloat, height: CGFloat) -> some View {
         Image(name)
             .resizable()
             .scaledToFill()
@@ -127,19 +125,6 @@ private struct OnboardingBeforeAfterHeroView: View {
             .padding(.horizontal, 13)
             .frame(height: 30)
             .background(Color.black.opacity(0.58), in: Capsule())
-    }
-
-    private var bottomGradient: some View {
-        LinearGradient(
-            stops: [
-                .init(color: Color.DesignSystem.background.opacity(0), location: 0.44),
-                .init(color: Color.DesignSystem.background.opacity(0.9), location: 0.73),
-                .init(color: Color.DesignSystem.background, location: 1)
-            ],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .allowsHitTesting(false)
     }
 
     private var animationIdentity: String {
@@ -227,6 +212,25 @@ private struct OnboardingBeforeAfterHeroView: View {
                 showsDivider = false
             }
             overlayOpacity = 1
+        }
+    }
+}
+
+struct OnboardingBottomGradient: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            LinearGradient(
+                stops: [
+                    .init(color: Color.DesignSystem.background.opacity(0), location: 0.44),
+                    .init(color: Color.DesignSystem.background.opacity(0.9), location: 0.73),
+                    .init(color: Color.DesignSystem.background, location: 1)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 250)
+            .allowsHitTesting(false)
         }
     }
 }

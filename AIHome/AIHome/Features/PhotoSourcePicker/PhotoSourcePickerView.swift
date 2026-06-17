@@ -107,37 +107,9 @@ struct PhotoSourcePickerView: View {
                 .padding(.horizontal, 24)
             }
             
-            if viewModel.allowsSample && viewModel.selectedImage == nil && !viewModel.sampleImages.isEmpty {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(viewModel.sampleTitle)
-                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
-                        .foregroundColor(.gray)
-                        .kerning(1.2)
-                        .padding(.horizontal, 24)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(viewModel.sampleImages, id: \.self) { sample in
-                                Button(action: {
-                                    viewModel.selectSample(sample)
-                                }) {
-                                    Image(sample)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 72, height: 72)
-                                        .cornerRadius(12)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 24)
-                    }
-                }
-                .padding(.top, 8)
-            }
-            
-            Spacer()
-            
             if !hideCTA {
+                Spacer()
+
                 InteriorCTAButton(
                     title: viewModel.ctaTitle,
                     isEnabled: viewModel.canContinue,

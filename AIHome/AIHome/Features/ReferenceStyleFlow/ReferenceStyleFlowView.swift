@@ -14,7 +14,7 @@ struct ReferenceStyleFlowView: View {
             Group {
                 switch viewModel.currentStep {
                 case .sourceImage:
-                    PhotoSourcePickerView(
+                    photoSelectionStep(
                         viewModel: viewModel.sourcePhotoPickerViewModel,
                         onContinue: { image in
                             viewModel.draft.sourceImage = image
@@ -22,7 +22,7 @@ struct ReferenceStyleFlowView: View {
                         }
                     )
                 case .referenceImage:
-                    PhotoSourcePickerView(
+                    photoSelectionStep(
                         viewModel: viewModel.referencePhotoPickerViewModel,
                         onContinue: { image in
                             viewModel.draft.referenceImage = image
@@ -101,6 +101,45 @@ struct ReferenceStyleFlowView: View {
         }
         .padding(.top, 16)
         .padding(.bottom, 8)
+    }
+
+    @ViewBuilder
+    private func photoSelectionStep(
+        viewModel photoPickerViewModel: PhotoSourcePickerViewModel,
+        onContinue: @escaping (UIImage) -> Void
+    ) -> some View {
+        VStack(spacing: 24) {
+            PhotoSourcePickerView(
+                viewModel: photoPickerViewModel,
+                hideCTA: true
+            )
+
+            if photoPickerViewModel.allowsSample,
+               photoPickerViewModel.selectedImage == nil,
+               !photoPickerViewModel.sampleImages.isEmpty {
+                TrySampleView(
+                    title: photoPickerViewModel.sampleTitle,
+                    imageNames: photoPickerViewModel.sampleImages,
+                    onSelect: { sample in
+                        photoPickerViewModel.selectSample(sample)
+                    }
+                )
+                .padding(.top, 8)
+            }
+
+            Spacer()
+
+            InteriorCTAButton(
+                title: photoPickerViewModel.ctaTitle,
+                isEnabled: photoPickerViewModel.canContinue,
+                action: {
+                    guard let image = photoPickerViewModel.selectedImage else { return }
+                    onContinue(image)
+                }
+            )
+            .padding(.horizontal, 32)
+            .padding(.bottom, 36)
+        }
     }
     
     @ViewBuilder

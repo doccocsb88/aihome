@@ -8,8 +8,8 @@ class ReplaceObjectsFlowViewModel {
     var photoPickerViewModel = PhotoSourcePickerViewModel(
         title: "",
         subtitle: nil,
-        allowsSample: false,
-        sampleImages: [],
+        allowsSample: true,
+        sampleImages: PhotoSampleAssets.interior,
         ctaTitle: "Continue"
     )
     
