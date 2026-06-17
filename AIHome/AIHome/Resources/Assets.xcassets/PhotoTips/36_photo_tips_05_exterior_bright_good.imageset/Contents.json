@@ -1,16 +1,15 @@
 {
   "images" : [
     {
+      "filename" : "36_photo_tips_05_exterior_bright_good.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "good-img-1_011@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "good-img-1_011@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

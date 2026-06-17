@@ -14,6 +14,7 @@ struct ExteriorFlowView: View {
             prompt: $viewModel.draft.prompt,
             photoPickerViewModel: viewModel.photoPickerViewModel,
             canGenerate: viewModel.canGenerate,
+            photoTipsStyle: .exterior,
             onBack: {
                 dismiss()
             },

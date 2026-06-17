@@ -1,16 +1,15 @@
 {
   "images" : [
     {
+      "filename" : "39_photo_tips_08_exterior_narrow_bad.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "bad-img-1_008@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "bad-img-1_008@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

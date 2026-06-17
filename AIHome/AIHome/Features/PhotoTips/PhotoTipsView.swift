@@ -1,8 +1,44 @@
 import SwiftUI
 
+enum PhotoTipsStyle {
+    case interior
+    case exterior
+
+    var badExamples: [String] {
+        switch self {
+        case .interior:
+            [
+                "33_photo_tips_02_interior_no_well_lit_bad",
+                "35_photo_tips_04_interior_blur_bad"
+            ]
+        case .exterior:
+            [
+                "37_photo_tips_06_exterior_unbright_bad",
+                "39_photo_tips_08_exterior_narrow_bad"
+            ]
+        }
+    }
+
+    var goodExamples: [String] {
+        switch self {
+        case .interior:
+            [
+                "32_photo_tips_01_interior_well_lit_good",
+                "34_photo_tips_03_interior_steady_good"
+            ]
+        case .exterior:
+            [
+                "36_photo_tips_05_exterior_bright_good",
+                "38_photo_tips_07_exterior_wide_good"
+            ]
+        }
+    }
+}
+
 struct PhotoTipsView: View {
     @Environment(\.dismiss) private var dismiss
 
+    var style: PhotoTipsStyle = .interior
     var onClose: (() -> Void)?
     var onGotIt: (() -> Void)?
 
@@ -31,16 +67,14 @@ struct PhotoTipsView: View {
                     exampleSection(
                         title: "BAD EXAMPLES:",
                         iconName: "ic_tips_bad",
-                        iconColor: .DesignSystem.folly,
-                        examples: ["ic_tips_bad_01", "ic_tips_bad_02"],
+                        examples: style.badExamples,
                         isBadExample: true
                     )
 
                     exampleSection(
                         title: "GOOD EXAMPLES:",
                         iconName: "ic_tips_good",
-                        iconColor: .DesignSystem.emerald,
-                        examples: ["ic_tips_good_01", "ic_tips_good_02"],
+                        examples: style.goodExamples,
                         isBadExample: false
                     )
                 }
@@ -116,7 +150,6 @@ struct PhotoTipsView: View {
     private func exampleSection(
         title: String,
         iconName: String,
-        iconColor: Color,
         examples: [String],
         isBadExample: Bool
     ) -> some View {
@@ -131,20 +164,34 @@ struct PhotoTipsView: View {
                     .foregroundStyle(Color.DesignSystem.darkKnight)
             }
 
-            HStack(spacing: 14) {
-                ForEach(examples, id: \.self) { imageName in
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .saturation(isBadExample ? 0 : 1)
-                        .opacity(isBadExample ? 0.55 : 1)
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1.36, contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .clipped()
+            GeometryReader { proxy in
+                let spacing: CGFloat = 14
+                let itemWidth = max((proxy.size.width - spacing) / 2, 0)
+                let itemHeight = itemWidth * 124 / 166
+
+                HStack(spacing: spacing) {
+                    ForEach(examples, id: \.self) { imageName in
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                            .saturation(isBadExample ? 0 : 1)
+                            .opacity(isBadExample ? 0.55 : 1)
+                            .frame(width: itemWidth, height: itemHeight)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .clipped()
+                    }
                 }
             }
+            .frame(height: exampleImageHeight)
         }
+    }
+
+    private var exampleImageHeight: CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let horizontalPadding: CGFloat = 60
+        let spacing: CGFloat = 14
+        let itemWidth = max((screenWidth - horizontalPadding - spacing) / 2, 0)
+        return itemWidth * 124 / 166
     }
 
     private func close() {

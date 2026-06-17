@@ -1,16 +1,15 @@
 {
   "images" : [
     {
+      "filename" : "34_photo_tips_03_interior_steady_good.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "bad-img-2_009@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "bad-img-2_009@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

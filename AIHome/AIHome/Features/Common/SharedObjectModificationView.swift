@@ -7,6 +7,7 @@ struct SharedObjectModificationView: View {
     @Binding var prompt: String
     @Bindable var photoPickerViewModel: PhotoSourcePickerViewModel
     let canGenerate: Bool
+    var photoTipsStyle: PhotoTipsStyle = .interior
     
     @State private var showingPhotoTips = false
     
@@ -111,7 +112,7 @@ struct SharedObjectModificationView: View {
         .toolbar(.hidden, for: .tabBar)
         .ignoresSafeArea(.container, edges: .bottom)
         .sheet(isPresented: $showingPhotoTips) {
-            PhotoTipsView()
+            PhotoTipsView(style: photoTipsStyle)
         }
     }
 }
