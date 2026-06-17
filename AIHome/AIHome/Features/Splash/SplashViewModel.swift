@@ -9,6 +9,6 @@ final class SplashViewModel {
     }
 
     func determineNextRoute() -> AppRoute {
-        return hasSeenOnboarding ? .mainTab : .welcome
+        return hasSeenOnboarding ? .mainTab : .onboardingIntro
     }
 }

@@ -9,7 +9,7 @@ final class AppCoordinator {
     // Using @Observation and @State allows this to track navigation
     
     func push(_ route: AppRoute) {
-        if route == .mainTab || route == .welcome {
+        if route == .mainTab || route == .onboardingIntro {
             replaceRoot(with: route)
         } else {
             path.append(route)

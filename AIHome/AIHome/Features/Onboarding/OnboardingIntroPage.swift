@@ -1,12 +1,11 @@
 import SwiftUI
 
 struct OnboardingIntroPage: View {
-    let imageName: String
-    var beforeImageName: String?
+    let beforeImageName: String
+    let afterImageName: String
+    let secondAfterImageName: String
     let title: String
     let subtitle: String
-    let activeIndex: Int
-    let onContinue: () -> Void
 
     var body: some View {
         GeometryReader { geometry in
@@ -14,7 +13,12 @@ struct OnboardingIntroPage: View {
                 Color.DesignSystem.background
                     .ignoresSafeArea()
 
-                headerImage(width: geometry.size.width, height: geometry.size.height)
+                headerImage(
+                    width: geometry.size.width,
+                    height: geometry.size.height,
+                    topSafeArea: geometry.safeAreaInsets.top
+                )
+                .ignoresSafeArea(edges: .top)
 
                 VStack(spacing: 0) {
                     Spacer()
@@ -33,88 +37,66 @@ struct OnboardingIntroPage: View {
                         .lineLimit(2)
                         .padding(.top, 10)
 
-                    Button(action: onContinue) {
-                        Text(L10n.Onboarding.continue)
-                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 60)
-                            .background(Color.DesignSystem.eerieBlack)
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                            .shadow(color: Color.black.opacity(0.14), radius: 22, x: 0, y: 16)
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 32)
-
-                    pageIndicator
-                        .padding(.top, 24)
+                    Spacer()
+                        .frame(height: OnboardingLayout.contentBottomReserve)
                 }
                 .padding(.bottom, 8)
             }
         }
-        .ignoresSafeArea(edges: .top)
+        .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
     }
 
-    private func headerImage(width: CGFloat, height: CGFloat) -> some View {
-        let imageHeight = max(height * 0.68, 560)
+    private func headerImage(width: CGFloat, height: CGFloat, topSafeArea: CGFloat) -> some View {
+        let imageHeight = max(height * 0.68 + topSafeArea, 560 + topSafeArea)
 
         return OnboardingBeforeAfterHeroView(
-            beforeImageName: beforeImageName ?? imageName,
-            afterImageName: imageName,
+            beforeImageName: beforeImageName,
+            afterImageName: afterImageName,
+            secondAfterImageName: secondAfterImageName,
             height: imageHeight
         )
         .frame(width: width, height: imageHeight)
     }
 
-    private var pageIndicator: some View {
-        HStack(spacing: 8) {
-            ForEach(0..<3, id: \.self) { index in
-                if index == activeIndex {
-                    Capsule()
-                        .fill(Color.DesignSystem.eerieBlack)
-                        .frame(width: 24, height: 6)
-                } else {
-                    Circle()
-                        .fill(Color.DesignSystem.platinum)
-                        .frame(width: 6, height: 6)
-                }
-            }
-        }
-    }
 }
 
 private struct OnboardingBeforeAfterHeroView: View {
     let beforeImageName: String
     let afterImageName: String
+    let secondAfterImageName: String
     let height: CGFloat
     var showsRevealAnimation = true
 
-    @State private var splitProgress: CGFloat = 0.38
+    @State private var afterOneSplitProgress: CGFloat = 1
+    @State private var afterTwoSplitProgress: CGFloat = 1
+    @State private var dividerProgress: CGFloat = 1
+    @State private var overlayOpacity: Double = 1
+    @State private var showsDivider = false
 
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-            let splitX = width * splitProgress
+            let dividerX = width * dividerProgress
 
             ZStack(alignment: .topLeading) {
                 heroImage(beforeImageName, width: width)
 
                 heroImage(afterImageName, width: width)
-                    .mask {
-                        HStack(spacing: 0) {
-                            Spacer(minLength: 0)
-                            Rectangle()
-                                .frame(width: width - splitX)
-                        }
-                    }
+                    .revealMask(splitProgress: afterOneSplitProgress, width: width)
+                    .opacity(overlayOpacity)
 
-                Rectangle()
-                    .fill(Color.white.opacity(0.86))
-                    .frame(width: 1, height: height * 0.56)
-                    .offset(x: splitX)
-                    .opacity(0.72)
+                heroImage(secondAfterImageName, width: width)
+                    .revealMask(splitProgress: afterTwoSplitProgress, width: width)
+                    .opacity(overlayOpacity)
+
+                if showsDivider {
+                    Rectangle()
+                        .fill(Color.white.opacity(0.86))
+                        .frame(width: 1, height: height * 0.56)
+                        .offset(x: dividerX)
+                        .opacity(dividerProgress > 0.02 ? 0.72 : 0)
+                }
 
                 afterBadge
                     .padding(.top, 56)
@@ -124,11 +106,8 @@ private struct OnboardingBeforeAfterHeroView: View {
                 bottomGradient
             }
             .clipped()
-            .onAppear {
-                guard showsRevealAnimation else { return }
-                withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
-                    splitProgress = 0.68
-                }
+            .task(id: animationIdentity) {
+                await runRevealLoop()
             }
         }
     }
@@ -162,14 +141,116 @@ private struct OnboardingBeforeAfterHeroView: View {
         )
         .allowsHitTesting(false)
     }
+
+    private var animationIdentity: String {
+        "\(beforeImageName)-\(afterImageName)-\(secondAfterImageName)-\(showsRevealAnimation)"
+    }
+
+    private func runRevealLoop() async {
+        await MainActor.run {
+            afterOneSplitProgress = showsRevealAnimation ? 1 : 0
+            afterTwoSplitProgress = 1
+            dividerProgress = 1
+            overlayOpacity = 1
+            showsDivider = false
+        }
+
+        guard showsRevealAnimation else { return }
+
+        while !Task.isCancelled {
+            await revealAfterOne()
+            try? await Task.sleep(nanoseconds: 650_000_000)
+            await revealAfterTwo()
+            try? await Task.sleep(nanoseconds: 850_000_000)
+            await resetToBefore()
+            try? await Task.sleep(nanoseconds: 250_000_000)
+        }
+    }
+
+    private func revealAfterOne() async {
+        await MainActor.run {
+            afterOneSplitProgress = 1
+            afterTwoSplitProgress = 1
+            dividerProgress = 1
+            overlayOpacity = 1
+            showsDivider = true
+        }
+
+        await MainActor.run {
+            withAnimation(.easeInOut(duration: 1.35)) {
+                afterOneSplitProgress = 0
+                dividerProgress = 0
+            }
+        }
+
+        try? await Task.sleep(nanoseconds: 1_350_000_000)
+        await MainActor.run {
+            showsDivider = false
+        }
+    }
+
+    private func revealAfterTwo() async {
+        await MainActor.run {
+            afterTwoSplitProgress = 1
+            dividerProgress = 1
+            showsDivider = true
+        }
+
+        await MainActor.run {
+            withAnimation(.easeInOut(duration: 1.35)) {
+                afterTwoSplitProgress = 0
+                dividerProgress = 0
+            }
+        }
+
+        try? await Task.sleep(nanoseconds: 1_350_000_000)
+        await MainActor.run {
+            showsDivider = false
+        }
+    }
+
+    private func resetToBefore() async {
+        await MainActor.run {
+            withAnimation(.easeInOut(duration: 0.22)) {
+                overlayOpacity = 0
+            }
+        }
+
+        try? await Task.sleep(nanoseconds: 220_000_000)
+        await MainActor.run {
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
+                afterOneSplitProgress = 1
+                afterTwoSplitProgress = 1
+                dividerProgress = 1
+                showsDivider = false
+            }
+            overlayOpacity = 1
+        }
+    }
+}
+
+private extension View {
+    func revealMask(splitProgress: CGFloat, width: CGFloat) -> some View {
+        let visibleWidth = max(0, width - (width * splitProgress))
+
+        return mask {
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                Rectangle()
+                    .frame(width: visibleWidth)
+            }
+        }
+    }
 }
 
 #Preview {
     OnboardingIntroPage(
-        imageName: "onboarding_page1",
+        beforeImageName: "onboarding_page1_before",
+        afterImageName: "onboarding_page1_after1",
+        secondAfterImageName: "onboarding_page1_after2",
         title: L10n.Onboarding.Interior.title,
-        subtitle: L10n.Onboarding.Interior.subtitle,
-        activeIndex: 0,
-        onContinue: {}
+        subtitle: L10n.Onboarding.Interior.subtitle
     )
 }

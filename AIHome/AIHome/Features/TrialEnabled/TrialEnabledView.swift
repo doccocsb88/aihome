@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct TrialEnabledView: View {
-    @Environment(AppCoordinator.self) private var coordinator
-
     var body: some View {
         VStack(spacing: 24) {
             Spacer()
@@ -22,21 +20,9 @@ struct TrialEnabledView: View {
                 .multilineTextAlignment(.center)
             
             Spacer()
-            
-            Button(action: {
-                UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
-                coordinator.replaceRoot(with: .mainTab)
-            }) {
-                Text(L10n.Onboarding.TrialEnabled.startDesigning)
-                    .font(.DesignSystem.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.DesignSystem.primary)
-                    .cornerRadius(12)
-            }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 32)
+
+            Spacer()
+                .frame(height: OnboardingLayout.contentBottomReserve)
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarBackButtonHidden()
@@ -45,5 +31,4 @@ struct TrialEnabledView: View {
 
 #Preview {
     TrialEnabledView()
-        .environment(AppCoordinator())
 }

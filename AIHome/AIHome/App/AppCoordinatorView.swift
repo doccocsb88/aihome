@@ -27,16 +27,8 @@ struct AppCoordinatorRouter {
         switch route {
         case .splash:
             SplashView()
-        case .welcome:
-            WelcomeView()
-        case .onboardingInterior:
-            InteriorIntroView()
-        case .onboardingExterior:
-            ExteriorIntroView()
-        case .onboardingLandscape:
-            LandscapeIntroView()
-        case .trialEnabled:
-            TrialEnabledView()
+        case .onboardingIntro:
+            OnboardingIntroPagerView()
         case .mainTab:
             EmptyView() // Handled by AppCoordinatorView's root switch
         case .interiorFlow:

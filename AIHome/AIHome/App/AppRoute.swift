@@ -3,11 +3,7 @@ import SwiftUI
 
 enum AppRoute: Hashable {
     case splash
-    case welcome
-    case onboardingInterior
-    case onboardingExterior
-    case onboardingLandscape
-    case trialEnabled
+    case onboardingIntro
     case mainTab
     case interiorFlow
     case exteriorFlow
