@@ -78,7 +78,7 @@ struct HistoryView: View {
             }
             
             Button(action: {
-                // Route to Create New Project
+                startNewProject()
             }) {
                 HStack(spacing: 8) {
                     Image(systemName: "plus.circle")
@@ -113,9 +113,7 @@ struct HistoryView: View {
                 .padding(.bottom, 100)
             }
             
-            if isEditing {
-                editBottomBar
-            } else {
+            if !isEditing {
                 HStack {
                     Spacer()
 
@@ -125,6 +123,11 @@ struct HistoryView: View {
                     .padding(.trailing, 24)
                     .padding(.bottom, 80)
                 }
+            }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if isEditing {
+                editBottomBar
             }
         }
         .sheet(isPresented: $isShowingFilter) {
@@ -285,6 +288,11 @@ struct HistoryView: View {
     private func exitEditMode() {
         isEditing = false
         selectedProjectIDs.removeAll()
+    }
+
+    private func startNewProject() {
+        coordinator.popToRoot()
+        coordinator.push(.interiorFlow)
     }
 
     private func openResult(for project: LocalProject) {
