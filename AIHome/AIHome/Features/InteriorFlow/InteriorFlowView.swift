@@ -129,8 +129,7 @@ struct InteriorFlowView: View {
         VStack(spacing: 24) {
             PhotoSourcePickerView(
                 viewModel: viewModel.photoPickerViewModel,
-                hideCTA: true,
-                selectedImageStyle: .fullWidthSquare
+                hideCTA: true
             )
 
             if viewModel.photoPickerViewModel.allowsSample,
