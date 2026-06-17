@@ -3,6 +3,7 @@ import SwiftUI
 struct InspirationFilterView: View {
     @Environment(\.dismiss) private var dismiss
     var viewModel: InspirationFilterViewModel
+    var showsOtherSpaces: Bool = true
     var onApply: (() -> Void)?
 
     var body: some View {
@@ -74,6 +75,20 @@ struct InspirationFilterView: View {
                                 isSelected: viewModel.selectedGardenSpace == space,
                                 action: { viewModel.selectedGardenSpace = space }
                             )
+                        }
+                    }
+                }
+
+                if showsOtherSpaces {
+                    FilterSection(title: "OTHER SPACES") {
+                        ChipFlow(spacing: 8, rowSpacing: 9) {
+                            ForEach(viewModel.otherSpaces, id: \.self) { space in
+                                FilterChip(
+                                    title: space,
+                                    isSelected: viewModel.selectedOtherSpace == space,
+                                    action: { viewModel.selectedOtherSpace = space }
+                                )
+                            }
                         }
                     }
                 }

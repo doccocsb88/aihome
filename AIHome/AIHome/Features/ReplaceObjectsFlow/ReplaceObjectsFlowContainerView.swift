@@ -63,7 +63,7 @@ struct ReplaceObjectsFlowContainerView: View {
 
         AppLogger.logAction("Start Replace Objects Generation", details: "Prompt: \(draft.prompt)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .replaceObjects, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {
@@ -99,7 +99,7 @@ struct ReplaceObjectsFlowContainerView: View {
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
-                    type: .interior,
+                    type: .replaceObjects,
                     title: "Replace Objects",
                     styleName: "Custom",
                     roomType: "Room",
@@ -110,21 +110,32 @@ struct ReplaceObjectsFlowContainerView: View {
                     isFavorite: false
                 )
 
-                let resultVM = ResultViewModel(
+                let didConsumeUsage = await MainActor.run {
+                    guard UserManager.shared.consumeUsageIfAllowed() else {
+                        self.isShowingLimitPopup = true
+                        self.state = .input
+                        return false
+                    }
+                    return true
+                }
+                guard didConsumeUsage else { return }
+
+                let savedProject = try GenerationHistoryRecorder.save(
                     project: mockProject,
+                    originalImage: sourceImage,
+                    generatedImages: downloadedImages
+                )
+
+                let resultVM = ResultViewModel(
+                    project: savedProject,
                     originalImage: sourceImage,
                     generatedImages: downloadedImages,
                     availableAdvancedTools: ProjectType.resultAdvancedTools,
-                    isPro: true, 
+                    isPro: true,
                     hasWatermark: false
                 )
 
                 await MainActor.run {
-                    guard UserManager.shared.consumeUsageIfAllowed() else {
-                        self.isShowingLimitPopup = true
-                        self.state = .input
-                        return
-                    }
                     self.state = .result(resultVM)
                 }
             } catch {

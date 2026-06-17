@@ -126,7 +126,7 @@ private struct InspirationFilterOverlay: View {
                         close()
                     }
 
-                InspirationFilterView(viewModel: viewModel, onApply: close)
+                InspirationFilterView(viewModel: viewModel, showsOtherSpaces: false, onApply: close)
                     .frame(maxWidth: .infinity)
                     .frame(height: 678 + proxy.safeAreaInsets.bottom)
                     .ignoresSafeArea(edges: .bottom)

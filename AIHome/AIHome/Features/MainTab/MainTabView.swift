@@ -32,8 +32,11 @@ struct MainTabView: View {
                 .toolbar(.hidden, for: .tabBar)
                 .tag(MainTab.inspiration)
                 
-                NavigationStack {
+                NavigationStack(path: Bindable(coordinator).path) {
                     HistoryView()
+                        .navigationDestination(for: AppRoute.self) { route in
+                            AppCoordinatorRouter.view(for: route)
+                        }
                 }
                 .toolbar(.hidden, for: .tabBar)
                 .tag(MainTab.history)

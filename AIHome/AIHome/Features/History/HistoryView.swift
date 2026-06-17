@@ -3,6 +3,11 @@ import SwiftUI
 struct HistoryView: View {
     @State private var viewModel = HistoryViewModel()
     @State private var isShowingFilter = false
+    @State private var isEditing = false
+    @State private var selectedProjectIDs: Set<String> = []
+    @State private var isShowingDeleteConfirm = false
+    @State private var resultPresentation: HistoryResultPresentation?
+    @Environment(AppCoordinator.self) private var coordinator
     
     var body: some View {
         VStack(spacing: 0) {
@@ -16,6 +21,33 @@ struct HistoryView: View {
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarHidden(true)
+        .fullScreenCover(item: $resultPresentation) { presentation in
+            ResultView(
+                viewModel: presentation.viewModel,
+                onRegenerate: {
+                    openFlow(for: presentation.project.type)
+                },
+                onDownload: { _ in },
+                onShare: { _ in },
+                onSaveArchive: { },
+                onRemoveWatermark: { },
+                onToolSelected: { _, _ in
+                    resultPresentation = nil
+                },
+                onClose: {
+                    resultPresentation = nil
+                }
+            )
+        }
+        .alert("Delete selected projects?", isPresented: $isShowingDeleteConfirm) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) {
+                viewModel.deleteProjects(ids: selectedProjectIDs)
+                exitEditMode()
+            }
+        } message: {
+            Text("This action cannot be undone.")
+        }
     }
     
     private var headerView: some View {
@@ -69,7 +101,7 @@ struct HistoryView: View {
     }
     
     private var projectList: some View {
-        ZStack(alignment: .bottomTrailing) {
+        ZStack(alignment: .bottom) {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
                     ForEach(viewModel.filteredProjects) { project in
@@ -81,11 +113,19 @@ struct HistoryView: View {
                 .padding(.bottom, 100)
             }
             
-            FloatingFilterButton {
-                isShowingFilter = true
+            if isEditing {
+                editBottomBar
+            } else {
+                HStack {
+                    Spacer()
+
+                    FloatingFilterButton {
+                        isShowingFilter = true
+                    }
+                    .padding(.trailing, 24)
+                    .padding(.bottom, 80)
+                }
             }
-            .padding(.trailing, 24)
-            .padding(.bottom, 80)
         }
         .sheet(isPresented: $isShowingFilter) {
             InspirationFilterView(viewModel: viewModel.filter)
@@ -95,11 +135,10 @@ struct HistoryView: View {
     }
     
     private func projectCard(for project: LocalProject) -> some View {
-        ZStack {
-            Image("history_thumb_default")
-                .resizable()
-                .scaledToFill()
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        let isSelected = selectedProjectIDs.contains(project.id)
+
+        return ZStack {
+            projectThumbnail(for: project)
             
             VStack {
                 Spacer()
@@ -145,10 +184,181 @@ struct HistoryView: View {
                 .padding(.horizontal, 8)
                 .padding(.bottom, 8)
             }
+
+            if isEditing {
+                VStack {
+                    HStack {
+                        Spacer()
+
+                        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundColor(isSelected ? .DesignSystem.folly : .white)
+                            .background(Circle().fill(Color.black.opacity(0.35)))
+                            .padding(10)
+                    }
+
+                    Spacer()
+                }
+            }
         }
         .aspectRatio(1, contentMode: .fit)
         .cornerRadius(24)
         .clipped()
+        .overlay {
+            if isEditing && isSelected {
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .stroke(Color.DesignSystem.folly, lineWidth: 2)
+            }
+        }
+        .contentShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .onTapGesture {
+            if isEditing {
+                toggleSelection(for: project.id)
+            } else {
+                openResult(for: project)
+            }
+        }
+        .onLongPressGesture {
+            isEditing = true
+            selectedProjectIDs = [project.id]
+        }
+    }
+
+    @ViewBuilder
+    private func projectThumbnail(for project: LocalProject) -> some View {
+        if let image = LocalProjectFileStorage.shared.image(for: project.selectedGeneratedImagePath ?? project.generatedImagePaths.first) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        } else {
+            Image("history_thumb_default")
+                .resizable()
+                .scaledToFill()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        }
+    }
+
+    private var editBottomBar: some View {
+        HStack(spacing: 12) {
+            Button(action: exitEditMode) {
+                Text("Cancel")
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
+                    .foregroundColor(.DesignSystem.textPrimary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(Color.DesignSystem.background)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(Color.DesignSystem.platinum, lineWidth: 1)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            }
+
+            Button(action: {
+                isShowingDeleteConfirm = true
+            }) {
+                Text("Delete (\(selectedProjectIDs.count))")
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(selectedProjectIDs.isEmpty ? Color.gray.opacity(0.35) : Color.DesignSystem.folly)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            }
+            .disabled(selectedProjectIDs.isEmpty)
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 16)
+        .padding(.bottom, 32)
+        .background(.ultraThinMaterial)
+    }
+
+    private func toggleSelection(for projectID: String) {
+        if selectedProjectIDs.contains(projectID) {
+            selectedProjectIDs.remove(projectID)
+        } else {
+            selectedProjectIDs.insert(projectID)
+        }
+    }
+
+    private func exitEditMode() {
+        isEditing = false
+        selectedProjectIDs.removeAll()
+    }
+
+    private func openResult(for project: LocalProject) {
+        guard let presentation = HistoryResultPresentation(project: project) else {
+            AppLogger.logError("Missing history project images for project \(project.id)")
+            return
+        }
+
+        resultPresentation = presentation
+    }
+
+    private func openFlow(for projectType: ProjectType) {
+        resultPresentation = nil
+        coordinator.popToRoot()
+
+        switch projectType {
+        case .interior:
+            coordinator.push(.interiorFlow)
+        case .exterior:
+            coordinator.push(.exteriorFlow)
+        case .garden:
+            coordinator.push(.gardenFlow)
+        case .referenceStyle:
+            coordinator.push(.referenceStyleFlow)
+        case .removeObjects:
+            coordinator.push(.removeObjectsFlow)
+        case .replaceObjects:
+            coordinator.push(.replaceObjectsFlow)
+        case .newFlooring:
+            coordinator.push(.newFlooringFlow)
+        case .newWalls:
+            coordinator.push(.newWallsFlow)
+        case .furnitureFinder:
+            coordinator.push(.furnitureFinderFlow)
+        case .edit:
+            break
+        }
+    }
+}
+
+private struct HistoryResultPresentation: Identifiable {
+    let id: String
+    let project: LocalProject
+    let viewModel: ResultViewModel
+
+    init?(project: LocalProject) {
+        let storage = LocalProjectFileStorage.shared
+        guard let originalImage = storage.image(for: project.originalImagePath) else {
+            return nil
+        }
+
+        let generatedImages = storage.images(for: project.generatedImagePaths)
+        guard !generatedImages.isEmpty else {
+            return nil
+        }
+
+        let resultViewModel = ResultViewModel(
+            project: project,
+            originalImage: originalImage,
+            generatedImages: generatedImages,
+            availableAdvancedTools: ProjectType.resultAdvancedTools,
+            isPro: true,
+            hasWatermark: false
+        )
+
+        if let selectedPath = project.selectedGeneratedImagePath,
+           let selectedIndex = project.generatedImagePaths.firstIndex(of: selectedPath),
+           selectedIndex < generatedImages.count {
+            resultViewModel.selectedIndex = selectedIndex
+        }
+
+        self.id = project.id
+        self.project = project
+        self.viewModel = resultViewModel
     }
 }
 
