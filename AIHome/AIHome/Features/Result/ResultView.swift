@@ -48,7 +48,7 @@ struct ResultView: View {
     @ViewBuilder
     private var headerView: some View {
         HStack {
-            if viewModel.isPro {
+            if userManager.isFreeUser {
                 AdaptyPaywallButton(placement: .proButton) { isLoading in
                     HStack(spacing: 5) {
                         if isLoading {
