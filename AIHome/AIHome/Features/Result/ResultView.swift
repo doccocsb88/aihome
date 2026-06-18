@@ -4,6 +4,8 @@ import SwiftUI
 struct ResultView: View {
     @Bindable var viewModel: ResultViewModel
     @Environment(AppCoordinator.self) private var coordinator
+    @State private var userManager = UserManager.shared
+    @State private var showingBefore = false
     @State private var shareItem: ResultShareItem?
     @State private var alertItem: ResultAlertItem?
     
@@ -89,24 +91,18 @@ struct ResultView: View {
     private var imageSection: some View {
         if let selectedImage = viewModel.selectedImage {
             ZStack {
-                Image(uiImage: selectedImage)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fill)
-                    .frame(maxWidth: .infinity)
-                    .clipped()
-                    .cornerRadius(24)
+                ResultBeforeAfterImage(
+                    beforeImage: viewModel.originalImage,
+                    afterImage: selectedImage,
+                    showingBefore: showingBefore,
+                    showsWatermark: userManager.isFreeUser
+                )
+                .frame(maxWidth: .infinity)
                 
                 // Top left overlay
                 VStack {
                     HStack {
-                        Button(action: {}) {
-                            Image(systemName: "square.split.2x1")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
-                                .padding(12)
-                                .background(Color.black.opacity(0.4))
-                                .clipShape(Circle())
-                        }
+                        BeforeAfterButton(showingBefore: $showingBefore)
                         Spacer()
                     }
                     Spacer()
@@ -118,71 +114,18 @@ struct ResultView: View {
                     Spacer()
                     HStack(alignment: .bottom) {
                         HStack(spacing: 8) {
-                            Button(action: {}) {
-                                Image(systemName: "hand.thumbsup.fill")
-                                    .foregroundColor(.white)
-                                    .padding(12)
-                                    .background(
-                                        Circle()
-                                            .fill(.ultraThinMaterial)
-                                            .environment(\.colorScheme, .dark)
-                                            .overlay(Circle().fill(Color.black.opacity(0.25)))
-                                    )
-                                    .overlay(
-                                        Circle().stroke(Color.white.opacity(0.2), lineWidth: 1)
-                                    )
-                            }
-                            Button(action: {}) {
-                                Image(systemName: "hand.thumbsdown.fill")
-                                    .foregroundColor(.white)
-                                    .padding(12)
-                                    .background(
-                                        Circle()
-                                            .fill(.ultraThinMaterial)
-                                            .environment(\.colorScheme, .dark)
-                                            .overlay(Circle().fill(Color.black.opacity(0.25)))
-                                    )
-                                    .overlay(
-                                        Circle().stroke(Color.white.opacity(0.2), lineWidth: 1)
-                                    )
-                            }
+                            ResultFeedbackButton(imageName: "hand.thumbsup.fill") { }
+                            ResultFeedbackButton(imageName: "hand.thumbsdown.fill") { }
                         }
                         Spacer()
-                        VStack(alignment: .trailing, spacing: 6) {
-                            if viewModel.hasWatermark {
-                                Button(action: onRemoveWatermark) {
-                                    HStack(spacing: 4) {
-                                        Image("ic_result_watermark")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 14, height: 14)
-                                        Text(L10n.Result.removeWatermark)
-                                            .font(FontFamily.Roboto.bold.swiftUIFont(size: 10))
-                                    }
-                                    .foregroundColor(.white)
-                                    .padding(8)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(.ultraThinMaterial)
-                                            .environment(\.colorScheme, .light)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 20)
-                                                    .fill(Color.white.opacity(0.4))
-                                            )
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                                    )
-                                }
-                            }
+                        if userManager.isFreeUser {
+                            RemoveWatermarkButton()
                         }
                     }
                 }
                 .padding(16)
             }
             .padding(.horizontal, 16)
-            .shadow(color: Color.black.opacity(0.15), radius: 15, x: 0, y: 10)
         }
     }
     
@@ -282,8 +225,12 @@ struct ResultView: View {
     private func handleDownload(_ image: UIImage) {
         Task {
             do {
-                try await ResultPhotoLibrarySaver.save(image)
-                onDownload(image)
+                let downloadImage = userManager.isFreeUser
+                    ? ResultWatermarkRenderer.apply(to: image) ?? image
+                    : image
+
+                try await ResultPhotoLibrarySaver.save(downloadImage)
+                onDownload(downloadImage)
                 alertItem = ResultAlertItem(
                     title: "Saved",
                     message: "The image has been saved to your photo gallery."
@@ -303,6 +250,163 @@ struct ResultView: View {
         shareItem = ResultShareItem(image: image)
         onShare(image)
         AppLogger.logAction("Result Share Sheet Opened")
+    }
+}
+
+private struct ResultFeedbackButton: View {
+    let imageName: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: imageName)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 16, height: 16)
+                .padding(12)
+                .background {
+                    Circle()
+                        .fill(.ultraThinMaterial)
+                        .environment(\.colorScheme, .dark)
+                        .overlay {
+                            Circle()
+                                .fill(.black.opacity(0.25))
+                        }
+                }
+                .overlay {
+                    Circle()
+                        .stroke(.white.opacity(0.2), lineWidth: 1)
+                }
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct ResultBeforeAfterImage: View {
+    let beforeImage: UIImage
+    let afterImage: UIImage
+    let showingBefore: Bool
+    let showsWatermark: Bool
+
+    var body: some View {
+        Color.clear
+            .frame(maxWidth: .infinity)
+            .aspectRatio(1, contentMode: .fill)
+            .overlay {
+                GeometryReader { proxy in
+                    ZStack {
+                        resultImage(beforeImage, size: proxy.size)
+//                        resultImage(afterImage, size: proxy.size)
+                        Image(uiImage: afterImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: showingBefore ? 0 : proxy.size.width, height: proxy.size.height)
+                            .clipped()
+                        if showsWatermark {
+                            WatermarkView()
+                                .frame(width: proxy.size.width, height: proxy.size.height)
+
+                        }
+                        
+                    }
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .animation(.easeInOut(duration: 0.55), value: showingBefore)
+    }
+
+    private func resultImage(_ image: UIImage, size: CGSize) -> some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFill()
+            .frame(width: size.width, height: size.height)
+            .clipped()
+    }
+}
+
+struct WatermarkView: View {
+    var body: some View {
+        GeometryReader { proxy in
+            VStack(spacing: 0) {
+                ForEach(0..<3, id: \.self) { _ in
+                    HStack(spacing: 0) {
+                        ForEach(0..<3, id: \.self) { _ in
+                            Image("result_watermark_tile")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(
+                                    width: proxy.size.width / 3,
+                                    height: proxy.size.height / 3
+                                )
+                        }
+                    }
+                }
+            }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+@MainActor
+private enum ResultWatermarkRenderer {
+    static func apply(to image: UIImage) -> UIImage? {
+        guard image.size.width > 0, image.size.height > 0 else { return nil }
+
+        let content = ZStack {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: image.size.width, height: image.size.height)
+                .clipped()
+
+            WatermarkView()
+        }
+        .frame(width: image.size.width, height: image.size.height)
+
+        let renderer = ImageRenderer(content: content)
+        renderer.scale = image.scale
+        return renderer.uiImage
+    }
+}
+
+private struct RemoveWatermarkButton: View {
+    var body: some View {
+        AdaptyPaywallButton(placement: .watermark) { isLoading in
+            HStack(spacing: 4) {
+                if isLoading {
+                    ProgressView()
+                        .controlSize(.small)
+                        .tint(.white)
+                } else {
+                    Image("ic_result_watermark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 12, height: 12)
+                }
+
+                Text(L10n.Result.removeWatermark.uppercased())
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 9))
+                    .lineLimit(1)
+            }
+            .foregroundStyle(.white)
+            .padding(.horizontal, 10)
+            .frame(height: 32)
+            .background {
+                Capsule()
+                    .fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .light)
+                    .overlay {
+                        Capsule()
+                            .fill(.white.opacity(0.4))
+                    }
+            }
+            .overlay {
+                Capsule()
+                    .stroke(.white.opacity(0.3), lineWidth: 1)
+            }
+        }
+        .accessibilityLabel(L10n.Result.removeWatermark)
     }
 }
 
