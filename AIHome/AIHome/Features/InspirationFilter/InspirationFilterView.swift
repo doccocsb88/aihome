@@ -1,8 +1,14 @@
 import SwiftUI
 
 struct InspirationFilterView: View {
+    enum ContentStyle {
+        case spaces
+        case historyFeatures
+    }
+
     @Environment(\.dismiss) private var dismiss
     var viewModel: InspirationFilterViewModel
+    var contentStyle: ContentStyle = .spaces
     var showsOtherSpaces: Bool = true
     var onApply: (() -> Void)?
 
@@ -43,50 +49,67 @@ struct InspirationFilterView: View {
                     }
                 }
 
-                FilterSection(title: "INTERIOR SPACES") {
-                    ChipFlow(spacing: 8, rowSpacing: 9) {
-                        ForEach(viewModel.interiorSpaces, id: \.self) { space in
-                            FilterChip(
-                                title: space,
-                                isSelected: viewModel.selectedInteriorSpace == space,
-                                action: { viewModel.selectedInteriorSpace = space }
-                            )
-                        }
-                    }
-                }
-
-                FilterSection(title: "EXTERIOR SPACES") {
-                    ChipFlow(spacing: 8, rowSpacing: 9) {
-                        ForEach(viewModel.exteriorSpaces, id: \.self) { space in
-                            FilterChip(
-                                title: space,
-                                isSelected: viewModel.selectedExteriorSpace == space,
-                                action: { viewModel.selectedExteriorSpace = space }
-                            )
-                        }
-                    }
-                }
-
-                FilterSection(title: "GARDEN SPACES") {
-                    ChipFlow(spacing: 8, rowSpacing: 9) {
-                        ForEach(viewModel.gardenSpaces, id: \.self) { space in
-                            FilterChip(
-                                title: space,
-                                isSelected: viewModel.selectedGardenSpace == space,
-                                action: { viewModel.selectedGardenSpace = space }
-                            )
-                        }
-                    }
-                }
-
-                if showsOtherSpaces {
-                    FilterSection(title: "OTHER SPACES") {
+                switch contentStyle {
+                case .spaces:
+                    FilterSection(title: "INTERIOR SPACES") {
                         ChipFlow(spacing: 8, rowSpacing: 9) {
-                            ForEach(viewModel.otherSpaces, id: \.self) { space in
+                            ForEach(viewModel.interiorSpaces, id: \.self) { space in
                                 FilterChip(
                                     title: space,
-                                    isSelected: viewModel.selectedOtherSpace == space,
-                                    action: { viewModel.selectedOtherSpace = space }
+                                    isSelected: viewModel.selectedInteriorSpace == space,
+                                    action: { viewModel.selectedInteriorSpace = space }
+                                )
+                            }
+                        }
+                    }
+
+                    FilterSection(title: "EXTERIOR SPACES") {
+                        ChipFlow(spacing: 8, rowSpacing: 9) {
+                            ForEach(viewModel.exteriorSpaces, id: \.self) { space in
+                                FilterChip(
+                                    title: space,
+                                    isSelected: viewModel.selectedExteriorSpace == space,
+                                    action: { viewModel.selectedExteriorSpace = space }
+                                )
+                            }
+                        }
+                    }
+
+                    FilterSection(title: "GARDEN SPACES") {
+                        ChipFlow(spacing: 8, rowSpacing: 9) {
+                            ForEach(viewModel.gardenSpaces, id: \.self) { space in
+                                FilterChip(
+                                    title: space,
+                                    isSelected: viewModel.selectedGardenSpace == space,
+                                    action: { viewModel.selectedGardenSpace = space }
+                                )
+                            }
+                        }
+                    }
+
+                    if showsOtherSpaces {
+                        FilterSection(title: "OTHER SPACES") {
+                            ChipFlow(spacing: 8, rowSpacing: 9) {
+                                ForEach(viewModel.otherSpaces, id: \.self) { space in
+                                    FilterChip(
+                                        title: space,
+                                        isSelected: viewModel.selectedOtherSpace == space,
+                                        action: { viewModel.selectedOtherSpace = space }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                case .historyFeatures:
+                    FilterSection(title: "FEATURES") {
+                        ChipFlow(spacing: 8, rowSpacing: 9) {
+                            ForEach(viewModel.historyFeatures, id: \.self) { feature in
+                                FilterChip(
+                                    title: feature.historyFilterTitle,
+                                    isSelected: viewModel.selectedFeature == feature,
+                                    action: {
+                                        viewModel.selectedFeature = viewModel.selectedFeature == feature ? nil : feature
+                                    }
                                 )
                             }
                         }
@@ -132,6 +155,106 @@ struct InspirationFilterView: View {
             .fill(Color.DesignSystem.platinum)
             .frame(width: 48, height: 4)
             .padding(.top, 16)
+    }
+}
+
+struct InspirationFilterOverlay: View {
+    var viewModel: InspirationFilterViewModel
+    var contentStyle: InspirationFilterView.ContentStyle = .spaces
+    var showsOtherSpaces: Bool = true
+    @Binding var isPresented: Bool
+
+    @State private var draftViewModel: InspirationFilterViewModel
+    @State private var dragOffset: CGFloat = 0
+
+    init(
+        viewModel: InspirationFilterViewModel,
+        contentStyle: InspirationFilterView.ContentStyle = .spaces,
+        showsOtherSpaces: Bool = true,
+        isPresented: Binding<Bool>
+    ) {
+        self.viewModel = viewModel
+        self.contentStyle = contentStyle
+        self.showsOtherSpaces = showsOtherSpaces
+        _isPresented = isPresented
+        _draftViewModel = State(initialValue: viewModel.makeDraft())
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .bottom) {
+                Rectangle()
+                    .fill(.black.opacity(0.45))
+                    .opacity(1.0 - Double(dragOffset / 400.0))
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        close()
+                    }
+
+                InspirationFilterView(
+                    viewModel: draftViewModel,
+                    contentStyle: contentStyle,
+                    showsOtherSpaces: showsOtherSpaces,
+                    onApply: applyAndClose
+                )
+                .frame(maxWidth: .infinity)
+                .frame(height: 678 + proxy.safeAreaInsets.bottom)
+                .ignoresSafeArea(edges: .bottom)
+                .offset(y: dragOffset)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            if value.translation.height > 0 {
+                                dragOffset = value.translation.height
+                            }
+                        }
+                        .onEnded { value in
+                            if value.translation.height > 150 || value.velocity.height > 500 {
+                                close()
+                            } else {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
+                                    dragOffset = 0
+                                }
+                            }
+                        }
+                )
+                .transition(.move(edge: .bottom))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .onAppear {
+            draftViewModel.copyValues(from: viewModel)
+        }
+    }
+
+    private func applyAndClose() {
+        viewModel.copyValues(from: draftViewModel)
+        close()
+    }
+
+    private func close() {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
+            isPresented = false
+            dragOffset = 0
+        }
+    }
+}
+
+extension ProjectType {
+    var historyFilterTitle: String {
+        switch self {
+        case .interior: "Interior Redesign"
+        case .exterior: "Exterior Redesign"
+        case .garden: "Garden Redesign"
+        case .referenceStyle: "Reference Style"
+        case .replaceObjects: "Replace Objects"
+        case .removeObjects: "Remove Objects"
+        case .newFlooring: "New Flooring"
+        case .newWalls: "New Wall"
+        case .furnitureFinder: "Furniture Finder"
+        case .edit: "Edit"
+        }
     }
 }
 

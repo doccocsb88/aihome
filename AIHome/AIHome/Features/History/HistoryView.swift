@@ -8,15 +8,39 @@ struct HistoryView: View {
     @State private var isShowingDeleteConfirm = false
     @State private var resultPresentation: HistoryResultPresentation?
     @Environment(AppCoordinator.self) private var coordinator
+
+    private let onFilterPresentationChanged: (Bool) -> Void
+
+    init(onFilterPresentationChanged: @escaping (Bool) -> Void = { _ in }) {
+        self.onFilterPresentationChanged = onFilterPresentationChanged
+    }
     
     var body: some View {
-        VStack(spacing: 0) {
-            headerView
-            
-            if viewModel.projects.isEmpty {
-                emptyState
-            } else {
-                projectList
+        ZStack(alignment: .bottomTrailing) {
+            VStack(spacing: 0) {
+                headerView
+
+                if viewModel.projects.isEmpty {
+                    emptyState
+                } else {
+                    projectList
+                }
+            }
+
+            if isShowingFilter {
+                InspirationFilterOverlay(
+                    viewModel: viewModel.filter,
+                    contentStyle: .historyFeatures,
+                    isPresented: $isShowingFilter
+                )
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .zIndex(1)
+                .onAppear {
+                    onFilterPresentationChanged(true)
+                }
+                .onDisappear {
+                    onFilterPresentationChanged(false)
+                }
             }
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
@@ -47,6 +71,9 @@ struct HistoryView: View {
             }
         } message: {
             Text("This action cannot be undone.")
+        }
+        .onDisappear {
+            onFilterPresentationChanged(false)
         }
     }
     
@@ -118,7 +145,9 @@ struct HistoryView: View {
                     Spacer()
 
                     FloatingFilterButton {
-                        isShowingFilter = true
+                        withAnimation(.spring(response: 0.34, dampingFraction: 0.88)) {
+                            isShowingFilter = true
+                        }
                     }
                     .padding(.trailing, 24)
                     .padding(.bottom, 80)
@@ -129,11 +158,6 @@ struct HistoryView: View {
             if isEditing {
                 editBottomBar
             }
-        }
-        .sheet(isPresented: $isShowingFilter) {
-            InspirationFilterView(viewModel: viewModel.filter)
-                .presentationDetents([.fraction(0.85)])
-                .presentationDragIndicator(.hidden)
         }
     }
     
@@ -273,7 +297,7 @@ struct HistoryView: View {
         }
         .padding(.horizontal, 24)
         .padding(.top, 16)
-        .padding(.bottom, 32)
+        .padding(.bottom, 80)
         .background(.ultraThinMaterial)
     }
 

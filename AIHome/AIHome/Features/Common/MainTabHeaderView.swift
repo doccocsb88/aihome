@@ -9,10 +9,6 @@ struct MainTabHeaderView: View {
     var titleSize: CGFloat = 36
 
     @State private var userManager = UserManager.shared
-    @State private var isShowingPaywall = false
-    @State private var isLoadingPaywall = false
-    @State private var paywallConfiguration: AdaptyUI.PaywallConfiguration?
-    @State private var paywallErrorMessage: String?
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -32,6 +28,66 @@ struct MainTabHeaderView: View {
             }
         }
         .padding(.horizontal, 16)
+    }
+
+    private var generationPill: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "sparkles")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Color.DesignSystem.folly)
+
+            Text(generationDisplayText)
+                .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
+                .foregroundStyle(Color.DesignSystem.textPrimary)
+        }
+        .padding(.horizontal, 12)
+        .frame(height: 34)
+        .background(Color.DesignSystem.ghostWhite, in: Capsule())
+    }
+
+    private var proButton: some View {
+        AdaptyPaywallButton(placement: placement) { isLoading in
+            HStack(spacing: 6) {
+                if isLoading {
+                    ProgressView()
+                        .tint(.white)
+                }
+
+                Text("PRO")
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
+            }
+            .foregroundStyle(.white)
+            .padding(.horizontal, 16)
+            .frame(height: 34)
+            .background(Color.DesignSystem.folly, in: Capsule())
+        }
+    }
+
+    private var generationDisplayText: String {
+        return generationText ?? userManager.usageProgressText
+    }
+}
+
+struct AdaptyPaywallButton<Label: View>: View {
+    var placement: AdaptyPurchaseService.Placement = .proButton
+    @ViewBuilder var label: (_ isLoading: Bool) -> Label
+
+    @State private var userManager = UserManager.shared
+    @State private var isShowingPaywall = false
+    @State private var isLoadingPaywall = false
+    @State private var paywallConfiguration: AdaptyUI.PaywallConfiguration?
+    @State private var paywallErrorMessage: String?
+
+    var body: some View {
+        Button {
+            Task {
+                await presentPaywall()
+            }
+        } label: {
+            label(isLoadingPaywall)
+        }
+        .buttonStyle(.plain)
+        .disabled(isLoadingPaywall)
         .paywall(
             isPresented: $isShowingPaywall,
             fullScreen: true,
@@ -54,45 +110,6 @@ struct MainTabHeaderView: View {
         } message: {
             Text(paywallErrorMessage ?? "")
         }
-    }
-
-    private var generationPill: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "sparkles")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(Color.DesignSystem.folly)
-
-            Text(generationDisplayText)
-                .font(FontFamily.Roboto.medium.swiftUIFont(size: 15))
-                .foregroundStyle(Color.DesignSystem.textPrimary)
-        }
-        .padding(.horizontal, 12)
-        .frame(height: 34)
-        .background(Color.DesignSystem.ghostWhite, in: Capsule())
-    }
-
-    private var proButton: some View {
-        Button {
-            Task {
-                await presentPaywall()
-            }
-        } label: {
-            HStack(spacing: 6) {
-                if isLoadingPaywall {
-                    ProgressView()
-                        .tint(.white)
-                }
-
-                Text("PRO")
-                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 15))
-            }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 16)
-            .frame(height: 34)
-            .background(Color.DesignSystem.folly, in: Capsule())
-        }
-        .buttonStyle(.plain)
-        .disabled(isLoadingPaywall)
     }
 
     private func presentPaywall() async {
@@ -148,9 +165,5 @@ struct MainTabHeaderView: View {
         AppLogger.logAction("Adapty Paywall Rendering Failed", details: error.localizedDescription)
         paywallErrorMessage = error.localizedDescription
         isShowingPaywall = false
-    }
-
-    private var generationDisplayText: String {
-        return generationText ?? userManager.usageProgressText
     }
 }

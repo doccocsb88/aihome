@@ -35,53 +35,9 @@ final class HistoryViewModel {
     var filteredProjects: [LocalProject] {
         projects.filter { project in
             if filter.showLikedOnly && !project.isFavorite { return false }
-            
-            let isInteriorFiltering = filter.selectedInteriorSpace != "All"
-            let isExteriorFiltering = filter.selectedExteriorSpace != "All"
-            let isGardenFiltering = filter.selectedGardenSpace != "All"
-            let isOtherFiltering = filter.selectedOtherSpace != "All"
-            
-            if !isInteriorFiltering && !isExteriorFiltering && !isGardenFiltering && !isOtherFiltering {
-                return true
-            }
-            
-            switch project.type {
-            case .interior:
-                return isInteriorFiltering && project.roomType?.lowercased() == filter.selectedInteriorSpace.lowercased()
-            case .exterior:
-                return isExteriorFiltering && project.roomType?.lowercased() == filter.selectedExteriorSpace.lowercased()
-            case .garden:
-                return isGardenFiltering && project.roomType?.lowercased() == filter.selectedGardenSpace.lowercased()
-            case .referenceStyle, .replaceObjects, .removeObjects, .newFlooring, .newWalls, .furnitureFinder, .edit:
-                return isOtherFiltering && project.type.historyFilterTitle == filter.selectedOtherSpace
-            }
-        }
-    }
-}
 
-private extension ProjectType {
-    var historyFilterTitle: String {
-        switch self {
-        case .referenceStyle:
-            "Reference Style"
-        case .replaceObjects:
-            "Replace Objects"
-        case .removeObjects:
-            "Remove Objects"
-        case .newFlooring:
-            "New Flooring"
-        case .newWalls:
-            "New Walls"
-        case .furnitureFinder:
-            "Furniture Finder"
-        case .edit:
-            "Edit"
-        case .interior:
-            "Interior"
-        case .exterior:
-            "Exterior"
-        case .garden:
-            "Garden"
+            guard let selectedFeature = filter.selectedFeature else { return true }
+            return project.type == selectedFeature
         }
     }
 }

@@ -5,6 +5,7 @@ struct MainTabView: View {
     @State private var userManager = UserManager.shared
     @State private var showingInspirationDetail = false
     @State private var showingInspirationFilter = false
+    @State private var showingHistoryFilter = false
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
@@ -33,7 +34,7 @@ struct MainTabView: View {
                 .tag(MainTab.inspiration)
                 
                 NavigationStack(path: Bindable(coordinator).path) {
-                    HistoryView()
+                    HistoryView { showingHistoryFilter = $0 }
                         .navigationDestination(for: AppRoute.self) { route in
                             AppCoordinatorRouter.view(for: route)
                         }
@@ -81,7 +82,7 @@ struct MainTabView: View {
     }
 
     private var shouldShowCustomTabBar: Bool {
-        !showingInspirationDetail && !showingInspirationFilter && coordinator.path.isEmpty
+        !showingInspirationDetail && !showingInspirationFilter && !showingHistoryFilter && coordinator.path.isEmpty
     }
 }
 

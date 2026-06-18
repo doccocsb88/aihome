@@ -49,7 +49,11 @@ struct InspirationView: View {
                 .padding(.bottom, 80)
 
             if showingFilter {
-                InspirationFilterOverlay(viewModel: viewModel.filter, isPresented: $showingFilter)
+                InspirationFilterOverlay(
+                    viewModel: viewModel.filter,
+                    showsOtherSpaces: false,
+                    isPresented: $showingFilter
+                )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
                     .onAppear {
@@ -106,59 +110,6 @@ struct InspirationView: View {
             withAnimation(.spring(response: 0.34, dampingFraction: 0.88)) {
                 showingFilter = true
             }
-        }
-    }
-}
-
-private struct InspirationFilterOverlay: View {
-    var viewModel: InspirationFilterViewModel
-    @Binding var isPresented: Bool
-    @State private var dragOffset: CGFloat = 0
-
-    var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .bottom) {
-                Rectangle()
-                    .fill(.black.opacity(0.45))
-                    .opacity(1.0 - Double(dragOffset / 400.0))
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        close()
-                    }
-
-                InspirationFilterView(viewModel: viewModel, showsOtherSpaces: false, onApply: close)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 678 + proxy.safeAreaInsets.bottom)
-                    .ignoresSafeArea(edges: .bottom)
-                    .offset(y: dragOffset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                if value.translation.height > 0 {
-                                    dragOffset = value.translation.height
-                                }
-                            }
-                            .onEnded { value in
-                                if value.translation.height > 150 || value.velocity.height > 500 {
-                                    close()
-                                } else {
-                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
-                                        dragOffset = 0
-                                    }
-                                }
-                            }
-                    )
-                    .transition(.move(edge: .bottom))
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .ignoresSafeArea(edges: .bottom)
-    }
-
-    private func close() {
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.9)) {
-            isPresented = false
-            dragOffset = 0
         }
     }
 }

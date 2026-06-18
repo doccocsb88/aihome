@@ -47,14 +47,24 @@ struct ResultView: View {
     private var headerView: some View {
         HStack {
             if viewModel.isPro {
-                Text(L10n.Result.pro)
-                    .font(FontFamily.Roboto.black.swiftUIFont(size: 11))
+                AdaptyPaywallButton(placement: .proButton) { isLoading in
+                    HStack(spacing: 5) {
+                        if isLoading {
+                            ProgressView()
+                                .controlSize(.small)
+                                .tint(.white)
+                        }
+
+                        Text(L10n.Result.pro)
+                            .font(FontFamily.Roboto.black.swiftUIFont(size: 11))
+                    }
                     .foregroundColor(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
                     .background(Color.pink)
                     .clipShape(Capsule())
                     .shadow(color: Color.pink.opacity(0.5), radius: 5, x: 0, y: 3)
+                }
             } else {
                 Spacer().frame(width: 40)
             }
