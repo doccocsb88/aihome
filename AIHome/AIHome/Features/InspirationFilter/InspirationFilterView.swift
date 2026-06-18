@@ -198,7 +198,7 @@ struct InspirationFilterOverlay: View {
                     onApply: applyAndClose
                 )
                 .frame(maxWidth: .infinity)
-                .frame(height: 678 + proxy.safeAreaInsets.bottom)
+                .frame(height: sheetHeight + proxy.safeAreaInsets.bottom)
                 .ignoresSafeArea(edges: .bottom)
                 .offset(y: dragOffset)
                 .gesture(
@@ -231,6 +231,15 @@ struct InspirationFilterOverlay: View {
     private func applyAndClose() {
         viewModel.copyValues(from: draftViewModel)
         close()
+    }
+
+    private var sheetHeight: CGFloat {
+        switch contentStyle {
+        case .spaces:
+            678
+        case .historyFeatures:
+            560
+        }
     }
 
     private func close() {

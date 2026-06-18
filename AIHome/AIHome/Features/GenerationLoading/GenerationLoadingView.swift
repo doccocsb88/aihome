@@ -49,10 +49,10 @@ struct GenerationLoadingView: View {
                         .frame(width: 80, height: 80)
                         .padding(.top, 16)
                     
-                    Text("Generation Failed")
+                    Text(L10n.GenerationLoading.Failure.title)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
                     
-                    Text("We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
+                    Text(L10n.GenerationLoading.Failure.message)
                         .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
@@ -66,7 +66,7 @@ struct GenerationLoadingView: View {
                                 onCancel?()
                             }
                         }) {
-                            Text("TRY AGAIN")
+                            Text(L10n.GenerationLoading.Failure.tryAgain)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
@@ -78,7 +78,7 @@ struct GenerationLoadingView: View {
                         Button(action: {
                             onCancel?()
                         }) {
-                            Text("BACK TO DESIGN")
+                            Text(L10n.GenerationLoading.Failure.backToDesign)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 12))
                                 .foregroundColor(.gray)
                         }

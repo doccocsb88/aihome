@@ -13,6 +13,24 @@
 "language.french" = "Französisch";
 "language.german" = "Deutsch";
 
+"common.ok" = "OK";
+"common.cancel" = "Abbrechen";
+"common.delete" = "Löschen";
+
+"home.title" = "Startseite";
+"home.advanced_editing" = "ERWEITERTE BEARBEITUNG";
+
+"history.title" = "Verlauf";
+"history.empty.title" = "Starten Sie Ihr erstes Projekt";
+"history.empty.message" = "Erstellen Sie einen neuen Raum und sehen Sie,\nwie Ihre Ideen zum Leben erwachen.";
+"history.empty.create_project" = "Neues Projekt erstellen";
+"history.delete_confirmation.title" = "Ausgewählte Projekte löschen?";
+"history.delete_confirmation.message" = "Diese Aktion kann nicht rückgängig gemacht werden.";
+"history.delete_selected" = "Löschen (%d)";
+"history.filter_empty.title" = "Keine passenden Projekte";
+"history.filter_empty.message" = "Passen Sie Ihre Filter an oder setzen Sie sie zurück.";
+"history.filter_empty.reset_filters" = "Filter zurücksetzen";
+
 
 "onboarding.continue" = "Weiter";
 "onboarding.welcome.title" = "Willkommen bei HomeGPT";
@@ -56,3 +74,20 @@ bessere Designs";
 "result.download" = "HERUNTERLADEN";
 "result.share" = "TEILEN";
 "result.save_to_archive" = "IM ARCHIV SPEICHERN";
+"result.save_success.title" = "Gespeichert";
+"result.save_success.message" = "Das Bild wurde in Ihrer Fotogalerie gespeichert.";
+"result.save_failure.title" = "Speichern fehlgeschlagen";
+"result.save_failure.message" = "Das Bild konnte nicht in Ihrer Fotogalerie gespeichert werden.";
+"result.save_failure.photo_access_required" = "Zum Speichern dieses Bildes ist Zugriff auf die Fotomediathek erforderlich.";
+
+"generation_loading.failure.title" = "Generierung fehlgeschlagen";
+"generation_loading.failure.message" = "Ihre Neugestaltungsanfrage konnte diesmal nicht verarbeitet werden. Prüfen Sie Ihr Foto oder Ihre Anweisungen und versuchen Sie es erneut.";
+"generation_loading.failure.try_again" = "ERNEUT VERSUCHEN";
+"generation_loading.failure.back_to_design" = "ZURÜCK ZUM DESIGN";
+
+"exterior_flow.title" = "Außenbereich neu gestalten";
+"exterior_flow.prompt_placeholder" = "Passen Sie die Eingabe mit Ihren eigenen Anweisungen an...";
+
+"inspiration.title" = "Inspiration";
+"inspiration.like" = "Inspiration mit Gefällt mir markieren";
+"inspiration.unlike" = "Gefällt mir für Inspiration entfernen";

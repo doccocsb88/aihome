@@ -76,7 +76,7 @@ struct InspirationView: View {
     }
 
     private var header: some View {
-        MainTabHeaderView(title: "Inspiration", titleSize: 32)
+        MainTabHeaderView(title: L10n.Inspiration.title, titleSize: 32)
             .padding(.top, 16)
     }
 
@@ -186,7 +186,7 @@ private struct InspirationCardContent: View {
                         .frame(width: 44, height: 44)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(item.isLiked ? "Unlike inspiration" : "Like inspiration")
+                .accessibilityLabel(item.isLiked ? L10n.Inspiration.unlike : L10n.Inspiration.like)
             }
 
             Text(item.subtitle)

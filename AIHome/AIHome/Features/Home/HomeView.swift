@@ -8,7 +8,7 @@ struct HomeView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            MainTabHeaderView(title: "Home")
+            MainTabHeaderView(title: L10n.Home.title)
                 .padding(.vertical)
             
             ScrollView(showsIndicators: false) {
@@ -22,7 +22,7 @@ struct HomeView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("ADVANCED EDITING")
+                    Text(L10n.Home.advancedEditing)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                         .foregroundColor(.DesignSystem.silverSand)
                         .kerning(1.2)

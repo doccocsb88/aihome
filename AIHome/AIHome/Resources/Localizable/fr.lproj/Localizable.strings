@@ -13,6 +13,10 @@
 "language.french" = "Français";
 "language.german" = "Allemand";
 
+"history.filter_empty.title" = "Aucun projet correspondant";
+"history.filter_empty.message" = "Essayez de modifier ou de réinitialiser vos filtres.";
+"history.filter_empty.reset_filters" = "Réinitialiser les filtres";
+
 
 "onboarding.continue" = "Continuer";
 "onboarding.welcome.title" = "Bienvenue sur HomeGPT";
@@ -56,3 +60,15 @@ de meilleurs designs";
 "result.download" = "TÉLÉCHARGER";
 "result.share" = "PARTAGER";
 "result.save_to_archive" = "ENREGISTRER DANS LES ARCHIVES";
+
+"generation_loading.failure.title" = "Échec de la génération";
+"generation_loading.failure.message" = "Nous n'avons pas pu traiter votre demande de réaménagement cette fois-ci. Vérifiez votre photo ou vos instructions, puis réessayez.";
+"generation_loading.failure.try_again" = "RÉESSAYER";
+"generation_loading.failure.back_to_design" = "RETOUR AU DESIGN";
+
+"exterior_flow.title" = "Réaménagement extérieur";
+"exterior_flow.prompt_placeholder" = "Personnalisez la consigne avec vos propres instructions...";
+
+"inspiration.title" = "Inspiration";
+"inspiration.like" = "Aimer cette inspiration";
+"inspiration.unlike" = "Ne plus aimer cette inspiration";

@@ -13,6 +13,24 @@
 "language.french" = "French";
 "language.german" = "German";
 
+"common.ok" = "OK";
+"common.cancel" = "Cancel";
+"common.delete" = "Delete";
+
+"home.title" = "Home";
+"home.advanced_editing" = "ADVANCED EDITING";
+
+"history.title" = "History";
+"history.empty.title" = "Start your first project";
+"history.empty.message" = "Create a new space and watch your\nideas come to life.";
+"history.empty.create_project" = "Create New Project";
+"history.delete_confirmation.title" = "Delete selected projects?";
+"history.delete_confirmation.message" = "This action cannot be undone.";
+"history.delete_selected" = "Delete (%d)";
+"history.filter_empty.title" = "No matching projects";
+"history.filter_empty.message" = "Try adjusting or resetting your filters.";
+"history.filter_empty.reset_filters" = "Reset Filters";
+
 
 "onboarding.continue" = "Continue";
 "onboarding.welcome.title" = "Welcome to HomeGPT";
@@ -56,3 +74,20 @@ better designs";
 "result.download" = "DOWNLOAD";
 "result.share" = "SHARE";
 "result.save_to_archive" = "SAVE TO ARCHIVE";
+"result.save_success.title" = "Saved";
+"result.save_success.message" = "The image has been saved to your photo gallery.";
+"result.save_failure.title" = "Save Failed";
+"result.save_failure.message" = "The image could not be saved to your photo gallery.";
+"result.save_failure.photo_access_required" = "Photo library access is required to save this image.";
+
+"generation_loading.failure.title" = "Generation Failed";
+"generation_loading.failure.message" = "We couldn't process your redesign request this time. Please check your photo or instructions and try again.";
+"generation_loading.failure.try_again" = "TRY AGAIN";
+"generation_loading.failure.back_to_design" = "BACK TO DESIGN";
+
+"exterior_flow.title" = "Exterior Redesign";
+"exterior_flow.prompt_placeholder" = "Tailor the prompt with your own instructions...";
+
+"inspiration.title" = "Inspiration";
+"inspiration.like" = "Like inspiration";
+"inspiration.unlike" = "Unlike inspiration";

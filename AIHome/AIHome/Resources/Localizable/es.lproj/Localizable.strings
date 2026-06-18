@@ -13,6 +13,10 @@
 "language.french" = "Francés";
 "language.german" = "Alemán";
 
+"history.filter_empty.title" = "No hay proyectos coincidentes";
+"history.filter_empty.message" = "Prueba a cambiar o restablecer los filtros.";
+"history.filter_empty.reset_filters" = "Restablecer filtros";
+
 
 "onboarding.continue" = "Continuar";
 "onboarding.welcome.title" = "Bienvenido a HomeGPT";
@@ -56,3 +60,15 @@ mejores diseños";
 "result.download" = "DESCARGAR";
 "result.share" = "COMPARTIR";
 "result.save_to_archive" = "GUARDAR EN ARCHIVO";
+
+"generation_loading.failure.title" = "Error de generación";
+"generation_loading.failure.message" = "No pudimos procesar tu solicitud de rediseño esta vez. Revisa la foto o las instrucciones e inténtalo de nuevo.";
+"generation_loading.failure.try_again" = "INTENTAR DE NUEVO";
+"generation_loading.failure.back_to_design" = "VOLVER AL DISEÑO";
+
+"exterior_flow.title" = "Rediseño exterior";
+"exterior_flow.prompt_placeholder" = "Personaliza la instrucción con tus propias indicaciones...";
+
+"inspiration.title" = "Inspiración";
+"inspiration.like" = "Me gusta esta inspiración";
+"inspiration.unlike" = "Ya no me gusta esta inspiración";

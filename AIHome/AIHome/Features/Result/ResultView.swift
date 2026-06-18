@@ -40,7 +40,7 @@ struct ResultView: View {
             Alert(
                 title: Text(item.title),
                 message: Text(item.message),
-                dismissButton: .default(Text("OK"))
+                dismissButton: .default(Text(L10n.Common.ok))
             )
         }
     }
@@ -232,13 +232,13 @@ struct ResultView: View {
                 try await ResultPhotoLibrarySaver.save(downloadImage)
                 onDownload(downloadImage)
                 alertItem = ResultAlertItem(
-                    title: "Saved",
-                    message: "The image has been saved to your photo gallery."
+                    title: L10n.Result.SaveSuccess.title,
+                    message: L10n.Result.SaveSuccess.message
                 )
                 AppLogger.logAction("Result Image Downloaded")
             } catch {
                 alertItem = ResultAlertItem(
-                    title: "Save Failed",
+                    title: L10n.Result.SaveFailure.title,
                     message: error.localizedDescription
                 )
                 AppLogger.logError("Result Image Download Failed", error: error)
@@ -461,9 +461,9 @@ private enum ResultPhotoLibraryError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .accessDenied:
-            "Photo library access is required to save this image."
+            L10n.Result.SaveFailure.photoAccessRequired
         case .saveFailed:
-            "The image could not be saved to your photo gallery."
+            L10n.Result.SaveFailure.message
         }
     }
 }

@@ -63,14 +63,14 @@ struct HistoryView: View {
                 }
             )
         }
-        .alert("Delete selected projects?", isPresented: $isShowingDeleteConfirm) {
-            Button("Cancel", role: .cancel) {}
-            Button("Delete", role: .destructive) {
+        .alert(L10n.History.DeleteConfirmation.title, isPresented: $isShowingDeleteConfirm) {
+            Button(L10n.Common.cancel, role: .cancel) {}
+            Button(L10n.Common.delete, role: .destructive) {
                 viewModel.deleteProjects(ids: selectedProjectIDs)
                 exitEditMode()
             }
         } message: {
-            Text("This action cannot be undone.")
+            Text(L10n.History.DeleteConfirmation.message)
         }
         .onDisappear {
             onFilterPresentationChanged(false)
@@ -78,7 +78,7 @@ struct HistoryView: View {
     }
     
     private var headerView: some View {
-        MainTabHeaderView(title: "History")
+        MainTabHeaderView(title: L10n.History.title)
         .padding(.top, 16)
         .padding(.bottom, 16)
     }
@@ -93,11 +93,11 @@ struct HistoryView: View {
                 .frame(height: 260)
             
             VStack(spacing: 8) {
-                Text("Start your first project")
+                Text(L10n.History.Empty.title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
                     .foregroundColor(.DesignSystem.textPrimary)
                 
-                Text("Create a new space and watch your\nideas come to life.")
+                Text(L10n.History.Empty.message)
                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
                     .foregroundColor(.DesignSystem.gray)
                     .multilineTextAlignment(.center)
@@ -110,7 +110,7 @@ struct HistoryView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "plus.circle")
                         .font(.system(size: 18))
-                    Text("Create New Project")
+                    Text(L10n.History.Empty.createProject)
                         .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
                 }
                 .foregroundColor(.DesignSystem.background)
@@ -129,15 +129,19 @@ struct HistoryView: View {
     
     private var projectList: some View {
         ZStack(alignment: .bottom) {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
-                    ForEach(viewModel.filteredProjects) { project in
-                        projectCard(for: project)
+            if viewModel.filteredProjects.isEmpty {
+                filterEmptyState
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
+                        ForEach(viewModel.filteredProjects) { project in
+                            projectCard(for: project)
+                        }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 100)
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
-                .padding(.bottom, 100)
             }
             
             if !isEditing {
@@ -159,6 +163,45 @@ struct HistoryView: View {
                 editBottomBar
             }
         }
+    }
+
+    private var filterEmptyState: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            Image("ic_history_start_project")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 220)
+
+            VStack(spacing: 8) {
+                Text(L10n.History.FilterEmpty.title)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
+                    .foregroundStyle(Color.DesignSystem.textPrimary)
+
+                Text(L10n.History.FilterEmpty.message)
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 17))
+                    .foregroundStyle(Color.DesignSystem.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
+
+            Button(L10n.History.FilterEmpty.resetFilters) {
+                viewModel.filter.reset()
+            }
+            .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
+            .foregroundStyle(Color.DesignSystem.background)
+            .frame(maxWidth: .infinity)
+            .frame(height: 56)
+            .background(Color.DesignSystem.textPrimary, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .padding(.horizontal, 32)
+            .padding(.top, 8)
+
+            Spacer()
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.bottom, 80)
     }
     
     private func projectCard(for project: LocalProject) -> some View {
@@ -269,7 +312,7 @@ struct HistoryView: View {
     private var editBottomBar: some View {
         HStack(spacing: 12) {
             Button(action: exitEditMode) {
-                Text("Cancel")
+                Text(L10n.Common.cancel)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                     .foregroundColor(.DesignSystem.textPrimary)
                     .frame(maxWidth: .infinity)
@@ -285,7 +328,7 @@ struct HistoryView: View {
             Button(action: {
                 isShowingDeleteConfirm = true
             }) {
-                Text("Delete (\(selectedProjectIDs.count))")
+                Text(L10n.History.deleteSelected(selectedProjectIDs.count))
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)

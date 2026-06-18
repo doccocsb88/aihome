@@ -9,8 +9,8 @@ struct ExteriorFlowView: View {
     
     var body: some View {
         SharedObjectModificationView(
-            title: "Exterior Redesign",
-            promptPlaceholder: "Tailor the prompt with your own instructions...",
+            title: L10n.ExteriorFlow.title,
+            promptPlaceholder: L10n.ExteriorFlow.promptPlaceholder,
             prompt: $viewModel.draft.prompt,
             photoPickerViewModel: viewModel.photoPickerViewModel,
             canGenerate: viewModel.canGenerate,

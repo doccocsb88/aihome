@@ -10,6 +10,77 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  internal enum Common {
+    /// Cancel
+    internal static let cancel = L10n.tr("Localizable", "common.cancel", fallback: "Cancel")
+    /// Delete
+    internal static let delete = L10n.tr("Localizable", "common.delete", fallback: "Delete")
+    /// OK
+    internal static let ok = L10n.tr("Localizable", "common.ok", fallback: "OK")
+  }
+  internal enum ExteriorFlow {
+    /// Tailor the prompt with your own instructions...
+    internal static let promptPlaceholder = L10n.tr("Localizable", "exterior_flow.prompt_placeholder", fallback: "Tailor the prompt with your own instructions...")
+    /// Exterior Redesign
+    internal static let title = L10n.tr("Localizable", "exterior_flow.title", fallback: "Exterior Redesign")
+  }
+  internal enum GenerationLoading {
+    internal enum Failure {
+      /// BACK TO DESIGN
+      internal static let backToDesign = L10n.tr("Localizable", "generation_loading.failure.back_to_design", fallback: "BACK TO DESIGN")
+      /// We couldn't process your redesign request this time. Please check your photo or instructions and try again.
+      internal static let message = L10n.tr("Localizable", "generation_loading.failure.message", fallback: "We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
+      /// Generation Failed
+      internal static let title = L10n.tr("Localizable", "generation_loading.failure.title", fallback: "Generation Failed")
+      /// TRY AGAIN
+      internal static let tryAgain = L10n.tr("Localizable", "generation_loading.failure.try_again", fallback: "TRY AGAIN")
+    }
+  }
+  internal enum History {
+    /// Delete (%d)
+    internal static func deleteSelected(_ p1: Int) -> String {
+      return L10n.tr("Localizable", "history.delete_selected", p1, fallback: "Delete (%d)")
+    }
+    /// History
+    internal static let title = L10n.tr("Localizable", "history.title", fallback: "History")
+    internal enum DeleteConfirmation {
+      /// This action cannot be undone.
+      internal static let message = L10n.tr("Localizable", "history.delete_confirmation.message", fallback: "This action cannot be undone.")
+      /// Delete selected projects?
+      internal static let title = L10n.tr("Localizable", "history.delete_confirmation.title", fallback: "Delete selected projects?")
+    }
+    internal enum Empty {
+      /// Create New Project
+      internal static let createProject = L10n.tr("Localizable", "history.empty.create_project", fallback: "Create New Project")
+      /// Create a new space and watch your
+      /// ideas come to life.
+      internal static let message = L10n.tr("Localizable", "history.empty.message", fallback: "Create a new space and watch your\nideas come to life.")
+      /// Start your first project
+      internal static let title = L10n.tr("Localizable", "history.empty.title", fallback: "Start your first project")
+    }
+    internal enum FilterEmpty {
+      /// Try adjusting or resetting your filters.
+      internal static let message = L10n.tr("Localizable", "history.filter_empty.message", fallback: "Try adjusting or resetting your filters.")
+      /// Reset Filters
+      internal static let resetFilters = L10n.tr("Localizable", "history.filter_empty.reset_filters", fallback: "Reset Filters")
+      /// No matching projects
+      internal static let title = L10n.tr("Localizable", "history.filter_empty.title", fallback: "No matching projects")
+    }
+  }
+  internal enum Home {
+    /// ADVANCED EDITING
+    internal static let advancedEditing = L10n.tr("Localizable", "home.advanced_editing", fallback: "ADVANCED EDITING")
+    /// Home
+    internal static let title = L10n.tr("Localizable", "home.title", fallback: "Home")
+  }
+  internal enum Inspiration {
+    /// Like inspiration
+    internal static let like = L10n.tr("Localizable", "inspiration.like", fallback: "Like inspiration")
+    /// Inspiration
+    internal static let title = L10n.tr("Localizable", "inspiration.title", fallback: "Inspiration")
+    /// Unlike inspiration
+    internal static let unlike = L10n.tr("Localizable", "inspiration.unlike", fallback: "Unlike inspiration")
+  }
   internal enum Language {
     /// English
     internal static let english = L10n.tr("Localizable", "language.english", fallback: "English")
@@ -122,6 +193,20 @@ internal enum L10n {
     internal static let share = L10n.tr("Localizable", "result.share", fallback: "SHARE")
     /// Result
     internal static let title = L10n.tr("Localizable", "result.title", fallback: "Result")
+    internal enum SaveFailure {
+      /// The image could not be saved to your photo gallery.
+      internal static let message = L10n.tr("Localizable", "result.save_failure.message", fallback: "The image could not be saved to your photo gallery.")
+      /// Photo library access is required to save this image.
+      internal static let photoAccessRequired = L10n.tr("Localizable", "result.save_failure.photo_access_required", fallback: "Photo library access is required to save this image.")
+      /// Save Failed
+      internal static let title = L10n.tr("Localizable", "result.save_failure.title", fallback: "Save Failed")
+    }
+    internal enum SaveSuccess {
+      /// The image has been saved to your photo gallery.
+      internal static let message = L10n.tr("Localizable", "result.save_success.message", fallback: "The image has been saved to your photo gallery.")
+      /// Saved
+      internal static let title = L10n.tr("Localizable", "result.save_success.title", fallback: "Saved")
+    }
   }
   internal enum Settings {
     /// Feedback
