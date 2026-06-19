@@ -2,16 +2,42 @@ import Foundation
 
 public struct PromptMaskLabelMapper {
     public static func labels(for prompt: String) -> [String] {
-        let lower = prompt.lowercased()
-        if lower.contains("tv") || lower.contains("television") { return ["television receiver"] }
-        if lower.contains("sofa") || lower.contains("couch") { return ["sofa"] }
-        if lower.contains("dining table") || lower.contains("table") { return ["table"] }
-        if lower.contains("wall") { return ["wall"] }
-        if lower.contains("floor") || lower.contains("flooring") { return ["floor"] }
-        if lower.contains("cabinet") { return ["cabinet"] }
-        if lower.contains("chair") { return ["chair"] }
-        // Default generic
-        return []
+        let normalizedPrompt = normalize(prompt)
+        let promptRange = NSRange(normalizedPrompt.startIndex..., in: normalizedPrompt)
+
+        let match = MaskObjectLabelCatalog.entries.compactMap { entry -> (label: String, range: NSRange)? in
+            let searchTerms = [entry.label] + entry.aliases
+            let ranges = searchTerms.compactMap { term -> NSRange? in
+                let escapedTerm = NSRegularExpression.escapedPattern(for: normalize(term))
+                let pattern = "(?<![a-z0-9])\(escapedTerm)(?:s|es)?(?![a-z0-9])"
+                return try? NSRegularExpression(pattern: pattern)
+                    .firstMatch(in: normalizedPrompt, range: promptRange)?
+                    .range
+            }
+
+            guard let firstRange = ranges.min(by: isEarlierMatch) else { return nil }
+            return (entry.label, firstRange)
+        }
+        .min { lhs, rhs in
+            isEarlierMatch(lhs.range, rhs.range)
+        }
+
+        return match.map { [$0.label] } ?? []
+    }
+
+    private static func normalize(_ value: String) -> String {
+        value.folding(
+            options: [.caseInsensitive, .diacriticInsensitive, .widthInsensitive],
+            locale: Locale(identifier: "en_US_POSIX")
+        )
+        .lowercased()
+    }
+
+    private static func isEarlierMatch(_ lhs: NSRange, _ rhs: NSRange) -> Bool {
+        if lhs.location != rhs.location {
+            return lhs.location < rhs.location
+        }
+        return lhs.length > rhs.length
     }
 }
 

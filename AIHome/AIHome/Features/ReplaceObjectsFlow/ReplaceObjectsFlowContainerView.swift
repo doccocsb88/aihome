@@ -139,9 +139,11 @@ struct ReplaceObjectsFlowContainerView: View {
                     self.state = .result(resultVM)
                 }
             } catch {
+                let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 await MainActor.run {
-                    self.state = .input
+                    loadingVM.status = .failed
+                    loadingVM.errorMessage = errorMessage
                 }
             }
         }
