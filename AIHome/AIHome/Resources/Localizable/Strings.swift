@@ -28,6 +28,8 @@ internal enum L10n {
     internal enum Failure {
       /// BACK TO DESIGN
       internal static let backToDesign = L10n.tr("Localizable", "generation_loading.failure.back_to_design", fallback: "BACK TO DESIGN")
+      /// Choose a clear exterior photo showing the front, side, or back of the house, then try again.
+      internal static let exteriorPhotoMessage = L10n.tr("Localizable", "generation_loading.failure.exterior_photo_message", fallback: "Choose a clear exterior photo showing the front, side, or back of the house, then try again.")
       /// We couldn't process your redesign request this time. Please check your photo or instructions and try again.
       internal static let message = L10n.tr("Localizable", "generation_loading.failure.message", fallback: "We couldn't process your redesign request this time. Please check your photo or instructions and try again.")
       /// Generation Failed

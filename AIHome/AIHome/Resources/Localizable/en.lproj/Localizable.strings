@@ -82,6 +82,7 @@ better designs";
 
 "generation_loading.failure.title" = "Generation Failed";
 "generation_loading.failure.message" = "We couldn't process your redesign request this time. Please check your photo or instructions and try again.";
+"generation_loading.failure.exterior_photo_message" = "Choose a clear exterior photo showing the front, side, or back of the house, then try again.";
 "generation_loading.failure.try_again" = "TRY AGAIN";
 "generation_loading.failure.back_to_design" = "BACK TO DESIGN";
 

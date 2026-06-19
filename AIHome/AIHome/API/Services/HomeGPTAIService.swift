@@ -15,26 +15,67 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
     public init(client: HomeDesignsAPIClientProtocol) {
         self.client = client
     }
+
+    private func submitPerfectRedesign(_ request: PerfectRedesignRequest) async throws -> QueueResponse {
+        do {
+            return try await client.perfectRedesign(request)
+        } catch {
+            guard isTransient(error) else { throw error }
+
+            AppLogger.logAction("Retry Perfect Redesign", details: "Retrying once in 10 seconds")
+            try await Task.sleep(nanoseconds: 10_000_000_000)
+            return try await client.perfectRedesign(request)
+        }
+    }
+
+    private func checkPerfectRedesignStatus(queueId: String) async throws -> StatusCheckResponse {
+        let maxRetryCount = 3
+        var retryCount = 0
+
+        while true {
+            do {
+                return try await client.checkPerfectRedesignStatus(queueId: queueId)
+            } catch {
+                guard isTransient(error), retryCount < maxRetryCount else { throw error }
+
+                let delaySeconds = 2 << retryCount
+                retryCount += 1
+                AppLogger.logAction(
+                    "Retry Redesign Status",
+                    details: "Attempt \(retryCount)/\(maxRetryCount) in \(delaySeconds) seconds"
+                )
+                try await Task.sleep(nanoseconds: UInt64(delaySeconds) * 1_000_000_000)
+            }
+        }
+    }
+
+    private func isTransient(_ error: Error) -> Bool {
+        if let apiError = error as? HomeDesignsAPIError,
+           case .temporaryServerUnavailable = apiError {
+            return true
+        }
+
+        guard let urlError = error as? URLError else { return false }
+        return urlError.code == .timedOut || urlError.code == .networkConnectionLost
+    }
     
     private func pollForRedesignResult(queueId: String) async throws -> [String] {
-        var attempts = 0
-        let maxAttempts = 60
+        let deadline = Date().addingTimeInterval(10 * 60)
         
-        while attempts < maxAttempts {
-            let status = try await client.checkPerfectRedesignStatus(queueId: queueId)
+        while Date() < deadline {
+            let status = try await checkPerfectRedesignStatus(queueId: queueId)
             switch status.resolvedStatus {
             case .success:
                 return status.outputImages ?? []
             case .failed:
                 throw HomeDesignsAPIError.apiMessage(status.message ?? "Generation failed")
             case .inQueue, .starting, .processing:
-                try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
-                attempts += 1
+                try await Task.sleep(nanoseconds: 4_000_000_000)
             case .unknown:
                 throw HomeDesignsAPIError.apiMessage("Unknown status: \(status.status ?? "")")
             }
         }
-        throw HomeDesignsAPIError.queueExpired
+        throw HomeDesignsAPIError.generationTimedOut
     }
     
     public func generateInterior(request: InteriorGenerationInput) async throws -> [String] {
@@ -47,7 +88,7 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
             roomType: request.roomType,
             customInstruction: request.customInstruction
         )
-        let queue = try await client.perfectRedesign(req)
+        let queue = try await submitPerfectRedesign(req)
         if let msg = queue.message, queue.resolvedQueueId == nil {
             throw HomeDesignsAPIError.apiMessage(msg)
         }
@@ -65,7 +106,7 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
             houseAngle: request.houseAngle,
             customInstruction: request.customInstruction
         )
-        let queue = try await client.perfectRedesign(req)
+        let queue = try await submitPerfectRedesign(req)
         guard let qid = queue.resolvedQueueId else { throw HomeDesignsAPIError.apiMessage("No queue ID") }
         return try await pollForRedesignResult(queueId: qid)
     }
@@ -80,7 +121,7 @@ public class HomeGPTAIService: HomeGPTAIServiceProtocol {
             gardenType: request.gardenType,
             customInstruction: request.customInstruction
         )
-        let queue = try await client.perfectRedesign(req)
+        let queue = try await submitPerfectRedesign(req)
         guard let qid = queue.resolvedQueueId else { throw HomeDesignsAPIError.apiMessage("No queue ID") }
         return try await pollForRedesignResult(queueId: qid)
     }

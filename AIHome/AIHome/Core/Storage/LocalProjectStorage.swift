@@ -181,7 +181,7 @@ final class LocalProjectFileStorage: LocalProjectStorageProtocol {
     }
 
     private func write(_ image: UIImage, to url: URL) throws {
-        guard let data = image.jpegData(compressionQuality: 0.9) else {
+        guard let data = GenerationImageEncoder.jpegData(image, compressionQuality: 0.9) else {
             throw CocoaError(.fileWriteUnknown)
         }
 

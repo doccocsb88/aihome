@@ -52,27 +52,29 @@ struct GenerationLoadingView: View {
                     Text(L10n.GenerationLoading.Failure.title)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
                     
-                    Text(L10n.GenerationLoading.Failure.message)
+                    Text(viewModel.errorMessage ?? L10n.GenerationLoading.Failure.message)
                         .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 24)
                     
                     VStack(spacing: 16) {
-                        Button(action: {
-                            if let onRetry = onRetry {
-                                onRetry()
-                            } else {
-                                onCancel?()
+                        if viewModel.canRetry {
+                            Button(action: {
+                                if let onRetry = onRetry {
+                                    onRetry()
+                                } else {
+                                    onCancel?()
+                                }
+                            }) {
+                                Text(L10n.GenerationLoading.Failure.tryAgain)
+                                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 16)
+                                    .background(Color.black)
+                                    .cornerRadius(12)
                             }
-                        }) {
-                            Text(L10n.GenerationLoading.Failure.tryAgain)
-                                .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(Color.black)
-                                .cornerRadius(12)
                         }
                         
                         Button(action: {

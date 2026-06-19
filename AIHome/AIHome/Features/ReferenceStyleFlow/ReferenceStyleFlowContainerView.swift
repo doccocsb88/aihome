@@ -77,14 +77,14 @@ struct ReferenceStyleFlowContainerView: View {
 
         Task {
             do {
-                guard let sourceImageData = sourceImage.jpegData(compressionQuality: 0.8),
-                      let referenceImageData = referenceImage.jpegData(compressionQuality: 0.8) else {
+                guard let sourceImageSource = GenerationImageEncoder.encode(sourceImage, filename: "image"),
+                      let referenceImageSource = GenerationImageEncoder.encode(referenceImage, filename: "style-image") else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
                 let request = ReferenceStyleInput(
-                    image: .jpegData(sourceImageData),
-                    styleImage: .jpegData(referenceImageData),
+                    image: sourceImageSource,
+                    styleImage: referenceImageSource,
                     aiIntervention: aiIntervention
                 )
 

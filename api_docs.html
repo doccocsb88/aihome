@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HomeDesignsAI API notes - 2026-06-19</title>
+  <style>
+    body { max-width: 920px; margin: 40px auto; padding: 0 20px; font: 16px/1.55 system-ui, sans-serif; color: #18212b; }
+    h1, h2 { line-height: 1.2; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    th, td { padding: 10px; border: 1px solid #cbd5df; text-align: left; vertical-align: top; }
+    code { background: #eef2f6; padding: 2px 5px; border-radius: 4px; }
+    .result { padding: 14px 16px; border-left: 4px solid #c33; background: #fff3f3; }
+  </style>
+</head>
+<body>
+  <h1>HomeDesignsAI API - phần đã kiểm tra</h1>
+  <p>Ngày kiểm tra: 2026-06-19. Đây là ghi chú đối chiếu cho lỗi Interior Generation, không phải bản sao đầy đủ của tài liệu nhà cung cấp.</p>
+
+  <h2>Perfect Redesign</h2>
+  <p><code>POST https://homedesigns.ai/api/v2/perfect_redesign</code></p>
+  <p>Request dùng <code>multipart/form-data</code>.</p>
+  <table>
+    <thead><tr><th>Field</th><th>Yêu cầu / giá trị</th><th>Đối chiếu app</th></tr></thead>
+    <tbody>
+      <tr><td><code>image</code></td><td>File JPG/JPEG/PNG hoặc base64; tối thiểu 512x512</td><td>App tạo multipart file <code>image/jpeg</code> sau khi gọi <code>UIImage.jpegData</code></td></tr>
+      <tr><td><code>design_type</code></td><td><code>Interior</code>, <code>Exterior</code>, <code>Garden</code></td><td>Interior gửi <code>Interior</code></td></tr>
+      <tr><td><code>ai_intervention</code></td><td><code>Very Low</code>, <code>Low</code>, <code>Mid</code>, <code>Extreme</code></td><td>Log hiện tại gửi <code>Extreme</code>, hợp lệ</td></tr>
+      <tr><td><code>no_design</code></td><td>1 hoặc 2</td><td>App gửi 1, hợp lệ</td></tr>
+      <tr><td><code>design_style</code></td><td>Style thuộc danh sách Interior</td><td><code>Organic Modern</code> có trong danh sách chính thức, hợp lệ</td></tr>
+      <tr><td><code>room_type</code></td><td>Bắt buộc với Interior</td><td><code>Office</code> có trong danh sách chính thức, hợp lệ</td></tr>
+      <tr><td><code>custom_instruction</code></td><td>Tùy chọn</td><td>App chỉ gửi khi dùng custom style</td></tr>
+      <tr><td><code>keep_structural_element</code></td><td>Tùy chọn; mặc định true</td><td>App không gửi, dùng mặc định API</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Status check</h2>
+  <p><code>GET /perfect_redesign/status_check/{queue_id}</code>. Queue ID có hiệu lực khoảng 30 phút; tiếp tục poll qua các trạng thái queue/starting/processing cho tới SUCCESS hoặc FAILED.</p>
+
+  <h2>Kết luận cho log đang kiểm tra</h2>
+  <div class="result">
+    <strong>Không phải lỗi validation từ API.</strong> Lỗi xảy ra cục bộ khi app chuyển <code>UIImage</code> sang JPEG. <code>CMPhotoCompressionSessionAddImage</code> trả <code>kCMPhotoError_UnsupportedOperation (-16994)</code>, sau đó <code>jpegData</code> trả nil và app tự ném <code>Invalid image data</code>. Vì vậy không có request <code>/perfect_redesign</code> nào được gửi ở lần lỗi này.
+  </div>
+
+  <h2>Hướng fix đề xuất</h2>
+  <ol>
+    <li>Chuẩn hóa ảnh về bitmap SDR, 8-bit, sRGB trước khi encode JPEG; với <code>UIGraphicsImageRendererFormat</code> đặt <code>preferredRange = .standard</code>.</li>
+    <li>Đưa logic vào một helper dùng chung cho tất cả generation flow; không gọi trực tiếp <code>UIImage.jpegData</code> tại từng screen.</li>
+    <li>Nếu JPEG encode vẫn thất bại, fallback PNG vì API hỗ trợ PNG; không gắn MIME <code>image/jpeg</code> cho dữ liệu PNG.</li>
+    <li>Log thêm kích thước, scale, color space/extended-range và số byte sau encode; không log ảnh/base64/token.</li>
+  </ol>
+
+  <h2>Nguồn</h2>
+  <ul>
+    <li><a href="https://api.homedesigns.ai/homedesignsai-api-documentation/core-apis/perfect-redesign">HomeDesignsAI - Perfect Redesign</a></li>
+    <li><a href="https://api.homedesigns.ai/homedesignsai-api-documentation/design-scope/interiors/design-styles-for-interiors">HomeDesignsAI - Interior design styles</a></li>
+    <li><a href="https://api.homedesigns.ai/homedesignsai-api-documentation/design-scope/interiors/room-types">HomeDesignsAI - Interior room types</a></li>
+    <li><a href="https://api.homedesigns.ai/homedesignsai-api-documentation">HomeDesignsAI API Documentation</a></li>
+  </ul>
+</body>
+</html>

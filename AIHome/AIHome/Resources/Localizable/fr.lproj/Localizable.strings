@@ -63,6 +63,7 @@ de meilleurs designs";
 
 "generation_loading.failure.title" = "Échec de la génération";
 "generation_loading.failure.message" = "Nous n'avons pas pu traiter votre demande de réaménagement cette fois-ci. Vérifiez votre photo ou vos instructions, puis réessayez.";
+"generation_loading.failure.exterior_photo_message" = "Choisissez une photo extérieure nette montrant l’avant, le côté ou l’arrière de la maison, puis réessayez.";
 "generation_loading.failure.try_again" = "RÉESSAYER";
 "generation_loading.failure.back_to_design" = "RETOUR AU DESIGN";
 

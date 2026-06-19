@@ -82,6 +82,7 @@ bessere Designs";
 
 "generation_loading.failure.title" = "Generierung fehlgeschlagen";
 "generation_loading.failure.message" = "Ihre Neugestaltungsanfrage konnte diesmal nicht verarbeitet werden. Prüfen Sie Ihr Foto oder Ihre Anweisungen und versuchen Sie es erneut.";
+"generation_loading.failure.exterior_photo_message" = "Wählen Sie ein klares Außenfoto, das die Vorderseite, Seite oder Rückseite des Hauses zeigt, und versuchen Sie es erneut.";
 "generation_loading.failure.try_again" = "ERNEUT VERSUCHEN";
 "generation_loading.failure.back_to_design" = "ZURÜCK ZUM DESIGN";
 

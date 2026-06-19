@@ -69,16 +69,16 @@ struct ExteriorFlowContainerView: View {
 
         Task {
             do {
-                guard let imageData = sourceImage.jpegData(compressionQuality: 0.8) else {
+                guard let imageSource = GenerationImageEncoder.encode(sourceImage) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
                 let request = ExteriorGenerationInput(
-                    image: .jpegData(imageData),
+                    image: imageSource,
                     aiIntervention: .mid, // Default
                     noDesign: 1,
                     designStyle: "Modern", // Default
-                    houseAngle: "Front of house", // Default
+                    houseAngle: draft.houseAngle.rawValue,
                     customInstruction: draft.prompt
                 )
 
@@ -143,13 +143,28 @@ struct ExteriorFlowContainerView: View {
                     self.state = .result(resultVM)
                 }
             } catch {
-                let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
+                let failure = failureDetails(for: error)
                 AppLogger.logError("Generation Failed", error: error)
                 await MainActor.run {
                     loadingVM.status = .failed
-                    loadingVM.errorMessage = errorMessage
+                    loadingVM.errorMessage = failure.message
+                    loadingVM.canRetry = failure.canRetry
                 }
             }
         }
+    }
+
+    private func failureDetails(for error: Error) -> (message: String, canRetry: Bool) {
+        if let apiError = error as? HomeDesignsAPIError,
+           case .server(let statusCode, let responseBody) = apiError,
+           statusCode == 422 {
+            let message = responseBody?.contains("house_angle") == true
+                ? L10n.GenerationLoading.Failure.exteriorPhotoMessage
+                : L10n.GenerationLoading.Failure.message
+            return (message, false)
+        }
+
+        let message = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
+        return (message, true)
     }
 }

@@ -61,6 +61,11 @@ public class HomeDesignsAPIClient: HomeDesignsAPIClientProtocol {
         }
         
         guard (200...299).contains(httpResponse.statusCode) else {
+            if [502, 503, 504, 524].contains(httpResponse.statusCode) {
+                AppLogger.logError("Temporary Server Error \(httpResponse.statusCode)")
+                throw HomeDesignsAPIError.temporaryServerUnavailable(statusCode: httpResponse.statusCode)
+            }
+
             let message = String(data: data, encoding: .utf8)
             AppLogger.logError("Server Response: \(message ?? "No body")")
             

@@ -68,12 +68,12 @@ struct RemoveObjectsFlowContainerView: View {
 
         Task {
             do {
-                guard let imageData = sourceImage.jpegData(compressionQuality: 0.8) else {
+                guard let imageSource = GenerationImageEncoder.encode(sourceImage) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
                 let request = RemoveObjectsInput(
-                    image: .jpegData(imageData),
+                    image: imageSource,
                     prompt: draft.prompt
                 )
 

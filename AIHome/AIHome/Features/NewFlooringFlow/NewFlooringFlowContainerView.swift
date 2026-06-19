@@ -68,12 +68,12 @@ struct NewFlooringFlowContainerView: View {
 
         Task {
             do {
-                guard let imageData = sourceImage.jpegData(compressionQuality: 0.8) else {
+                guard let imageSource = GenerationImageEncoder.encode(sourceImage) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
                 let request = NewFlooringInput(
-                    image: .jpegData(imageData),
+                    image: imageSource,
                     textureImage: nil,
                     noOfTexture: "1",
                     prompt: draft.prompt

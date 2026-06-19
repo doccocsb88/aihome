@@ -89,12 +89,12 @@ struct InteriorFlowContainerView: View {
 
         Task {
             do {
-                guard let imageData = sourceImage.jpegData(compressionQuality: 0.8) else {
+                guard let imageSource = GenerationImageEncoder.encode(sourceImage) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
                 
                 let request = InteriorGenerationInput(
-                    image: .jpegData(imageData),
+                    image: imageSource,
                     aiIntervention: aiIntervention,
                     noDesign: 1, // Generate 1 image for MVP
                     designStyle: requestDesignStyle,
