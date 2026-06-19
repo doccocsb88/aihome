@@ -118,6 +118,7 @@ public class HomeDesignsAPIClient: HomeDesignsAPIClientProtocol {
     public func createMaskImage(_ request: CreateMaskImageRequest) async throws -> CreateMaskImageResponse {
         var builder = MultipartFormDataBuilder()
         request.appendTo(builder: &builder)
+        AppLogger.logAction("Create Mask Labels", details: request.apiLabels.debugDescription)
         let urlRequest = try makeRequest(for: .createMaskImage, builder: builder)
         return try await perform(request: urlRequest)
     }

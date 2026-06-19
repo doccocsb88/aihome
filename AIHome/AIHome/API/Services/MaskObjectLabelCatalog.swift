@@ -3,6 +3,10 @@ import Foundation
 enum MaskObjectLabelCatalog {
     typealias Entry = (label: String, aliases: [String])
 
+    private static let apiValueOverrides = [
+        "bed": "bed "
+    ]
+
     static let entries: [Entry] = [
         ("wall", ["mur", "壁", "墙", "牆", "tường"]),
         ("building", ["bâtiment", "建物", "建筑物", "建築物", "tòa nhà"]),
@@ -155,4 +159,8 @@ enum MaskObjectLabelCatalog {
         ("clock", ["horloge", "時計", "时钟", "時鐘", "đồng hồ"]),
         ("flag", ["drapeau", "旗", "lá cờ"])
     ]
+
+    static func apiValue(for label: String) -> String {
+        apiValueOverrides[label] ?? label
+    }
 }

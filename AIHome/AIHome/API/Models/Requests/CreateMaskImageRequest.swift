@@ -6,11 +6,14 @@ public struct CreateMaskImageRequest {
     
     public init(image: HomeDesignsImageSource, labels: [String]) {
         self.image = image
-        self.labels = labels
+        self.labels = labels.compactMap({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
     }
 
     public var apiLabels: String {
-        labels.joined(separator: "|")
+        labels
+            .map(MaskObjectLabelCatalog.apiValue(for:))
+            .compactMap({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
+            .joined(separator: "|")
     }
 }
 

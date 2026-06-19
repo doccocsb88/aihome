@@ -163,7 +163,6 @@ struct ResultView: View {
             })
         }
         .padding(.horizontal, 40)
-        .padding(.top, 10)
     }
     
     @ViewBuilder
@@ -192,7 +191,7 @@ struct ResultView: View {
                     .scaledToFit()
                     .frame(width: 24, height: 24)
                     .foregroundColor(.primary)
-                    .padding(24)
+                    .padding(20)
                     .background(Circle().fill(Color(UIColor.systemGray6)))
             }
             Text(title)
