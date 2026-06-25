@@ -25,6 +25,7 @@ struct AIHomeApp: App {
     }()
 
     init() {
+        RatingPromptTracker.recordSessionOpen()
         AdaptyPurchaseService.shared.configure()
     }
 

@@ -3,6 +3,7 @@ import SwiftUI
 struct InspirationView: View {
     @State private var viewModel = InspirationViewModel()
     @State private var showingFilter = false
+    @State private var selectedItem: InspirationItem?
     @Binding private var showingDetail: Bool
     private let onFilterPresentationChanged: (Bool) -> Void
 
@@ -35,6 +36,7 @@ struct InspirationView: View {
                                     withAnimation(.spring(response: 0.32, dampingFraction: 0.9)) {
                                         showingDetail = true
                                     }
+                                    selectedItem = item
                                 }
                             )
                         }
@@ -67,6 +69,11 @@ struct InspirationView: View {
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
+        .navigationDestination(isPresented: detailPresentation) {
+            if let selectedItem {
+                InspirationDetailView(viewModel: InspirationDetailViewModel(item: selectedItem))
+            }
+        }
         .onAppear {
             showingDetail = false
         }
@@ -112,6 +119,18 @@ struct InspirationView: View {
             }
         }
     }
+
+    private var detailPresentation: Binding<Bool> {
+        Binding(
+            get: { selectedItem != nil },
+            set: { isPresented in
+                if !isPresented {
+                    selectedItem = nil
+                    showingDetail = false
+                }
+            }
+        )
+    }
 }
 
 private struct InspirationCardContainer: View {
@@ -120,23 +139,18 @@ private struct InspirationCardContainer: View {
     let onOpenDetail: () -> Void
 
     var body: some View {
-        NavigationLink {
-            InspirationDetailView(viewModel: InspirationDetailViewModel(item: item))
-                .onAppear(perform: onOpenDetail)
-        } label: {
-            InspirationCardContent(
-                item: item,
-                onLike: onLike
-            )
-        }
-        .buttonStyle(.plain)
-        .simultaneousGesture(TapGesture().onEnded { onOpenDetail() })
+        InspirationCardContent(
+            item: item,
+            onLike: onLike,
+            onOpenDetail: onOpenDetail
+        )
     }
 }
 
 private struct InspirationCardContent: View {
     let item: InspirationItem
     let onLike: () -> Void
+    let onOpenDetail: () -> Void
 
     var body: some View {
         GeometryReader { proxy in
@@ -159,6 +173,8 @@ private struct InspirationCardContent: View {
             .scaledToFill()
             .frame(width: width, height: 480)
             .clipped()
+            .contentShape(.rect)
+            .onTapGesture(perform: onOpenDetail)
             .overlay(alignment: .bottom) {
                 infoPanel
                     .padding(.horizontal, 20)
@@ -176,6 +192,8 @@ private struct InspirationCardContent: View {
                     .foregroundStyle(Color.DesignSystem.textPrimary)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
+                    .contentShape(.rect)
+                    .onTapGesture(perform: onOpenDetail)
 
                 Spacer(minLength: 8)
 
@@ -195,8 +213,12 @@ private struct InspirationCardContent: View {
                 .lineSpacing(5)
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
+                .contentShape(.rect)
+                .onTapGesture(perform: onOpenDetail)
 
             tagFlow
+                .contentShape(.rect)
+                .onTapGesture(perform: onOpenDetail)
         }
         .padding(.leading, 24)
         .padding(.trailing, 18)

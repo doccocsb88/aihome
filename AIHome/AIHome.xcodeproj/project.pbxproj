@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7712FCACE0006B5B51 /* Adapty */; };
 		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
+		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 			files = (
 				04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */,
 				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
+				1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 			packageProductDependencies = (
 				04ADA7712FCACE0006B5B51 /* Adapty */,
 				04ADA7742FCACE0006B5B51 /* AdaptyUI */,
+				1F2E3D4C5B6A79800123456A /* Lottie */,
 			);
 			productName = AIHome;
 			productReference = 04428BE82FCACDD7006B5B51 /* AIHome.app */;
@@ -104,6 +107,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
+				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 04428BE92FCACDD7006B5B51 /* Products */;
@@ -363,6 +367,14 @@
 				minimumVersion = 3.15.7;
 			};
 		};
+		1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -375,6 +387,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */;
 			productName = AdaptyUI;
+		};
+		1F2E3D4C5B6A79800123456A /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

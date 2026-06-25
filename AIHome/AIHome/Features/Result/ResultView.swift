@@ -9,6 +9,7 @@ struct ResultView: View {
     @State private var shareItem: ResultShareItem?
     @State private var alertItem: ResultAlertItem?
     @State private var isShowingArchiveToast = false
+    @State private var isShowingResultRating = false
 
     var onRegenerate: () -> Void
     var onDownload: (UIImage) -> Void
@@ -59,6 +60,12 @@ struct ResultView: View {
                 message: Text(item.message),
                 dismissButton: .default(Text(L10n.Common.ok))
             )
+        }
+        .ratingPopup(isPresented: $isShowingResultRating, kind: .resultFeedback) {
+            AppLogger.logAction("Result Rating", details: "Rate on App Store")
+        }
+        .onAppear {
+            presentResultRatingIfNeeded()
         }
     }
 
@@ -355,6 +362,15 @@ struct ResultView: View {
     private func selectFeedback(_ feedback: ResultFeedbackAction) {
         viewModel.selectedFeedback = feedback
         AppLogger.logAction("Result Feedback Selected", details: "\(feedback)")
+    }
+
+    private func presentResultRatingIfNeeded() {
+        guard viewModel.isGeneratedResult,
+              RatingPromptTracker.shouldShowFirstResultPrompt() else {
+            return
+        }
+
+        isShowingResultRating = true
     }
 }
 

@@ -1,5 +1,4 @@
 import SwiftUI
-import StoreKit
 
 enum PopupRatingKind {
     case homeEnjoyment
@@ -230,15 +229,16 @@ struct PopupRatingView: View {
 
 struct PopupRatingModifier: ViewModifier {
     @Binding var isPresented: Bool
-    @AppStorage("popupRating.hasCompletedRating") private var hasCompletedRating = false
+    @AppStorage("popupRating.hasCompletedRating") private var hasRated = false
     @Environment(\.openURL) private var openURL
-    @Environment(\.requestReview) private var requestReview
 
     var kind: PopupRatingKind
     var onWriteReview: () -> Void
 
+    private let appStoreReviewURL = URL(string: "itms-apps://itunes.apple.com/app/id6777677408?action=write-review")
+
     private var shouldPresent: Bool {
-        isPresented && !hasCompletedRating
+        isPresented && !hasRated
     }
 
     func body(content: Content) -> some View {
@@ -268,27 +268,13 @@ struct PopupRatingModifier: ViewModifier {
     }
 
     private func completeRating(_ rating: Int) {
-        onWriteReview()
-        hasCompletedRating = true
         isPresented = false
+        hasRated = true
 
         if rating >= 4 {
-            requestReview()
-        } else {
-            openFeedbackEmail(for: rating)
-        }
-    }
+            onWriteReview()
 
-    private func openFeedbackEmail(for rating: Int) {
-        var components = URLComponents()
-        components.scheme = "mailto"
-        components.path = "support@billionx.co"
-        components.queryItems = [
-            URLQueryItem(name: "subject", value: "HomeGPT feedback"),
-            URLQueryItem(name: "body", value: "Rating: \(rating)/5\n\nFeedback:")
-        ]
-
-        if let url = components.url {
+            guard let url = appStoreReviewURL else { return }
             openURL(url)
         }
     }

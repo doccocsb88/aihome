@@ -12,6 +12,7 @@ class ResultViewModel {
     var hasWatermark: Bool
     var isArchived: Bool
     var selectedFeedback: ResultFeedbackAction?
+    let isGeneratedResult: Bool
     
     var selectedImage: UIImage? {
         guard !generatedImages.isEmpty, selectedIndex >= 0, selectedIndex < generatedImages.count else { return nil }
@@ -26,6 +27,7 @@ class ResultViewModel {
         self.isPro = isPro
         self.hasWatermark = hasWatermark
         self.isArchived = !project.generatedImagePaths.isEmpty
+        self.isGeneratedResult = project.generatedImagePaths.isEmpty
     }
 }
 

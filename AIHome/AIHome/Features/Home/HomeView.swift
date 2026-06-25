@@ -3,7 +3,6 @@ import SwiftUI
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
     @State private var isShowingHomeRating = false
-    @State private var hasShownHomeRating = false
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
@@ -67,8 +66,7 @@ struct HomeView: View {
     }
 
     private func presentHomeRatingIfNeeded() {
-        guard !hasShownHomeRating else { return }
-        hasShownHomeRating = true
+        guard RatingPromptTracker.shouldShowHomePromptOnAppear() else { return }
         isShowingHomeRating = true
     }
 }

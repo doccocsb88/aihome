@@ -1,8 +1,15 @@
+import Adapty
+import AdaptyUI
 import SwiftUI
 
 struct OnboardingIntroPagerView: View {
     @Environment(AppCoordinator.self) private var coordinator
+    @State private var userManager = UserManager.shared
     @State private var selectedIndex = 0
+    @State private var isShowingPaywall = false
+    @State private var isLoadingPaywall = false
+    @State private var paywallConfiguration: AdaptyUI.PaywallConfiguration?
+    @State private var paywallErrorMessage: String?
     
     private let pages = OnboardingIntroPageContent.all
     private var trialPageIndex: Int { pages.count + 1 }
@@ -30,13 +37,44 @@ struct OnboardingIntroPagerView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            bottomControls
-                .padding(.bottom, 26)
+            if selectedIndex != trialPageIndex {
+                bottomControls
+                    .padding(.bottom, 26)
+                    .transition(.opacity)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeInOut(duration: 0.28), value: selectedIndex)
         .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
+        .task(id: selectedIndex) {
+            guard selectedIndex == trialPageIndex else { return }
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            guard selectedIndex == trialPageIndex else { return }
+            await presentOnboardingPaywall()
+        }
+        .paywall(
+            isPresented: $isShowingPaywall,
+            fullScreen: true,
+            paywallConfiguration: paywallConfiguration,
+            didPerformAction: handlePaywallAction,
+            didFinishPurchase: handlePurchase,
+            didFailPurchase: handlePurchaseFailure,
+            didFinishRestore: handleRestore,
+            didFailRestore: handleRestoreFailure,
+            didFailRendering: handleRenderingFailure
+        )
+        .alert(
+            "Paywall",
+            isPresented: Binding(
+                get: { paywallErrorMessage != nil },
+                set: { if !$0 { paywallErrorMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(paywallErrorMessage ?? "")
+        }
     }
     
     private func continueFromCurrentPage() {
@@ -47,8 +85,73 @@ struct OnboardingIntroPagerView: View {
             return
         }
         
+        Task {
+            await presentOnboardingPaywall()
+        }
+    }
+
+    private func completeOnboarding() {
         UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
         coordinator.replaceRoot(with: .mainTab)
+    }
+
+    private func presentOnboardingPaywall() async {
+        guard !isLoadingPaywall else { return }
+
+        isLoadingPaywall = true
+        defer { isLoadingPaywall = false }
+
+        do {
+            paywallConfiguration = try await AdaptyPurchaseService.shared.loadSDKPaywallConfiguration(placement: .onboarding)
+            isShowingPaywall = true
+        } catch {
+            paywallErrorMessage = error.localizedDescription
+        }
+    }
+
+    private func handlePaywallAction(_ action: AdaptyUI.Action) {
+        switch action {
+        case .close:
+            isShowingPaywall = false
+            completeOnboarding()
+        case let .openURL(url, _):
+            UIApplication.shared.open(url)
+        case let .custom(id):
+            AppLogger.logAction("Adapty Onboarding Paywall Custom Action", details: id)
+        }
+    }
+
+    private func handlePurchase(_ product: AdaptyPaywallProduct, result: AdaptyPurchaseResult) {
+        guard !result.isPurchaseCancelled else { return }
+        AppLogger.logAction("Adapty Onboarding Paywall Purchase Completed", details: product.vendorProductId)
+        isShowingPaywall = false
+        Task {
+            await userManager.refreshPremiumStatus()
+            completeOnboarding()
+        }
+    }
+
+    private func handlePurchaseFailure(_ product: AdaptyPaywallProduct, error: AdaptyError) {
+        AppLogger.logAction("Adapty Onboarding Paywall Purchase Failed", details: "\(product.vendorProductId): \(error.localizedDescription)")
+        paywallErrorMessage = error.localizedDescription
+    }
+
+    private func handleRestore(_ profile: AdaptyProfile) {
+        AppLogger.logAction("Adapty Onboarding Paywall Restore Completed")
+        userManager.setPremiumStatus(AdaptyPurchaseService.shared.hasPremiumAccess(profile))
+        isShowingPaywall = false
+        completeOnboarding()
+    }
+
+    private func handleRestoreFailure(_ error: AdaptyError) {
+        AppLogger.logAction("Adapty Onboarding Paywall Restore Failed", details: error.localizedDescription)
+        paywallErrorMessage = error.localizedDescription
+    }
+
+    private func handleRenderingFailure(_ error: AdaptyUIError) {
+        AppLogger.logAction("Adapty Onboarding Paywall Rendering Failed", details: error.localizedDescription)
+        paywallErrorMessage = error.localizedDescription
+        isShowingPaywall = false
     }
     
     private var bottomControls: some View {

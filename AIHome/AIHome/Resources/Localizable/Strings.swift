@@ -142,9 +142,9 @@ internal enum L10n {
       /// Start Designing
       internal static let startDesigning = L10n.tr("Localizable", "onboarding.trial_enabled.start_designing", fallback: "Start Designing")
       /// You now have full access to all premium features.
-      internal static let subtitle = L10n.tr("Localizable", "onboarding.trial_enabled.subtitle", fallback: "You now have full access to all premium features.")
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.trial_enabled.subtitle", fallback: "You now have full access to all\npremium features.")
       /// 3-day free trial is enabled!
-      internal static let title = L10n.tr("Localizable", "onboarding.trial_enabled.title", fallback: "3-day free trial is enabled!")
+      internal static let title = L10n.tr("Localizable", "onboarding.trial_enabled.title", fallback: "3-day free trial\nis enabled!")
     }
     internal enum Welcome {
       /// Get Started

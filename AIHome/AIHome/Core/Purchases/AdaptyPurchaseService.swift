@@ -31,26 +31,17 @@ final class AdaptyPurchaseService {
     static let shared = AdaptyPurchaseService()
 
     enum Placement: String, CaseIterable {
-        case vipSupport = "vip_support_ios"
-        case watermark = "watermark_ios"
-        case result = "result_ios"
-        case referenceLimit = "reference_limit_ios"
-        case retouchLimit = "retouch_limit_ios"
-        case exteriorLimit = "exterior_limit_ios"
-        case interiorLimit = "interior_limit_ios"
-        case speed = "speed_ios"
-        case topBar = "top_bar_ios"
-        case session = "session_ios"
-        case homePopup = "home_popup_ios"
-        case onboarding = "onboarding_ios"
-        case proButton = "pro_button_ios"
-        case limitToken = "limit_token_ios"
         case bannerSettings = "banner_settings_ios"
+        case limitToken = "limit_token_ios"
+        case proButton = "pro_button_ios"
+        case watermark = "watermark_ios"
+        case session = "session_ios"
+        case onboarding = "onboarding_ios"
     }
 
     private enum Defaults {
         static let publicSDKKey = "public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l"
-        static let placementId = Placement.topBar.rawValue
+        static let placementId = Placement.proButton.rawValue
         static let accessLevelId = "premium"
     }
 
