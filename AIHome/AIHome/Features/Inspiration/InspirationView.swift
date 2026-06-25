@@ -4,6 +4,7 @@ struct InspirationView: View {
     @State private var viewModel = InspirationViewModel()
     @State private var showingFilter = false
     @State private var selectedItem: InspirationItem?
+    @State private var isShowingDetailDestination = false
     @Binding private var showingDetail: Bool
     private let onFilterPresentationChanged: (Bool) -> Void
 
@@ -37,6 +38,7 @@ struct InspirationView: View {
                                         showingDetail = true
                                     }
                                     selectedItem = item
+                                    isShowingDetailDestination = true
                                 }
                             )
                         }
@@ -69,9 +71,14 @@ struct InspirationView: View {
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
-        .navigationDestination(isPresented: detailPresentation) {
+        .navigationDestination(isPresented: $isShowingDetailDestination) {
             if let selectedItem {
                 InspirationDetailView(viewModel: InspirationDetailViewModel(item: selectedItem))
+            }
+        }
+        .onChange(of: isShowingDetailDestination) { _, isPresented in
+            if !isPresented {
+                finishDetailDismissal()
             }
         }
         .onAppear {
@@ -120,16 +127,16 @@ struct InspirationView: View {
         }
     }
 
-    private var detailPresentation: Binding<Bool> {
-        Binding(
-            get: { selectedItem != nil },
-            set: { isPresented in
-                if !isPresented {
-                    selectedItem = nil
-                    showingDetail = false
-                }
+    private func finishDetailDismissal() {
+        showingDetail = false
+
+        Task {
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            await MainActor.run {
+                guard !isShowingDetailDestination else { return }
+                selectedItem = nil
             }
-        )
+        }
     }
 }
 
