@@ -33,12 +33,17 @@
 
 
 "onboarding.continue" = "Continue";
+"onboarding.after" = "After";
 "onboarding.welcome.title" = "Welcome to HomeGPT";
 "onboarding.welcome.subtitle" = "Transform your space with AI";
 "onboarding.welcome.get_started" = "Get Started";
 "onboarding.welcome.terms_of_use" = "Terms of use";
 "onboarding.welcome.subscription_terms" = "Subscription Terms";
 "onboarding.welcome.privacy_policy" = "Privacy Policy";
+"onboarding.welcome.terms.leading" = "By continuing, you agree with";
+"onboarding.welcome.terms.and" = "and";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "along with our use of third-party tools for app functionality.";
 "onboarding.interior.title" = "Interior Design";
 "onboarding.interior.subtitle" = "Redesign your space instantly";
 "onboarding.exterior.title" = "Exterior Design";
@@ -46,6 +51,8 @@
 "onboarding.landscape.title" = "Landscape Design";
 "onboarding.landscape.subtitle" = "Refresh your garden with AI";
 "onboarding.trial_enabled.title" = "3-day free trial is enabled!";
+"onboarding.trial_enabled.title_line1" = "3-day free trial";
+"onboarding.trial_enabled.title_line2" = "is enabled!";
 "onboarding.trial_enabled.subtitle" = "You now have full access to all premium features.";
 "onboarding.trial_enabled.start_designing" = "Start Designing";
 
@@ -93,3 +100,17 @@ better designs";
 "inspiration.title" = "Inspiration";
 "inspiration.like" = "Like inspiration";
 "inspiration.unlike" = "Unlike inspiration";
+
+"photo_tips.title" = "Photo Tips";
+"photo_tips.close" = "Close";
+"photo_tips.got_it" = "GOT IT";
+"photo_tips.requirements" = "REQUIREMENTS:";
+"photo_tips.file_dimensions" = "The file dimensions must be at least 512x512.";
+"photo_tips.file_size" = "The file size must be less than 20 MB.";
+"photo_tips.optimal_results" = "FOR OPTIMAL RESULTS:";
+"photo_tips.landscape_mode" = "**Landscape Mode:** Capture your image horizontally.";
+"photo_tips.bright_lighting" = "**Bright Lighting:** Ensure the room is well-lit to eliminate shadows.";
+"photo_tips.wide_framing" = "**Wide Framing:** Capture all key angles in a single frame.";
+"photo_tips.stay_steady" = "**Stay Steady:** Keep the camera still for a sharp, detailed image.";
+"photo_tips.bad_examples" = "BAD EXAMPLES:";
+"photo_tips.good_examples" = "GOOD EXAMPLES:";

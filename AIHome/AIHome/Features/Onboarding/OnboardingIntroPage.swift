@@ -119,7 +119,7 @@ private struct OnboardingBeforeAfterHeroView: View {
     }
 
     private var afterBadge: some View {
-        Text("After")
+        Text(L10n.Onboarding.after)
             .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
             .foregroundColor(.white)
             .padding(.horizontal, 13)

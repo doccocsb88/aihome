@@ -19,12 +19,17 @@
 
 
 "onboarding.continue" = "Continuer";
+"onboarding.after" = "Après";
 "onboarding.welcome.title" = "Bienvenue sur HomeGPT";
 "onboarding.welcome.subtitle" = "Transformez votre espace avec l'IA";
 "onboarding.welcome.get_started" = "Commencer";
 "onboarding.welcome.terms_of_use" = "Conditions d'utilisation";
 "onboarding.welcome.subscription_terms" = "Conditions d'abonnement";
 "onboarding.welcome.privacy_policy" = "Politique de confidentialité";
+"onboarding.welcome.terms.leading" = "En continuant, vous acceptez les";
+"onboarding.welcome.terms.and" = "et la";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "ainsi que notre utilisation d'outils tiers pour le fonctionnement de l'app.";
 "onboarding.interior.title" = "Design d'intérieur";
 "onboarding.interior.subtitle" = "Redessinez instantanément votre espace";
 "onboarding.exterior.title" = "Design extérieur";
@@ -32,6 +37,8 @@
 "onboarding.landscape.title" = "Design paysager";
 "onboarding.landscape.subtitle" = "Rafraîchissez votre jardin avec l'IA";
 "onboarding.trial_enabled.title" = "L'essai gratuit de 3 jours est activé !";
+"onboarding.trial_enabled.title_line1" = "Essai gratuit de 3 jours";
+"onboarding.trial_enabled.title_line2" = "activé !";
 "onboarding.trial_enabled.subtitle" = "Vous avez maintenant un accès complet à toutes les fonctionnalités premium.";
 "onboarding.trial_enabled.start_designing" = "Commencer à concevoir";
 
@@ -74,3 +81,17 @@ de meilleurs designs";
 "inspiration.title" = "Inspiration";
 "inspiration.like" = "Aimer cette inspiration";
 "inspiration.unlike" = "Ne plus aimer cette inspiration";
+
+"photo_tips.title" = "Conseils photo";
+"photo_tips.close" = "Fermer";
+"photo_tips.got_it" = "COMPRIS";
+"photo_tips.requirements" = "EXIGENCES :";
+"photo_tips.file_dimensions" = "Les dimensions du fichier doivent être d'au moins 512x512.";
+"photo_tips.file_size" = "La taille du fichier doit être inférieure à 20 Mo.";
+"photo_tips.optimal_results" = "POUR DES RÉSULTATS OPTIMAUX :";
+"photo_tips.landscape_mode" = "**Mode paysage :** Prenez votre image horizontalement.";
+"photo_tips.bright_lighting" = "**Éclairage lumineux :** Assurez-vous que la pièce est bien éclairée pour éliminer les ombres.";
+"photo_tips.wide_framing" = "**Cadrage large :** Capturez tous les angles clés en une seule prise.";
+"photo_tips.stay_steady" = "**Restez stable :** Gardez l'appareil immobile pour obtenir une image nette et détaillée.";
+"photo_tips.bad_examples" = "MAUVAIS EXEMPLES :";
+"photo_tips.good_examples" = "BONS EXEMPLES :";

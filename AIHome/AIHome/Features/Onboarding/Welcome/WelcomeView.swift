@@ -31,25 +31,33 @@ struct WelcomeView: View {
     private var welcomeTerms: some View {
         VStack(spacing: 2) {
             HStack(spacing: 0) {
-                termsText("By continuing, you agree with ")
+                termsText(L10n.Onboarding.Welcome.Terms.leading)
+                termsSpacer
                 termsButton(
-                    "Terms of Use",
-                    title: "Terms of Use",
+                    L10n.Onboarding.Welcome.termsOfUse,
+                    title: L10n.Onboarding.Welcome.termsOfUse,
                     urlString: "https://sites.google.com/billionx.co/homegpt-tos"
                 )
-                termsText(" and ")
+                termsSpacer
+                termsText(L10n.Onboarding.Welcome.Terms.and)
+                termsSpacer
                 termsButton(
-                    "Privacy Policy",
-                    title: "Privacy Policy",
+                    L10n.Onboarding.Welcome.privacyPolicy,
+                    title: L10n.Onboarding.Welcome.privacyPolicy,
                     urlString: "https://sites.google.com/billionx.co/homegpt-privacy-policy"
                 )
-                termsText(",")
+                termsText(L10n.Onboarding.Welcome.Terms.comma)
             }
 
-            termsText("along with our use of third-party tools for app functionality.")
+            termsText(L10n.Onboarding.Welcome.Terms.thirdPartyTools)
         }
         .multilineTextAlignment(.center)
         .frame(height: OnboardingLayout.termsHeight)
+    }
+
+    private var termsSpacer: some View {
+        Spacer()
+            .frame(width: 2)
     }
 
     private func termsText(_ text: String) -> some View {

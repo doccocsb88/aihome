@@ -33,12 +33,17 @@
 
 
 "onboarding.continue" = "Weiter";
+"onboarding.after" = "Nachher";
 "onboarding.welcome.title" = "Willkommen bei HomeGPT";
 "onboarding.welcome.subtitle" = "Verwandeln Sie Ihren Raum mit KI";
 "onboarding.welcome.get_started" = "Loslegen";
 "onboarding.welcome.terms_of_use" = "Nutzungsbedingungen";
 "onboarding.welcome.subscription_terms" = "Abonnementbedingungen";
 "onboarding.welcome.privacy_policy" = "Datenschutz-Bestimmungen";
+"onboarding.welcome.terms.leading" = "Wenn Sie fortfahren, stimmen Sie unseren";
+"onboarding.welcome.terms.and" = "und der";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "sowie der Nutzung von Drittanbieter-Tools für App-Funktionen zu.";
 "onboarding.interior.title" = "Innendesign";
 "onboarding.interior.subtitle" = "Gestalten Sie Ihren Raum sofort neu";
 "onboarding.exterior.title" = "Außendesign";
@@ -46,6 +51,8 @@
 "onboarding.landscape.title" = "Landschaftsdesign";
 "onboarding.landscape.subtitle" = "Erfrischen Sie Ihren Garten mit KI";
 "onboarding.trial_enabled.title" = "Die 3-tägige kostenlose Testversion ist aktiviert!";
+"onboarding.trial_enabled.title_line1" = "3 Tage kostenlos testen";
+"onboarding.trial_enabled.title_line2" = "aktiviert!";
 "onboarding.trial_enabled.subtitle" = "Sie haben jetzt vollen Zugriff auf alle Premium-Funktionen.";
 "onboarding.trial_enabled.start_designing" = "Design starten";
 
@@ -93,3 +100,17 @@ bessere Designs";
 "inspiration.title" = "Inspiration";
 "inspiration.like" = "Inspiration mit Gefällt mir markieren";
 "inspiration.unlike" = "Gefällt mir für Inspiration entfernen";
+
+"photo_tips.title" = "Fototipps";
+"photo_tips.close" = "Schließen";
+"photo_tips.got_it" = "VERSTANDEN";
+"photo_tips.requirements" = "ANFORDERUNGEN:";
+"photo_tips.file_dimensions" = "Die Dateiabmessungen müssen mindestens 512x512 betragen.";
+"photo_tips.file_size" = "Die Dateigröße muss kleiner als 20 MB sein.";
+"photo_tips.optimal_results" = "FÜR OPTIMALE ERGEBNISSE:";
+"photo_tips.landscape_mode" = "**Querformat:** Nehmen Sie Ihr Bild horizontal auf.";
+"photo_tips.bright_lighting" = "**Helle Beleuchtung:** Stellen Sie sicher, dass der Raum gut beleuchtet ist, um Schatten zu vermeiden.";
+"photo_tips.wide_framing" = "**Weiter Bildausschnitt:** Erfassen Sie alle wichtigen Winkel in einer einzigen Aufnahme.";
+"photo_tips.stay_steady" = "**Ruhig halten:** Halten Sie die Kamera ruhig, um ein scharfes, detailreiches Bild zu erhalten.";
+"photo_tips.bad_examples" = "SCHLECHTE BEISPIELE:";
+"photo_tips.good_examples" = "GUTE BEISPIELE:";

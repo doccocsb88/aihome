@@ -19,12 +19,17 @@
 
 
 "onboarding.continue" = "Continuar";
+"onboarding.after" = "Después";
 "onboarding.welcome.title" = "Bienvenido a HomeGPT";
 "onboarding.welcome.subtitle" = "Transforma tu espacio con IA";
 "onboarding.welcome.get_started" = "Comenzar";
 "onboarding.welcome.terms_of_use" = "Términos de uso";
 "onboarding.welcome.subscription_terms" = "Términos de suscripción";
 "onboarding.welcome.privacy_policy" = "Política de Privacidad";
+"onboarding.welcome.terms.leading" = "Al continuar, aceptas";
+"onboarding.welcome.terms.and" = "y";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "junto con nuestro uso de herramientas de terceros para la funcionalidad de la app.";
 "onboarding.interior.title" = "Diseño de interiores";
 "onboarding.interior.subtitle" = "Rediseña tu espacio al instante";
 "onboarding.exterior.title" = "Diseño exterior";
@@ -32,6 +37,8 @@
 "onboarding.landscape.title" = "Diseño de paisaje";
 "onboarding.landscape.subtitle" = "Renueva tu jardín con IA";
 "onboarding.trial_enabled.title" = "¡La prueba gratuita de 3 días está activada!";
+"onboarding.trial_enabled.title_line1" = "Prueba gratis de 3 días";
+"onboarding.trial_enabled.title_line2" = "activada";
 "onboarding.trial_enabled.subtitle" = "Ahora tienes acceso completo a todas las funciones premium.";
 "onboarding.trial_enabled.start_designing" = "Empezar a diseñar";
 
@@ -74,3 +81,17 @@ mejores diseños";
 "inspiration.title" = "Inspiración";
 "inspiration.like" = "Me gusta esta inspiración";
 "inspiration.unlike" = "Ya no me gusta esta inspiración";
+
+"photo_tips.title" = "Consejos para fotos";
+"photo_tips.close" = "Cerrar";
+"photo_tips.got_it" = "ENTENDIDO";
+"photo_tips.requirements" = "REQUISITOS:";
+"photo_tips.file_dimensions" = "Las dimensiones del archivo deben ser de al menos 512x512.";
+"photo_tips.file_size" = "El tamaño del archivo debe ser inferior a 20 MB.";
+"photo_tips.optimal_results" = "PARA OBTENER MEJORES RESULTADOS:";
+"photo_tips.landscape_mode" = "**Modo horizontal:** Captura la imagen horizontalmente.";
+"photo_tips.bright_lighting" = "**Iluminación brillante:** Asegúrate de que la habitación esté bien iluminada para eliminar sombras.";
+"photo_tips.wide_framing" = "**Encuadre amplio:** Captura todos los ángulos clave en una sola toma.";
+"photo_tips.stay_steady" = "**Mantén la cámara estable:** Mantén la cámara quieta para obtener una imagen nítida y detallada.";
+"photo_tips.bad_examples" = "MALOS EJEMPLOS:";
+"photo_tips.good_examples" = "BUENOS EJEMPLOS:";

@@ -48,31 +48,31 @@ struct PhotoTipsView: View {
 
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
-                    PhotoTipsSection(title: "REQUIREMENTS:") {
+                    PhotoTipsSection(title: L10n.PhotoTips.requirements) {
                         VStack(alignment: .leading, spacing: 8) {
-                            PhotoTipsBullet("The file dimensions must be at least 512x512.")
-                            PhotoTipsBullet("The file size must be less than 20 MB.")
+                            PhotoTipsBullet(L10n.PhotoTips.fileDimensions)
+                            PhotoTipsBullet(L10n.PhotoTips.fileSize)
                         }
                     }
 
-                    PhotoTipsSection(title: "FOR OPTIMAL RESULTS:") {
+                    PhotoTipsSection(title: L10n.PhotoTips.optimalResults) {
                         VStack(alignment: .leading, spacing: 8) {
-                            PhotoTipsBullet("**Landscape Mode:** Capture your image horizontally.")
-                            PhotoTipsBullet("**Bright Lighting:** Ensure the room is well-lit to eliminate shadows.")
-                            PhotoTipsBullet("**Wide Framing:** Capture all key angles in a single frame.")
-                            PhotoTipsBullet("**Stay Steady:** Keep the camera still for a sharp, detailed image.")
+                            PhotoTipsBullet(L10n.PhotoTips.landscapeMode)
+                            PhotoTipsBullet(L10n.PhotoTips.brightLighting)
+                            PhotoTipsBullet(L10n.PhotoTips.wideFraming)
+                            PhotoTipsBullet(L10n.PhotoTips.staySteady)
                         }
                     }
 
                     exampleSection(
-                        title: "BAD EXAMPLES:",
+                        title: L10n.PhotoTips.badExamples,
                         iconName: "ic_tips_bad",
                         examples: style.badExamples,
                         isBadExample: true
                     )
 
                     exampleSection(
-                        title: "GOOD EXAMPLES:",
+                        title: L10n.PhotoTips.goodExamples,
                         iconName: "ic_tips_good",
                         examples: style.goodExamples,
                         isBadExample: false
@@ -102,7 +102,7 @@ struct PhotoTipsView: View {
 
     private var headerView: some View {
         ZStack {
-            Text("Photo Tips")
+            Text(L10n.PhotoTips.title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 22))
                 .foregroundStyle(Color.DesignSystem.darkKnight)
 
@@ -117,7 +117,7 @@ struct PhotoTipsView: View {
                         .background(Color.DesignSystem.brightGray, in: Circle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Close")
+                .accessibilityLabel(L10n.PhotoTips.close)
             }
             .padding(.horizontal, 28)
         }
@@ -131,7 +131,7 @@ struct PhotoTipsView: View {
 
     private var gotItButton: some View {
         Button(action: gotIt) {
-            Text("GOT IT")
+            Text(L10n.PhotoTips.gotIt)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                 .tracking(4)
                 .foregroundStyle(Color.DesignSystem.white)

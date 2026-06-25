@@ -33,11 +33,11 @@ struct TrialEnabledView: View {
 
     private var titleText: some View {
         VStack(spacing: 8) {
-            Text("3-day free trial")
+            Text(L10n.Onboarding.TrialEnabled.titleLine1)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
                 .foregroundStyle(.black)
 
-            Text("is enabled!")
+            Text(L10n.Onboarding.TrialEnabled.titleLine2)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 32))
                 .foregroundStyle(Color.DesignSystem.emerald)
         }

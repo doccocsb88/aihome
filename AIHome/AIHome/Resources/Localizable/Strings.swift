@@ -118,6 +118,8 @@ internal enum L10n {
     }
   }
   internal enum Onboarding {
+    /// After
+    internal static let after = L10n.tr("Localizable", "onboarding.after", fallback: "After")
     /// Continue
     internal static let `continue` = L10n.tr("Localizable", "onboarding.continue", fallback: "Continue")
     internal enum Exterior {
@@ -142,9 +144,13 @@ internal enum L10n {
       /// Start Designing
       internal static let startDesigning = L10n.tr("Localizable", "onboarding.trial_enabled.start_designing", fallback: "Start Designing")
       /// You now have full access to all premium features.
-      internal static let subtitle = L10n.tr("Localizable", "onboarding.trial_enabled.subtitle", fallback: "You now have full access to all\npremium features.")
+      internal static let subtitle = L10n.tr("Localizable", "onboarding.trial_enabled.subtitle", fallback: "You now have full access to all premium features.")
       /// 3-day free trial is enabled!
-      internal static let title = L10n.tr("Localizable", "onboarding.trial_enabled.title", fallback: "3-day free trial\nis enabled!")
+      internal static let title = L10n.tr("Localizable", "onboarding.trial_enabled.title", fallback: "3-day free trial is enabled!")
+      /// 3-day free trial
+      internal static let titleLine1 = L10n.tr("Localizable", "onboarding.trial_enabled.title_line1", fallback: "3-day free trial")
+      /// is enabled!
+      internal static let titleLine2 = L10n.tr("Localizable", "onboarding.trial_enabled.title_line2", fallback: "is enabled!")
     }
     internal enum Welcome {
       /// Get Started
@@ -159,7 +165,45 @@ internal enum L10n {
       internal static let termsOfUse = L10n.tr("Localizable", "onboarding.welcome.terms_of_use", fallback: "Terms of use")
       /// Welcome to HomeGPT
       internal static let title = L10n.tr("Localizable", "onboarding.welcome.title", fallback: "Welcome to HomeGPT")
+      internal enum Terms {
+        /// and
+        internal static let and = L10n.tr("Localizable", "onboarding.welcome.terms.and", fallback: "and")
+        /// ,
+        internal static let comma = L10n.tr("Localizable", "onboarding.welcome.terms.comma", fallback: ",")
+        /// By continuing, you agree with
+        internal static let leading = L10n.tr("Localizable", "onboarding.welcome.terms.leading", fallback: "By continuing, you agree with")
+        /// along with our use of third-party tools for app functionality.
+        internal static let thirdPartyTools = L10n.tr("Localizable", "onboarding.welcome.terms.third_party_tools", fallback: "along with our use of third-party tools for app functionality.")
+      }
     }
+  }
+  internal enum PhotoTips {
+    /// BAD EXAMPLES:
+    internal static let badExamples = L10n.tr("Localizable", "photo_tips.bad_examples", fallback: "BAD EXAMPLES:")
+    /// **Bright Lighting:** Ensure the room is well-lit to eliminate shadows.
+    internal static let brightLighting = L10n.tr("Localizable", "photo_tips.bright_lighting", fallback: "**Bright Lighting:** Ensure the room is well-lit to eliminate shadows.")
+    /// Close
+    internal static let close = L10n.tr("Localizable", "photo_tips.close", fallback: "Close")
+    /// The file dimensions must be at least 512x512.
+    internal static let fileDimensions = L10n.tr("Localizable", "photo_tips.file_dimensions", fallback: "The file dimensions must be at least 512x512.")
+    /// The file size must be less than 20 MB.
+    internal static let fileSize = L10n.tr("Localizable", "photo_tips.file_size", fallback: "The file size must be less than 20 MB.")
+    /// GOOD EXAMPLES:
+    internal static let goodExamples = L10n.tr("Localizable", "photo_tips.good_examples", fallback: "GOOD EXAMPLES:")
+    /// GOT IT
+    internal static let gotIt = L10n.tr("Localizable", "photo_tips.got_it", fallback: "GOT IT")
+    /// **Landscape Mode:** Capture your image horizontally.
+    internal static let landscapeMode = L10n.tr("Localizable", "photo_tips.landscape_mode", fallback: "**Landscape Mode:** Capture your image horizontally.")
+    /// FOR OPTIMAL RESULTS:
+    internal static let optimalResults = L10n.tr("Localizable", "photo_tips.optimal_results", fallback: "FOR OPTIMAL RESULTS:")
+    /// REQUIREMENTS:
+    internal static let requirements = L10n.tr("Localizable", "photo_tips.requirements", fallback: "REQUIREMENTS:")
+    /// **Stay Steady:** Keep the camera still for a sharp, detailed image.
+    internal static let staySteady = L10n.tr("Localizable", "photo_tips.stay_steady", fallback: "**Stay Steady:** Keep the camera still for a sharp, detailed image.")
+    /// Photo Tips
+    internal static let title = L10n.tr("Localizable", "photo_tips.title", fallback: "Photo Tips")
+    /// **Wide Framing:** Capture all key angles in a single frame.
+    internal static let wideFraming = L10n.tr("Localizable", "photo_tips.wide_framing", fallback: "**Wide Framing:** Capture all key angles in a single frame.")
   }
   internal enum Rating {
     /// Rate on App Store
@@ -195,6 +239,10 @@ internal enum L10n {
     internal static let share = L10n.tr("Localizable", "result.share", fallback: "SHARE")
     /// Result
     internal static let title = L10n.tr("Localizable", "result.title", fallback: "Result")
+    internal enum ArchiveSuccess {
+      /// Saved to Archive
+      internal static let title = L10n.tr("Localizable", "result.archive_success.title", fallback: "Saved to Archive")
+    }
     internal enum SaveFailure {
       /// The image could not be saved to your photo gallery.
       internal static let message = L10n.tr("Localizable", "result.save_failure.message", fallback: "The image could not be saved to your photo gallery.")
