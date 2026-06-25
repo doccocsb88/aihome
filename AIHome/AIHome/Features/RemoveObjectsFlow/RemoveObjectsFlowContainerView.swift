@@ -119,14 +119,8 @@ struct RemoveObjectsFlowContainerView: View {
                 }
                 guard didConsumeUsage else { return }
 
-                let savedProject = try GenerationHistoryRecorder.save(
-                    project: mockProject,
-                    originalImage: sourceImage,
-                    generatedImages: downloadedImages
-                )
-
                 let resultVM = ResultViewModel(
-                    project: savedProject,
+                    project: mockProject,
                     originalImage: sourceImage,
                     generatedImages: downloadedImages,
                     availableAdvancedTools: ProjectType.resultAdvancedTools,

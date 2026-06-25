@@ -60,6 +60,7 @@ mejores diseños";
 "result.download" = "DESCARGAR";
 "result.share" = "COMPARTIR";
 "result.save_to_archive" = "GUARDAR EN ARCHIVO";
+"result.archive_success.title" = "Guardado en archivo";
 
 "generation_loading.failure.title" = "Error de generación";
 "generation_loading.failure.message" = "No pudimos procesar tu solicitud de rediseño esta vez. Revisa la foto o las instrucciones e inténtalo de nuevo.";

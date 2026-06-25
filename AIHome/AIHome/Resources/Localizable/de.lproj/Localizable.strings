@@ -74,6 +74,7 @@ bessere Designs";
 "result.download" = "HERUNTERLADEN";
 "result.share" = "TEILEN";
 "result.save_to_archive" = "IM ARCHIV SPEICHERN";
+"result.archive_success.title" = "Im Archiv gespeichert";
 "result.save_success.title" = "Gespeichert";
 "result.save_success.message" = "Das Bild wurde in Ihrer Fotogalerie gespeichert.";
 "result.save_failure.title" = "Speichern fehlgeschlagen";

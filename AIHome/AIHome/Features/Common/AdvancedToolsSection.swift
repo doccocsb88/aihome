@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AdvancedToolsSection: View {
     let tools: [ProjectType]
+    var horizontalPadding: CGFloat = 16
     let onSelect: (ProjectType) -> Void
 
     var body: some View {
@@ -9,7 +10,7 @@ struct AdvancedToolsSection: View {
             Text("Advanced Tools")
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
                 .foregroundStyle(Color.DesignSystem.textPrimary)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, horizontalPadding)
                 .padding(.top, 24)
 
             ScrollView(.horizontal) {
@@ -20,7 +21,7 @@ struct AdvancedToolsSection: View {
                         }
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, horizontalPadding)
                 .padding(.vertical, 24)
             }
             .scrollIndicators(.hidden)

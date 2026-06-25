@@ -10,6 +10,8 @@ class ResultViewModel {
     var availableAdvancedTools: [ProjectType]
     var isPro: Bool
     var hasWatermark: Bool
+    var isArchived: Bool
+    var selectedFeedback: ResultFeedbackAction?
     
     var selectedImage: UIImage? {
         guard !generatedImages.isEmpty, selectedIndex >= 0, selectedIndex < generatedImages.count else { return nil }
@@ -23,5 +25,11 @@ class ResultViewModel {
         self.availableAdvancedTools = project.type.advancedToolsForType
         self.isPro = isPro
         self.hasWatermark = hasWatermark
+        self.isArchived = !project.generatedImagePaths.isEmpty
     }
+}
+
+enum ResultFeedbackAction {
+    case positive
+    case negative
 }

@@ -74,6 +74,7 @@ better designs";
 "result.download" = "DOWNLOAD";
 "result.share" = "SHARE";
 "result.save_to_archive" = "SAVE TO ARCHIVE";
+"result.archive_success.title" = "Saved to Archive";
 "result.save_success.title" = "Saved";
 "result.save_success.message" = "The image has been saved to your photo gallery.";
 "result.save_failure.title" = "Save Failed";

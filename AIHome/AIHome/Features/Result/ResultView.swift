@@ -8,7 +8,8 @@ struct ResultView: View {
     @State private var showingBefore = false
     @State private var shareItem: ResultShareItem?
     @State private var alertItem: ResultAlertItem?
-    
+    @State private var isShowingArchiveToast = false
+
     var onRegenerate: () -> Void
     var onDownload: (UIImage) -> Void
     var onShare: (UIImage) -> Void
@@ -16,19 +17,35 @@ struct ResultView: View {
     var onRemoveWatermark: () -> Void
     var onToolSelected: (ProjectType, UIImage) -> Void
     var onClose: () -> Void
-    
+
     var body: some View {
-        VStack(spacing: 0) {
-            headerView
-            
-            VStack(spacing: 4) {
-                imageSection
-                advancedToolsSection
-                actionButtonsSection
-                
-                Spacer(minLength: 16)
-                
-                saveToArchiveButton
+        ZStack {
+            VStack(spacing: 0) {
+                headerView
+
+                VStack(spacing: 4) {
+                    ScrollView(.vertical) {
+                        VStack(spacing: 4) {
+                            imageSection
+                                .padding(.horizontal, 24)
+                            
+                            advancedToolsSection
+                                .padding(.horizontal, 24)
+                            
+                            actionButtonsSection
+                            
+                            Spacer(minLength: 16)
+                            
+                        }
+                    }
+                    saveToArchiveButton
+                }
+            }
+
+            if isShowingArchiveToast {
+                archiveToast
+                    .transition(.scale(scale: 0.96).combined(with: .opacity))
+                    .zIndex(2)
             }
         }
         .navigationBarHidden(true)
@@ -44,7 +61,7 @@ struct ResultView: View {
             )
         }
     }
-    
+
     @ViewBuilder
     private var headerView: some View {
         HStack {
@@ -70,23 +87,24 @@ struct ResultView: View {
             } else {
                 Spacer().frame(width: 40)
             }
-            
+
             Spacer()
             Text(L10n.Result.title)
                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
             Spacer()
-            
+
             Button(action: onClose) {
                 Image(systemName: "xmark")
                     .font(.system(size: 20))
                     .foregroundColor(.primary)
+                    .frame(width: 40, height: 40)
             }
         }
-        .padding(.horizontal)
-        .padding(.top, 16)
+        .padding(.horizontal, 24)
+        .padding(.top, 8)
         .padding(.bottom, 20)
     }
-    
+
     @ViewBuilder
     private var imageSection: some View {
         if let selectedImage = viewModel.selectedImage {
@@ -98,7 +116,7 @@ struct ResultView: View {
                     showsWatermark: userManager.isFreeUser
                 )
                 .frame(maxWidth: .infinity)
-                
+
                 // Top left overlay
                 VStack {
                     HStack {
@@ -108,14 +126,24 @@ struct ResultView: View {
                     Spacer()
                 }
                 .padding(16)
-                
+
                 // Bottom overlays
                 VStack {
                     Spacer()
                     HStack(alignment: .bottom) {
                         HStack(spacing: 8) {
-                            ResultFeedbackButton(imageName: "hand.thumbsup.fill") { }
-                            ResultFeedbackButton(imageName: "hand.thumbsdown.fill") { }
+                            ResultFeedbackButton(
+                                imageName: "hand.thumbsup.fill",
+                                isSelected: viewModel.selectedFeedback == .positive
+                            ) {
+                                selectFeedback(.positive)
+                            }
+                            ResultFeedbackButton(
+                                imageName: "hand.thumbsdown.fill",
+                                isSelected: viewModel.selectedFeedback == .negative
+                            ) {
+                                selectFeedback(.negative)
+                            }
                         }
                         Spacer()
                         if userManager.isFreeUser {
@@ -125,18 +153,18 @@ struct ResultView: View {
                 }
                 .padding(16)
             }
-            .padding(.horizontal, 16)
         }
     }
-    
+
     @ViewBuilder
     private var advancedToolsSection: some View {
         if !viewModel.availableAdvancedTools.isEmpty {
             AdvancedToolsSection(
                 tools: viewModel.availableAdvancedTools,
+                horizontalPadding: 0,
                 onSelect: { tool in
                     handleNavigation(for: tool)
-                    
+
                     if let image = viewModel.selectedImage {
                         onToolSelected(tool, image)
                     }
@@ -144,7 +172,7 @@ struct ResultView: View {
             )
         }
     }
-    
+
     @ViewBuilder
     private var actionButtonsSection: some View {
         HStack(spacing: 0) {
@@ -164,24 +192,46 @@ struct ResultView: View {
         }
         .padding(.horizontal, 40)
     }
-    
+
     @ViewBuilder
     private var saveToArchiveButton: some View {
-        Button(action: onSaveArchive) {
-            Text(L10n.Result.saveToArchive)
-                .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 20)
-                .background(Color.black)
-                .cornerRadius(20)
-                .shadow(color: Color(red: 17/255, green: 24/255, blue: 39/255).opacity(0.15), radius: 30, x: 0, y: 10)
+        if !viewModel.isArchived {
+            Button(action: handleSaveArchive) {
+                Text(L10n.Result.saveToArchive)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                    .kerning(2)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 20)
+                    .background(Color.black)
+                    .cornerRadius(20)
+                    .shadow(color: Color(red: 17/255, green: 24/255, blue: 39/255).opacity(0.15), radius: 30, x: 0, y: 10)
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 20)
+            .padding(.bottom, 8)
         }
-        .padding(.horizontal)
-        .padding(.top, 20)
-        .padding(.bottom, 8)
     }
-    
+
+    private var archiveToast: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(.white)
+
+            Text(NSLocalizedString("result.archive_success.title", comment: ""))
+                .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
+                .foregroundStyle(.white)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .background {
+            Capsule()
+                .fill(Color.black.opacity(0.86))
+                .shadow(color: .black.opacity(0.18), radius: 18, x: 0, y: 8)
+        }
+    }
+
     @ViewBuilder
     private func actionCircleButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
         VStack(spacing: 12) {
@@ -225,8 +275,8 @@ struct ResultView: View {
         Task {
             do {
                 let downloadImage = userManager.isFreeUser
-                    ? ResultWatermarkRenderer.apply(to: image) ?? image
-                    : image
+                ? ResultWatermarkRenderer.apply(to: image) ?? image
+                : image
 
                 try await ResultPhotoLibrarySaver.save(downloadImage)
                 onDownload(downloadImage)
@@ -250,10 +300,53 @@ struct ResultView: View {
         onShare(image)
         AppLogger.logAction("Result Share Sheet Opened")
     }
+
+    private func handleSaveArchive() {
+        do {
+            let savedProject = try GenerationHistoryRecorder.save(
+                project: viewModel.project,
+                originalImage: viewModel.originalImage,
+                generatedImages: viewModel.generatedImages
+            )
+
+            viewModel.project = savedProject
+            viewModel.isArchived = true
+            onSaveArchive()
+            showArchiveToast()
+            AppLogger.logAction("Result Saved To Archive")
+        } catch {
+            alertItem = ResultAlertItem(
+                title: L10n.Result.SaveFailure.title,
+                message: error.localizedDescription
+            )
+            AppLogger.logError("Result Save To Archive Failed", error: error)
+        }
+    }
+
+    private func showArchiveToast() {
+        withAnimation(.spring(response: 0.28, dampingFraction: 0.82)) {
+            isShowingArchiveToast = true
+        }
+
+        Task {
+            try? await Task.sleep(nanoseconds: 1_600_000_000)
+            await MainActor.run {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    isShowingArchiveToast = false
+                }
+            }
+        }
+    }
+
+    private func selectFeedback(_ feedback: ResultFeedbackAction) {
+        viewModel.selectedFeedback = feedback
+        AppLogger.logAction("Result Feedback Selected", details: "\(feedback)")
+    }
 }
 
 private struct ResultFeedbackButton: View {
     let imageName: String
+    let isSelected: Bool
     let action: () -> Void
 
     var body: some View {
@@ -265,16 +358,18 @@ private struct ResultFeedbackButton: View {
                 .padding(12)
                 .background {
                     Circle()
-                        .fill(.ultraThinMaterial)
-                        .environment(\.colorScheme, .dark)
+                        .fill(isSelected ? Color.DesignSystem.folly : Color.black.opacity(0.25))
                         .overlay {
-                            Circle()
-                                .fill(.black.opacity(0.25))
+                            if !isSelected {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .environment(\.colorScheme, .dark)
+                            }
                         }
                 }
                 .overlay {
                     Circle()
-                        .stroke(.white.opacity(0.2), lineWidth: 1)
+                        .stroke(isSelected ? .white.opacity(0.6) : .white.opacity(0.2), lineWidth: 1)
                 }
         }
         .buttonStyle(.plain)
@@ -295,7 +390,7 @@ private struct ResultBeforeAfterImage: View {
                 GeometryReader { proxy in
                     ZStack {
                         resultImage(beforeImage, size: proxy.size)
-//                        resultImage(afterImage, size: proxy.size)
+                        //                        resultImage(afterImage, size: proxy.size)
                         Image(uiImage: afterImage)
                             .resizable()
                             .scaledToFill()
@@ -306,11 +401,16 @@ private struct ResultBeforeAfterImage: View {
                                 .frame(width: proxy.size.width, height: proxy.size.height)
 
                         }
-                        
+
                     }
                 }
             }
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 32, style: .continuous)
+                    .stroke(Color(red: 243/255, green: 244/255, blue: 246/255), lineWidth: 1)
+            }
+            .shadow(color: .black.opacity(0.25), radius: 25, x: 0, y: 25)
             .animation(.easeInOut(duration: 0.55), value: showingBefore)
     }
 
@@ -361,7 +461,7 @@ private enum ResultWatermarkRenderer {
 
             WatermarkView()
         }
-        .frame(width: image.size.width, height: image.size.height)
+            .frame(width: image.size.width, height: image.size.height)
 
         let renderer = ImageRenderer(content: content)
         renderer.scale = image.scale

@@ -60,6 +60,7 @@ de meilleurs designs";
 "result.download" = "TÉLÉCHARGER";
 "result.share" = "PARTAGER";
 "result.save_to_archive" = "ENREGISTRER DANS LES ARCHIVES";
+"result.archive_success.title" = "Enregistré dans les archives";
 
 "generation_loading.failure.title" = "Échec de la génération";
 "generation_loading.failure.message" = "Nous n'avons pas pu traiter votre demande de réaménagement cette fois-ci. Vérifiez votre photo ou vos instructions, puis réessayez.";
