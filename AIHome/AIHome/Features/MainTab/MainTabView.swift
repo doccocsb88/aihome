@@ -14,7 +14,7 @@ struct MainTabView: View {
                 NavigationStack(path: Bindable(coordinator).path) {
                     HomeView()
                         .navigationDestination(for: AppRoute.self) { route in
-                            AppCoordinatorRouter.view(for: route)
+                            AppCoordinatorRouter.view(for: route, coordinator: coordinator)
                         }
                 }
                 .id("HomeNavStack")
@@ -27,7 +27,7 @@ struct MainTabView: View {
                         onFilterPresentationChanged: { showingInspirationFilter = $0 }
                     )
                     .navigationDestination(for: AppRoute.self) { route in
-                        AppCoordinatorRouter.view(for: route)
+                        AppCoordinatorRouter.view(for: route, coordinator: coordinator)
                     }
                 }
                 .toolbar(.hidden, for: .tabBar)
@@ -36,7 +36,7 @@ struct MainTabView: View {
                 NavigationStack(path: Bindable(coordinator).path) {
                     HistoryView { showingHistoryFilter = $0 }
                         .navigationDestination(for: AppRoute.self) { route in
-                            AppCoordinatorRouter.view(for: route)
+                            AppCoordinatorRouter.view(for: route, coordinator: coordinator)
                         }
                 }
                 .toolbar(.hidden, for: .tabBar)

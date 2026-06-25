@@ -13,11 +13,13 @@ struct NewFlooringFlowContainerView: View {
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
+    var initialImage: UIImage?
+
     var body: some View {
         Group {
             switch state {
             case .input:
-                NewFlooringFlowView(initialImage: currentDraft?.sourceImage, onGenerate: { draft in
+                NewFlooringFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
@@ -71,7 +73,7 @@ struct NewFlooringFlowContainerView: View {
                 guard let imageSource = GenerationImageEncoder.encode(sourceImage) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
-                
+
                 let request = NewFlooringInput(
                     image: imageSource,
                     textureImage: nil,
@@ -95,7 +97,7 @@ struct NewFlooringFlowContainerView: View {
                 guard !downloadedImages.isEmpty else {
                     throw NSError(domain: "GenerationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to download images"])
                 }
-                
+
                 AppLogger.logAction("Images downloaded successfully")
 
                 let mockProject = LocalProject(

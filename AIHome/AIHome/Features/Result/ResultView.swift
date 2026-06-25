@@ -28,14 +28,14 @@ struct ResultView: View {
                         VStack(spacing: 4) {
                             imageSection
                                 .padding(.horizontal, 24)
-                            
+
                             advancedToolsSection
                                 .padding(.horizontal, 24)
-                            
+
                             actionButtonsSection
-                            
+
                             Spacer(minLength: 16)
-                            
+
                         }
                     }
                     saveToArchiveButton
@@ -252,22 +252,36 @@ struct ResultView: View {
     }
 
     private func handleNavigation(for tool: ProjectType) {
-        if tool != .edit {
-            coordinator.popToRoot()
+        if tool == .edit {
+            onRegenerate()
+            return
         }
 
+        coordinator.popToRoot()
+
+        let initialImageID = viewModel.selectedImage.map { coordinator.storeInitialImage($0) }
+
         switch tool {
-        case .interior: coordinator.push(.interiorFlow)
-        case .exterior: coordinator.push(.exteriorFlow)
-        case .garden: coordinator.push(.gardenFlow)
-        case .referenceStyle: coordinator.push(.referenceStyleFlow)
-        case .removeObjects: coordinator.push(.removeObjectsFlow)
-        case .replaceObjects: coordinator.push(.replaceObjectsFlow)
-        case .newFlooring: coordinator.push(.newFlooringFlow)
-        case .newWalls: coordinator.push(.newWallsFlow)
-        case .furnitureFinder: coordinator.push(.furnitureFinderFlow)
+        case .interior:
+            coordinator.push(initialImageID.map(AppRoute.interiorFlowWithImage) ?? .interiorFlow)
+        case .exterior:
+            coordinator.push(initialImageID.map(AppRoute.exteriorFlowWithImage) ?? .exteriorFlow)
+        case .garden:
+            coordinator.push(initialImageID.map(AppRoute.gardenFlowWithImage) ?? .gardenFlow)
+        case .referenceStyle:
+            coordinator.push(initialImageID.map(AppRoute.referenceStyleFlowWithImage) ?? .referenceStyleFlow)
+        case .removeObjects:
+            coordinator.push(initialImageID.map(AppRoute.removeObjectsFlowWithImage) ?? .removeObjectsFlow)
+        case .replaceObjects:
+            coordinator.push(initialImageID.map(AppRoute.replaceObjectsFlowWithImage) ?? .replaceObjectsFlow)
+        case .newFlooring:
+            coordinator.push(initialImageID.map(AppRoute.newFlooringFlowWithImage) ?? .newFlooringFlow)
+        case .newWalls:
+            coordinator.push(initialImageID.map(AppRoute.newWallsFlowWithImage) ?? .newWallsFlow)
+        case .furnitureFinder:
+            coordinator.push(initialImageID.map(AppRoute.furnitureFinderFlowWithImage) ?? .furnitureFinderFlow)
         case .edit:
-            onRegenerate()
+            break
         }
     }
 

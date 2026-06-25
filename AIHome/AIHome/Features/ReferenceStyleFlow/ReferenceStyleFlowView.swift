@@ -4,13 +4,15 @@ struct ReferenceStyleFlowView: View {
     @State private var viewModel = ReferenceStyleFlowViewModel()
     @Environment(\.dismiss) var dismiss
     @State private var showingPhotoTips = false
-    
+    @State private var didApplyInitialImage = false
+
+    var initialImage: UIImage?
     var onGenerate: (ReferenceStyleDraft) -> Void
-    
+
     var body: some View {
         VStack(spacing: 0) {
             progressHeader
-            
+
             Group {
                 switch viewModel.currentStep {
                 case .sourceImage:
@@ -43,8 +45,11 @@ struct ReferenceStyleFlowView: View {
         .sheet(isPresented: $showingPhotoTips) {
             PhotoTipsView()
         }
+        .onAppear {
+            applyInitialImageIfNeeded()
+        }
     }
-    
+
     private var progressHeader: some View {
         VStack(spacing: 16) {
             HStack {
@@ -65,15 +70,15 @@ struct ReferenceStyleFlowView: View {
                             Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1)
                         )
                 }
-                
+
                 Spacer()
-                
+
                 Text("Step \(viewModel.currentStep.rawValue)/3")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                     .foregroundColor(.DesignSystem.textPrimary)
-                
+
                 Spacer()
-                
+
                 Button(action: {
                     if viewModel.currentStep != .sourceImage {
                         dismiss()
@@ -88,7 +93,7 @@ struct ReferenceStyleFlowView: View {
                 }
             }
             .padding(.horizontal, 24)
-            
+
             // Progress Bar
             HStack(spacing: 4) {
                 ForEach(1...3, id: \.self) { step in
@@ -101,6 +106,19 @@ struct ReferenceStyleFlowView: View {
         }
         .padding(.top, 16)
         .padding(.bottom, 8)
+    }
+
+    private func applyInitialImageIfNeeded() {
+        guard !didApplyInitialImage,
+              let initialImage,
+              viewModel.draft.sourceImage == nil else {
+            return
+        }
+
+        didApplyInitialImage = true
+        viewModel.draft.sourceImage = initialImage
+        viewModel.sourcePhotoPickerViewModel.selectedImage = initialImage
+        viewModel.currentStep = .referenceImage
     }
 
     @ViewBuilder
@@ -141,7 +159,7 @@ struct ReferenceStyleFlowView: View {
             .padding(.bottom, 36)
         }
     }
-    
+
     @ViewBuilder
     private func interventionStep() -> some View {
         VStack(spacing: 24) {
@@ -149,21 +167,21 @@ struct ReferenceStyleFlowView: View {
                 Text("AI Intervention")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
-                
+
                 Text("How much of the original layout should we keep?")
                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                     .foregroundColor(.gray)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
-            
+
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 24) {
                     Image("ic_interior_Intervention_preview")
                         .resizable()
                         .scaledToFit()
                         .cornerRadius(16)
-                    
+
                     VStack(spacing: 16) {
                         interventionOption(level: .high, title: "HIGH", description: "Creative redesign with high innovation, low preservation.", iconName: "ic_interior_Intervention_high")
                         interventionOption(level: .medium, title: "MEIDUM", description: "Balanced redesign with key room elements preserved.", iconName: "ic_interior_Intervention_meidum")
@@ -174,9 +192,9 @@ struct ReferenceStyleFlowView: View {
                 .padding(.top, 8)
                 .padding(.bottom, 24)
             }
-            
+
             Spacer()
-            
+
             Button(action: {
                 onGenerate(viewModel.draft)
             }) {
@@ -192,7 +210,7 @@ struct ReferenceStyleFlowView: View {
             .padding(.bottom, 36)
         }
     }
-    
+
     @ViewBuilder
     private func interventionOption(level: UIInterventionLevel, title: String, description: String, iconName: String) -> some View {
         Button(action: {
@@ -203,7 +221,7 @@ struct ReferenceStyleFlowView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 56, height: 56)
-                
+
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))

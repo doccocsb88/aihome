@@ -13,11 +13,13 @@ struct RemoveObjectsFlowContainerView: View {
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
+    var initialImage: UIImage?
+
     var body: some View {
         Group {
             switch state {
             case .input:
-                RemoveObjectsFlowView(initialImage: currentDraft?.sourceImage, onGenerate: { draft in
+                RemoveObjectsFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     startGeneration(with: draft)
                 })
             case .loading(let viewModel):
@@ -71,7 +73,7 @@ struct RemoveObjectsFlowContainerView: View {
                 guard let imageSource = GenerationImageEncoder.encode(sourceImage) else {
                     throw NSError(domain: "GenerationError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image data"])
                 }
-                
+
                 let request = RemoveObjectsInput(
                     image: imageSource,
                     prompt: draft.prompt
@@ -93,7 +95,7 @@ struct RemoveObjectsFlowContainerView: View {
                 guard !downloadedImages.isEmpty else {
                     throw NSError(domain: "GenerationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to download images"])
                 }
-                
+
                 AppLogger.logAction("Images downloaded successfully")
 
                 let mockProject = LocalProject(

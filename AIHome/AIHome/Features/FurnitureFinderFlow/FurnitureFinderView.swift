@@ -4,7 +4,10 @@ struct FurnitureFinderView: View {
     @State private var viewModel = FurnitureFinderViewModel()
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
-    
+    @State private var didApplyInitialImage = false
+
+    var initialImage: UIImage?
+
     var body: some View {
         Group {
             VStack {
@@ -35,14 +38,14 @@ struct FurnitureFinderView: View {
                             .padding()
                     }
                 }
-                
+
                 TextField("Optional: Describe the furniture", text: Binding(
                     get: { viewModel.draft.prompt ?? "" },
                     set: { viewModel.draft.prompt = $0 }
                 ))
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
-                
+
                 Button(action: {
                     viewModel.findFurniture()
                 }) {
@@ -56,7 +59,7 @@ struct FurnitureFinderView: View {
                 }
                 .disabled(viewModel.draft.sourceImage == nil || viewModel.isGenerating)
                 .padding()
-                
+
                 if viewModel.isGenerating {
                     ProgressView {
                         Text("Searching...")
@@ -73,7 +76,7 @@ struct FurnitureFinderView: View {
                                     Image(systemName: "chair.lounge.fill")
                                         .foregroundColor(.secondary)
                                 }
-                            
+
                             VStack(alignment: .leading) {
                                 Text(product.title)
                                     .font(FontFamily.Roboto.medium.swiftUIFont(size: 17))
@@ -81,9 +84,9 @@ struct FurnitureFinderView: View {
                                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                                     .foregroundColor(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             if let price = product.priceText {
                                 Text(price)
                                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
@@ -95,6 +98,20 @@ struct FurnitureFinderView: View {
             }
             .navigationTitle("Furniture Finder")
         }
+        .onAppear {
+            applyInitialImageIfNeeded()
+        }
+    }
+
+    private func applyInitialImageIfNeeded() {
+        guard !didApplyInitialImage,
+              let initialImage,
+              viewModel.draft.sourceImage == nil else {
+            return
+        }
+
+        didApplyInitialImage = true
+        viewModel.selectImage(initialImage)
     }
 }
 

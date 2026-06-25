@@ -9,9 +9,9 @@ struct AppCoordinatorView: View {
                 MainTabView()
             } else {
                 NavigationStack(path: $coordinator.path) {
-                    AppCoordinatorRouter.view(for: coordinator.currentRoot)
+                    AppCoordinatorRouter.view(for: coordinator.currentRoot, coordinator: coordinator)
                         .navigationDestination(for: AppRoute.self) { route in
-                            AppCoordinatorRouter.view(for: route)
+                            AppCoordinatorRouter.view(for: route, coordinator: coordinator)
                         }
                 }
                 .id("RootNavStack")
@@ -23,7 +23,7 @@ struct AppCoordinatorView: View {
 
 struct AppCoordinatorRouter {
     @ViewBuilder
-    static func view(for route: AppRoute) -> some View {
+    static func view(for route: AppRoute, coordinator: AppCoordinator) -> some View {
         switch route {
         case .splash:
             SplashView()
@@ -33,22 +33,40 @@ struct AppCoordinatorRouter {
             EmptyView() // Handled by AppCoordinatorView's root switch
         case .interiorFlow:
             InteriorFlowContainerView()
+        case .interiorFlowWithImage(let id):
+            InteriorFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .exteriorFlow:
             ExteriorFlowContainerView()
+        case .exteriorFlowWithImage(let id):
+            ExteriorFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .gardenFlow:
             GardenFlowContainerView()
+        case .gardenFlowWithImage(let id):
+            GardenFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .referenceStyleFlow:
             ReferenceStyleFlowContainerView()
+        case .referenceStyleFlowWithImage(let id):
+            ReferenceStyleFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .removeObjectsFlow:
             RemoveObjectsFlowContainerView()
+        case .removeObjectsFlowWithImage(let id):
+            RemoveObjectsFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .replaceObjectsFlow:
             ReplaceObjectsFlowContainerView()
+        case .replaceObjectsFlowWithImage(let id):
+            ReplaceObjectsFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .newFlooringFlow:
             NewFlooringFlowContainerView()
+        case .newFlooringFlowWithImage(let id):
+            NewFlooringFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .newWallsFlow:
             NewWallsFlowContainerView()
+        case .newWallsFlowWithImage(let id):
+            NewWallsFlowContainerView(initialImage: coordinator.initialImage(for: id))
         case .furnitureFinderFlow:
             FurnitureFinderView()
+        case .furnitureFinderFlowWithImage(let id):
+            FurnitureFinderView(initialImage: coordinator.initialImage(for: id))
         }
     }
 }
