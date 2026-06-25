@@ -19,6 +19,19 @@ final class AppCoordinator {
         }
     }
 
+    func openFlow(_ projectType: ProjectType, initialImage: UIImage? = nil, popToRootFirst: Bool = false) {
+        if popToRootFirst {
+            popToRoot()
+        }
+
+        let initialImageID = initialImage.map(storeInitialImage)
+        guard let route = AppRoute(flow: projectType, initialImageID: initialImageID) else {
+            return
+        }
+
+        push(route)
+    }
+
     func pop() {
         if !path.isEmpty {
             let removed = path.removeLast()

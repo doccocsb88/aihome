@@ -265,31 +265,7 @@ struct ResultView: View {
         }
 
         coordinator.popToRoot()
-
-        let initialImageID = viewModel.selectedImage.map { coordinator.storeInitialImage($0) }
-
-        switch tool {
-        case .interior:
-            coordinator.push(initialImageID.map(AppRoute.interiorFlowWithImage) ?? .interiorFlow)
-        case .exterior:
-            coordinator.push(initialImageID.map(AppRoute.exteriorFlowWithImage) ?? .exteriorFlow)
-        case .garden:
-            coordinator.push(initialImageID.map(AppRoute.gardenFlowWithImage) ?? .gardenFlow)
-        case .referenceStyle:
-            coordinator.push(initialImageID.map(AppRoute.referenceStyleFlowWithImage) ?? .referenceStyleFlow)
-        case .removeObjects:
-            coordinator.push(initialImageID.map(AppRoute.removeObjectsFlowWithImage) ?? .removeObjectsFlow)
-        case .replaceObjects:
-            coordinator.push(initialImageID.map(AppRoute.replaceObjectsFlowWithImage) ?? .replaceObjectsFlow)
-        case .newFlooring:
-            coordinator.push(initialImageID.map(AppRoute.newFlooringFlowWithImage) ?? .newFlooringFlow)
-        case .newWalls:
-            coordinator.push(initialImageID.map(AppRoute.newWallsFlowWithImage) ?? .newWallsFlow)
-        case .furnitureFinder:
-            coordinator.push(initialImageID.map(AppRoute.furnitureFinderFlowWithImage) ?? .furnitureFinderFlow)
-        case .edit:
-            break
-        }
+        coordinator.openFlow(tool, initialImage: viewModel.selectedImage)
     }
 
     private func handleDownload(_ image: UIImage) {

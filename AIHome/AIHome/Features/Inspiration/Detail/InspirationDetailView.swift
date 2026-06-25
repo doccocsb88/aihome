@@ -143,28 +143,7 @@ struct InspirationDetailView: View {
 
     private func handleNavigation(for tool: ProjectType) {
         AppLogger.logAction("Inspiration Advanced Tool", details: tool.advancedToolTitle)
-
-        switch tool {
-        case .interior:
-            coordinator.push(.interiorFlow)
-        case .exterior:
-            coordinator.push(.exteriorFlow)
-        case .garden:
-            coordinator.push(.gardenFlow)
-        case .referenceStyle:
-            coordinator.push(.referenceStyleFlow)
-        case .removeObjects:
-            coordinator.push(.removeObjectsFlow)
-        case .replaceObjects:
-            coordinator.push(.replaceObjectsFlow)
-        case .newFlooring:
-            coordinator.push(.newFlooringFlow)
-        case .newWalls:
-            coordinator.push(.newWallsFlow)
-        case .furnitureFinder:
-            coordinator.push(.furnitureFinderFlow)
-        case .edit: break
-        }
+        coordinator.openFlow(tool)
     }
 
     @ViewBuilder

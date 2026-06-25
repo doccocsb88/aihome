@@ -359,7 +359,7 @@ struct HistoryView: View {
 
     private func startNewProject() {
         coordinator.popToRoot()
-        coordinator.push(.interiorFlow)
+        coordinator.openFlow(.interior)
     }
 
     private func openResult(for project: LocalProject) {
@@ -373,30 +373,7 @@ struct HistoryView: View {
 
     private func openFlow(for projectType: ProjectType) {
         resultPresentation = nil
-        coordinator.popToRoot()
-
-        switch projectType {
-        case .interior:
-            coordinator.push(.interiorFlow)
-        case .exterior:
-            coordinator.push(.exteriorFlow)
-        case .garden:
-            coordinator.push(.gardenFlow)
-        case .referenceStyle:
-            coordinator.push(.referenceStyleFlow)
-        case .removeObjects:
-            coordinator.push(.removeObjectsFlow)
-        case .replaceObjects:
-            coordinator.push(.replaceObjectsFlow)
-        case .newFlooring:
-            coordinator.push(.newFlooringFlow)
-        case .newWalls:
-            coordinator.push(.newWallsFlow)
-        case .furnitureFinder:
-            coordinator.push(.furnitureFinderFlow)
-        case .edit:
-            break
-        }
+        coordinator.openFlow(projectType, popToRootFirst: true)
     }
 }
 
