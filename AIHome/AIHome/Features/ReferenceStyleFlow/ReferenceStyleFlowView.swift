@@ -73,7 +73,7 @@ struct ReferenceStyleFlowView: View {
 
                 Spacer()
 
-                Text("Step \(viewModel.currentStep.rawValue)/3")
+                Text(L10n.Flow.step(viewModel.currentStep.rawValue, 3))
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                     .foregroundColor(.DesignSystem.textPrimary)
 
@@ -164,11 +164,11 @@ struct ReferenceStyleFlowView: View {
     private func interventionStep() -> some View {
         VStack(spacing: 24) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("AI Intervention")
+                Text(L10n.Intervention.title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
 
-                Text("How much of the original layout should we keep?")
+                Text(L10n.Intervention.subtitle)
                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                     .foregroundColor(.gray)
             }
@@ -183,9 +183,9 @@ struct ReferenceStyleFlowView: View {
                         .cornerRadius(16)
 
                     VStack(spacing: 16) {
-                        interventionOption(level: .high, title: "HIGH", description: "Creative redesign with high innovation, low preservation.", iconName: "ic_interior_Intervention_high")
-                        interventionOption(level: .medium, title: "MEIDUM", description: "Balanced redesign with key room elements preserved.", iconName: "ic_interior_Intervention_meidum")
-                        interventionOption(level: .light, title: "LIGHT", description: "Layout decoration with only textures and furniture updates.", iconName: "ic_interior_Intervention_light")
+                        interventionOption(level: .high, title: L10n.Intervention.High.title, description: L10n.Intervention.High.description, iconName: "ic_interior_Intervention_high")
+                        interventionOption(level: .medium, title: L10n.Intervention.Medium.title, description: L10n.Intervention.Medium.description, iconName: "ic_interior_Intervention_meidum")
+                        interventionOption(level: .light, title: L10n.Intervention.Light.title, description: L10n.Intervention.Light.description, iconName: "ic_interior_Intervention_light")
                     }
                 }
                 .padding(.horizontal, 24)
@@ -198,7 +198,7 @@ struct ReferenceStyleFlowView: View {
             Button(action: {
                 onGenerate(viewModel.draft)
             }) {
-                Text("GENERATE")
+                Text(L10n.Flow.generate)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                     .foregroundColor(viewModel.canContinue ? Color.DesignSystem.background : .white)
                     .frame(maxWidth: .infinity, minHeight: 56)

@@ -1,4 +1,5 @@
 import Foundation
+import Lottie
 import SwiftUI
 
 struct GenerationLoadingView: View {
@@ -7,7 +8,6 @@ struct GenerationLoadingView: View {
     var onCancel: (() -> Void)? = nil
     
     @State private var progress: CGFloat = 0
-    @State private var bracketScale: CGFloat = 1.0
     
     var body: some View {
         GeometryReader { geometry in
@@ -31,9 +31,6 @@ struct GenerationLoadingView: View {
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            bracketScale = 1.14
-        }
         .task {
             await runFakeProgress()
         }
@@ -109,9 +106,8 @@ struct GenerationLoadingView: View {
                     .frame(width: size, height: size)
             }
 
-            ScannerBrackets()
-                .scaleEffect(bracketScale)
-                .animation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true), value: bracketScale)
+            LottieLoadingAnimation(name: "Sofa")
+                .frame(width: size, height: size)
         }
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
@@ -167,34 +163,27 @@ struct GenerationLoadingView: View {
     }
 }
 
-struct ScannerBrackets: View {
-    var body: some View {
-        Path { path in
-            let length: CGFloat = 16
-            let w: CGFloat = 48
-            let h: CGFloat = 48
-            
-            // Top Left
-            path.move(to: CGPoint(x: 0, y: length))
-            path.addLine(to: CGPoint(x: 0, y: 0))
-            path.addLine(to: CGPoint(x: length, y: 0))
-            
-            // Top Right
-            path.move(to: CGPoint(x: w - length, y: 0))
-            path.addLine(to: CGPoint(x: w, y: 0))
-            path.addLine(to: CGPoint(x: w, y: length))
-            
-            // Bottom Right
-            path.move(to: CGPoint(x: w, y: h - length))
-            path.addLine(to: CGPoint(x: w, y: h))
-            path.addLine(to: CGPoint(x: w - length, y: h))
-            
-            // Bottom Left
-            path.move(to: CGPoint(x: length, y: h))
-            path.addLine(to: CGPoint(x: 0, y: h))
-            path.addLine(to: CGPoint(x: 0, y: h - length))
-        }
-        .stroke(Color.primary, style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
-        .frame(width: 48, height: 48)
+private struct LottieLoadingAnimation: UIViewRepresentable {
+    let name: String
+
+    func makeUIView(context: Context) -> UIView {
+        let container = UIView()
+        let animationView = LottieAnimationView(name: name)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+
+        container.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            animationView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            animationView.topAnchor.constraint(equalTo: container.topAnchor),
+            animationView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+
+        animationView.play()
+        return container
     }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }

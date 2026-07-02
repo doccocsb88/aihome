@@ -74,7 +74,7 @@ struct ReferenceStyleFlowContainerView: View {
 
         AppLogger.logAction("Start Reference Style Generation", details: "Intervention: \(aiIntervention.rawValue)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .referenceStyle, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .referenceStyle, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {

@@ -65,7 +65,7 @@ struct ReplaceObjectsFlowContainerView: View {
 
         AppLogger.logAction("Start Replace Objects Generation", details: "Prompt: \(draft.prompt)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .replaceObjects, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .replaceObjects, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {

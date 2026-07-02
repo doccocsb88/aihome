@@ -53,8 +53,8 @@ class PhotoSourcePickerViewModel {
         selectedImage: UIImage? = nil,
         allowsSample: Bool = true,
         sampleImages: [String] = [],
-        sampleTitle: String = "OR TRY A SAMPLE",
-        ctaTitle: String = "Get Started"
+        sampleTitle: String = L10n.PhotoSource.orTryASample,
+        ctaTitle: String = L10n.PhotoSource.getStarted
     ) {
         self.title = title
         self.subtitle = subtitle

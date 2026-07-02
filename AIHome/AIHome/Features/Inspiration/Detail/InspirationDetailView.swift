@@ -91,7 +91,7 @@ struct InspirationDetailView: View {
                     .background(.white.opacity(0.88), in: Circle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Back")
+            .accessibilityLabel(L10n.Inspiration.Detail.back)
 
             Spacer()
 
@@ -110,7 +110,7 @@ struct InspirationDetailView: View {
 
             Spacer(minLength: 42)
 
-            Text("OR")
+            Text(L10n.Inspiration.Detail.or)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                 .tracking(4)
                 .foregroundStyle(Color.DesignSystem.slateGray)
@@ -119,7 +119,7 @@ struct InspirationDetailView: View {
             NavigationLink {
                 redesignDestination
             } label: {
-                Text("REDESIGN")
+                Text(L10n.Inspiration.Detail.redesign)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 13))
                     .tracking(5)
                     .foregroundStyle(.white)
@@ -204,6 +204,6 @@ struct BeforeAfterButton: View {
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(showingBefore ? "Show after image" : "Show before image")
+        .accessibilityLabel(showingBefore ? L10n.Inspiration.Detail.showAfterImage : L10n.Inspiration.Detail.showBeforeImage)
     }
 }

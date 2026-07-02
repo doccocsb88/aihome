@@ -11,7 +11,7 @@ class GenerationLoadingViewModel {
     var inputImage: UIImage?
     var errorMessage: String?
     
-    init(projectType: ProjectType, status: JobStatus = .generating, progressText: String = "Generating...", canCancel: Bool = false, canRetry: Bool = true, inputImage: UIImage? = nil, errorMessage: String? = nil) {
+    init(projectType: ProjectType, status: JobStatus = .generating, progressText: String = L10n.GenerationLoading.generating, canCancel: Bool = false, canRetry: Bool = true, inputImage: UIImage? = nil, errorMessage: String? = nil) {
         self.projectType = projectType
         self.status = status
         self.progressText = progressText

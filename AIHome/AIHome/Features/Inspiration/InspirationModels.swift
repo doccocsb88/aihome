@@ -6,6 +6,17 @@ enum InspirationCategory: String, Codable, CaseIterable, Identifiable {
     case garden = "Garden"
 
     var id: String { rawValue }
+
+    var localizedTitle: String {
+        switch self {
+        case .interior:
+            L10n.Inspiration.Category.interior
+        case .exterior:
+            L10n.Inspiration.Category.exterior
+        case .garden:
+            L10n.Inspiration.Category.garden
+        }
+    }
 }
 
 enum InspirationInterventionLevel: String, Codable {

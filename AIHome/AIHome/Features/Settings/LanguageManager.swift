@@ -42,9 +42,11 @@ final class LanguageManager {
     var currentBundle: Bundle = .main
     
     private init() {
-        self.selectedLanguage = Self.normalizedLanguageCode(
-            UserDefaults.standard.string(forKey: languageKey)
-        )
+        if let savedLanguage = UserDefaults.standard.string(forKey: languageKey) {
+            self.selectedLanguage = Self.normalizedLanguageCode(savedLanguage)
+        } else {
+            self.selectedLanguage = Self.devicePreferredLanguageCode()
+        }
         updateBundle()
     }
     
@@ -90,24 +92,77 @@ final class LanguageManager {
         return localizedName(for: language)
     }
     
-    private static func normalizedLanguageCode(_ savedValue: String?) -> String {
-        switch savedValue {
-        case "English", "en", "en-US": return "en-US"
-        case "Arabic", "ar", "ar-SA": return "ar-SA"
-        case "German", "de", "de-DE": return "de-DE"
-        case "Spanish", "es", "es-ES": return "es-ES"
-        case "French", "fr", "fr-FR": return "fr-FR"
-        case "Hindi", "hi": return "hi"
-        case "Indonesian", "id": return "id"
-        case "Italian", "it": return "it"
-        case "Japanese", "ja": return "ja"
-        case "Korean", "ko": return "ko"
-        case "Malay", "ms": return "ms"
-        case "Portuguese", "pt", "pt-BR": return "pt-BR"
-        case "Russian", "ru": return "ru"
-        case "Thai", "th": return "th"
-        case "Turkish", "tr": return "tr"
-        default: return "en-US"
-        }
+    private static func normalizedLanguageCode(_ savedValue: String) -> String {
+        mapLocaleIdentifierToAppLanguage(savedValue) ?? "en-US"
     }
+
+    private static func devicePreferredLanguageCode() -> String {
+        for preferredLanguage in Locale.preferredLanguages {
+            if let matchedLanguageCode = mapLocaleIdentifierToAppLanguage(preferredLanguage) {
+                return matchedLanguageCode
+            }
+        }
+
+        return mapLocaleIdentifierToAppLanguage(Locale.current.identifier) ?? "en-US"
+    }
+
+    private static func mapLocaleIdentifierToAppLanguage(_ identifier: String) -> String? {
+        let normalizedIdentifier = identifier.replacingOccurrences(of: "_", with: "-")
+
+        switch normalizedIdentifier {
+        case "English", "en", "en-US", "en-GB", "en-AU", "en-CA", "en-NZ", "en-IN", "en-SG", "en-PH", "en-ZA", "en-IE":
+            return "en-US"
+        case "Arabic", "ar", "ar-SA", "ar-AE", "ar-EG", "ar-QA", "ar-KW", "ar-BH", "ar-OM", "ar-JO", "ar-LB":
+            return "ar-SA"
+        case "German", "de", "de-DE", "de-AT", "de-CH":
+            return "de-DE"
+        case "Spanish", "es", "es-ES", "es-MX", "es-AR", "es-CO", "es-CL", "es-PE", "es-VE", "es-US":
+            return "es-ES"
+        case "French", "fr", "fr-FR", "fr-CA", "fr-BE", "fr-CH":
+            return "fr-FR"
+        case "Hindi", "hi", "hi-IN":
+            return "hi"
+        case "Indonesian", "id", "id-ID":
+            return "id"
+        case "Italian", "it", "it-IT", "it-CH":
+            return "it"
+        case "Japanese", "ja", "ja-JP":
+            return "ja"
+        case "Korean", "ko", "ko-KR":
+            return "ko"
+        case "Malay", "ms", "ms-MY", "ms-SG", "ms-BN":
+            return "ms"
+        case "Portuguese", "pt", "pt-BR", "pt-PT":
+            return "pt-BR"
+        case "Russian", "ru", "ru-RU":
+            return "ru"
+        case "Thai", "th", "th-TH":
+            return "th"
+        case "Turkish", "tr", "tr-TR":
+            return "tr"
+        default:
+            break
+        }
+
+        let lowercasedIdentifier = normalizedIdentifier.lowercased()
+
+        for languageCode in supportedLanguageCodes where lowercasedIdentifier == languageCode.lowercased() {
+            return languageCode
+        }
+
+        let languagePrefix = lowercasedIdentifier.split(separator: "-").first.map(String.init) ?? lowercasedIdentifier
+
+        for languageCode in supportedLanguageCodes {
+            let supportedPrefix = languageCode.split(separator: "-").first.map(String.init) ?? languageCode
+            if languagePrefix == supportedPrefix.lowercased() {
+                return languageCode
+            }
+        }
+
+        return nil
+    }
+
+    private static let supportedLanguageCodes = [
+        "en-US", "ar-SA", "de-DE", "es-ES", "fr-FR", "hi", "id", "it", "ja", "ko", "ms", "pt-BR", "ru", "th", "tr"
+    ]
 }

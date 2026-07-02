@@ -65,7 +65,7 @@ struct NewWallsFlowContainerView: View {
 
         AppLogger.logAction("Start New Walls Generation", details: "Prompt: \(draft.prompt)")
 
-        let loadingVM = GenerationLoadingViewModel(projectType: .newWalls, status: .generating, progressText: "Generating...", canCancel: true, inputImage: sourceImage)
+        let loadingVM = GenerationLoadingViewModel(projectType: .newWalls, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
 
         Task {

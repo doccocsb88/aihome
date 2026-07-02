@@ -7,11 +7,11 @@ class InteriorFlowViewModel {
     var currentStep: InteriorStep = .photoSelection
     
     var photoPickerViewModel = PhotoSourcePickerViewModel(
-        title: "Start with a photo",
-        subtitle: "Upload or select from template to try",
+        title: L10n.PhotoSource.Interior.title,
+        subtitle: L10n.PhotoSource.Interior.subtitle,
         allowsSample: true,
         sampleImages: PhotoSampleAssets.interior,
-        ctaTitle: "GET STARTED"
+        ctaTitle: L10n.PhotoSource.Interior.cta
     )
     
     // Room types from PDF

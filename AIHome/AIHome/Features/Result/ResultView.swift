@@ -226,7 +226,7 @@ struct ResultView: View {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(.white)
 
-            Text(NSLocalizedString("result.archive_success.title", comment: ""))
+            Text(L10n.Result.ArchiveSuccess.title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                 .foregroundStyle(.white)
         }

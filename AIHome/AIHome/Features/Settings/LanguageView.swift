@@ -61,7 +61,8 @@ struct LanguageView: View {
                                         .foregroundColor(Color(uiColor: .systemGray3))
                                 }
                             }
-                            .padding()
+                            .padding(.horizontal, 16)
+                            .frame(height: 68)
                             .background(
                                 RoundedRectangle(cornerRadius: 24)
                                     .stroke(Color.DesignSystem.brightGray, lineWidth: 1)

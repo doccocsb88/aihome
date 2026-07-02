@@ -100,7 +100,7 @@ struct InspirationView: View {
                 Button {
                     viewModel.selectCategory(category)
                 } label: {
-                    Text(category.rawValue.uppercased())
+                    Text(category.localizedTitle.uppercased())
                         .font(FontFamily.Roboto.black.swiftUIFont(size: 12))
                         .foregroundStyle(viewModel.selectedCategory == category ? Color.DesignSystem.textPrimary : Color.DesignSystem.coolGray)
                         .frame(maxWidth: .infinity)

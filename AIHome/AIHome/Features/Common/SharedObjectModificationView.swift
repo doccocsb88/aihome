@@ -79,7 +79,7 @@ struct SharedObjectModificationView: View {
                        photoPickerViewModel.selectedImage == nil,
                        !photoPickerViewModel.sampleImages.isEmpty {
                         TrySampleView(
-                            title: "Try a sample",
+                            title: L10n.PhotoSource.tryASample,
                             imageNames: photoPickerViewModel.sampleImages,
                             titleStyle: .section,
                             onSelect: { sample in

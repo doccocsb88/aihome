@@ -7,7 +7,7 @@ struct AdvancedToolsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Advanced Tools")
+            Text(L10n.AdvancedTools.title)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
                 .foregroundStyle(Color.DesignSystem.textPrimary)
                 .padding(.horizontal, horizontalPadding)
@@ -108,21 +108,25 @@ extension ProjectType {
     var advancedToolTitle: String {
         switch self {
         case .referenceStyle:
-            "Reference"
+            L10n.AdvancedTools.reference
         case .edit:
-            "Edit"
+            L10n.InspirationFilter.Feature.edit
         case .replaceObjects:
-            "Replace"
+            L10n.AdvancedTools.replace
         case .removeObjects:
-            "Remove"
+            L10n.AdvancedTools.remove
         case .newWalls:
-            "New Wall"
+            L10n.AdvancedTools.newWall
         case .newFlooring:
-            "New Flooring"
+            L10n.Home.Tool.NewFlooring.title
         case .furnitureFinder:
-            "Furniture Finder"
-        case .interior, .exterior, .garden:
-            rawValue.capitalized
+            L10n.InspirationFilter.Feature.furnitureFinder
+        case .interior:
+            L10n.Inspiration.Category.interior
+        case .exterior:
+            L10n.Inspiration.Category.exterior
+        case .garden:
+            L10n.Inspiration.Category.garden
         }
     }
 

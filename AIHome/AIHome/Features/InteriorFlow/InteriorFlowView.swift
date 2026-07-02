@@ -88,7 +88,7 @@ struct InteriorFlowView: View {
 
                 Spacer()
 
-                Text("Step \(viewModel.currentStep.rawValue)/4")
+                Text(L10n.Flow.step(viewModel.currentStep.rawValue, 4))
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
                     .foregroundColor(.DesignSystem.textPrimary)
 
@@ -164,7 +164,7 @@ struct InteriorFlowView: View {
     @ViewBuilder
     private func roomTypeStep() -> some View {
         VStack(spacing: 24) {
-            Text("Pick a room type")
+            Text(L10n.InteriorFlow.pickRoomType)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                 .foregroundColor(.DesignSystem.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -198,7 +198,7 @@ struct InteriorFlowView: View {
             Spacer()
 
             InteriorCTAButton(
-                title: "GET STARTED",
+                title: L10n.Flow.getStarted,
                 isEnabled: viewModel.canContinue,
                 action: { viewModel.nextStep() }
             )
@@ -210,7 +210,7 @@ struct InteriorFlowView: View {
     @ViewBuilder
     private func designStyleStep() -> some View {
         VStack(spacing: 0) {
-            Text("Pick a design style")
+            Text(L10n.InteriorFlow.pickDesignStyle)
                 .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                 .foregroundColor(.DesignSystem.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -262,7 +262,7 @@ struct InteriorFlowView: View {
             }
 
             InteriorCTAButton(
-                title: "CONTINUE",
+                title: L10n.Flow.continue,
                 isEnabled: viewModel.canContinue,
                 action: { viewModel.nextStep() }
             )
@@ -312,11 +312,11 @@ struct InteriorFlowView: View {
     private func interventionStep() -> some View {
         VStack(spacing: 24) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("AI Intervention")
+                Text(L10n.Intervention.title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
 
-                Text("How much of the original layout should we keep?")
+                Text(L10n.Intervention.subtitle)
                     .font(FontFamily.Roboto.regular.swiftUIFont(size: 15))
                     .foregroundColor(.gray)
             }
@@ -331,9 +331,9 @@ struct InteriorFlowView: View {
                         .cornerRadius(16)
 
                     VStack(spacing: 16) {
-                        interventionOption(level: .high, title: "HIGH", description: "Creative redesign with high innovation, low preservation.", iconName: "ic_interior_Intervention_high")
-                        interventionOption(level: .medium, title: "MEIDUM", description: "Balanced redesign with key room elements preserved.", iconName: "ic_interior_Intervention_meidum")
-                        interventionOption(level: .light, title: "LIGHT", description: "Layout decoration with only textures and furniture updates.", iconName: "ic_interior_Intervention_light")
+                        interventionOption(level: .high, title: L10n.Intervention.High.title, description: L10n.Intervention.High.description, iconName: "ic_interior_Intervention_high")
+                        interventionOption(level: .medium, title: L10n.Intervention.Medium.title, description: L10n.Intervention.Medium.description, iconName: "ic_interior_Intervention_meidum")
+                        interventionOption(level: .light, title: L10n.Intervention.Light.title, description: L10n.Intervention.Light.description, iconName: "ic_interior_Intervention_light")
                     }
                 }
                 .padding(.horizontal, 24)
@@ -343,7 +343,7 @@ struct InteriorFlowView: View {
 
 
             InteriorCTAButton(
-                title: "GENERATE",
+                title: L10n.Flow.generate,
                 isEnabled: viewModel.canContinue,
                 action: { onGenerate(viewModel.draft) }
             )

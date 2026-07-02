@@ -92,17 +92,23 @@ private enum InspirationData {
         let prefix = category.rawValue.lowercased()
         let paddedNumber = number < 10 ? "0\(number)" : "\(number)"
 
+        let id = "\(prefix)-\(paddedNumber)"
+
         return InspirationItem(
-            id: "\(prefix)-\(paddedNumber)",
+            id: id,
             category: category,
             spaceType: spaceType,
             styleTag: styleTag,
             beforeImageName: "\(prefix)_\(paddedNumber)_before",
             afterImageName: "\(prefix)_\(paddedNumber)_after",
-            title: title,
-            subtitle: subtitle,
+            title: localized("inspiration.item.\(id).title", fallback: title),
+            subtitle: localized("inspiration.item.\(id).subtitle", fallback: subtitle),
             interventionLevel: interventionLevel,
             isLiked: false
         )
+    }
+
+    private static func localized(_ key: String, fallback: String) -> String {
+        LanguageManager.shared.currentBundle.localizedString(forKey: key, value: fallback, table: "Localizable")
     }
 }

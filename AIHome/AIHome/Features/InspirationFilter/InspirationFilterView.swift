@@ -17,13 +17,13 @@ struct InspirationFilterView: View {
             dragHandle
 
             HStack(alignment: .center) {
-                Text("Filters")
+                Text(L10n.InspirationFilter.title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundStyle(Color.DesignSystem.textPrimary)
 
                 Spacer()
 
-                Button("Reset") {
+                Button(L10n.InspirationFilter.reset) {
                     viewModel.reset()
                 }
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 16))
@@ -33,16 +33,16 @@ struct InspirationFilterView: View {
 
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
-                    FilterSection(title: "FAVOURITE") {
+                    FilterSection(title: L10n.InspirationFilter.favourite) {
                     HStack(spacing: 8) {
                         FilterChip(
-                            title: "All",
+                            title: L10n.InspirationFilter.all,
                             isSelected: !viewModel.showLikedOnly,
                             action: { viewModel.showLikedOnly = false }
                         )
 
                         FilterChip(
-                            title: "Liked",
+                            title: L10n.InspirationFilter.liked,
                             isSelected: viewModel.showLikedOnly,
                             action: { viewModel.showLikedOnly = true }
                         )
@@ -51,11 +51,11 @@ struct InspirationFilterView: View {
 
                 switch contentStyle {
                 case .spaces:
-                    FilterSection(title: "INTERIOR SPACES") {
+                    FilterSection(title: L10n.InspirationFilter.interiorSpaces) {
                         ChipFlow(spacing: 8, rowSpacing: 9) {
                             ForEach(viewModel.interiorSpaces, id: \.self) { space in
                                 FilterChip(
-                                    title: space,
+                                    title: localizedSpaceTitle(space),
                                     isSelected: viewModel.selectedInteriorSpace == space,
                                     action: { viewModel.selectedInteriorSpace = space }
                                 )
@@ -63,11 +63,11 @@ struct InspirationFilterView: View {
                         }
                     }
 
-                    FilterSection(title: "EXTERIOR SPACES") {
+                    FilterSection(title: L10n.InspirationFilter.exteriorSpaces) {
                         ChipFlow(spacing: 8, rowSpacing: 9) {
                             ForEach(viewModel.exteriorSpaces, id: \.self) { space in
                                 FilterChip(
-                                    title: space,
+                                    title: localizedSpaceTitle(space),
                                     isSelected: viewModel.selectedExteriorSpace == space,
                                     action: { viewModel.selectedExteriorSpace = space }
                                 )
@@ -75,11 +75,11 @@ struct InspirationFilterView: View {
                         }
                     }
 
-                    FilterSection(title: "GARDEN SPACES") {
+                    FilterSection(title: L10n.InspirationFilter.gardenSpaces) {
                         ChipFlow(spacing: 8, rowSpacing: 9) {
                             ForEach(viewModel.gardenSpaces, id: \.self) { space in
                                 FilterChip(
-                                    title: space,
+                                    title: localizedSpaceTitle(space),
                                     isSelected: viewModel.selectedGardenSpace == space,
                                     action: { viewModel.selectedGardenSpace = space }
                                 )
@@ -88,11 +88,11 @@ struct InspirationFilterView: View {
                     }
 
                     if showsOtherSpaces {
-                        FilterSection(title: "OTHER SPACES") {
+                        FilterSection(title: L10n.InspirationFilter.otherSpaces) {
                             ChipFlow(spacing: 8, rowSpacing: 9) {
                                 ForEach(viewModel.otherSpaces, id: \.self) { space in
                                     FilterChip(
-                                        title: space,
+                                        title: localizedSpaceTitle(space),
                                         isSelected: viewModel.selectedOtherSpace == space,
                                         action: { viewModel.selectedOtherSpace = space }
                                     )
@@ -101,7 +101,7 @@ struct InspirationFilterView: View {
                         }
                     }
                 case .historyFeatures:
-                    FilterSection(title: "FEATURES") {
+                    FilterSection(title: L10n.InspirationFilter.features) {
                         ChipFlow(spacing: 8, rowSpacing: 9) {
                             ForEach(viewModel.historyFeatures, id: \.self) { feature in
                                 FilterChip(
@@ -126,7 +126,7 @@ struct InspirationFilterView: View {
                     dismiss()
                 }
             } label: {
-                Text("Apply")
+                Text(L10n.InspirationFilter.apply)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 18))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -155,6 +155,49 @@ struct InspirationFilterView: View {
             .fill(Color.DesignSystem.platinum)
             .frame(width: 48, height: 4)
             .padding(.top, 16)
+    }
+
+    private func localizedSpaceTitle(_ space: String) -> String {
+        switch space {
+        case "All":
+            return L10n.InspirationFilter.all
+        case "Living room":
+            return L10n.InspirationFilter.Space.livingRoom
+        case "Bathroom":
+            return L10n.InspirationFilter.Space.bathroom
+        case "Bedroom":
+            return L10n.InspirationFilter.Space.bedroom
+        case "Toilet":
+            return L10n.InspirationFilter.Space.toilet
+        case "Kitchen":
+            return L10n.InspirationFilter.Space.kitchen
+        case "Garden":
+            return L10n.InspirationFilter.Space.garden
+        case "Villa":
+            return L10n.InspirationFilter.Space.villa
+        case "Backyard":
+            return L10n.InspirationFilter.Space.backyard
+        case "Pool":
+            return L10n.InspirationFilter.Space.pool
+        case "Courtyard":
+            return L10n.InspirationFilter.Space.courtyard
+        case "Reference Style":
+            return L10n.Home.Tool.ReferenceStyle.title
+        case "Replace Objects":
+            return L10n.Home.Tool.ReplaceObjects.title
+        case "Remove Objects":
+            return L10n.Home.Tool.RemoveObjects.title
+        case "New Flooring":
+            return L10n.Home.Tool.NewFlooring.title
+        case "New Walls":
+            return L10n.Home.Tool.NewWalls.title
+        case "Furniture Finder":
+            return L10n.InspirationFilter.Feature.furnitureFinder
+        case "Edit":
+            return L10n.InspirationFilter.Feature.edit
+        default:
+            return space
+        }
     }
 }
 
@@ -253,16 +296,16 @@ struct InspirationFilterOverlay: View {
 extension ProjectType {
     var historyFilterTitle: String {
         switch self {
-        case .interior: "Interior Redesign"
-        case .exterior: "Exterior Redesign"
-        case .garden: "Garden Redesign"
-        case .referenceStyle: "Reference Style"
-        case .replaceObjects: "Replace Objects"
-        case .removeObjects: "Remove Objects"
-        case .newFlooring: "New Flooring"
-        case .newWalls: "New Wall"
-        case .furnitureFinder: "Furniture Finder"
-        case .edit: "Edit"
+        case .interior: L10n.InspirationFilter.Feature.interiorRedesign
+        case .exterior: L10n.ExteriorFlow.title
+        case .garden: L10n.Home.Tool.Garden.title
+        case .referenceStyle: L10n.Home.Tool.ReferenceStyle.title
+        case .replaceObjects: L10n.Home.Tool.ReplaceObjects.title
+        case .removeObjects: L10n.Home.Tool.RemoveObjects.title
+        case .newFlooring: L10n.Home.Tool.NewFlooring.title
+        case .newWalls: L10n.Home.Tool.NewWalls.title
+        case .furnitureFinder: L10n.InspirationFilter.Feature.furnitureFinder
+        case .edit: L10n.InspirationFilter.Feature.edit
         }
     }
 }

@@ -10,6 +10,18 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  internal enum AdvancedTools {
+    /// New Wall
+    internal static let newWall = L10n.tr("Localizable", "advanced_tools.new_wall", fallback: "New Wall")
+    /// Reference
+    internal static let reference = L10n.tr("Localizable", "advanced_tools.reference", fallback: "Reference")
+    /// Remove
+    internal static let remove = L10n.tr("Localizable", "advanced_tools.remove", fallback: "Remove")
+    /// Replace
+    internal static let replace = L10n.tr("Localizable", "advanced_tools.replace", fallback: "Replace")
+    /// Advanced Tools
+    internal static let title = L10n.tr("Localizable", "advanced_tools.title", fallback: "Advanced Tools")
+  }
   internal enum Common {
     /// Cancel
     internal static let cancel = L10n.tr("Localizable", "common.cancel", fallback: "Cancel")
@@ -26,7 +38,21 @@ internal enum L10n {
     /// Exterior Redesign
     internal static let title = L10n.tr("Localizable", "exterior_flow.title", fallback: "Exterior Redesign")
   }
+  internal enum Flow {
+    /// CONTINUE
+    internal static let `continue` = L10n.tr("Localizable", "flow.continue", fallback: "CONTINUE")
+    /// GENERATE
+    internal static let generate = L10n.tr("Localizable", "flow.generate", fallback: "GENERATE")
+    /// GET STARTED
+    internal static let getStarted = L10n.tr("Localizable", "flow.get_started", fallback: "GET STARTED")
+    /// Step %d/%d
+    internal static func step(_ p1: Int, _ p2: Int) -> String {
+      return L10n.tr("Localizable", "flow.step", p1, p2, fallback: "Step %d/%d")
+    }
+  }
   internal enum GenerationLoading {
+    /// Generating...
+    internal static let generating = L10n.tr("Localizable", "generation_loading.generating", fallback: "Generating...")
     internal enum Failure {
       /// BACK TO DESIGN
       internal static let backToDesign = L10n.tr("Localizable", "generation_loading.failure.back_to_design", fallback: "BACK TO DESIGN")
@@ -76,14 +102,168 @@ internal enum L10n {
     internal static let advancedEditing = L10n.tr("Localizable", "home.advanced_editing", fallback: "ADVANCED EDITING")
     /// Home
     internal static let title = L10n.tr("Localizable", "home.title", fallback: "Home")
+    internal enum Tool {
+      internal enum Exterior {
+        /// Stunning facade and garden renders.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.exterior.subtitle", fallback: "Stunning facade and garden renders.")
+        /// Exterior AI
+        internal static let title = L10n.tr("Localizable", "home.tool.exterior.title", fallback: "Exterior AI")
+      }
+      internal enum Garden {
+        /// Transform outdoor spaces instantly.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.garden.subtitle", fallback: "Transform outdoor spaces instantly.")
+        /// Garden Redesign
+        internal static let title = L10n.tr("Localizable", "home.tool.garden.title", fallback: "Garden Redesign")
+      }
+      internal enum Interior {
+        /// Instant room styling transformations.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.interior.subtitle", fallback: "Instant room styling transformations.")
+        /// Interior AI
+        internal static let title = L10n.tr("Localizable", "home.tool.interior.title", fallback: "Interior AI")
+      }
+      internal enum NewFlooring {
+        /// Transform your floors instantly.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.new_flooring.subtitle", fallback: "Transform your floors instantly.")
+        /// New Flooring
+        internal static let title = L10n.tr("Localizable", "home.tool.new_flooring.title", fallback: "New Flooring")
+      }
+      internal enum NewWalls {
+        /// Refresh walls with new color & textures.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.new_walls.subtitle", fallback: "Refresh walls with new color & textures.")
+        /// New Walls
+        internal static let title = L10n.tr("Localizable", "home.tool.new_walls.title", fallback: "New Walls")
+      }
+      internal enum ReferenceStyle {
+        /// Replicate any design look instantly.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.reference_style.subtitle", fallback: "Replicate any design look instantly.")
+        /// Reference Style
+        internal static let title = L10n.tr("Localizable", "home.tool.reference_style.title", fallback: "Reference Style")
+      }
+      internal enum RemoveObjects {
+        /// Instantly erase clutter and items.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.remove_objects.subtitle", fallback: "Instantly erase clutter and items.")
+        /// Remove Objects
+        internal static let title = L10n.tr("Localizable", "home.tool.remove_objects.title", fallback: "Remove Objects")
+      }
+      internal enum ReplaceObjects {
+        /// Swap furniture and decor easily.
+        internal static let subtitle = L10n.tr("Localizable", "home.tool.replace_objects.subtitle", fallback: "Swap furniture and decor easily.")
+        /// Replace Objects
+        internal static let title = L10n.tr("Localizable", "home.tool.replace_objects.title", fallback: "Replace Objects")
+      }
+    }
   }
   internal enum Inspiration {
+    internal enum Category {
+      /// Exterior
+      internal static let exterior = L10n.tr("Localizable", "inspiration.category.exterior", fallback: "Exterior")
+      /// Garden
+      internal static let garden = L10n.tr("Localizable", "inspiration.category.garden", fallback: "Garden")
+      /// Interior
+      internal static let interior = L10n.tr("Localizable", "inspiration.category.interior", fallback: "Interior")
+    }
     /// Like inspiration
     internal static let like = L10n.tr("Localizable", "inspiration.like", fallback: "Like inspiration")
     /// Inspiration
     internal static let title = L10n.tr("Localizable", "inspiration.title", fallback: "Inspiration")
     /// Unlike inspiration
     internal static let unlike = L10n.tr("Localizable", "inspiration.unlike", fallback: "Unlike inspiration")
+    internal enum Detail {
+      /// Back
+      internal static let back = L10n.tr("Localizable", "inspiration.detail.back", fallback: "Back")
+      /// OR
+      internal static let or = L10n.tr("Localizable", "inspiration.detail.or", fallback: "OR")
+      /// REDESIGN
+      internal static let redesign = L10n.tr("Localizable", "inspiration.detail.redesign", fallback: "REDESIGN")
+      /// Show after image
+      internal static let showAfterImage = L10n.tr("Localizable", "inspiration.detail.show_after_image", fallback: "Show after image")
+      /// Show before image
+      internal static let showBeforeImage = L10n.tr("Localizable", "inspiration.detail.show_before_image", fallback: "Show before image")
+    }
+  }
+  internal enum InspirationFilter {
+    /// All
+    internal static let all = L10n.tr("Localizable", "inspiration_filter.all", fallback: "All")
+    /// Apply
+    internal static let apply = L10n.tr("Localizable", "inspiration_filter.apply", fallback: "Apply")
+    /// EXTERIOR SPACES
+    internal static let exteriorSpaces = L10n.tr("Localizable", "inspiration_filter.exterior_spaces", fallback: "EXTERIOR SPACES")
+    /// FAVOURITE
+    internal static let favourite = L10n.tr("Localizable", "inspiration_filter.favourite", fallback: "FAVOURITE")
+    /// FEATURES
+    internal static let features = L10n.tr("Localizable", "inspiration_filter.features", fallback: "FEATURES")
+    /// Filters
+    internal static let title = L10n.tr("Localizable", "inspiration_filter.title", fallback: "Filters")
+    /// GARDEN SPACES
+    internal static let gardenSpaces = L10n.tr("Localizable", "inspiration_filter.garden_spaces", fallback: "GARDEN SPACES")
+    /// INTERIOR SPACES
+    internal static let interiorSpaces = L10n.tr("Localizable", "inspiration_filter.interior_spaces", fallback: "INTERIOR SPACES")
+    /// Liked
+    internal static let liked = L10n.tr("Localizable", "inspiration_filter.liked", fallback: "Liked")
+    /// OTHER SPACES
+    internal static let otherSpaces = L10n.tr("Localizable", "inspiration_filter.other_spaces", fallback: "OTHER SPACES")
+    /// Reset
+    internal static let reset = L10n.tr("Localizable", "inspiration_filter.reset", fallback: "Reset")
+    internal enum Feature {
+      /// Edit
+      internal static let edit = L10n.tr("Localizable", "inspiration_filter.feature.edit", fallback: "Edit")
+      /// Furniture Finder
+      internal static let furnitureFinder = L10n.tr("Localizable", "inspiration_filter.feature.furniture_finder", fallback: "Furniture Finder")
+      /// Interior Redesign
+      internal static let interiorRedesign = L10n.tr("Localizable", "inspiration_filter.feature.interior_redesign", fallback: "Interior Redesign")
+    }
+    internal enum Space {
+      /// Backyard
+      internal static let backyard = L10n.tr("Localizable", "inspiration_filter.space.backyard", fallback: "Backyard")
+      /// Bathroom
+      internal static let bathroom = L10n.tr("Localizable", "inspiration_filter.space.bathroom", fallback: "Bathroom")
+      /// Bedroom
+      internal static let bedroom = L10n.tr("Localizable", "inspiration_filter.space.bedroom", fallback: "Bedroom")
+      /// Courtyard
+      internal static let courtyard = L10n.tr("Localizable", "inspiration_filter.space.courtyard", fallback: "Courtyard")
+      /// Garden
+      internal static let garden = L10n.tr("Localizable", "inspiration_filter.space.garden", fallback: "Garden")
+      /// Kitchen
+      internal static let kitchen = L10n.tr("Localizable", "inspiration_filter.space.kitchen", fallback: "Kitchen")
+      /// Living room
+      internal static let livingRoom = L10n.tr("Localizable", "inspiration_filter.space.living_room", fallback: "Living room")
+      /// Pool
+      internal static let pool = L10n.tr("Localizable", "inspiration_filter.space.pool", fallback: "Pool")
+      /// Toilet
+      internal static let toilet = L10n.tr("Localizable", "inspiration_filter.space.toilet", fallback: "Toilet")
+      /// Villa
+      internal static let villa = L10n.tr("Localizable", "inspiration_filter.space.villa", fallback: "Villa")
+    }
+  }
+  internal enum InteriorFlow {
+    /// Pick a design style
+    internal static let pickDesignStyle = L10n.tr("Localizable", "interior_flow.pick_design_style", fallback: "Pick a design style")
+    /// Pick a room type
+    internal static let pickRoomType = L10n.tr("Localizable", "interior_flow.pick_room_type", fallback: "Pick a room type")
+  }
+  internal enum Intervention {
+    /// How much of the original layout should we keep?
+    internal static let subtitle = L10n.tr("Localizable", "intervention.subtitle", fallback: "How much of the original layout should we keep?")
+    /// AI Intervention
+    internal static let title = L10n.tr("Localizable", "intervention.title", fallback: "AI Intervention")
+    internal enum High {
+      /// Creative redesign with high innovation, low preservation.
+      internal static let description = L10n.tr("Localizable", "intervention.high.description", fallback: "Creative redesign with high innovation, low preservation.")
+      /// HIGH
+      internal static let title = L10n.tr("Localizable", "intervention.high.title", fallback: "HIGH")
+    }
+    internal enum Light {
+      /// Layout decoration with only textures and furniture updates.
+      internal static let description = L10n.tr("Localizable", "intervention.light.description", fallback: "Layout decoration with only textures and furniture updates.")
+      /// LIGHT
+      internal static let title = L10n.tr("Localizable", "intervention.light.title", fallback: "LIGHT")
+    }
+    internal enum Medium {
+      /// Balanced redesign with key room elements preserved.
+      internal static let description = L10n.tr("Localizable", "intervention.medium.description", fallback: "Balanced redesign with key room elements preserved.")
+      /// MEDIUM
+      internal static let title = L10n.tr("Localizable", "intervention.medium.title", fallback: "MEDIUM")
+    }
   }
   internal enum Language {
     /// Arabic (Saudi Arabia)
@@ -199,6 +379,36 @@ internal enum L10n {
         /// along with our use of third-party tools for app functionality.
         internal static let thirdPartyTools = L10n.tr("Localizable", "onboarding.welcome.terms.third_party_tools", fallback: "along with our use of third-party tools for app functionality.")
       }
+    }
+  }
+  internal enum PhotoSource {
+    /// Camera
+    internal static let camera = L10n.tr("Localizable", "photo_source.camera", fallback: "Camera")
+    /// Gallery
+    internal static let gallery = L10n.tr("Localizable", "photo_source.gallery", fallback: "Gallery")
+    /// Get Started
+    internal static let getStarted = L10n.tr("Localizable", "photo_source.get_started", fallback: "Get Started")
+    /// Choose your photo.
+    /// For better results, use a horizontal
+    /// direction.
+    internal static let instruction = L10n.tr("Localizable", "photo_source.instruction", fallback: "Choose your photo.\nFor better results, use a horizontal\ndirection.")
+    /// OR TRY A SAMPLE
+    internal static let orTryASample = L10n.tr("Localizable", "photo_source.or_try_a_sample", fallback: "OR TRY A SAMPLE")
+    /// Try a sample
+    internal static let tryASample = L10n.tr("Localizable", "photo_source.try_a_sample", fallback: "Try a sample")
+    internal enum CameraUnavailable {
+      /// Camera is not available on this device.
+      internal static let message = L10n.tr("Localizable", "photo_source.camera_unavailable.message", fallback: "Camera is not available on this device.")
+      /// Camera Unavailable
+      internal static let title = L10n.tr("Localizable", "photo_source.camera_unavailable.title", fallback: "Camera Unavailable")
+    }
+    internal enum Interior {
+      /// GET STARTED
+      internal static let cta = L10n.tr("Localizable", "photo_source.interior.cta", fallback: "GET STARTED")
+      /// Upload or select from template to try
+      internal static let subtitle = L10n.tr("Localizable", "photo_source.interior.subtitle", fallback: "Upload or select from template to try")
+      /// Start with a photo
+      internal static let title = L10n.tr("Localizable", "photo_source.interior.title", fallback: "Start with a photo")
     }
   }
   internal enum PhotoTips {

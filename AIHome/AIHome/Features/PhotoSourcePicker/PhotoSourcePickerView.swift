@@ -41,7 +41,7 @@ struct PhotoSourcePickerView: View {
                             .scaledToFit()
                             .frame(width: 52, height: 51)
                         
-                        Text("Choose your photo.\nFor better results, use a horizontal\ndirection.")
+                        Text(L10n.PhotoSource.instruction)
                             .font(FontFamily.Inter24pt.regular.swiftUIFont(size: 14))
                             .foregroundColor(Color.DesignSystem.coolGray)
                             .multilineTextAlignment(.center)
@@ -55,7 +55,7 @@ struct PhotoSourcePickerView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 16, height: 16)
-                                Text("Gallery")
+                                Text(L10n.PhotoSource.gallery)
                                     .font(FontFamily.Inter24pt.semiBold.swiftUIFont(size: 15))
                                     .foregroundColor(.white)
 
@@ -79,7 +79,7 @@ struct PhotoSourcePickerView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 16, height: 16)
-                                Text("Camera")
+                                Text(L10n.PhotoSource.camera)
                                     .font(FontFamily.Inter24pt.semiBold.swiftUIFont(size: 15))
                                     .foregroundColor(.DesignSystem.slateGray)
                             }
@@ -128,10 +128,10 @@ struct PhotoSourcePickerView: View {
             }
             .ignoresSafeArea()
         }
-        .alert("Camera Unavailable", isPresented: $isShowingCameraUnavailableAlert) {
-            Button("OK", role: .cancel) {}
+        .alert(L10n.PhotoSource.CameraUnavailable.title, isPresented: $isShowingCameraUnavailableAlert) {
+            Button(L10n.Common.ok, role: .cancel) {}
         } message: {
-            Text("Camera is not available on this device.")
+            Text(L10n.PhotoSource.CameraUnavailable.message)
         }
     }
 }
