@@ -1,8 +1,15 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @State private var viewModel = SettingsViewModel()
     @State private var webPageToOpen: AppWebPage?
+
+    private var appVersionText: String {
+        let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+        let currentYear = Calendar.current.component(.year, from: Date())
+        return "\(shortVersion) (\(currentYear))"
+    }
     
     var body: some View {
         ScrollView {
@@ -32,7 +39,7 @@ struct SettingsView: View {
                             Text(L10n.Settings.language)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
                                 .foregroundColor(.primary)
-                            Text(LanguageManager.shared.localizedName(forCode: viewModel.selectedLanguage).uppercased())
+                            Text(languageManager.localizedName(forCode: languageManager.selectedLanguage).uppercased())
                                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                                 .foregroundColor(.secondary)
                         }
@@ -93,7 +100,7 @@ struct SettingsView: View {
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                         .foregroundColor(.secondary)
                         .tracking(1.5)
-                    Text(L10n.Settings.version("2.4.0 (2026)"))
+                    Text(L10n.Settings.version(appVersionText))
                         .font(FontFamily.Roboto.regular.swiftUIFont(size: 11))
                         .foregroundColor(.gray)
                 }
@@ -104,8 +111,13 @@ struct SettingsView: View {
             .padding(.top, 24)
         }
         .background(Color(uiColor: .systemBackground))
-        .navigationTitle(L10n.Settings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(L10n.Settings.title)
+                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 17))
+            }
+        }
         .alert(
             "Restore Purchase",
             isPresented: Binding(

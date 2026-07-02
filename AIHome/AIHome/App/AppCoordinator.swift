@@ -6,6 +6,7 @@ import UIKit
 final class AppCoordinator {
     var path: [AppRoute] = []
     var currentRoot: AppRoute = .splash
+    var selectedTab: MainTab = .home
     private var initialImages: [UUID: UIImage] = [:]
 
     // Using @Observation and @State allows this to track navigation

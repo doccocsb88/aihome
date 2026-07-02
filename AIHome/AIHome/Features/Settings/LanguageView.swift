@@ -2,8 +2,13 @@ import SwiftUI
 
 struct LanguageView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var languageManager = LanguageManager.shared
-    
+    @Environment(LanguageManager.self) private var languageManager
+    @State private var pendingLanguage = LanguageManager.shared.selectedLanguage
+
+    private var hasPendingChanges: Bool {
+        pendingLanguage != languageManager.selectedLanguage
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -28,10 +33,15 @@ struct LanguageView: View {
                     .foregroundColor(Color.DesignSystem.textPrimary)
                 
                 Spacer()
-                
-                // Placeholder to balance the back button
-                Color.clear
-                    .frame(width: 44, height: 44)
+
+                Button(L10n.Language.save) {
+                    languageManager.applyLanguage(pendingLanguage)
+                    dismiss()
+                }
+                .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
+                .foregroundColor(hasPendingChanges ? Color.DesignSystem.folly : Color.DesignSystem.slateGray)
+                .disabled(!hasPendingChanges)
+                .frame(minWidth: 44, minHeight: 44)
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)
@@ -42,7 +52,7 @@ struct LanguageView: View {
                 VStack(spacing: 16) {
                     ForEach(languageManager.availableLanguages) { language in
                         Button(action: {
-                            languageManager.selectedLanguage = language.code
+                            pendingLanguage = language.code
                         }) {
                             HStack {
                                 Text(languageManager.localizedName(for: language))
@@ -51,7 +61,7 @@ struct LanguageView: View {
                                 
                                 Spacer()
                                 
-                                if languageManager.selectedLanguage == language.code {
+                                if pendingLanguage == language.code {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 16, weight: .semibold))
                                         .foregroundColor(Color.DesignSystem.folly)
@@ -78,6 +88,9 @@ struct LanguageView: View {
         }
         .navigationBarHidden(true)
         .background(Color(uiColor: .systemBackground))
+        .onAppear {
+            pendingLanguage = languageManager.selectedLanguage
+        }
     }
 }
 

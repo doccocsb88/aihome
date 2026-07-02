@@ -136,6 +136,16 @@ enum InteriorRoomType: String, CaseIterable, Identifiable {
     case teaRoom = "Tea Room"
 
     var id: String { rawValue }
+
+    /// Localized display name. Looks up `interior.room_type.<snake_case_case_name>`
+    /// in the active bundle and falls back to English `rawValue` when missing.
+    var localizedTitle: String {
+        InteriorTermLocalizer.localizedTitle(
+            keyPrefix: "interior.room_type.",
+            caseName: String(describing: self),
+            fallback: rawValue
+        )
+    }
 }
 
 enum InteriorDesignStyle: String, CaseIterable, Identifiable {
@@ -257,6 +267,16 @@ enum InteriorDesignStyle: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// Localized display name. Looks up `interior.design_style.<snake_case_case_name>`
+    /// in the active bundle and falls back to English `rawValue` when missing.
+    var localizedTitle: String {
+        InteriorTermLocalizer.localizedTitle(
+            keyPrefix: "interior.design_style.",
+            caseName: String(describing: self),
+            fallback: rawValue
+        )
+    }
+
     var prompt: String? {
         switch self {
         case .transitional: return "A stunning portrait orientation interior of a transitional kitchen. Light grey shaker cabinets, a classic marble slab backsplash, modern polished nickel hardware, and high-end stainless steel appliances. Warm oak floors, bright and airy lighting, crisp professional architectural photography."
@@ -290,6 +310,32 @@ enum InteriorDesignStyle: String, CaseIterable, Identifiable {
         case .brutalist: return "A monumental brutalist bedroom design, vertical perspective. Raw, unpolished board-formed concrete walls, massive blocky geometric concrete architecture, a minimal low platform bed with charcoal grey linens. Moody casting shadows, dramatic and architectural."
         case .artDeco: return "A stunning Art Deco living room, portrait framing. Features a rich velvet fan-back sofa, bold black and gold geometric wall panels, a polished brass bar cart, and glossy marble floors. Lavish, glamorous, high-contrast symmetry, classic 1920s luxury redefined."
         default: return nil
+        }
+    }
+}
+
+private enum InteriorTermLocalizer {
+    static func localizedTitle(keyPrefix: String, caseName: String, fallback: String) -> String {
+        let localizationKey = keyPrefix + caseName.snakeCasedFromCamelCase
+        return LanguageManager.shared.currentBundle.localizedString(
+            forKey: localizationKey,
+            value: fallback,
+            table: "Localizable"
+        )
+    }
+}
+
+private extension String {
+    /// Converts a camelCase enum case name (e.g. `livingRoom`) into a snake_case
+    /// localization key suffix (e.g. `living_room`).
+    var snakeCasedFromCamelCase: String {
+        reduce(into: "") { partialResult, character in
+            if character.isUppercase {
+                if !partialResult.isEmpty { partialResult.append("_") }
+                partialResult.append(contentsOf: character.lowercased())
+            } else {
+                partialResult.append(character)
+            }
         }
     }
 }

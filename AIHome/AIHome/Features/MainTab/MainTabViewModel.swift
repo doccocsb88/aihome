@@ -10,8 +10,6 @@ enum MainTab: CaseIterable {
 
 @Observable
 final class MainTabViewModel {
-    var selectedTab: MainTab = .home
-
     func refreshPremiumStatus() async {
         await UserManager.shared.refreshPremiumStatus()
     }

@@ -176,7 +176,7 @@ struct InteriorFlowView: View {
                         Button(action: {
                             viewModel.draft.roomType = room
                         }) {
-                            Text(room.rawValue)
+                            Text(room.localizedTitle)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 16)
@@ -241,7 +241,7 @@ struct InteriorFlowView: View {
                                         .frame(height: 160)
                                 }
 
-                                Text(style.rawValue.uppercased())
+                                Text(style.localizedTitle.uppercased())
                                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                                     .foregroundColor(.DesignSystem.textPrimary)
                                     .frame(maxWidth: .infinity)

@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct AIHomeApp: App {
+    @State private var languageManager = LanguageManager.shared
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -32,7 +34,11 @@ struct AIHomeApp: App {
     var body: some Scene {
         WindowGroup {
             AppCoordinatorView()
+                .environment(languageManager)
+                .environment(\.layoutDirection, languageManager.isRightToLeft ? .rightToLeft : .leftToRight)
                 .preferredColorScheme(.light)
+                // Recreates the full view tree from splash so every localized string reloads.
+                .id(languageManager.appRestartID)
         }
         .modelContainer(sharedModelContainer)
     }

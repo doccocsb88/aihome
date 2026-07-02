@@ -14,12 +14,15 @@ final class LanguageManager {
     
     private let languageKey = "selected_language_key"
     
-    var selectedLanguage: String {
+    private(set) var selectedLanguage: String {
         didSet {
             UserDefaults.standard.set(selectedLanguage, forKey: languageKey)
             updateBundle()
         }
     }
+
+    /// Bumped when language is applied to recreate the entire app from splash.
+    private(set) var appRestartID = UUID()
     
     let availableLanguages: [AppLanguage] = [
         AppLanguage(code: "en-US", fallbackName: "English (US)"),
@@ -63,25 +66,24 @@ final class LanguageManager {
         }
     }
     
+    var isRightToLeft: Bool {
+        selectedLanguage.hasPrefix("ar")
+    }
+
+    func applyLanguage(_ languageCode: String) {
+        let normalizedCode = Self.normalizedLanguageCode(languageCode)
+        guard normalizedCode != selectedLanguage else { return }
+
+        selectedLanguage = normalizedCode
+        appRestartID = UUID()
+    }
+
     func localizedName(for language: AppLanguage) -> String {
-        switch language.code {
-        case "en-US": return L10n.Language.englishUs
-        case "ar-SA": return L10n.Language.arabicSaudiArabia
-        case "de-DE": return L10n.Language.germanGermany
-        case "es-ES": return L10n.Language.spanishSpain
-        case "fr-FR": return L10n.Language.frenchFrance
-        case "hi": return L10n.Language.hindi
-        case "id": return L10n.Language.indonesian
-        case "it": return L10n.Language.italian
-        case "ja": return L10n.Language.japanese
-        case "ko": return L10n.Language.korean
-        case "ms": return L10n.Language.malay
-        case "pt-BR": return L10n.Language.portugueseBrazil
-        case "ru": return L10n.Language.russian
-        case "th": return L10n.Language.thai
-        case "tr": return L10n.Language.turkish
-        default: return language.fallbackName
-        }
+        currentBundle.localizedString(
+            forKey: Self.languageNameKey(for: language.code),
+            value: language.fallbackName,
+            table: "Localizable"
+        )
     }
 
     func localizedName(forCode code: String) -> String {
@@ -90,6 +92,27 @@ final class LanguageManager {
             return code
         }
         return localizedName(for: language)
+    }
+
+    private static func languageNameKey(for code: String) -> String {
+        switch code {
+        case "en-US": return "language.english_us"
+        case "ar-SA": return "language.arabic_saudi_arabia"
+        case "de-DE": return "language.german_germany"
+        case "es-ES": return "language.spanish_spain"
+        case "fr-FR": return "language.french_france"
+        case "hi": return "language.hindi"
+        case "id": return "language.indonesian"
+        case "it": return "language.italian"
+        case "ja": return "language.japanese"
+        case "ko": return "language.korean"
+        case "ms": return "language.malay"
+        case "pt-BR": return "language.portuguese_brazil"
+        case "ru": return "language.russian"
+        case "th": return "language.thai"
+        case "tr": return "language.turkish"
+        default: return "language.title"
+        }
     }
     
     private static func normalizedLanguageCode(_ savedValue: String) -> String {

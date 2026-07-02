@@ -10,7 +10,7 @@ struct MainTabView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $viewModel.selectedTab) {
+            TabView(selection: Bindable(coordinator).selectedTab) {
                 NavigationStack(path: Bindable(coordinator).path) {
                     HomeView()
                         .navigationDestination(for: AppRoute.self) { route in
@@ -53,7 +53,7 @@ struct MainTabView: View {
             }
 
             if shouldShowCustomTabBar {
-                CustomTabBar(selectedTab: $viewModel.selectedTab)
+                CustomTabBar(selectedTab: Bindable(coordinator).selectedTab)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
