@@ -101,14 +101,10 @@ private enum InspirationData {
             styleTag: styleTag,
             beforeImageName: "\(prefix)_\(paddedNumber)_before",
             afterImageName: "\(prefix)_\(paddedNumber)_after",
-            title: localized("inspiration.item.\(id).title", fallback: title),
-            subtitle: localized("inspiration.item.\(id).subtitle", fallback: subtitle),
+            title: title,
+            subtitle: subtitle,
             interventionLevel: interventionLevel,
             isLiked: false
         )
-    }
-
-    private static func localized(_ key: String, fallback: String) -> String {
-        LanguageManager.shared.currentBundle.localizedString(forKey: key, value: fallback, table: "Localizable")
     }
 }

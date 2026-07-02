@@ -478,6 +478,20 @@ internal enum L10n {
     }
   }
   internal enum Interior {
+    internal enum CustomStyle {
+      /// Apply
+      internal static var apply: String { L10n.tr("Localizable", "interior.custom_style.apply", fallback: "Apply") }
+      /// %d/150
+      internal static func characterCount(_ p1: Int) -> String {
+        return L10n.tr("Localizable", "interior.custom_style.character_count", p1, fallback: "%d/150")
+      }
+      /// Describe your dream interior style
+      /// (e.g. Modern Japanese Zen with
+      /// dark wood accents)...
+      internal static var placeholder: String { L10n.tr("Localizable", "interior.custom_style.placeholder", fallback: "Describe your dream interior style\n(e.g. Modern Japanese Zen with\ndark wood accents)...") }
+      /// Custom style popup
+      internal static var title: String { L10n.tr("Localizable", "interior.custom_style.title", fallback: "Custom Style") }
+    }
     internal enum DesignStyle {
       /// Art Deco
       internal static var artDeco: String { L10n.tr("Localizable", "interior.design_style.art_deco", fallback: "Art Deco") }

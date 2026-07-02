@@ -239,6 +239,12 @@ daha iyi tasarımlar";
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "Özel Stil";
+"interior.custom_style.apply" = "Uygula";
+"interior.custom_style.placeholder" = "Hayalinizdeki iç mekan stilini açıklayın\n(ör. koyu ahşap detaylarla Modern Japon Zen)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "Yapay Zeka Müdahalesi";
 "intervention.subtitle" = "Orijinal düzenin ne kadarını korumalıyız?";
 "intervention.high.title" = "YÜKSEK";

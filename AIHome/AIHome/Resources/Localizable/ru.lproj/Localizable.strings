@@ -239,6 +239,12 @@
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "Свой стиль";
+"interior.custom_style.apply" = "Применить";
+"interior.custom_style.placeholder" = "Опишите интерьер вашей мечты\n(например, Modern Japanese Zen с\nакцентами из тёмного дерева)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "Вмешательство ИИ";
 "intervention.subtitle" = "Какую часть исходной планировки нужно сохранить?";
 "intervention.high.title" = "ВЫСОКОЕ";

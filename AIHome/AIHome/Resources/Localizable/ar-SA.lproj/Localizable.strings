@@ -239,6 +239,12 @@
 "interior.design_style.candy_land" = "أرض الحلوى";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "نمط مخصص";
+"interior.custom_style.apply" = "تطبيق";
+"interior.custom_style.placeholder" = "صف أسلوب الديكور الداخلي الذي تحلم به\n(مثال: Zen ياباني حديث مع\nلمسات خشب داكن)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "تدخل الذكاء الاصطناعي";
 "intervention.subtitle" = "ما مقدار التصميم الأصلي الذي يجب أن نحتفظ به؟";
 "intervention.high.title" = "عالٍ";

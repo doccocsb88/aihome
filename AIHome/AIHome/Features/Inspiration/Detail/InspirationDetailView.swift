@@ -56,7 +56,7 @@ struct InspirationDetailView: View {
                 .frame(maxHeight: .infinity, alignment: .top)
 
             VStack(alignment: .leading, spacing: 10) {
-                Text(viewModel.item.title.capitalized)
+                Text(viewModel.item.localizedTitle.capitalized)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 25))
                     .foregroundStyle(.white)
                     .lineLimit(2)
@@ -64,7 +64,7 @@ struct InspirationDetailView: View {
                     .frame(maxWidth: width - 70, alignment: .leading)
                     .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
 
-                Text("\(viewModel.item.styleTag.uppercased())  ·  \(viewModel.item.spaceType.uppercased())")
+                Text("\(viewModel.item.localizedStyleTag.uppercased())  ·  \(viewModel.item.localizedSpaceType.uppercased())")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 11))
                     .tracking(4.2)
                     .foregroundStyle(.white.opacity(0.74))

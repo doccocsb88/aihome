@@ -36,4 +36,59 @@ struct InspirationItem: Codable, Identifiable, Equatable {
     let subtitle: String
     let interventionLevel: InspirationInterventionLevel
     var isLiked: Bool
+
+    var localizedTitle: String {
+        InspirationItemLocalizer.localized(
+            key: "inspiration.item.\(id).title",
+            fallback: title
+        )
+    }
+
+    var localizedSubtitle: String {
+        InspirationItemLocalizer.localized(
+            key: "inspiration.item.\(id).subtitle",
+            fallback: subtitle
+        )
+    }
+
+    var localizedStyleTag: String {
+        InspirationItemLocalizer.localizedStyleTag(styleTag)
+    }
+
+    var localizedSpaceType: String {
+        InspirationItemLocalizer.localizedSpaceType(spaceType)
+    }
+}
+
+private enum InspirationItemLocalizer {
+    static func localized(key: String, fallback: String) -> String {
+        LanguageManager.shared.currentBundle.localizedString(
+            forKey: key,
+            value: fallback,
+            table: "Localizable"
+        )
+    }
+
+    static func localizedStyleTag(_ styleTag: String) -> String {
+        let normalizedTag = styleTag
+            .lowercased()
+            .replacingOccurrences(of: " ", with: "_")
+            .replacingOccurrences(of: "electic", with: "eclectic")
+
+        return localized(
+            key: "interior.design_style.\(normalizedTag)",
+            fallback: styleTag
+        )
+    }
+
+    static func localizedSpaceType(_ spaceType: String) -> String {
+        let normalizedSpace = spaceType
+            .lowercased()
+            .replacingOccurrences(of: " ", with: "_")
+
+        return localized(
+            key: "interior.room_type.\(normalizedSpace)",
+            fallback: spaceType
+        )
+    }
 }

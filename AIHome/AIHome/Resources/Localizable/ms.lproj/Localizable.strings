@@ -239,6 +239,12 @@ reka bentuk lebih baik";
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "Gaya Tersuai";
+"interior.custom_style.apply" = "Guna";
+"interior.custom_style.placeholder" = "Terangkan gaya dalaman impian anda\n(cth. Modern Japanese Zen dengan\naksen kayu gelap)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "Campur Tangan AI";
 "intervention.subtitle" = "Berapa banyak susun atur asal yang perlu kami kekalkan?";
 "intervention.high.title" = "TINGGI";

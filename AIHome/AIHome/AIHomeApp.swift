@@ -37,8 +37,6 @@ struct AIHomeApp: App {
                 .environment(languageManager)
                 .environment(\.layoutDirection, languageManager.isRightToLeft ? .rightToLeft : .leftToRight)
                 .preferredColorScheme(.light)
-                // Recreates the full view tree from splash so every localized string reloads.
-                .id(languageManager.appRestartID)
         }
         .modelContainer(sharedModelContainer)
     }

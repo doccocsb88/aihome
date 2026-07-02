@@ -73,7 +73,7 @@ struct InteriorFlowContainerView: View {
         }
         let requestDesignStyle = isCustomStyle ? "Modern" : designStyle.rawValue
         let requestCustomInstruction = isCustomStyle ? customStylePrompt : nil
-        let displayStyle = isCustomStyle ? (customStylePrompt ?? "Custom Style") : designStyle.rawValue
+        let displayStyle = isCustomStyle ? (customStylePrompt ?? L10n.Interior.CustomStyle.title) : designStyle.rawValue
 
         let aiIntervention: AIIntervention
         switch interventionLevel {

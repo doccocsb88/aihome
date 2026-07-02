@@ -29,7 +29,7 @@ struct CustomStylePopupView: View {
                     .background(Color.black)
                     .clipShape(Circle())
 
-                Text("Custom Style")
+                Text(L10n.Interior.CustomStyle.title)
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 24))
                     .foregroundColor(.DesignSystem.textPrimary)
                     .padding(.top, 18)
@@ -42,7 +42,7 @@ struct CustomStylePopupView: View {
                     guard !trimmedText.isEmpty else { return }
                     onApply(trimmedText)
                 }) {
-                    Text("Apply")
+                    Text(L10n.Interior.CustomStyle.apply)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 20))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, minHeight: 68)
@@ -93,7 +93,7 @@ struct CustomStylePopupView: View {
                 }
 
             if text.isEmpty {
-                Text("Describe your dream interior style\n(e.g. Modern Japanese Zen with\ndark wood accents)...")
+                Text(L10n.Interior.CustomStyle.placeholder)
                     .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
                     .foregroundColor(Color.DesignSystem.coolGray)
                     .lineSpacing(8)
@@ -106,7 +106,7 @@ struct CustomStylePopupView: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text("\(text.count)/150")
+                    Text(L10n.Interior.CustomStyle.characterCount(text.count))
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
                         .foregroundColor(Color.DesignSystem.coolGray.opacity(0.45))
                         .padding(.trailing, 28)

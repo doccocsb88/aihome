@@ -21,8 +21,8 @@ final class LanguageManager {
         }
     }
 
-    /// Bumped when language is applied to recreate the entire app from splash.
-    private(set) var appRestartID = UUID()
+    /// Bumped when language is applied to rebuild localized UI without resetting navigation.
+    private(set) var localeRefreshID = UUID()
     
     let availableLanguages: [AppLanguage] = [
         AppLanguage(code: "en-US", fallbackName: "English (US)"),
@@ -75,7 +75,7 @@ final class LanguageManager {
         guard normalizedCode != selectedLanguage else { return }
 
         selectedLanguage = normalizedCode
-        appRestartID = UUID()
+        localeRefreshID = UUID()
     }
 
     func localizedName(for language: AppLanguage) -> String {

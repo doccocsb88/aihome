@@ -239,6 +239,12 @@ melhores designs";
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalista";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "Estilo personalizado";
+"interior.custom_style.apply" = "Aplicar";
+"interior.custom_style.placeholder" = "Descreva o estilo de interior dos seus sonhos\n(ex.: Zen japonês moderno com\ndetalhes em madeira escura)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "Intervenção da IA";
 "intervention.subtitle" = "Quanto do layout original devemos manter?";
 "intervention.high.title" = "ALTA";

@@ -194,7 +194,7 @@ private struct InspirationCardContent: View {
     private var infoPanel: some View {
         VStack(alignment: .leading, spacing: 22) {
             HStack(alignment: .top, spacing: 12) {
-                Text(item.title.capitalized)
+                Text(item.localizedTitle.capitalized)
                     .font(FontFamily.Roboto.black.swiftUIFont(size: 20))
                     .foregroundStyle(Color.DesignSystem.textPrimary)
                     .lineLimit(2)
@@ -214,7 +214,7 @@ private struct InspirationCardContent: View {
                 .accessibilityLabel(item.isLiked ? L10n.Inspiration.unlike : L10n.Inspiration.like)
             }
 
-            Text(item.subtitle)
+            Text(item.localizedSubtitle)
                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 13))
                 .foregroundStyle(Color.DesignSystem.slateGray)
                 .lineSpacing(5)
@@ -239,13 +239,13 @@ private struct InspirationCardContent: View {
     private var tagFlow: some View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: 10) {
-                InspirationTag(title: item.styleTag)
-                InspirationTag(title: item.spaceType)
+                InspirationTag(title: item.localizedStyleTag)
+                InspirationTag(title: item.localizedSpaceType)
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                InspirationTag(title: item.styleTag)
-                InspirationTag(title: item.spaceType)
+                InspirationTag(title: item.localizedStyleTag)
+                InspirationTag(title: item.localizedSpaceType)
             }
         }
     }

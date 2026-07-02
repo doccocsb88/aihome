@@ -239,6 +239,12 @@ Pro で無制限の機能、デザイン、
 "interior.design_style.candy_land" = "キャンディランド";
 "interior.design_style.brutalist" = "ブルータリスト";
 "interior.design_style.art_deco" = "アールデコ";
+
+/* Custom style popup */
+"interior.custom_style.title" = "カスタムスタイル";
+"interior.custom_style.apply" = "適用";
+"interior.custom_style.placeholder" = "理想のインテリアスタイルを説明してください\n（例：ダークウッドのアクセントが効いた\nモダン・ジャパニーズ・禅）...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "AIの介入度";
 "intervention.subtitle" = "元のレイアウトをどのくらい残しますか？";
 "intervention.high.title" = "高";

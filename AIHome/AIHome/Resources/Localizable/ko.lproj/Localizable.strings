@@ -239,6 +239,12 @@ Pro로 무제한 기능, 디자인 및
 "interior.design_style.candy_land" = "캔디랜드";
 "interior.design_style.brutalist" = "브루탈리스트";
 "interior.design_style.art_deco" = "아르데코";
+
+/* Custom style popup */
+"interior.custom_style.title" = "맞춤 스타일";
+"interior.custom_style.apply" = "적용";
+"interior.custom_style.placeholder" = "꿈꾸는 인테리어 스타일을 설명해 주세요\n(예: 어두운 나무 포인트가 있는\n모던 재팬디 Zen)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "AI 개입";
 "intervention.subtitle" = "원본 레이아웃을 얼마나 유지할까요?";
 "intervention.high.title" = "높음";

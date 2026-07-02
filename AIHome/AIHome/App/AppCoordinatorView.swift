@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AppCoordinatorView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @State private var coordinator = AppCoordinator()
 
     var body: some View {
@@ -17,6 +18,8 @@ struct AppCoordinatorView: View {
                 .id("RootNavStack")
             }
         }
+        // Rebuilds localized UI while keeping coordinator state (tab, navigation path).
+        .id(languageManager.localeRefreshID)
         .environment(coordinator)
     }
 }

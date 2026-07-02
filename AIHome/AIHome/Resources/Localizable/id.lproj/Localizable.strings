@@ -239,6 +239,12 @@ desain lebih baik";
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "Gaya Kustom";
+"interior.custom_style.apply" = "Terapkan";
+"interior.custom_style.placeholder" = "Jelaskan gaya interior impian Anda\n(mis. Modern Japanese Zen dengan\naksen kayu gelap)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "Intervensi AI";
 "intervention.subtitle" = "Seberapa banyak tata letak asli yang harus kami pertahankan?";
 "intervention.high.title" = "TINGGI";

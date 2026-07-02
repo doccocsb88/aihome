@@ -223,6 +223,12 @@ bessere Designs";
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "Individueller Stil";
+"interior.custom_style.apply" = "Anwenden";
+"interior.custom_style.placeholder" = "Beschreiben Sie Ihren Traum-Innenstil\n(z. B. Modern Japanese Zen mit\ndunklen Holzakzenten)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "KI-Eingriff";
 "intervention.subtitle" = "Wie viel vom ursprünglichen Layout sollen wir beibehalten?";
 "intervention.high.title" = "HOCH";

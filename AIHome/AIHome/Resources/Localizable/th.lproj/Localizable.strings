@@ -239,6 +239,12 @@
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "สไตล์กำหนดเอง";
+"interior.custom_style.apply" = "ใช้";
+"interior.custom_style.placeholder" = "อธิบายสไตล์การตกแต่งภายในที่คุณฝัน\n(เช่น Modern Japanese Zen พร้อม\nไม้สีเข้มเป็นจุดเด่น)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "การแทรกแซงของ AI";
 "intervention.subtitle" = "คุณต้องการคงเลย์เอาต์เดิมไว้มากแค่ไหน?";
 "intervention.high.title" = "สูง";

@@ -239,6 +239,12 @@ Pro के साथ असीमित सुविधाएँ, डिज़�
 "interior.design_style.candy_land" = "Candy Land";
 "interior.design_style.brutalist" = "Brutalist";
 "interior.design_style.art_deco" = "Art Deco";
+
+/* Custom style popup */
+"interior.custom_style.title" = "कस्टम स्टाइल";
+"interior.custom_style.apply" = "लागू करें";
+"interior.custom_style.placeholder" = "अपनी सपनों की इंटीरियर शैली का वर्णन करें\n(जैसे, गहरे लकड़ी के एक्सेंट के साथ\nमॉडर्न जापानी ज़ेन)...";
+"interior.custom_style.character_count" = "%d/150";
 "intervention.title" = "AI हस्तक्षेप";
 "intervention.subtitle" = "मूल लेआउट का कितना हिस्सा हमें रखना चाहिए?";
 "intervention.high.title" = "उच्च";
