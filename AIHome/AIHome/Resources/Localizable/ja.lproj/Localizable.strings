@@ -1,0 +1,129 @@
+"settings.title" = "設定";
+"settings.restore_purchase" = "購入を復元";
+"settings.restoring" = "復元中...";
+"settings.language" = "言語";
+"settings.privacy_policy" = "プライバシーポリシー";
+"settings.terms_of_service" = "利用規約";
+"settings.feedback" = "フィードバック";
+"settings.version" = "バージョン %@";
+
+"language.title" = "言語";
+"language.english_us" = "英語（米国）";
+"language.arabic_saudi_arabia" = "アラビア語（サウジアラビア）";
+"language.german_germany" = "ドイツ語（ドイツ）";
+"language.spanish_spain" = "スペイン語（スペイン）";
+"language.french_france" = "フランス語（フランス）";
+"language.hindi" = "ヒンディー語";
+"language.indonesian" = "インドネシア語";
+"language.italian" = "イタリア語";
+"language.japanese" = "日本語";
+"language.korean" = "韓国語";
+"language.malay" = "マレー語";
+"language.portuguese_brazil" = "ポルトガル語（ブラジル）";
+"language.russian" = "ロシア語";
+"language.thai" = "タイ語";
+"language.turkish" = "トルコ語";
+
+"common.ok" = "OK";
+"common.cancel" = "キャンセル";
+"common.delete" = "削除";
+"common.close" = "閉じる";
+
+"home.title" = "ホーム";
+"home.advanced_editing" = "高度な編集";
+
+"history.title" = "履歴";
+"history.empty.title" = "最初のプロジェクトを始めましょう";
+"history.empty.message" = "新しい空間を作成して、\nアイデアが形になる様子をご覧ください。";
+"history.empty.create_project" = "新規プロジェクトを作成";
+"history.delete_confirmation.title" = "選択したプロジェクトを削除しますか？";
+"history.delete_confirmation.message" = "この操作は取り消せません。";
+"history.delete_selected" = "削除 (%d)";
+"history.filter_empty.title" = "一致するプロジェクトがありません";
+"history.filter_empty.message" = "フィルターを調整またはリセットしてみてください。";
+"history.filter_empty.reset_filters" = "フィルターをリセット";
+
+"onboarding.continue" = "続ける";
+"onboarding.after" = "変更後";
+"onboarding.welcome.title" = "HomeGPT へようこそ";
+"onboarding.welcome.subtitle" = "AI で空間を変身させましょう";
+"onboarding.welcome.get_started" = "始める";
+"onboarding.welcome.terms_of_use" = "利用規約";
+"onboarding.welcome.subscription_terms" = "サブスクリプション規約";
+"onboarding.welcome.privacy_policy" = "プライバシーポリシー";
+"onboarding.welcome.terms.leading" = "続行すると、次に同意したことになります";
+"onboarding.welcome.terms.and" = "および";
+"onboarding.welcome.terms.comma" = "、";
+"onboarding.welcome.terms.third_party_tools" = "また、アプリ機能のためのサードパーティツールの使用にも同意したことになります。";
+"onboarding.interior.title" = "インテリアデザイン";
+"onboarding.interior.subtitle" = "空間を瞬時にリデザイン";
+"onboarding.exterior.title" = "エクステリアデザイン";
+"onboarding.exterior.subtitle" = "外観を再構想しましょう";
+"onboarding.landscape.title" = "ランドスケープデザイン";
+"onboarding.landscape.subtitle" = "AI で庭をリフレッシュ";
+"onboarding.trial_enabled.title" = "3日間の無料トライアルが有効になりました！";
+"onboarding.trial_enabled.title_line1" = "3日間の無料トライアル";
+"onboarding.trial_enabled.title_line2" = "が有効になりました！";
+"onboarding.trial_enabled.subtitle" = "すべてのプレミアム機能に完全にアクセスできるようになりました。";
+"onboarding.trial_enabled.start_designing" = "デザインを始める";
+
+"limit.generations_left.title" = "無料生成 残り
+%d/%d 回";
+"limit.reached.title" = "上限に達しました";
+"limit.generations_left.message" = "Pro で無制限の機能、デザイン、
+より高速な処理をアンロックしましょう。";
+"limit.reached.message" = "無料生成をすべて使い切りました。
+Pro で無制限の機能、デザイン、
+より高速な処理をアンロックしましょう。";
+"limit.upgrade_now" = "今すぐアップグレード";
+
+"rating.home_enjoyment.title" = "HomeGPT をお楽しみいただけていますか？";
+"rating.result_feedback.title" = "あなたのフィードバック =
+より良いデザイン";
+"rating.home_enjoyment.message" = "体験を評価して、AI ホームデザインの未来を一緒に築きましょう。ほんの一瞬で完了します！";
+"rating.result_feedback.message" = "ぜひご意見をお聞かせください！変身結果を気に入っていただけましたら、評価をご検討ください。あなたのフィードバックが、より強力な AI 体験の構築に役立ちます。";
+"rating.rate_on_store" = "App Store で評価する";
+"rating.write_review" = "レビューを書く";
+"rating.star_rating" = "%d つ星評価";
+"rating.five_star_rating" = "5つ星評価";
+
+"result.pro" = "PRO";
+"result.title" = "結果";
+"result.remove_watermark" = "透かしを削除";
+"result.regenerate" = "再生成";
+"result.download" = "ダウンロード";
+"result.share" = "共有";
+"result.save_to_archive" = "アーカイブに保存";
+"result.archive_success.title" = "アーカイブに保存しました";
+"result.save_success.title" = "保存しました";
+"result.save_success.message" = "画像をフォトギャラリーに保存しました。";
+"result.save_failure.title" = "保存に失敗しました";
+"result.save_failure.message" = "画像をフォトギャラリーに保存できませんでした。";
+"result.save_failure.photo_access_required" = "この画像を保存するにはフォトライブラリへのアクセスが必要です。";
+
+"generation_loading.failure.title" = "生成に失敗しました";
+"generation_loading.failure.message" = "今回はリデザインのリクエストを処理できませんでした。写真または指示を確認して、もう一度お試しください。";
+"generation_loading.failure.exterior_photo_message" = "家の正面、側面、または背面が写った鮮明な外観写真を選んで、もう一度お試しください。";
+"generation_loading.failure.try_again" = "もう一度試す";
+"generation_loading.failure.back_to_design" = "デザインに戻る";
+
+"exterior_flow.title" = "エクステリアのリデザイン";
+"exterior_flow.prompt_placeholder" = "独自の指示でプロンプトをカスタマイズ...";
+
+"inspiration.title" = "インスピレーション";
+"inspiration.like" = "インスピレーションにいいね";
+"inspiration.unlike" = "インスピレーションのいいねを解除";
+
+"photo_tips.title" = "写真のヒント";
+"photo_tips.close" = "閉じる";
+"photo_tips.got_it" = "了解";
+"photo_tips.requirements" = "要件：";
+"photo_tips.file_dimensions" = "ファイルの寸法は少なくとも 512x512 である必要があります。";
+"photo_tips.file_size" = "ファイルサイズは 20 MB 未満である必要があります。";
+"photo_tips.optimal_results" = "最適な結果を得るには：";
+"photo_tips.landscape_mode" = "**横向きモード：** 画像を横向きで撮影してください。";
+"photo_tips.bright_lighting" = "**明るい照明：** 影をなくすため、部屋が十分に明るいことを確認してください。";
+"photo_tips.wide_framing" = "**広めの構図：** すべての重要なアングルを1枚に収めてください。";
+"photo_tips.stay_steady" = "**手ブレを防ぐ：** 鮮明で細部まで写った画像のため、カメラを固定してください。";
+"photo_tips.bad_examples" = "悪い例：";
+"photo_tips.good_examples" = "良い例：";

@@ -1,0 +1,129 @@
+"settings.title" = "Tetapan";
+"settings.restore_purchase" = "Pulihkan Pembelian";
+"settings.restoring" = "Memulihkan...";
+"settings.language" = "Bahasa";
+"settings.privacy_policy" = "Dasar Privasi";
+"settings.terms_of_service" = "Terma Perkhidmatan";
+"settings.feedback" = "Maklum Balas";
+"settings.version" = "Versi %@";
+
+"language.title" = "Bahasa";
+"language.english_us" = "Inggeris (AS)";
+"language.arabic_saudi_arabia" = "Arab (Arab Saudi)";
+"language.german_germany" = "Jerman (Jerman)";
+"language.spanish_spain" = "Sepanyol (Sepanyol)";
+"language.french_france" = "Perancis (Perancis)";
+"language.hindi" = "Hindi";
+"language.indonesian" = "Indonesia";
+"language.italian" = "Itali";
+"language.japanese" = "Jepun";
+"language.korean" = "Korea";
+"language.malay" = "Melayu";
+"language.portuguese_brazil" = "Portugis (Brazil)";
+"language.russian" = "Rusia";
+"language.thai" = "Thai";
+"language.turkish" = "Turki";
+
+"common.ok" = "OK";
+"common.cancel" = "Batal";
+"common.delete" = "Padam";
+"common.close" = "Tutup";
+
+"home.title" = "Laman Utama";
+"home.advanced_editing" = "PENYUNTINGAN LANJUTAN";
+
+"history.title" = "Sejarah";
+"history.empty.title" = "Mulakan projek pertama anda";
+"history.empty.message" = "Cipta ruang baharu dan saksikan\nidea anda menjadi kenyataan.";
+"history.empty.create_project" = "Cipta Projek Baharu";
+"history.delete_confirmation.title" = "Padam projek yang dipilih?";
+"history.delete_confirmation.message" = "Tindakan ini tidak boleh dibuat asal.";
+"history.delete_selected" = "Padam (%d)";
+"history.filter_empty.title" = "Tiada projek sepadan";
+"history.filter_empty.message" = "Cuba laras atau tetapkan semula penapis anda.";
+"history.filter_empty.reset_filters" = "Tetapkan Semula Penapis";
+
+"onboarding.continue" = "Teruskan";
+"onboarding.after" = "Selepas";
+"onboarding.welcome.title" = "Selamat datang ke HomeGPT";
+"onboarding.welcome.subtitle" = "Ubah ruang anda dengan AI";
+"onboarding.welcome.get_started" = "Mulakan";
+"onboarding.welcome.terms_of_use" = "Terma penggunaan";
+"onboarding.welcome.subscription_terms" = "Terma Langganan";
+"onboarding.welcome.privacy_policy" = "Dasar Privasi";
+"onboarding.welcome.terms.leading" = "Dengan meneruskan, anda bersetuju dengan";
+"onboarding.welcome.terms.and" = "dan";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "serta penggunaan alat pihak ketiga oleh kami untuk fungsi aplikasi.";
+"onboarding.interior.title" = "Reka Bentuk Dalaman";
+"onboarding.interior.subtitle" = "Reka bentuk semula ruang anda serta-merta";
+"onboarding.exterior.title" = "Reka Bentuk Luaran";
+"onboarding.exterior.subtitle" = "Bayangkan semula fasad anda";
+"onboarding.landscape.title" = "Reka Bentuk Landskap";
+"onboarding.landscape.subtitle" = "Segarkan taman anda dengan AI";
+"onboarding.trial_enabled.title" = "Percubaan percuma 3 hari telah diaktifkan!";
+"onboarding.trial_enabled.title_line1" = "Percubaan percuma 3 hari";
+"onboarding.trial_enabled.title_line2" = "telah diaktifkan!";
+"onboarding.trial_enabled.subtitle" = "Anda kini mempunyai akses penuh kepada semua ciri premium.";
+"onboarding.trial_enabled.start_designing" = "Mula Mereka Bentuk";
+
+"limit.generations_left.title" = "%d/%d Penjanaan Percuma
+Berbaki";
+"limit.reached.title" = "Had Dicapai";
+"limit.generations_left.message" = "Buka kunci ciri, reka bentuk tanpa had &
+pemprosesan lebih pantas dengan Pro.";
+"limit.reached.message" = "Anda telah menggunakan semua penjanaan percuma anda.
+Buka kunci ciri, reka bentuk tanpa had &
+pemprosesan lebih pantas dengan Pro.";
+"limit.upgrade_now" = "Naik Taraf Sekarang";
+
+"rating.home_enjoyment.title" = "Menikmati HomeGPT?";
+"rating.result_feedback.title" = "Maklum balas anda =
+reka bentuk lebih baik";
+"rating.home_enjoyment.message" = "Nilai pengalaman anda dan bantu kami membina masa depan reka bentuk rumah AI. Ia hanya mengambil masa sesaat!";
+"rating.result_feedback.message" = "Kami ingin mendengar pendapat anda! Jika anda menikmati transformasi ini, sila pertimbangkan untuk memberikan penilaian. Maklum balas anda membantu kami membina pengalaman AI yang lebih berkuasa untuk anda.";
+"rating.rate_on_store" = "Nilai di App Store";
+"rating.write_review" = "Tulis Ulasan";
+"rating.star_rating" = "Penilaian %d bintang";
+"rating.five_star_rating" = "Penilaian lima bintang";
+
+"result.pro" = "PRO";
+"result.title" = "Hasil";
+"result.remove_watermark" = "BUANG TERA AIR";
+"result.regenerate" = "JANA SEMULA";
+"result.download" = "MUAT TURUN";
+"result.share" = "KONGSI";
+"result.save_to_archive" = "SIMPAN KE ARKIB";
+"result.archive_success.title" = "Disimpan ke Arkib";
+"result.save_success.title" = "Disimpan";
+"result.save_success.message" = "Imej telah disimpan ke galeri foto anda.";
+"result.save_failure.title" = "Gagal Menyimpan";
+"result.save_failure.message" = "Imej tidak dapat disimpan ke galeri foto anda.";
+"result.save_failure.photo_access_required" = "Akses ke pustaka foto diperlukan untuk menyimpan imej ini.";
+
+"generation_loading.failure.title" = "Penjanaan Gagal";
+"generation_loading.failure.message" = "Kami tidak dapat memproses permintaan reka bentuk semula anda kali ini. Sila semak foto atau arahan anda dan cuba lagi.";
+"generation_loading.failure.exterior_photo_message" = "Pilih foto luaran yang jelas menunjukkan bahagian hadapan, sisi atau belakang rumah, kemudian cuba lagi.";
+"generation_loading.failure.try_again" = "CUBA LAGI";
+"generation_loading.failure.back_to_design" = "KEMBALI KE REKA BENTUK";
+
+"exterior_flow.title" = "Reka Bentuk Semula Luaran";
+"exterior_flow.prompt_placeholder" = "Sesuaikan gesaan dengan arahan anda sendiri...";
+
+"inspiration.title" = "Inspirasi";
+"inspiration.like" = "Suka inspirasi";
+"inspiration.unlike" = "Batal suka inspirasi";
+
+"photo_tips.title" = "Petua Foto";
+"photo_tips.close" = "Tutup";
+"photo_tips.got_it" = "FAHAM";
+"photo_tips.requirements" = "KEPERLUAN:";
+"photo_tips.file_dimensions" = "Dimensi fail mestilah sekurang-kurangnya 512x512.";
+"photo_tips.file_size" = "Saiz fail mestilah kurang daripada 20 MB.";
+"photo_tips.optimal_results" = "UNTUK HASIL OPTIMUM:";
+"photo_tips.landscape_mode" = "**Mod Landskap:** Ambil imej anda secara mendatar.";
+"photo_tips.bright_lighting" = "**Pencahayaan Terang:** Pastikan bilik mempunyai pencahayaan yang baik untuk menghilangkan bayang.";
+"photo_tips.wide_framing" = "**Bingkai Lebar:** Tangkap semua sudut penting dalam satu bingkai.";
+"photo_tips.stay_steady" = "**Kekal Stabil:** Pastikan kamera diam untuk imej yang tajam dan terperinci.";
+"photo_tips.bad_examples" = "CONTOH BURUK:";
+"photo_tips.good_examples" = "CONTOH BAIK:";

@@ -1,4 +1,12 @@
 "settings.title" = "Paramètres";
+"settings.restore_purchase" = "Restaurer l'achat";
+"settings.restoring" = "Restauration...";
+"settings.language" = "Langue";
+"settings.privacy_policy" = "Politique de confidentialité";
+"settings.terms_of_service" = "Conditions d'utilisation";
+"settings.feedback" = "Commentaires";
+"settings.version" = "Version %@";
+
 "language.title" = "Langue";
 "language.english_us" = "Anglais (États-Unis)";
 "language.arabic_saudi_arabia" = "Arabe (Arabie saoudite)";
@@ -16,15 +24,21 @@
 "language.thai" = "Thaï";
 "language.turkish" = "Turc";
 
+"common.ok" = "OK";
+"common.cancel" = "Annuler";
+"common.delete" = "Supprimer";
 "common.close" = "Fermer";
-"settings.restore_purchase" = "Restaurer l'achat";
-"settings.restoring" = "Restauration...";
-"settings.language" = "Langue";
-"settings.privacy_policy" = "Politique de confidentialité";
-"settings.terms_of_service" = "Conditions d'utilisation";
-"settings.feedback" = "Commentaires";
-"settings.version" = "Version %@";
 
+"home.title" = "Accueil";
+"home.advanced_editing" = "ÉDITION AVANCÉE";
+
+"history.title" = "Historique";
+"history.empty.title" = "Démarrez votre premier projet";
+"history.empty.message" = "Créez un nouvel espace et regardez\nvos idées prendre vie.";
+"history.empty.create_project" = "Créer un nouveau projet";
+"history.delete_confirmation.title" = "Supprimer les projets sélectionnés ?";
+"history.delete_confirmation.message" = "Cette action est irréversible.";
+"history.delete_selected" = "Supprimer (%d)";
 "history.filter_empty.title" = "Aucun projet correspondant";
 "history.filter_empty.message" = "Essayez de modifier ou de réinitialiser vos filtres.";
 "history.filter_empty.reset_filters" = "Réinitialiser les filtres";
@@ -53,15 +67,15 @@
 "onboarding.trial_enabled.subtitle" = "Vous avez maintenant un accès complet à toutes les fonctionnalités premium.";
 "onboarding.trial_enabled.start_designing" = "Commencer à concevoir";
 
-"limit.generations_left.title" = "%d/%d Générations Gratuites
-Restantes";
-"limit.reached.title" = "Limite Atteinte";
+"limit.generations_left.title" = "%d/%d Générations gratuites
+restantes";
+"limit.reached.title" = "Limite atteinte";
 "limit.generations_left.message" = "Débloquez des fonctionnalités illimitées, des designs et
 un traitement plus rapide avec Pro.";
 "limit.reached.message" = "Vous avez utilisé toutes vos générations gratuites.
 Débloquez des fonctionnalités illimitées, des designs et
 un traitement plus rapide avec Pro.";
-"limit.upgrade_now" = "Mettre à Niveau";
+"limit.upgrade_now" = "Mettre à niveau";
 
 "rating.home_enjoyment.title" = "Vous aimez HomeGPT ?";
 "rating.result_feedback.title" = "Vos commentaires =
@@ -69,7 +83,7 @@ de meilleurs designs";
 "rating.home_enjoyment.message" = "Évaluez votre expérience et aidez-nous à construire l'avenir de la conception de maisons par IA. Cela ne prend qu'une seconde !";
 "rating.result_feedback.message" = "Nous serions ravis d'entendre vos pensées ! Si vous appréciez les transformations, veuillez envisager de laisser une note. Vos commentaires nous aident à construire une expérience IA plus puissante pour vous.";
 "rating.rate_on_store" = "Évaluer sur l'App Store";
-"rating.write_review" = "Écrire un Avis";
+"rating.write_review" = "Écrire un avis";
 "rating.star_rating" = "Note de %d étoiles";
 "rating.five_star_rating" = "Note de cinq étoiles";
 
@@ -81,6 +95,11 @@ de meilleurs designs";
 "result.share" = "PARTAGER";
 "result.save_to_archive" = "ENREGISTRER DANS LES ARCHIVES";
 "result.archive_success.title" = "Enregistré dans les archives";
+"result.save_success.title" = "Enregistré";
+"result.save_success.message" = "L'image a été enregistrée dans votre galerie photo.";
+"result.save_failure.title" = "Échec de l'enregistrement";
+"result.save_failure.message" = "L'image n'a pas pu être enregistrée dans votre galerie photo.";
+"result.save_failure.photo_access_required" = "L'accès à la photothèque est requis pour enregistrer cette image.";
 
 "generation_loading.failure.title" = "Échec de la génération";
 "generation_loading.failure.message" = "Nous n'avons pas pu traiter votre demande de réaménagement cette fois-ci. Vérifiez votre photo ou vos instructions, puis réessayez.";

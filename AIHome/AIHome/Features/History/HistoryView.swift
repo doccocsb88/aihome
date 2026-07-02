@@ -72,6 +72,9 @@ struct HistoryView: View {
         } message: {
             Text(L10n.History.DeleteConfirmation.message)
         }
+        .onAppear {
+            viewModel.fetchProjects()
+        }
         .onDisappear {
             onFilterPresentationChanged(false)
         }

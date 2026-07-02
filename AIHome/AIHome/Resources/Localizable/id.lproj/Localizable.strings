@@ -1,0 +1,129 @@
+"settings.title" = "Pengaturan";
+"settings.restore_purchase" = "Pulihkan Pembelian";
+"settings.restoring" = "Memulihkan...";
+"settings.language" = "Bahasa";
+"settings.privacy_policy" = "Kebijakan Privasi";
+"settings.terms_of_service" = "Ketentuan Layanan";
+"settings.feedback" = "Masukan";
+"settings.version" = "Versi %@";
+
+"language.title" = "Bahasa";
+"language.english_us" = "Inggris (AS)";
+"language.arabic_saudi_arabia" = "Arab (Arab Saudi)";
+"language.german_germany" = "Jerman (Jerman)";
+"language.spanish_spain" = "Spanyol (Spanyol)";
+"language.french_france" = "Prancis (Prancis)";
+"language.hindi" = "Hindi";
+"language.indonesian" = "Indonesia";
+"language.italian" = "Italia";
+"language.japanese" = "Jepang";
+"language.korean" = "Korea";
+"language.malay" = "Melayu";
+"language.portuguese_brazil" = "Portugis (Brasil)";
+"language.russian" = "Rusia";
+"language.thai" = "Thai";
+"language.turkish" = "Turki";
+
+"common.ok" = "OK";
+"common.cancel" = "Batal";
+"common.delete" = "Hapus";
+"common.close" = "Tutup";
+
+"home.title" = "Beranda";
+"home.advanced_editing" = "PENGEDITAN LANJUTAN";
+
+"history.title" = "Riwayat";
+"history.empty.title" = "Mulai proyek pertama Anda";
+"history.empty.message" = "Buat ruang baru dan saksikan\nide Anda menjadi nyata.";
+"history.empty.create_project" = "Buat Proyek Baru";
+"history.delete_confirmation.title" = "Hapus proyek yang dipilih?";
+"history.delete_confirmation.message" = "Tindakan ini tidak dapat dibatalkan.";
+"history.delete_selected" = "Hapus (%d)";
+"history.filter_empty.title" = "Tidak ada proyek yang cocok";
+"history.filter_empty.message" = "Coba sesuaikan atau atur ulang filter Anda.";
+"history.filter_empty.reset_filters" = "Atur Ulang Filter";
+
+"onboarding.continue" = "Lanjutkan";
+"onboarding.after" = "Sesudah";
+"onboarding.welcome.title" = "Selamat datang di HomeGPT";
+"onboarding.welcome.subtitle" = "Ubah ruang Anda dengan AI";
+"onboarding.welcome.get_started" = "Mulai";
+"onboarding.welcome.terms_of_use" = "Ketentuan penggunaan";
+"onboarding.welcome.subscription_terms" = "Ketentuan Langganan";
+"onboarding.welcome.privacy_policy" = "Kebijakan Privasi";
+"onboarding.welcome.terms.leading" = "Dengan melanjutkan, Anda menyetujui";
+"onboarding.welcome.terms.and" = "dan";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "beserta penggunaan alat pihak ketiga oleh kami untuk fungsi aplikasi.";
+"onboarding.interior.title" = "Desain Interior";
+"onboarding.interior.subtitle" = "Desain ulang ruang Anda secara instan";
+"onboarding.exterior.title" = "Desain Eksterior";
+"onboarding.exterior.subtitle" = "Bayangkan kembali fasad Anda";
+"onboarding.landscape.title" = "Desain Lanskap";
+"onboarding.landscape.subtitle" = "Segarkan taman Anda dengan AI";
+"onboarding.trial_enabled.title" = "Uji coba gratis 3 hari telah diaktifkan!";
+"onboarding.trial_enabled.title_line1" = "Uji coba gratis 3 hari";
+"onboarding.trial_enabled.title_line2" = "telah diaktifkan!";
+"onboarding.trial_enabled.subtitle" = "Anda kini memiliki akses penuh ke semua fitur premium.";
+"onboarding.trial_enabled.start_designing" = "Mulai Mendesain";
+
+"limit.generations_left.title" = "%d/%d Generasi Gratis
+Tersisa";
+"limit.reached.title" = "Batas Tercapai";
+"limit.generations_left.message" = "Buka fitur, desain tak terbatas &
+pemrosesan lebih cepat dengan Pro.";
+"limit.reached.message" = "Anda telah menggunakan semua generasi gratis Anda.
+Buka fitur, desain tak terbatas &
+pemrosesan lebih cepat dengan Pro.";
+"limit.upgrade_now" = "Tingkatkan Sekarang";
+
+"rating.home_enjoyment.title" = "Menikmati HomeGPT?";
+"rating.result_feedback.title" = "Masukan Anda =
+desain lebih baik";
+"rating.home_enjoyment.message" = "Beri nilai pengalaman Anda dan bantu kami membangun masa depan desain rumah AI. Hanya butuh sedetik!";
+"rating.result_feedback.message" = "Kami senang mendengar pendapat Anda! Jika Anda menikmati transformasinya, mohon pertimbangkan untuk memberi penilaian. Masukan Anda membantu kami membangun pengalaman AI yang lebih kuat untuk Anda.";
+"rating.rate_on_store" = "Beri Nilai di App Store";
+"rating.write_review" = "Tulis Ulasan";
+"rating.star_rating" = "Penilaian %d bintang";
+"rating.five_star_rating" = "Penilaian lima bintang";
+
+"result.pro" = "PRO";
+"result.title" = "Hasil";
+"result.remove_watermark" = "HAPUS TANDA AIR";
+"result.regenerate" = "BUAT ULANG";
+"result.download" = "UNDUH";
+"result.share" = "BAGIKAN";
+"result.save_to_archive" = "SIMPAN KE ARSIP";
+"result.archive_success.title" = "Disimpan ke Arsip";
+"result.save_success.title" = "Disimpan";
+"result.save_success.message" = "Gambar telah disimpan ke galeri foto Anda.";
+"result.save_failure.title" = "Gagal Menyimpan";
+"result.save_failure.message" = "Gambar tidak dapat disimpan ke galeri foto Anda.";
+"result.save_failure.photo_access_required" = "Akses ke pustaka foto diperlukan untuk menyimpan gambar ini.";
+
+"generation_loading.failure.title" = "Pembuatan Gagal";
+"generation_loading.failure.message" = "Kami tidak dapat memproses permintaan desain ulang Anda kali ini. Silakan periksa foto atau instruksi Anda dan coba lagi.";
+"generation_loading.failure.exterior_photo_message" = "Pilih foto eksterior yang jelas yang menunjukkan bagian depan, samping, atau belakang rumah, lalu coba lagi.";
+"generation_loading.failure.try_again" = "COBA LAGI";
+"generation_loading.failure.back_to_design" = "KEMBALI KE DESAIN";
+
+"exterior_flow.title" = "Desain Ulang Eksterior";
+"exterior_flow.prompt_placeholder" = "Sesuaikan prompt dengan instruksi Anda sendiri...";
+
+"inspiration.title" = "Inspirasi";
+"inspiration.like" = "Sukai inspirasi";
+"inspiration.unlike" = "Batalkan sukai inspirasi";
+
+"photo_tips.title" = "Tips Foto";
+"photo_tips.close" = "Tutup";
+"photo_tips.got_it" = "MENGERTI";
+"photo_tips.requirements" = "PERSYARATAN:";
+"photo_tips.file_dimensions" = "Dimensi file minimal harus 512x512.";
+"photo_tips.file_size" = "Ukuran file harus kurang dari 20 MB.";
+"photo_tips.optimal_results" = "UNTUK HASIL OPTIMAL:";
+"photo_tips.landscape_mode" = "**Mode Lanskap:** Ambil gambar Anda secara horizontal.";
+"photo_tips.bright_lighting" = "**Pencahayaan Terang:** Pastikan ruangan cukup terang untuk menghilangkan bayangan.";
+"photo_tips.wide_framing" = "**Pembingkaian Lebar:** Tangkap semua sudut penting dalam satu bingkai.";
+"photo_tips.stay_steady" = "**Tetap Stabil:** Jaga kamera tetap diam untuk gambar yang tajam dan detail.";
+"photo_tips.bad_examples" = "CONTOH BURUK:";
+"photo_tips.good_examples" = "CONTOH BAIK:";

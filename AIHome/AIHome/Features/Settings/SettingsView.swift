@@ -32,7 +32,7 @@ struct SettingsView: View {
                             Text(L10n.Settings.language)
                                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
                                 .foregroundColor(.primary)
-                            Text(LanguageManager.shared.localizedName(for: viewModel.selectedLanguage).uppercased())
+                            Text(LanguageManager.shared.localizedName(forCode: viewModel.selectedLanguage).uppercased())
                                 .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
                                 .foregroundColor(.secondary)
                         }

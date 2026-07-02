@@ -1,0 +1,129 @@
+"settings.title" = "설정";
+"settings.restore_purchase" = "구매 복원";
+"settings.restoring" = "복원 중...";
+"settings.language" = "언어";
+"settings.privacy_policy" = "개인정보 처리방침";
+"settings.terms_of_service" = "서비스 약관";
+"settings.feedback" = "피드백";
+"settings.version" = "버전 %@";
+
+"language.title" = "언어";
+"language.english_us" = "영어(미국)";
+"language.arabic_saudi_arabia" = "아랍어(사우디아라비아)";
+"language.german_germany" = "독일어(독일)";
+"language.spanish_spain" = "스페인어(스페인)";
+"language.french_france" = "프랑스어(프랑스)";
+"language.hindi" = "힌디어";
+"language.indonesian" = "인도네시아어";
+"language.italian" = "이탈리아어";
+"language.japanese" = "일본어";
+"language.korean" = "한국어";
+"language.malay" = "말레이어";
+"language.portuguese_brazil" = "포르투갈어(브라질)";
+"language.russian" = "러시아어";
+"language.thai" = "태국어";
+"language.turkish" = "터키어";
+
+"common.ok" = "확인";
+"common.cancel" = "취소";
+"common.delete" = "삭제";
+"common.close" = "닫기";
+
+"home.title" = "홈";
+"home.advanced_editing" = "고급 편집";
+
+"history.title" = "기록";
+"history.empty.title" = "첫 프로젝트를 시작하세요";
+"history.empty.message" = "새 공간을 만들고\n아이디어가 실현되는 것을 지켜보세요.";
+"history.empty.create_project" = "새 프로젝트 만들기";
+"history.delete_confirmation.title" = "선택한 프로젝트를 삭제하시겠습니까?";
+"history.delete_confirmation.message" = "이 작업은 되돌릴 수 없습니다.";
+"history.delete_selected" = "삭제 (%d)";
+"history.filter_empty.title" = "일치하는 프로젝트가 없습니다";
+"history.filter_empty.message" = "필터를 조정하거나 재설정해 보세요.";
+"history.filter_empty.reset_filters" = "필터 재설정";
+
+"onboarding.continue" = "계속";
+"onboarding.after" = "변경 후";
+"onboarding.welcome.title" = "HomeGPT에 오신 것을 환영합니다";
+"onboarding.welcome.subtitle" = "AI로 공간을 변신시키세요";
+"onboarding.welcome.get_started" = "시작하기";
+"onboarding.welcome.terms_of_use" = "이용 약관";
+"onboarding.welcome.subscription_terms" = "구독 약관";
+"onboarding.welcome.privacy_policy" = "개인정보 처리방침";
+"onboarding.welcome.terms.leading" = "계속 진행하면 다음에 동의하게 됩니다:";
+"onboarding.welcome.terms.and" = "및";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "또한 앱 기능을 위한 타사 도구 사용에도 동의합니다.";
+"onboarding.interior.title" = "인테리어 디자인";
+"onboarding.interior.subtitle" = "공간을 즉시 재디자인하세요";
+"onboarding.exterior.title" = "익스테리어 디자인";
+"onboarding.exterior.subtitle" = "외관을 새롭게 상상하세요";
+"onboarding.landscape.title" = "조경 디자인";
+"onboarding.landscape.subtitle" = "AI로 정원을 새롭게 단장하세요";
+"onboarding.trial_enabled.title" = "3일 무료 체험이 활성화되었습니다!";
+"onboarding.trial_enabled.title_line1" = "3일 무료 체험";
+"onboarding.trial_enabled.title_line2" = "활성화됨!";
+"onboarding.trial_enabled.subtitle" = "이제 모든 프리미엄 기능에 완전히 액세스할 수 있습니다.";
+"onboarding.trial_enabled.start_designing" = "디자인 시작하기";
+
+"limit.generations_left.title" = "무료 생성
+%d/%d회 남음";
+"limit.reached.title" = "한도 도달";
+"limit.generations_left.message" = "Pro로 무제한 기능, 디자인 및
+더 빠른 처리를 잠금 해제하세요.";
+"limit.reached.message" = "무료 생성을 모두 사용했습니다.
+Pro로 무제한 기능, 디자인 및
+더 빠른 처리를 잠금 해제하세요.";
+"limit.upgrade_now" = "지금 업그레이드";
+
+"rating.home_enjoyment.title" = "HomeGPT가 마음에 드시나요?";
+"rating.result_feedback.title" = "당신의 피드백 =
+더 나은 디자인";
+"rating.home_enjoyment.message" = "경험을 평가하고 AI 홈 디자인의 미래를 함께 만들어 주세요. 단 몇 초면 됩니다!";
+"rating.result_feedback.message" = "여러분의 생각을 듣고 싶습니다! 변신 결과가 마음에 드셨다면 평가를 남겨 주세요. 여러분의 피드백은 더 강력한 AI 경험을 구축하는 데 도움이 됩니다.";
+"rating.rate_on_store" = "App Store에서 평가하기";
+"rating.write_review" = "리뷰 작성";
+"rating.star_rating" = "%d점 별점";
+"rating.five_star_rating" = "5점 별점";
+
+"result.pro" = "PRO";
+"result.title" = "결과";
+"result.remove_watermark" = "워터마크 제거";
+"result.regenerate" = "다시 생성";
+"result.download" = "다운로드";
+"result.share" = "공유";
+"result.save_to_archive" = "보관함에 저장";
+"result.archive_success.title" = "보관함에 저장됨";
+"result.save_success.title" = "저장됨";
+"result.save_success.message" = "이미지가 사진 갤러리에 저장되었습니다.";
+"result.save_failure.title" = "저장 실패";
+"result.save_failure.message" = "이미지를 사진 갤러리에 저장할 수 없습니다.";
+"result.save_failure.photo_access_required" = "이 이미지를 저장하려면 사진 라이브러리 접근 권한이 필요합니다.";
+
+"generation_loading.failure.title" = "생성 실패";
+"generation_loading.failure.message" = "이번에는 재디자인 요청을 처리할 수 없었습니다. 사진이나 지시 사항을 확인한 후 다시 시도해 주세요.";
+"generation_loading.failure.exterior_photo_message" = "집의 정면, 측면 또는 후면이 보이는 선명한 외관 사진을 선택한 후 다시 시도하세요.";
+"generation_loading.failure.try_again" = "다시 시도";
+"generation_loading.failure.back_to_design" = "디자인으로 돌아가기";
+
+"exterior_flow.title" = "익스테리어 재디자인";
+"exterior_flow.prompt_placeholder" = "직접 지시 사항을 입력하여 프롬프트를 맞춤 설정하세요...";
+
+"inspiration.title" = "영감";
+"inspiration.like" = "영감 좋아요";
+"inspiration.unlike" = "영감 좋아요 취소";
+
+"photo_tips.title" = "사진 팁";
+"photo_tips.close" = "닫기";
+"photo_tips.got_it" = "확인했어요";
+"photo_tips.requirements" = "요구 사항:";
+"photo_tips.file_dimensions" = "파일 크기는 최소 512x512여야 합니다.";
+"photo_tips.file_size" = "파일 용량은 20MB 미만이어야 합니다.";
+"photo_tips.optimal_results" = "최상의 결과를 위해:";
+"photo_tips.landscape_mode" = "**가로 모드:** 이미지를 가로로 촬영하세요.";
+"photo_tips.bright_lighting" = "**밝은 조명:** 그림자를 없애기 위해 방이 충분히 밝은지 확인하세요.";
+"photo_tips.wide_framing" = "**넓은 구도:** 모든 주요 각도를 한 프레임에 담으세요.";
+"photo_tips.stay_steady" = "**흔들림 방지:** 선명하고 디테일한 이미지를 위해 카메라를 고정하세요.";
+"photo_tips.bad_examples" = "나쁜 예시:";
+"photo_tips.good_examples" = "좋은 예시:";

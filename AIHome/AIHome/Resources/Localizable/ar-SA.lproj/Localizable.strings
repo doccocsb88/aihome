@@ -1,0 +1,129 @@
+"settings.title" = "الإعدادات";
+"settings.restore_purchase" = "استعادة الشراء";
+"settings.restoring" = "جارٍ الاستعادة...";
+"settings.language" = "اللغة";
+"settings.privacy_policy" = "سياسة الخصوصية";
+"settings.terms_of_service" = "شروط الخدمة";
+"settings.feedback" = "الملاحظات";
+"settings.version" = "الإصدار %@";
+
+"language.title" = "اللغة";
+"language.english_us" = "الإنجليزية (الولايات المتحدة)";
+"language.arabic_saudi_arabia" = "العربية (السعودية)";
+"language.german_germany" = "الألمانية (ألمانيا)";
+"language.spanish_spain" = "الإسبانية (إسبانيا)";
+"language.french_france" = "الفرنسية (فرنسا)";
+"language.hindi" = "الهندية";
+"language.indonesian" = "الإندونيسية";
+"language.italian" = "الإيطالية";
+"language.japanese" = "اليابانية";
+"language.korean" = "الكورية";
+"language.malay" = "الماليزية";
+"language.portuguese_brazil" = "البرتغالية (البرازيل)";
+"language.russian" = "الروسية";
+"language.thai" = "التايلاندية";
+"language.turkish" = "التركية";
+
+"common.ok" = "موافق";
+"common.cancel" = "إلغاء";
+"common.delete" = "حذف";
+"common.close" = "إغلاق";
+
+"home.title" = "الرئيسية";
+"home.advanced_editing" = "تحرير متقدم";
+
+"history.title" = "السجل";
+"history.empty.title" = "ابدأ مشروعك الأول";
+"history.empty.message" = "أنشئ مساحة جديدة وشاهد\nأفكارك تنبض بالحياة.";
+"history.empty.create_project" = "إنشاء مشروع جديد";
+"history.delete_confirmation.title" = "حذف المشاريع المحددة؟";
+"history.delete_confirmation.message" = "لا يمكن التراجع عن هذا الإجراء.";
+"history.delete_selected" = "حذف (%d)";
+"history.filter_empty.title" = "لا توجد مشاريع مطابقة";
+"history.filter_empty.message" = "حاول تعديل عوامل التصفية أو إعادة تعيينها.";
+"history.filter_empty.reset_filters" = "إعادة تعيين عوامل التصفية";
+
+"onboarding.continue" = "متابعة";
+"onboarding.after" = "بعد";
+"onboarding.welcome.title" = "مرحبًا بك في HomeGPT";
+"onboarding.welcome.subtitle" = "حوّل مساحتك باستخدام الذكاء الاصطناعي";
+"onboarding.welcome.get_started" = "ابدأ الآن";
+"onboarding.welcome.terms_of_use" = "شروط الاستخدام";
+"onboarding.welcome.subscription_terms" = "شروط الاشتراك";
+"onboarding.welcome.privacy_policy" = "سياسة الخصوصية";
+"onboarding.welcome.terms.leading" = "بالمتابعة، فإنك توافق على";
+"onboarding.welcome.terms.and" = "و";
+"onboarding.welcome.terms.comma" = "،";
+"onboarding.welcome.terms.third_party_tools" = "إلى جانب استخدامنا لأدوات الطرف الثالث لوظائف التطبيق.";
+"onboarding.interior.title" = "التصميم الداخلي";
+"onboarding.interior.subtitle" = "أعد تصميم مساحتك على الفور";
+"onboarding.exterior.title" = "التصميم الخارجي";
+"onboarding.exterior.subtitle" = "أعد تصور واجهتك";
+"onboarding.landscape.title" = "تصميم المناظر الطبيعية";
+"onboarding.landscape.subtitle" = "جدّد حديقتك باستخدام الذكاء الاصطناعي";
+"onboarding.trial_enabled.title" = "تم تفعيل التجربة المجانية لمدة 3 أيام!";
+"onboarding.trial_enabled.title_line1" = "تجربة مجانية لمدة 3 أيام";
+"onboarding.trial_enabled.title_line2" = "مُفعّلة!";
+"onboarding.trial_enabled.subtitle" = "لديك الآن وصول كامل إلى جميع الميزات المميزة.";
+"onboarding.trial_enabled.start_designing" = "ابدأ التصميم";
+
+"limit.generations_left.title" = "%d/%d عمليات إنشاء مجانية
+متبقية";
+"limit.reached.title" = "تم الوصول إلى الحد";
+"limit.generations_left.message" = "افتح ميزات وتصاميم غير محدودة و
+معالجة أسرع مع Pro.";
+"limit.reached.message" = "لقد استخدمت جميع عمليات الإنشاء المجانية.
+افتح ميزات وتصاميم غير محدودة و
+معالجة أسرع مع Pro.";
+"limit.upgrade_now" = "الترقية الآن";
+
+"rating.home_enjoyment.title" = "هل تستمتع بـ HomeGPT؟";
+"rating.result_feedback.title" = "ملاحظاتك =
+تصاميم أفضل";
+"rating.home_enjoyment.message" = "قيّم تجربتك وساعدنا في بناء مستقبل تصميم المنازل بالذكاء الاصطناعي. لن يستغرق الأمر سوى ثانية!";
+"rating.result_feedback.message" = "يسعدنا سماع رأيك! إذا كنت تستمتع بالتحويلات، فيرجى التفكير في ترك تقييم. تساعدنا ملاحظاتك في بناء تجربة ذكاء اصطناعي أقوى لك.";
+"rating.rate_on_store" = "قيّم على App Store";
+"rating.write_review" = "اكتب مراجعة";
+"rating.star_rating" = "تقييم %d نجوم";
+"rating.five_star_rating" = "تقييم خمس نجوم";
+
+"result.pro" = "PRO";
+"result.title" = "النتيجة";
+"result.remove_watermark" = "إزالة العلامة المائية";
+"result.regenerate" = "إعادة الإنشاء";
+"result.download" = "تنزيل";
+"result.share" = "مشاركة";
+"result.save_to_archive" = "حفظ في الأرشيف";
+"result.archive_success.title" = "تم الحفظ في الأرشيف";
+"result.save_success.title" = "تم الحفظ";
+"result.save_success.message" = "تم حفظ الصورة في معرض الصور الخاص بك.";
+"result.save_failure.title" = "فشل الحفظ";
+"result.save_failure.message" = "تعذّر حفظ الصورة في معرض الصور الخاص بك.";
+"result.save_failure.photo_access_required" = "يلزم الوصول إلى مكتبة الصور لحفظ هذه الصورة.";
+
+"generation_loading.failure.title" = "فشل الإنشاء";
+"generation_loading.failure.message" = "لم نتمكن من معالجة طلب إعادة التصميم هذه المرة. يرجى التحقق من صورتك أو تعليماتك والمحاولة مرة أخرى.";
+"generation_loading.failure.exterior_photo_message" = "اختر صورة خارجية واضحة تُظهر مقدمة المنزل أو جانبه أو خلفه، ثم حاول مرة أخرى.";
+"generation_loading.failure.try_again" = "حاول مرة أخرى";
+"generation_loading.failure.back_to_design" = "العودة إلى التصميم";
+
+"exterior_flow.title" = "إعادة تصميم الخارج";
+"exterior_flow.prompt_placeholder" = "خصّص الطلب بتعليماتك الخاصة...";
+
+"inspiration.title" = "الإلهام";
+"inspiration.like" = "إعجاب بالإلهام";
+"inspiration.unlike" = "إلغاء الإعجاب بالإلهام";
+
+"photo_tips.title" = "نصائح التصوير";
+"photo_tips.close" = "إغلاق";
+"photo_tips.got_it" = "فهمت";
+"photo_tips.requirements" = "المتطلبات:";
+"photo_tips.file_dimensions" = "يجب ألا تقل أبعاد الملف عن 512x512.";
+"photo_tips.file_size" = "يجب أن يكون حجم الملف أقل من 20 ميغابايت.";
+"photo_tips.optimal_results" = "للحصول على أفضل النتائج:";
+"photo_tips.landscape_mode" = "**الوضع الأفقي:** التقط صورتك بشكل أفقي.";
+"photo_tips.bright_lighting" = "**إضاءة ساطعة:** تأكد من أن الغرفة مضاءة جيدًا لإزالة الظلال.";
+"photo_tips.wide_framing" = "**تأطير واسع:** التقط جميع الزوايا الرئيسية في إطار واحد.";
+"photo_tips.stay_steady" = "**حافظ على الثبات:** أبقِ الكاميرا ثابتة للحصول على صورة حادة ومفصلة.";
+"photo_tips.bad_examples" = "أمثلة سيئة:";
+"photo_tips.good_examples" = "أمثلة جيدة:";

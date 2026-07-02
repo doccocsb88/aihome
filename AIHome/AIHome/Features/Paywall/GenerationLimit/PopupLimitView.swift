@@ -116,7 +116,7 @@ struct PopupLimitView: View {
                         .shadow(color: Color.DesignSystem.royalBlue.opacity(0.16), radius: 16, x: 0, y: 10)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Upgrade Now")
+                .accessibilityLabel(L10n.Limit.upgradeNow)
                 .padding(.horizontal, 32)
                 .padding(.top, kind.buttonTopPadding)
                 .padding(.bottom, 32)
@@ -160,7 +160,7 @@ struct PopupLimitView: View {
                     .frame(width: 36, height: 36)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Close")
+            .accessibilityLabel(L10n.Common.close)
         }
         .padding(.top, 18)
         .padding(.trailing, 17)

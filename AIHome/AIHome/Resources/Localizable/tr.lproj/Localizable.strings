@@ -1,0 +1,129 @@
+"settings.title" = "Ayarlar";
+"settings.restore_purchase" = "Satın Alımı Geri Yükle";
+"settings.restoring" = "Geri yükleniyor...";
+"settings.language" = "Dil";
+"settings.privacy_policy" = "Gizlilik Politikası";
+"settings.terms_of_service" = "Hizmet Şartları";
+"settings.feedback" = "Geri Bildirim";
+"settings.version" = "Sürüm %@";
+
+"language.title" = "Dil";
+"language.english_us" = "İngilizce (ABD)";
+"language.arabic_saudi_arabia" = "Arapça (Suudi Arabistan)";
+"language.german_germany" = "Almanca (Almanya)";
+"language.spanish_spain" = "İspanyolca (İspanya)";
+"language.french_france" = "Fransızca (Fransa)";
+"language.hindi" = "Hintçe";
+"language.indonesian" = "Endonezce";
+"language.italian" = "İtalyanca";
+"language.japanese" = "Japonca";
+"language.korean" = "Korece";
+"language.malay" = "Malayca";
+"language.portuguese_brazil" = "Portekizce (Brezilya)";
+"language.russian" = "Rusça";
+"language.thai" = "Tayca";
+"language.turkish" = "Türkçe";
+
+"common.ok" = "Tamam";
+"common.cancel" = "İptal";
+"common.delete" = "Sil";
+"common.close" = "Kapat";
+
+"home.title" = "Ana Sayfa";
+"home.advanced_editing" = "GELİŞMİŞ DÜZENLEME";
+
+"history.title" = "Geçmiş";
+"history.empty.title" = "İlk projenizi başlatın";
+"history.empty.message" = "Yeni bir alan oluşturun ve\nfikirlerinizin hayat bulmasını izleyin.";
+"history.empty.create_project" = "Yeni Proje Oluştur";
+"history.delete_confirmation.title" = "Seçili projeler silinsin mi?";
+"history.delete_confirmation.message" = "Bu işlem geri alınamaz.";
+"history.delete_selected" = "Sil (%d)";
+"history.filter_empty.title" = "Eşleşen proje yok";
+"history.filter_empty.message" = "Filtrelerinizi ayarlamayı veya sıfırlamayı deneyin.";
+"history.filter_empty.reset_filters" = "Filtreleri Sıfırla";
+
+"onboarding.continue" = "Devam Et";
+"onboarding.after" = "Sonra";
+"onboarding.welcome.title" = "HomeGPT'ye hoş geldiniz";
+"onboarding.welcome.subtitle" = "Alanınızı yapay zekâ ile dönüştürün";
+"onboarding.welcome.get_started" = "Başla";
+"onboarding.welcome.terms_of_use" = "Kullanım koşulları";
+"onboarding.welcome.subscription_terms" = "Abonelik Koşulları";
+"onboarding.welcome.privacy_policy" = "Gizlilik Politikası";
+"onboarding.welcome.terms.leading" = "Devam ederek şunları kabul etmiş olursunuz:";
+"onboarding.welcome.terms.and" = "ve";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "ayrıca uygulama işlevselliği için üçüncü taraf araçları kullanmamızı da kabul edersiniz.";
+"onboarding.interior.title" = "İç Tasarım";
+"onboarding.interior.subtitle" = "Alanınızı anında yeniden tasarlayın";
+"onboarding.exterior.title" = "Dış Tasarım";
+"onboarding.exterior.subtitle" = "Cephenizi yeniden hayal edin";
+"onboarding.landscape.title" = "Peyzaj Tasarımı";
+"onboarding.landscape.subtitle" = "Bahçenizi yapay zekâ ile yenileyin";
+"onboarding.trial_enabled.title" = "3 günlük ücretsiz deneme etkinleştirildi!";
+"onboarding.trial_enabled.title_line1" = "3 günlük ücretsiz deneme";
+"onboarding.trial_enabled.title_line2" = "etkinleştirildi!";
+"onboarding.trial_enabled.subtitle" = "Artık tüm premium özelliklere tam erişiminiz var.";
+"onboarding.trial_enabled.start_designing" = "Tasarlamaya Başla";
+
+"limit.generations_left.title" = "%d/%d Ücretsiz
+Oluşturma Kaldı";
+"limit.reached.title" = "Sınıra Ulaşıldı";
+"limit.generations_left.message" = "Pro ile sınırsız özellik, tasarım ve
+daha hızlı işlemenin kilidini açın.";
+"limit.reached.message" = "Tüm ücretsiz oluşturmalarınızı kullandınız.
+Pro ile sınırsız özellik, tasarım ve
+daha hızlı işlemenin kilidini açın.";
+"limit.upgrade_now" = "Şimdi Yükselt";
+
+"rating.home_enjoyment.title" = "HomeGPT'den keyif alıyor musunuz?";
+"rating.result_feedback.title" = "Geri bildiriminiz =
+daha iyi tasarımlar";
+"rating.home_enjoyment.message" = "Deneyiminizi değerlendirin ve yapay zekâ ev tasarımının geleceğini birlikte inşa etmemize yardımcı olun. Sadece bir saniye sürer!";
+"rating.result_feedback.message" = "Düşüncelerinizi duymaktan mutluluk duyarız! Dönüşümlerden keyif alıyorsanız lütfen bir değerlendirme bırakmayı düşünün. Geri bildiriminiz, sizin için daha güçlü bir yapay zekâ deneyimi oluşturmamıza yardımcı olur.";
+"rating.rate_on_store" = "App Store'da Değerlendir";
+"rating.write_review" = "Yorum Yaz";
+"rating.star_rating" = "%d yıldız değerlendirmesi";
+"rating.five_star_rating" = "Beş yıldız değerlendirmesi";
+
+"result.pro" = "PRO";
+"result.title" = "Sonuç";
+"result.remove_watermark" = "FİLİGRANI KALDIR";
+"result.regenerate" = "YENİDEN OLUŞTUR";
+"result.download" = "İNDİR";
+"result.share" = "PAYLAŞ";
+"result.save_to_archive" = "ARŞİVE KAYDET";
+"result.archive_success.title" = "Arşive kaydedildi";
+"result.save_success.title" = "Kaydedildi";
+"result.save_success.message" = "Görsel, fotoğraf galerinize kaydedildi.";
+"result.save_failure.title" = "Kaydetme Başarısız";
+"result.save_failure.message" = "Görsel, fotoğraf galerinize kaydedilemedi.";
+"result.save_failure.photo_access_required" = "Bu görseli kaydetmek için fotoğraf kitaplığına erişim gereklidir.";
+
+"generation_loading.failure.title" = "Oluşturma Başarısız";
+"generation_loading.failure.message" = "Bu sefer yeniden tasarım isteğinizi işleyemedik. Lütfen fotoğrafınızı veya talimatlarınızı kontrol edip tekrar deneyin.";
+"generation_loading.failure.exterior_photo_message" = "Evin ön, yan veya arka cephesini gösteren net bir dış mekân fotoğrafı seçin ve tekrar deneyin.";
+"generation_loading.failure.try_again" = "TEKRAR DENE";
+"generation_loading.failure.back_to_design" = "TASARIMA DÖN";
+
+"exterior_flow.title" = "Dış Mekân Yeniden Tasarımı";
+"exterior_flow.prompt_placeholder" = "İstemi kendi talimatlarınızla özelleştirin...";
+
+"inspiration.title" = "İlham";
+"inspiration.like" = "İlhamı beğen";
+"inspiration.unlike" = "İlham beğenisini geri al";
+
+"photo_tips.title" = "Fotoğraf İpuçları";
+"photo_tips.close" = "Kapat";
+"photo_tips.got_it" = "ANLADIM";
+"photo_tips.requirements" = "GEREKSİNİMLER:";
+"photo_tips.file_dimensions" = "Dosya boyutları en az 512x512 olmalıdır.";
+"photo_tips.file_size" = "Dosya boyutu 20 MB'den küçük olmalıdır.";
+"photo_tips.optimal_results" = "EN İYİ SONUÇLAR İÇİN:";
+"photo_tips.landscape_mode" = "**Yatay Mod:** Görselinizi yatay olarak çekin.";
+"photo_tips.bright_lighting" = "**Parlak Aydınlatma:** Gölgeleri gidermek için odanın iyi aydınlatıldığından emin olun.";
+"photo_tips.wide_framing" = "**Geniş Çerçeveleme:** Tüm önemli açıları tek bir karede yakalayın.";
+"photo_tips.stay_steady" = "**Sabit Tutun:** Keskin ve ayrıntılı bir görüntü için kamerayı sabit tutun.";
+"photo_tips.bad_examples" = "KÖTÜ ÖRNEKLER:";
+"photo_tips.good_examples" = "İYİ ÖRNEKLER:";

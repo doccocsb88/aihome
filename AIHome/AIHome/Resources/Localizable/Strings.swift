@@ -13,6 +13,8 @@ internal enum L10n {
   internal enum Common {
     /// Cancel
     internal static let cancel = L10n.tr("Localizable", "common.cancel", fallback: "Cancel")
+    /// Close
+    internal static let close = L10n.tr("Localizable", "common.close", fallback: "Close")
     /// Delete
     internal static let delete = L10n.tr("Localizable", "common.delete", fallback: "Delete")
     /// OK
@@ -84,16 +86,38 @@ internal enum L10n {
     internal static let unlike = L10n.tr("Localizable", "inspiration.unlike", fallback: "Unlike inspiration")
   }
   internal enum Language {
-    /// English
-    internal static let english = L10n.tr("Localizable", "language.english", fallback: "English")
-    /// French
-    internal static let french = L10n.tr("Localizable", "language.french", fallback: "French")
-    /// German
-    internal static let german = L10n.tr("Localizable", "language.german", fallback: "German")
-    /// Spanish
-    internal static let spanish = L10n.tr("Localizable", "language.spanish", fallback: "Spanish")
+    /// Arabic (Saudi Arabia)
+    internal static let arabicSaudiArabia = L10n.tr("Localizable", "language.arabic_saudi_arabia", fallback: "Arabic (Saudi Arabia)")
+    /// English (US)
+    internal static let englishUs = L10n.tr("Localizable", "language.english_us", fallback: "English (US)")
+    /// French (France)
+    internal static let frenchFrance = L10n.tr("Localizable", "language.french_france", fallback: "French (France)")
+    /// German (Germany)
+    internal static let germanGermany = L10n.tr("Localizable", "language.german_germany", fallback: "German (Germany)")
+    /// Hindi
+    internal static let hindi = L10n.tr("Localizable", "language.hindi", fallback: "Hindi")
+    /// Indonesian
+    internal static let indonesian = L10n.tr("Localizable", "language.indonesian", fallback: "Indonesian")
+    /// Italian
+    internal static let italian = L10n.tr("Localizable", "language.italian", fallback: "Italian")
+    /// Japanese
+    internal static let japanese = L10n.tr("Localizable", "language.japanese", fallback: "Japanese")
+    /// Korean
+    internal static let korean = L10n.tr("Localizable", "language.korean", fallback: "Korean")
+    /// Malay
+    internal static let malay = L10n.tr("Localizable", "language.malay", fallback: "Malay")
+    /// Portuguese (Brazil)
+    internal static let portugueseBrazil = L10n.tr("Localizable", "language.portuguese_brazil", fallback: "Portuguese (Brazil)")
+    /// Russian
+    internal static let russian = L10n.tr("Localizable", "language.russian", fallback: "Russian")
+    /// Spanish (Spain)
+    internal static let spanishSpain = L10n.tr("Localizable", "language.spanish_spain", fallback: "Spanish (Spain)")
+    /// Thai
+    internal static let thai = L10n.tr("Localizable", "language.thai", fallback: "Thai")
     /// Language
     internal static let title = L10n.tr("Localizable", "language.title", fallback: "Language")
+    /// Turkish
+    internal static let turkish = L10n.tr("Localizable", "language.turkish", fallback: "Turkish")
   }
   internal enum Limit {
     /// Upgrade Now
@@ -206,8 +230,14 @@ internal enum L10n {
     internal static let wideFraming = L10n.tr("Localizable", "photo_tips.wide_framing", fallback: "**Wide Framing:** Capture all key angles in a single frame.")
   }
   internal enum Rating {
+    /// Five star rating
+    internal static let fiveStarRating = L10n.tr("Localizable", "rating.five_star_rating", fallback: "Five star rating")
     /// Rate on App Store
     internal static let rateOnStore = L10n.tr("Localizable", "rating.rate_on_store", fallback: "Rate on App Store")
+    /// %d star rating
+    internal static func starRating(_ p1: Int) -> String {
+      return L10n.tr("Localizable", "rating.star_rating", p1, fallback: "%d star rating")
+    }
     /// Write a Review
     internal static let writeReview = L10n.tr("Localizable", "rating.write_review", fallback: "Write a Review")
     internal enum HomeEnjoyment {

@@ -1,0 +1,129 @@
+"settings.title" = "Настройки";
+"settings.restore_purchase" = "Восстановить покупку";
+"settings.restoring" = "Восстановление...";
+"settings.language" = "Язык";
+"settings.privacy_policy" = "Политика конфиденциальности";
+"settings.terms_of_service" = "Условия использования";
+"settings.feedback" = "Обратная связь";
+"settings.version" = "Версия %@";
+
+"language.title" = "Язык";
+"language.english_us" = "Английский (США)";
+"language.arabic_saudi_arabia" = "Арабский (Саудовская Аравия)";
+"language.german_germany" = "Немецкий (Германия)";
+"language.spanish_spain" = "Испанский (Испания)";
+"language.french_france" = "Французский (Франция)";
+"language.hindi" = "Хинди";
+"language.indonesian" = "Индонезийский";
+"language.italian" = "Итальянский";
+"language.japanese" = "Японский";
+"language.korean" = "Корейский";
+"language.malay" = "Малайский";
+"language.portuguese_brazil" = "Португальский (Бразилия)";
+"language.russian" = "Русский";
+"language.thai" = "Тайский";
+"language.turkish" = "Турецкий";
+
+"common.ok" = "OK";
+"common.cancel" = "Отмена";
+"common.delete" = "Удалить";
+"common.close" = "Закрыть";
+
+"home.title" = "Главная";
+"home.advanced_editing" = "РАСШИРЕННОЕ РЕДАКТИРОВАНИЕ";
+
+"history.title" = "История";
+"history.empty.title" = "Начните свой первый проект";
+"history.empty.message" = "Создайте новое пространство и наблюдайте,\nкак ваши идеи оживают.";
+"history.empty.create_project" = "Создать новый проект";
+"history.delete_confirmation.title" = "Удалить выбранные проекты?";
+"history.delete_confirmation.message" = "Это действие нельзя отменить.";
+"history.delete_selected" = "Удалить (%d)";
+"history.filter_empty.title" = "Нет подходящих проектов";
+"history.filter_empty.message" = "Попробуйте изменить или сбросить фильтры.";
+"history.filter_empty.reset_filters" = "Сбросить фильтры";
+
+"onboarding.continue" = "Продолжить";
+"onboarding.after" = "После";
+"onboarding.welcome.title" = "Добро пожаловать в HomeGPT";
+"onboarding.welcome.subtitle" = "Преобразите своё пространство с помощью ИИ";
+"onboarding.welcome.get_started" = "Начать";
+"onboarding.welcome.terms_of_use" = "Условия использования";
+"onboarding.welcome.subscription_terms" = "Условия подписки";
+"onboarding.welcome.privacy_policy" = "Политика конфиденциальности";
+"onboarding.welcome.terms.leading" = "Продолжая, вы соглашаетесь с";
+"onboarding.welcome.terms.and" = "и";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "а также с использованием нами сторонних инструментов для работы приложения.";
+"onboarding.interior.title" = "Дизайн интерьера";
+"onboarding.interior.subtitle" = "Мгновенно обновите своё пространство";
+"onboarding.exterior.title" = "Дизайн экстерьера";
+"onboarding.exterior.subtitle" = "Переосмыслите свой фасад";
+"onboarding.landscape.title" = "Ландшафтный дизайн";
+"onboarding.landscape.subtitle" = "Обновите свой сад с помощью ИИ";
+"onboarding.trial_enabled.title" = "3-дневный бесплатный пробный период активирован!";
+"onboarding.trial_enabled.title_line1" = "3-дневный бесплатный период";
+"onboarding.trial_enabled.title_line2" = "активирован!";
+"onboarding.trial_enabled.subtitle" = "Теперь у вас есть полный доступ ко всем премиум-функциям.";
+"onboarding.trial_enabled.start_designing" = "Начать дизайн";
+
+"limit.generations_left.title" = "%d/%d бесплатных
+генераций осталось";
+"limit.reached.title" = "Лимит достигнут";
+"limit.generations_left.message" = "Откройте безлимитные функции, дизайны и
+более быструю обработку с Pro.";
+"limit.reached.message" = "Вы использовали все бесплатные генерации.
+Откройте безлимитные функции, дизайны и
+более быструю обработку с Pro.";
+"limit.upgrade_now" = "Обновить сейчас";
+
+"rating.home_enjoyment.title" = "Нравится HomeGPT?";
+"rating.result_feedback.title" = "Ваш отзыв =
+лучшие дизайны";
+"rating.home_enjoyment.message" = "Оцените свой опыт и помогите нам построить будущее ИИ-дизайна для дома. Это займёт всего секунду!";
+"rating.result_feedback.message" = "Нам будет приятно услышать ваше мнение! Если вам нравятся преобразования, пожалуйста, оставьте оценку. Ваш отзыв помогает нам создавать более мощный ИИ-опыт для вас.";
+"rating.rate_on_store" = "Оценить в App Store";
+"rating.write_review" = "Написать отзыв";
+"rating.star_rating" = "Оценка %d звёзд";
+"rating.five_star_rating" = "Оценка пять звёзд";
+
+"result.pro" = "PRO";
+"result.title" = "Результат";
+"result.remove_watermark" = "УБРАТЬ ВОДЯНОЙ ЗНАК";
+"result.regenerate" = "СГЕНЕРИРОВАТЬ ЗАНОВО";
+"result.download" = "СКАЧАТЬ";
+"result.share" = "ПОДЕЛИТЬСЯ";
+"result.save_to_archive" = "СОХРАНИТЬ В АРХИВ";
+"result.archive_success.title" = "Сохранено в архив";
+"result.save_success.title" = "Сохранено";
+"result.save_success.message" = "Изображение сохранено в вашу фотогалерею.";
+"result.save_failure.title" = "Не удалось сохранить";
+"result.save_failure.message" = "Не удалось сохранить изображение в вашу фотогалерею.";
+"result.save_failure.photo_access_required" = "Для сохранения этого изображения требуется доступ к медиатеке.";
+
+"generation_loading.failure.title" = "Ошибка генерации";
+"generation_loading.failure.message" = "На этот раз нам не удалось обработать ваш запрос на редизайн. Проверьте фото или инструкции и попробуйте снова.";
+"generation_loading.failure.exterior_photo_message" = "Выберите чёткое фото экстерьера, показывающее переднюю, боковую или заднюю часть дома, и попробуйте снова.";
+"generation_loading.failure.try_again" = "ПОПРОБОВАТЬ СНОВА";
+"generation_loading.failure.back_to_design" = "НАЗАД К ДИЗАЙНУ";
+
+"exterior_flow.title" = "Редизайн экстерьера";
+"exterior_flow.prompt_placeholder" = "Настройте запрос своими собственными инструкциями...";
+
+"inspiration.title" = "Вдохновение";
+"inspiration.like" = "Нравится вдохновение";
+"inspiration.unlike" = "Убрать отметку «Нравится»";
+
+"photo_tips.title" = "Советы по фото";
+"photo_tips.close" = "Закрыть";
+"photo_tips.got_it" = "ПОНЯТНО";
+"photo_tips.requirements" = "ТРЕБОВАНИЯ:";
+"photo_tips.file_dimensions" = "Размер файла должен быть не менее 512x512.";
+"photo_tips.file_size" = "Размер файла должен быть менее 20 МБ.";
+"photo_tips.optimal_results" = "ДЛЯ ОПТИМАЛЬНЫХ РЕЗУЛЬТАТОВ:";
+"photo_tips.landscape_mode" = "**Горизонтальный режим:** Снимайте изображение горизонтально.";
+"photo_tips.bright_lighting" = "**Яркое освещение:** Убедитесь, что комната хорошо освещена, чтобы устранить тени.";
+"photo_tips.wide_framing" = "**Широкий кадр:** Захватите все ключевые ракурсы в одном кадре.";
+"photo_tips.stay_steady" = "**Держите ровно:** Держите камеру неподвижно для чёткого, детального изображения.";
+"photo_tips.bad_examples" = "ПЛОХИЕ ПРИМЕРЫ:";
+"photo_tips.good_examples" = "ХОРОШИЕ ПРИМЕРЫ:";

@@ -40,9 +40,9 @@ struct LanguageView: View {
             // List
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach(languageManager.availableLanguages, id: \.self) { language in
+                    ForEach(languageManager.availableLanguages) { language in
                         Button(action: {
-                            languageManager.selectedLanguage = language
+                            languageManager.selectedLanguage = language.code
                         }) {
                             HStack {
                                 Text(languageManager.localizedName(for: language))
@@ -51,7 +51,7 @@ struct LanguageView: View {
                                 
                                 Spacer()
                                 
-                                if languageManager.selectedLanguage == language {
+                                if languageManager.selectedLanguage == language.code {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 16, weight: .semibold))
                                         .foregroundColor(Color.DesignSystem.folly)
@@ -70,6 +70,7 @@ struct LanguageView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
+                    Spacer(minLength: 100)
                 }
                 .padding(.horizontal, 20)
             }

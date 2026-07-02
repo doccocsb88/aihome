@@ -1,0 +1,129 @@
+"settings.title" = "Configurações";
+"settings.restore_purchase" = "Restaurar compra";
+"settings.restoring" = "Restaurando...";
+"settings.language" = "Idioma";
+"settings.privacy_policy" = "Política de Privacidade";
+"settings.terms_of_service" = "Termos de Serviço";
+"settings.feedback" = "Feedback";
+"settings.version" = "Versão %@";
+
+"language.title" = "Idioma";
+"language.english_us" = "Inglês (EUA)";
+"language.arabic_saudi_arabia" = "Árabe (Arábia Saudita)";
+"language.german_germany" = "Alemão (Alemanha)";
+"language.spanish_spain" = "Espanhol (Espanha)";
+"language.french_france" = "Francês (França)";
+"language.hindi" = "Hindi";
+"language.indonesian" = "Indonésio";
+"language.italian" = "Italiano";
+"language.japanese" = "Japonês";
+"language.korean" = "Coreano";
+"language.malay" = "Malaio";
+"language.portuguese_brazil" = "Português (Brasil)";
+"language.russian" = "Russo";
+"language.thai" = "Tailandês";
+"language.turkish" = "Turco";
+
+"common.ok" = "OK";
+"common.cancel" = "Cancelar";
+"common.delete" = "Excluir";
+"common.close" = "Fechar";
+
+"home.title" = "Início";
+"home.advanced_editing" = "EDIÇÃO AVANÇADA";
+
+"history.title" = "Histórico";
+"history.empty.title" = "Comece seu primeiro projeto";
+"history.empty.message" = "Crie um novo espaço e veja\nsuas ideias ganharem vida.";
+"history.empty.create_project" = "Criar novo projeto";
+"history.delete_confirmation.title" = "Excluir os projetos selecionados?";
+"history.delete_confirmation.message" = "Esta ação não pode ser desfeita.";
+"history.delete_selected" = "Excluir (%d)";
+"history.filter_empty.title" = "Nenhum projeto correspondente";
+"history.filter_empty.message" = "Tente ajustar ou redefinir seus filtros.";
+"history.filter_empty.reset_filters" = "Redefinir filtros";
+
+"onboarding.continue" = "Continuar";
+"onboarding.after" = "Depois";
+"onboarding.welcome.title" = "Bem-vindo ao HomeGPT";
+"onboarding.welcome.subtitle" = "Transforme seu espaço com IA";
+"onboarding.welcome.get_started" = "Começar";
+"onboarding.welcome.terms_of_use" = "Termos de uso";
+"onboarding.welcome.subscription_terms" = "Termos de assinatura";
+"onboarding.welcome.privacy_policy" = "Política de Privacidade";
+"onboarding.welcome.terms.leading" = "Ao continuar, você concorda com";
+"onboarding.welcome.terms.and" = "e";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "juntamente com o nosso uso de ferramentas de terceiros para a funcionalidade do app.";
+"onboarding.interior.title" = "Design de interiores";
+"onboarding.interior.subtitle" = "Redesenhe seu espaço instantaneamente";
+"onboarding.exterior.title" = "Design de exteriores";
+"onboarding.exterior.subtitle" = "Reimagine sua fachada";
+"onboarding.landscape.title" = "Design paisagístico";
+"onboarding.landscape.subtitle" = "Renove seu jardim com IA";
+"onboarding.trial_enabled.title" = "O teste gratuito de 3 dias está ativado!";
+"onboarding.trial_enabled.title_line1" = "Teste gratuito de 3 dias";
+"onboarding.trial_enabled.title_line2" = "está ativado!";
+"onboarding.trial_enabled.subtitle" = "Agora você tem acesso completo a todos os recursos premium.";
+"onboarding.trial_enabled.start_designing" = "Começar a desenhar";
+
+"limit.generations_left.title" = "%d/%d Gerações gratuitas
+restantes";
+"limit.reached.title" = "Limite atingido";
+"limit.generations_left.message" = "Desbloqueie recursos e designs ilimitados e
+processamento mais rápido com o Pro.";
+"limit.reached.message" = "Você usou todas as suas gerações gratuitas.
+Desbloqueie recursos e designs ilimitados e
+processamento mais rápido com o Pro.";
+"limit.upgrade_now" = "Fazer upgrade agora";
+
+"rating.home_enjoyment.title" = "Curtindo o HomeGPT?";
+"rating.result_feedback.title" = "Seu feedback =
+melhores designs";
+"rating.home_enjoyment.message" = "Avalie sua experiência e ajude-nos a construir o futuro do design de casas com IA. Leva apenas um segundo!";
+"rating.result_feedback.message" = "Adoraríamos saber sua opinião! Se você está gostando das transformações, considere deixar uma avaliação. Seu feedback nos ajuda a criar uma experiência de IA mais poderosa para você.";
+"rating.rate_on_store" = "Avaliar na App Store";
+"rating.write_review" = "Escrever uma avaliação";
+"rating.star_rating" = "Avaliação de %d estrelas";
+"rating.five_star_rating" = "Avaliação de cinco estrelas";
+
+"result.pro" = "PRO";
+"result.title" = "Resultado";
+"result.remove_watermark" = "REMOVER MARCA D'ÁGUA";
+"result.regenerate" = "GERAR NOVAMENTE";
+"result.download" = "BAIXAR";
+"result.share" = "COMPARTILHAR";
+"result.save_to_archive" = "SALVAR NO ARQUIVO";
+"result.archive_success.title" = "Salvo no arquivo";
+"result.save_success.title" = "Salvo";
+"result.save_success.message" = "A imagem foi salva na sua galeria de fotos.";
+"result.save_failure.title" = "Falha ao salvar";
+"result.save_failure.message" = "Não foi possível salvar a imagem na sua galeria de fotos.";
+"result.save_failure.photo_access_required" = "É necessário acesso à fototeca para salvar esta imagem.";
+
+"generation_loading.failure.title" = "Falha na geração";
+"generation_loading.failure.message" = "Não conseguimos processar sua solicitação de redesenho desta vez. Verifique sua foto ou instruções e tente novamente.";
+"generation_loading.failure.exterior_photo_message" = "Escolha uma foto externa nítida mostrando a frente, a lateral ou os fundos da casa e tente novamente.";
+"generation_loading.failure.try_again" = "TENTAR NOVAMENTE";
+"generation_loading.failure.back_to_design" = "VOLTAR AO DESIGN";
+
+"exterior_flow.title" = "Redesenho externo";
+"exterior_flow.prompt_placeholder" = "Personalize o prompt com suas próprias instruções...";
+
+"inspiration.title" = "Inspiração";
+"inspiration.like" = "Curtir inspiração";
+"inspiration.unlike" = "Descurtir inspiração";
+
+"photo_tips.title" = "Dicas de foto";
+"photo_tips.close" = "Fechar";
+"photo_tips.got_it" = "ENTENDI";
+"photo_tips.requirements" = "REQUISITOS:";
+"photo_tips.file_dimensions" = "As dimensões do arquivo devem ser de pelo menos 512x512.";
+"photo_tips.file_size" = "O tamanho do arquivo deve ser inferior a 20 MB.";
+"photo_tips.optimal_results" = "PARA MELHORES RESULTADOS:";
+"photo_tips.landscape_mode" = "**Modo paisagem:** Capture sua imagem na horizontal.";
+"photo_tips.bright_lighting" = "**Iluminação intensa:** Garanta que o ambiente esteja bem iluminado para eliminar sombras.";
+"photo_tips.wide_framing" = "**Enquadramento amplo:** Capture todos os ângulos importantes em um único quadro.";
+"photo_tips.stay_steady" = "**Mantenha firme:** Mantenha a câmera estável para uma imagem nítida e detalhada.";
+"photo_tips.bad_examples" = "EXEMPLOS RUINS:";
+"photo_tips.good_examples" = "BONS EXEMPLOS:";

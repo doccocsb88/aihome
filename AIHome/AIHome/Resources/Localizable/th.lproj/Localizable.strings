@@ -1,0 +1,129 @@
+"settings.title" = "การตั้งค่า";
+"settings.restore_purchase" = "กู้คืนการซื้อ";
+"settings.restoring" = "กำลังกู้คืน...";
+"settings.language" = "ภาษา";
+"settings.privacy_policy" = "นโยบายความเป็นส่วนตัว";
+"settings.terms_of_service" = "ข้อกำหนดในการให้บริการ";
+"settings.feedback" = "ข้อเสนอแนะ";
+"settings.version" = "เวอร์ชัน %@";
+
+"language.title" = "ภาษา";
+"language.english_us" = "อังกฤษ (สหรัฐฯ)";
+"language.arabic_saudi_arabia" = "อาหรับ (ซาอุดีอาระเบีย)";
+"language.german_germany" = "เยอรมัน (เยอรมนี)";
+"language.spanish_spain" = "สเปน (สเปน)";
+"language.french_france" = "ฝรั่งเศส (ฝรั่งเศส)";
+"language.hindi" = "ฮินดี";
+"language.indonesian" = "อินโดนีเซีย";
+"language.italian" = "อิตาลี";
+"language.japanese" = "ญี่ปุ่น";
+"language.korean" = "เกาหลี";
+"language.malay" = "มลายู";
+"language.portuguese_brazil" = "โปรตุเกส (บราซิล)";
+"language.russian" = "รัสเซีย";
+"language.thai" = "ไทย";
+"language.turkish" = "ตุรกี";
+
+"common.ok" = "ตกลง";
+"common.cancel" = "ยกเลิก";
+"common.delete" = "ลบ";
+"common.close" = "ปิด";
+
+"home.title" = "หน้าแรก";
+"home.advanced_editing" = "การแก้ไขขั้นสูง";
+
+"history.title" = "ประวัติ";
+"history.empty.title" = "เริ่มโปรเจกต์แรกของคุณ";
+"history.empty.message" = "สร้างพื้นที่ใหม่และเฝ้าดู\nไอเดียของคุณกลายเป็นจริง";
+"history.empty.create_project" = "สร้างโปรเจกต์ใหม่";
+"history.delete_confirmation.title" = "ลบโปรเจกต์ที่เลือกหรือไม่?";
+"history.delete_confirmation.message" = "การกระทำนี้ไม่สามารถย้อนกลับได้";
+"history.delete_selected" = "ลบ (%d)";
+"history.filter_empty.title" = "ไม่มีโปรเจกต์ที่ตรงกัน";
+"history.filter_empty.message" = "ลองปรับหรือรีเซ็ตตัวกรองของคุณ";
+"history.filter_empty.reset_filters" = "รีเซ็ตตัวกรอง";
+
+"onboarding.continue" = "ดำเนินการต่อ";
+"onboarding.after" = "หลัง";
+"onboarding.welcome.title" = "ยินดีต้อนรับสู่ HomeGPT";
+"onboarding.welcome.subtitle" = "เปลี่ยนโฉมพื้นที่ของคุณด้วย AI";
+"onboarding.welcome.get_started" = "เริ่มต้นใช้งาน";
+"onboarding.welcome.terms_of_use" = "ข้อกำหนดการใช้งาน";
+"onboarding.welcome.subscription_terms" = "ข้อกำหนดการสมัครสมาชิก";
+"onboarding.welcome.privacy_policy" = "นโยบายความเป็นส่วนตัว";
+"onboarding.welcome.terms.leading" = "การดำเนินการต่อถือว่าคุณยอมรับ";
+"onboarding.welcome.terms.and" = "และ";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "รวมถึงการที่เราใช้เครื่องมือของบุคคลที่สามสำหรับการทำงานของแอป";
+"onboarding.interior.title" = "การออกแบบภายใน";
+"onboarding.interior.subtitle" = "ออกแบบพื้นที่ของคุณใหม่ได้ทันที";
+"onboarding.exterior.title" = "การออกแบบภายนอก";
+"onboarding.exterior.subtitle" = "จินตนาการหน้าอาคารของคุณใหม่";
+"onboarding.landscape.title" = "การออกแบบภูมิทัศน์";
+"onboarding.landscape.subtitle" = "ปรับโฉมสวนของคุณด้วย AI";
+"onboarding.trial_enabled.title" = "เปิดใช้งานทดลองใช้ฟรี 3 วันแล้ว!";
+"onboarding.trial_enabled.title_line1" = "ทดลองใช้ฟรี 3 วัน";
+"onboarding.trial_enabled.title_line2" = "เปิดใช้งานแล้ว!";
+"onboarding.trial_enabled.subtitle" = "ตอนนี้คุณสามารถเข้าถึงฟีเจอร์พรีเมียมทั้งหมดได้อย่างเต็มรูปแบบ";
+"onboarding.trial_enabled.start_designing" = "เริ่มออกแบบ";
+
+"limit.generations_left.title" = "เหลือการสร้างฟรี
+%d/%d ครั้ง";
+"limit.reached.title" = "ถึงขีดจำกัดแล้ว";
+"limit.generations_left.message" = "ปลดล็อกฟีเจอร์ ดีไซน์ไม่จำกัด และ
+การประมวลผลที่เร็วขึ้นด้วย Pro";
+"limit.reached.message" = "คุณใช้การสร้างฟรีทั้งหมดของคุณแล้ว
+ปลดล็อกฟีเจอร์ ดีไซน์ไม่จำกัด และ
+การประมวลผลที่เร็วขึ้นด้วย Pro";
+"limit.upgrade_now" = "อัปเกรดเลย";
+
+"rating.home_enjoyment.title" = "สนุกกับ HomeGPT ไหม?";
+"rating.result_feedback.title" = "ความคิดเห็นของคุณ =
+ดีไซน์ที่ดีขึ้น";
+"rating.home_enjoyment.message" = "ให้คะแนนประสบการณ์ของคุณและช่วยเราสร้างอนาคตของการออกแบบบ้านด้วย AI ใช้เวลาแค่วินาทีเดียว!";
+"rating.result_feedback.message" = "เราอยากฟังความคิดเห็นของคุณ! หากคุณชอบผลการเปลี่ยนโฉม โปรดพิจารณาให้คะแนน ความคิดเห็นของคุณช่วยให้เราสร้างประสบการณ์ AI ที่ทรงพลังยิ่งขึ้นสำหรับคุณ";
+"rating.rate_on_store" = "ให้คะแนนบน App Store";
+"rating.write_review" = "เขียนรีวิว";
+"rating.star_rating" = "คะแนน %d ดาว";
+"rating.five_star_rating" = "คะแนนห้าดาว";
+
+"result.pro" = "PRO";
+"result.title" = "ผลลัพธ์";
+"result.remove_watermark" = "ลบลายน้ำ";
+"result.regenerate" = "สร้างใหม่";
+"result.download" = "ดาวน์โหลด";
+"result.share" = "แชร์";
+"result.save_to_archive" = "บันทึกลงคลัง";
+"result.archive_success.title" = "บันทึกลงคลังแล้ว";
+"result.save_success.title" = "บันทึกแล้ว";
+"result.save_success.message" = "บันทึกรูปภาพลงในแกลเลอรีรูปภาพของคุณแล้ว";
+"result.save_failure.title" = "บันทึกไม่สำเร็จ";
+"result.save_failure.message" = "ไม่สามารถบันทึกรูปภาพลงในแกลเลอรีรูปภาพของคุณได้";
+"result.save_failure.photo_access_required" = "ต้องได้รับสิทธิ์เข้าถึงคลังรูปภาพเพื่อบันทึกรูปภาพนี้";
+
+"generation_loading.failure.title" = "การสร้างล้มเหลว";
+"generation_loading.failure.message" = "ครั้งนี้เราไม่สามารถประมวลผลคำขอออกแบบใหม่ของคุณได้ โปรดตรวจสอบรูปภาพหรือคำแนะนำของคุณแล้วลองอีกครั้ง";
+"generation_loading.failure.exterior_photo_message" = "เลือกรูปภาพภายนอกที่ชัดเจนซึ่งแสดงด้านหน้า ด้านข้าง หรือด้านหลังของบ้าน แล้วลองอีกครั้ง";
+"generation_loading.failure.try_again" = "ลองอีกครั้ง";
+"generation_loading.failure.back_to_design" = "กลับไปที่การออกแบบ";
+
+"exterior_flow.title" = "ออกแบบภายนอกใหม่";
+"exterior_flow.prompt_placeholder" = "ปรับแต่งพรอมต์ด้วยคำแนะนำของคุณเอง...";
+
+"inspiration.title" = "แรงบันดาลใจ";
+"inspiration.like" = "ถูกใจแรงบันดาลใจ";
+"inspiration.unlike" = "เลิกถูกใจแรงบันดาลใจ";
+
+"photo_tips.title" = "เคล็ดลับการถ่ายภาพ";
+"photo_tips.close" = "ปิด";
+"photo_tips.got_it" = "เข้าใจแล้ว";
+"photo_tips.requirements" = "ข้อกำหนด:";
+"photo_tips.file_dimensions" = "ขนาดของไฟล์ต้องมีอย่างน้อย 512x512";
+"photo_tips.file_size" = "ขนาดไฟล์ต้องน้อยกว่า 20 MB";
+"photo_tips.optimal_results" = "เพื่อผลลัพธ์ที่ดีที่สุด:";
+"photo_tips.landscape_mode" = "**โหมดแนวนอน:** ถ่ายภาพของคุณในแนวนอน";
+"photo_tips.bright_lighting" = "**แสงสว่างเพียงพอ:** ตรวจสอบให้แน่ใจว่าห้องมีแสงสว่างเพียงพอเพื่อขจัดเงา";
+"photo_tips.wide_framing" = "**จัดเฟรมกว้าง:** เก็บทุกมุมสำคัญไว้ในเฟรมเดียว";
+"photo_tips.stay_steady" = "**ถือให้นิ่ง:** ถือกล้องให้นิ่งเพื่อภาพที่คมชัดและมีรายละเอียด";
+"photo_tips.bad_examples" = "ตัวอย่างที่ไม่ดี:";
+"photo_tips.good_examples" = "ตัวอย่างที่ดี:";

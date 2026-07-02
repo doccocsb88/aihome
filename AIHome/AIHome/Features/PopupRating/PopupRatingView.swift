@@ -187,11 +187,11 @@ struct PopupRatingView: View {
                         .frame(width: 30, height: 30)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("\(rating) star rating")
+                .accessibilityLabel(L10n.Rating.starRating(rating))
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Five star rating")
+        .accessibilityLabel(L10n.Rating.fiveStarRating)
     }
 
     private var buttonContent: some View {
@@ -220,7 +220,7 @@ struct PopupRatingView: View {
                     .frame(width: 36, height: 36)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Close")
+            .accessibilityLabel(L10n.Common.close)
         }
         .padding(.top, 18)
         .padding(.trailing, 17)

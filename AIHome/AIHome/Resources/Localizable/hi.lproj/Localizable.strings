@@ -1,0 +1,129 @@
+"settings.title" = "सेटिंग";
+"settings.restore_purchase" = "खरीदारी पुनर्स्थापित करें";
+"settings.restoring" = "पुनर्स्थापित हो रहा है...";
+"settings.language" = "भाषा";
+"settings.privacy_policy" = "गोपनीयता नीति";
+"settings.terms_of_service" = "सेवा की शर्तें";
+"settings.feedback" = "प्रतिक्रिया";
+"settings.version" = "संस्करण %@";
+
+"language.title" = "भाषा";
+"language.english_us" = "अंग्रेज़ी (यूएस)";
+"language.arabic_saudi_arabia" = "अरबी (सऊदी अरब)";
+"language.german_germany" = "जर्मन (जर्मनी)";
+"language.spanish_spain" = "स्पेनिश (स्पेन)";
+"language.french_france" = "फ़्रेंच (फ़्रांस)";
+"language.hindi" = "हिन्दी";
+"language.indonesian" = "इंडोनेशियाई";
+"language.italian" = "इतालवी";
+"language.japanese" = "जापानी";
+"language.korean" = "कोरियाई";
+"language.malay" = "मलय";
+"language.portuguese_brazil" = "पुर्तगाली (ब्राज़ील)";
+"language.russian" = "रूसी";
+"language.thai" = "थाई";
+"language.turkish" = "तुर्की";
+
+"common.ok" = "ठीक है";
+"common.cancel" = "रद्द करें";
+"common.delete" = "हटाएँ";
+"common.close" = "बंद करें";
+
+"home.title" = "होम";
+"home.advanced_editing" = "उन्नत संपादन";
+
+"history.title" = "इतिहास";
+"history.empty.title" = "अपनी पहली परियोजना शुरू करें";
+"history.empty.message" = "एक नया स्थान बनाएँ और देखें\nकि आपके विचार जीवंत हो रहे हैं।";
+"history.empty.create_project" = "नई परियोजना बनाएँ";
+"history.delete_confirmation.title" = "चयनित परियोजनाएँ हटाएँ?";
+"history.delete_confirmation.message" = "इस क्रिया को पूर्ववत नहीं किया जा सकता।";
+"history.delete_selected" = "हटाएँ (%d)";
+"history.filter_empty.title" = "कोई मेल खाती परियोजना नहीं";
+"history.filter_empty.message" = "अपने फ़िल्टर समायोजित या रीसेट करके देखें।";
+"history.filter_empty.reset_filters" = "फ़िल्टर रीसेट करें";
+
+"onboarding.continue" = "जारी रखें";
+"onboarding.after" = "बाद में";
+"onboarding.welcome.title" = "HomeGPT में आपका स्वागत है";
+"onboarding.welcome.subtitle" = "AI के साथ अपने स्थान को बदलें";
+"onboarding.welcome.get_started" = "शुरू करें";
+"onboarding.welcome.terms_of_use" = "उपयोग की शर्तें";
+"onboarding.welcome.subscription_terms" = "सदस्यता की शर्तें";
+"onboarding.welcome.privacy_policy" = "गोपनीयता नीति";
+"onboarding.welcome.terms.leading" = "जारी रखकर, आप सहमत होते हैं";
+"onboarding.welcome.terms.and" = "और";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "साथ ही ऐप कार्यक्षमता के लिए तृतीय-पक्ष टूल के हमारे उपयोग से।";
+"onboarding.interior.title" = "इंटीरियर डिज़ाइन";
+"onboarding.interior.subtitle" = "अपने स्थान को तुरंत फिर से डिज़ाइन करें";
+"onboarding.exterior.title" = "एक्सटीरियर डिज़ाइन";
+"onboarding.exterior.subtitle" = "अपने अग्रभाग की फिर से कल्पना करें";
+"onboarding.landscape.title" = "लैंडस्केप डिज़ाइन";
+"onboarding.landscape.subtitle" = "AI के साथ अपने बगीचे को तरोताज़ा करें";
+"onboarding.trial_enabled.title" = "3-दिन का निःशुल्क परीक्षण सक्षम है!";
+"onboarding.trial_enabled.title_line1" = "3-दिन का निःशुल्क परीक्षण";
+"onboarding.trial_enabled.title_line2" = "सक्षम है!";
+"onboarding.trial_enabled.subtitle" = "अब आपके पास सभी प्रीमियम सुविधाओं तक पूर्ण पहुँच है।";
+"onboarding.trial_enabled.start_designing" = "डिज़ाइन शुरू करें";
+
+"limit.generations_left.title" = "%d/%d निःशुल्क
+जनरेशन शेष";
+"limit.reached.title" = "सीमा पूरी हो गई";
+"limit.generations_left.message" = "Pro के साथ असीमित सुविधाएँ, डिज़ाइन और
+तेज़ प्रोसेसिंग अनलॉक करें।";
+"limit.reached.message" = "आपने अपने सभी निःशुल्क जनरेशन उपयोग कर लिए हैं।
+Pro के साथ असीमित सुविधाएँ, डिज़ाइन और
+तेज़ प्रोसेसिंग अनलॉक करें।";
+"limit.upgrade_now" = "अभी अपग्रेड करें";
+
+"rating.home_enjoyment.title" = "HomeGPT का आनंद ले रहे हैं?";
+"rating.result_feedback.title" = "आपकी प्रतिक्रिया =
+बेहतर डिज़ाइन";
+"rating.home_enjoyment.message" = "अपने अनुभव को रेट करें और AI होम डिज़ाइन के भविष्य को बनाने में हमारी मदद करें। इसमें बस एक सेकंड लगता है!";
+"rating.result_feedback.message" = "हम आपके विचार सुनना पसंद करेंगे! यदि आप बदलावों का आनंद ले रहे हैं, तो कृपया रेटिंग देने पर विचार करें। आपकी प्रतिक्रिया हमें आपके लिए एक अधिक शक्तिशाली AI अनुभव बनाने में मदद करती है।";
+"rating.rate_on_store" = "App Store पर रेट करें";
+"rating.write_review" = "समीक्षा लिखें";
+"rating.star_rating" = "%d स्टार रेटिंग";
+"rating.five_star_rating" = "पाँच स्टार रेटिंग";
+
+"result.pro" = "PRO";
+"result.title" = "परिणाम";
+"result.remove_watermark" = "वॉटरमार्क हटाएँ";
+"result.regenerate" = "फिर से जनरेट करें";
+"result.download" = "डाउनलोड करें";
+"result.share" = "साझा करें";
+"result.save_to_archive" = "संग्रह में सहेजें";
+"result.archive_success.title" = "संग्रह में सहेजा गया";
+"result.save_success.title" = "सहेजा गया";
+"result.save_success.message" = "छवि आपकी फ़ोटो गैलरी में सहेज दी गई है।";
+"result.save_failure.title" = "सहेजना विफल";
+"result.save_failure.message" = "छवि आपकी फ़ोटो गैलरी में सहेजी नहीं जा सकी।";
+"result.save_failure.photo_access_required" = "इस छवि को सहेजने के लिए फ़ोटो लाइब्रेरी तक पहुँच आवश्यक है।";
+
+"generation_loading.failure.title" = "जनरेशन विफल";
+"generation_loading.failure.message" = "इस बार हम आपके रीडिज़ाइन अनुरोध को संसाधित नहीं कर सके। कृपया अपनी फ़ोटो या निर्देश जाँचें और फिर से प्रयास करें।";
+"generation_loading.failure.exterior_photo_message" = "घर के सामने, बगल या पीछे को दिखाने वाली एक स्पष्ट बाहरी फ़ोटो चुनें, फिर से प्रयास करें।";
+"generation_loading.failure.try_again" = "पुनः प्रयास करें";
+"generation_loading.failure.back_to_design" = "डिज़ाइन पर वापस जाएँ";
+
+"exterior_flow.title" = "एक्सटीरियर रीडिज़ाइन";
+"exterior_flow.prompt_placeholder" = "अपने स्वयं के निर्देशों के साथ प्रॉम्प्ट को अनुकूलित करें...";
+
+"inspiration.title" = "प्रेरणा";
+"inspiration.like" = "प्रेरणा को पसंद करें";
+"inspiration.unlike" = "प्रेरणा को नापसंद करें";
+
+"photo_tips.title" = "फ़ोटो टिप्स";
+"photo_tips.close" = "बंद करें";
+"photo_tips.got_it" = "समझ गया";
+"photo_tips.requirements" = "आवश्यकताएँ:";
+"photo_tips.file_dimensions" = "फ़ाइल के आयाम कम से कम 512x512 होने चाहिए।";
+"photo_tips.file_size" = "फ़ाइल का आकार 20 एमबी से कम होना चाहिए।";
+"photo_tips.optimal_results" = "सर्वोत्तम परिणामों के लिए:";
+"photo_tips.landscape_mode" = "**लैंडस्केप मोड:** अपनी छवि को क्षैतिज रूप से कैप्चर करें।";
+"photo_tips.bright_lighting" = "**चमकदार रोशनी:** छाया हटाने के लिए सुनिश्चित करें कि कमरा अच्छी तरह से रोशन हो।";
+"photo_tips.wide_framing" = "**चौड़ी फ़्रेमिंग:** सभी प्रमुख कोणों को एक ही फ़्रेम में कैप्चर करें।";
+"photo_tips.stay_steady" = "**स्थिर रहें:** तीक्ष्ण, विस्तृत छवि के लिए कैमरा स्थिर रखें।";
+"photo_tips.bad_examples" = "खराब उदाहरण:";
+"photo_tips.good_examples" = "अच्छे उदाहरण:";

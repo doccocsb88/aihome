@@ -1,0 +1,129 @@
+"settings.title" = "Impostazioni";
+"settings.restore_purchase" = "Ripristina acquisto";
+"settings.restoring" = "Ripristino in corso...";
+"settings.language" = "Lingua";
+"settings.privacy_policy" = "Informativa sulla privacy";
+"settings.terms_of_service" = "Termini di servizio";
+"settings.feedback" = "Feedback";
+"settings.version" = "Versione %@";
+
+"language.title" = "Lingua";
+"language.english_us" = "Inglese (USA)";
+"language.arabic_saudi_arabia" = "Arabo (Arabia Saudita)";
+"language.german_germany" = "Tedesco (Germania)";
+"language.spanish_spain" = "Spagnolo (Spagna)";
+"language.french_france" = "Francese (Francia)";
+"language.hindi" = "Hindi";
+"language.indonesian" = "Indonesiano";
+"language.italian" = "Italiano";
+"language.japanese" = "Giapponese";
+"language.korean" = "Coreano";
+"language.malay" = "Malese";
+"language.portuguese_brazil" = "Portoghese (Brasile)";
+"language.russian" = "Russo";
+"language.thai" = "Thailandese";
+"language.turkish" = "Turco";
+
+"common.ok" = "OK";
+"common.cancel" = "Annulla";
+"common.delete" = "Elimina";
+"common.close" = "Chiudi";
+
+"home.title" = "Home";
+"home.advanced_editing" = "MODIFICA AVANZATA";
+
+"history.title" = "Cronologia";
+"history.empty.title" = "Inizia il tuo primo progetto";
+"history.empty.message" = "Crea un nuovo spazio e guarda\nle tue idee prendere vita.";
+"history.empty.create_project" = "Crea nuovo progetto";
+"history.delete_confirmation.title" = "Eliminare i progetti selezionati?";
+"history.delete_confirmation.message" = "Questa azione non può essere annullata.";
+"history.delete_selected" = "Elimina (%d)";
+"history.filter_empty.title" = "Nessun progetto corrispondente";
+"history.filter_empty.message" = "Prova a modificare o reimpostare i filtri.";
+"history.filter_empty.reset_filters" = "Reimposta filtri";
+
+"onboarding.continue" = "Continua";
+"onboarding.after" = "Dopo";
+"onboarding.welcome.title" = "Benvenuto in HomeGPT";
+"onboarding.welcome.subtitle" = "Trasforma il tuo spazio con l'IA";
+"onboarding.welcome.get_started" = "Inizia";
+"onboarding.welcome.terms_of_use" = "Termini di utilizzo";
+"onboarding.welcome.subscription_terms" = "Termini di abbonamento";
+"onboarding.welcome.privacy_policy" = "Informativa sulla privacy";
+"onboarding.welcome.terms.leading" = "Continuando, accetti";
+"onboarding.welcome.terms.and" = "e";
+"onboarding.welcome.terms.comma" = ",";
+"onboarding.welcome.terms.third_party_tools" = "insieme al nostro utilizzo di strumenti di terze parti per le funzionalità dell'app.";
+"onboarding.interior.title" = "Design d'interni";
+"onboarding.interior.subtitle" = "Riprogetta il tuo spazio all'istante";
+"onboarding.exterior.title" = "Design esterni";
+"onboarding.exterior.subtitle" = "Reimmagina la tua facciata";
+"onboarding.landscape.title" = "Design del paesaggio";
+"onboarding.landscape.subtitle" = "Rinnova il tuo giardino con l'IA";
+"onboarding.trial_enabled.title" = "La prova gratuita di 3 giorni è attiva!";
+"onboarding.trial_enabled.title_line1" = "Prova gratuita di 3 giorni";
+"onboarding.trial_enabled.title_line2" = "è attiva!";
+"onboarding.trial_enabled.subtitle" = "Ora hai accesso completo a tutte le funzionalità premium.";
+"onboarding.trial_enabled.start_designing" = "Inizia a progettare";
+
+"limit.generations_left.title" = "%d/%d Generazioni gratuite
+rimaste";
+"limit.reached.title" = "Limite raggiunto";
+"limit.generations_left.message" = "Sblocca funzionalità illimitate, design ed
+elaborazione più veloce con Pro.";
+"limit.reached.message" = "Hai utilizzato tutte le tue generazioni gratuite.
+Sblocca funzionalità illimitate, design ed
+elaborazione più veloce con Pro.";
+"limit.upgrade_now" = "Aggiorna ora";
+
+"rating.home_enjoyment.title" = "Ti piace HomeGPT?";
+"rating.result_feedback.title" = "Il tuo feedback =
+design migliori";
+"rating.home_enjoyment.message" = "Valuta la tua esperienza e aiutaci a costruire il futuro del design della casa con l'IA. Ci vuole solo un secondo!";
+"rating.result_feedback.message" = "Ci piacerebbe conoscere la tua opinione! Se ti stanno piacendo le trasformazioni, ti invitiamo a lasciare una valutazione. Il tuo feedback ci aiuta a creare un'esperienza IA più potente per te.";
+"rating.rate_on_store" = "Valuta su App Store";
+"rating.write_review" = "Scrivi una recensione";
+"rating.star_rating" = "Valutazione di %d stelle";
+"rating.five_star_rating" = "Valutazione di cinque stelle";
+
+"result.pro" = "PRO";
+"result.title" = "Risultato";
+"result.remove_watermark" = "RIMUOVI FILIGRANA";
+"result.regenerate" = "RIGENERA";
+"result.download" = "SCARICA";
+"result.share" = "CONDIVIDI";
+"result.save_to_archive" = "SALVA NELL'ARCHIVIO";
+"result.archive_success.title" = "Salvato nell'archivio";
+"result.save_success.title" = "Salvato";
+"result.save_success.message" = "L'immagine è stata salvata nella tua galleria fotografica.";
+"result.save_failure.title" = "Salvataggio non riuscito";
+"result.save_failure.message" = "Impossibile salvare l'immagine nella tua galleria fotografica.";
+"result.save_failure.photo_access_required" = "Per salvare questa immagine è necessario l'accesso alla libreria foto.";
+
+"generation_loading.failure.title" = "Generazione non riuscita";
+"generation_loading.failure.message" = "Questa volta non siamo riusciti a elaborare la tua richiesta di riprogettazione. Controlla la foto o le istruzioni e riprova.";
+"generation_loading.failure.exterior_photo_message" = "Scegli una foto esterna nitida che mostri la parte anteriore, laterale o posteriore della casa, poi riprova.";
+"generation_loading.failure.try_again" = "RIPROVA";
+"generation_loading.failure.back_to_design" = "TORNA AL DESIGN";
+
+"exterior_flow.title" = "Riprogettazione esterni";
+"exterior_flow.prompt_placeholder" = "Personalizza il prompt con le tue istruzioni...";
+
+"inspiration.title" = "Ispirazione";
+"inspiration.like" = "Metti mi piace all'ispirazione";
+"inspiration.unlike" = "Rimuovi mi piace all'ispirazione";
+
+"photo_tips.title" = "Consigli per le foto";
+"photo_tips.close" = "Chiudi";
+"photo_tips.got_it" = "CAPITO";
+"photo_tips.requirements" = "REQUISITI:";
+"photo_tips.file_dimensions" = "Le dimensioni del file devono essere almeno 512x512.";
+"photo_tips.file_size" = "La dimensione del file deve essere inferiore a 20 MB.";
+"photo_tips.optimal_results" = "PER RISULTATI OTTIMALI:";
+"photo_tips.landscape_mode" = "**Modalità orizzontale:** Scatta la tua immagine in orizzontale.";
+"photo_tips.bright_lighting" = "**Illuminazione intensa:** Assicurati che la stanza sia ben illuminata per eliminare le ombre.";
+"photo_tips.wide_framing" = "**Inquadratura ampia:** Cattura tutte le angolazioni chiave in un unico scatto.";
+"photo_tips.stay_steady" = "**Resta fermo:** Tieni ferma la fotocamera per un'immagine nitida e dettagliata.";
+"photo_tips.bad_examples" = "ESEMPI SBAGLIATI:";
+"photo_tips.good_examples" = "ESEMPI CORRETTI:";
