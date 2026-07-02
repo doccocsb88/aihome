@@ -18,6 +18,7 @@ extension Color {
         static let platinum = Color(hex: "#E5E7EB")
         static let coolGray = Color(hex: "#9CA3AF")
         static let silverSand = Color(hex: "#AEAEB2")
+        static let mountainMist = Color(hex: "#959595")
         static let gray = Color(hex: "#8E8E93")
         static let slateGray = Color(hex: "#6B7280")
         static let darkSlate = Color(hex: "#4B5563")

@@ -197,7 +197,7 @@ struct BeforeAfterButton: View {
                 .frame(width: 18, height: 18)
                 .frame(width: 44, height: 44)
                 .background(
-                    (showingBefore ? Color(hex: "#959595") : Color(hex: "#FFFFFF"))
+                    (showingBefore ? Color.DesignSystem.mountainMist : .white)
                         .opacity(0.75)
                 )
                 .background(.ultraThinMaterial)
