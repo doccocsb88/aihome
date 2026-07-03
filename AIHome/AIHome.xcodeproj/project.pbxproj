@@ -10,6 +10,7 @@
 		04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7712FCACE0006B5B51 /* Adapty */; };
 		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
 		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
+		2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBCC0032FE7B40000123601 /* FacebookCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 				04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */,
 				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
 				1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */,
+				2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				04ADA7712FCACE0006B5B51 /* Adapty */,
 				04ADA7742FCACE0006B5B51 /* AdaptyUI */,
 				1F2E3D4C5B6A79800123456A /* Lottie */,
+				2FBCC0032FE7B40000123601 /* FacebookCore */,
 			);
 			productName = AIHome;
 			productReference = 04428BE82FCACDD7006B5B51 /* AIHome.app */;
@@ -123,6 +126,7 @@
 			packageReferences = (
 				04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
 				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 04428BE92FCACDD7006B5B51 /* Products */;
@@ -283,6 +287,9 @@
 				DEVELOPMENT_TEAM = 3K3C8W9QSC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_FacebookAppID = 1231018888626037;
+				INFOPLIST_KEY_FacebookClientToken = e958ad86506583feea414386e39d97c4;
+				INFOPLIST_KEY_FacebookDisplayName = AIHome;
 				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
 				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = top_bar_ios;
 				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
@@ -324,6 +331,9 @@
 				DEVELOPMENT_TEAM = 3K3C8W9QSC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_FacebookAppID = 1231018888626037;
+				INFOPLIST_KEY_FacebookClientToken = e958ad86506583feea414386e39d97c4;
+				INFOPLIST_KEY_FacebookDisplayName = AIHome;
 				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
 				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = top_bar_ios;
 				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
@@ -392,6 +402,14 @@
 				minimumVersion = 4.5.0;
 			};
 		};
+		2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -409,6 +427,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		2FBCC0032FE7B40000123601 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

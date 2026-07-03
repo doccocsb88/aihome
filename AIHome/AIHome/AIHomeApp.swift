@@ -7,9 +7,24 @@
 
 import SwiftUI
 import SwiftData
+import FacebookCore
+
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
+        return true
+    }
+}
 
 @main
 struct AIHomeApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var languageManager = LanguageManager.shared
 
     var sharedModelContainer: ModelContainer = {
