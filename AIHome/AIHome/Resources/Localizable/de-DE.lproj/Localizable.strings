@@ -29,6 +29,10 @@
 "common.cancel" = "Abbrechen";
 "common.delete" = "Löschen";
 "common.close" = "Schließen";
+"privacy.ai_processing.title" = "Hinweis zur KI-Verarbeitung";
+"privacy.ai_processing.message" = "Um dein Design zu erstellen, sendet HomeGPT dein ausgewähltes Foto, die Designoptionen und den Prompt an HomeDesignsAI zur KI-Verarbeitung. Lade keine Fotos mit sensiblen personenbezogenen Informationen hoch.";
+"privacy.ai_processing.continue" = "Fortfahren";
+"privacy.ai_processing.cancel" = "Abbrechen";
 
 "home.title" = "Startseite";
 "home.advanced_editing" = "ERWEITERTE BEARBEITUNG";

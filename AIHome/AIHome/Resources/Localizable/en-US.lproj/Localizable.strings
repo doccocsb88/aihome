@@ -29,6 +29,10 @@
 "common.cancel" = "Cancel";
 "common.delete" = "Delete";
 "common.close" = "Close";
+"privacy.ai_processing.title" = "AI Processing Disclosure";
+"privacy.ai_processing.message" = "To generate your design, HomeGPT sends your selected photo, design choices, and prompt to HomeDesignsAI for AI processing. Do not upload photos containing sensitive personal information.";
+"privacy.ai_processing.continue" = "Continue";
+"privacy.ai_processing.cancel" = "Cancel";
 
 "home.title" = "Home";
 "home.advanced_editing" = "ADVANCED EDITING";

@@ -18,6 +18,10 @@
 "language.turkish" = "Turc";
 
 "common.close" = "Fermer";
+"privacy.ai_processing.title" = "Information sur le traitement par IA";
+"privacy.ai_processing.message" = "Pour générer votre design, HomeGPT envoie la photo sélectionnée, les choix de design et l'invite à HomeDesignsAI pour traitement par IA. N'ajoutez pas de photos contenant des informations personnelles sensibles.";
+"privacy.ai_processing.continue" = "Continuer";
+"privacy.ai_processing.cancel" = "Annuler";
 "settings.restore_purchase" = "Restaurer l'achat";
 "settings.restoring" = "Restauration...";
 "settings.language" = "Langue";
