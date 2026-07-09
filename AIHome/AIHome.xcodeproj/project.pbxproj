@@ -296,6 +296,7 @@
 				INFOPLIST_KEY_FacebookDisplayName = AIHome;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow AIHome to take photos for AI room redesigns.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow AIHome to save generated designs to your photo gallery.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allow HomeGPT to use your activity across apps and websites to deliver personalized ads and improve the app experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -343,6 +344,7 @@
 				INFOPLIST_KEY_FacebookDisplayName = AIHome;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow AIHome to take photos for AI room redesigns.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow AIHome to save generated designs to your photo gallery.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allow HomeGPT to use your activity across apps and websites to deliver personalized ads and improve the app experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
