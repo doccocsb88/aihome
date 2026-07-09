@@ -28,6 +28,10 @@
 "common.ok" = "ठीक है";
 "common.cancel" = "रद्द करें";
 "common.delete" = "हटाएँ";
+"privacy.ai_processing.title" = "एआई प्रोसेसिंग प्रकटीकरण";
+"privacy.ai_processing.message" = "अपना डिज़ाइन बनाने के लिए, HomeGPT आपकी चुनी हुई फोटो, डिज़ाइन विकल्प और प्रॉम्प्ट को AI प्रोसेसिंग के लिए HomeDesignsAI को भेजता है। संवेदनशील व्यक्तिगत जानकारी वाली फ़ोटो अपलोड न करें।";
+"privacy.ai_processing.continue" = "जारी रखें";
+"privacy.ai_processing.cancel" = "रद्द करें";
 "common.close" = "बंद करें";
 
 "home.title" = "होम";

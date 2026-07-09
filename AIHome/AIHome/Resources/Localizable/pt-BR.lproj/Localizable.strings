@@ -28,6 +28,10 @@
 "common.ok" = "OK";
 "common.cancel" = "Cancelar";
 "common.delete" = "Excluir";
+"privacy.ai_processing.title" = "Divulgação de processamento de IA";
+"privacy.ai_processing.message" = "Para gerar seu design, o HomeGPT envia a foto selecionada, as opções de design e o prompt para o HomeDesignsAI para processamento por IA. Não envie fotos com informações pessoais sensíveis.";
+"privacy.ai_processing.continue" = "Continuar";
+"privacy.ai_processing.cancel" = "Cancelar";
 "common.close" = "Fechar";
 
 "home.title" = "Início";

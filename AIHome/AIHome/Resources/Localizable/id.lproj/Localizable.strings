@@ -28,6 +28,10 @@
 "common.ok" = "OK";
 "common.cancel" = "Batal";
 "common.delete" = "Hapus";
+"privacy.ai_processing.title" = "Pengungkapan pemrosesan AI";
+"privacy.ai_processing.message" = "Untuk menghasilkan desain Anda, HomeGPT mengirim foto yang dipilih, pilihan desain, dan prompt Anda ke HomeDesignsAI untuk diproses AI. Jangan unggah foto yang berisi informasi pribadi sensitif.";
+"privacy.ai_processing.continue" = "Lanjutkan";
+"privacy.ai_processing.cancel" = "Batal";
 "common.close" = "Tutup";
 
 "home.title" = "Beranda";

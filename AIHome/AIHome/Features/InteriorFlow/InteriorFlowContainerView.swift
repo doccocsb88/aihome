@@ -9,6 +9,8 @@ enum InteriorFlowState {
 struct InteriorFlowContainerView: View {
     @State private var state: InteriorFlowState = .input
     @State private var currentDraft: InteriorDraft? = nil
+    @State private var pendingConsentDraft: InteriorDraft?
+    @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
@@ -19,7 +21,7 @@ struct InteriorFlowContainerView: View {
             switch state {
             case .input:
                 InteriorFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
-                    startGeneration(with: draft)
+                    requestGeneration(with: draft)
                 })
             case .loading(let viewModel):
                 GenerationLoadingView(
@@ -49,6 +51,21 @@ struct InteriorFlowContainerView: View {
             }
         }
         .generationUsageLimit(isPresented: $isShowingLimitPopup)
+        .aiProcessingConsentSheet(isPresented: $isShowingAIProcessingConsent) {
+            guard let draft = pendingConsentDraft else { return }
+            pendingConsentDraft = nil
+            startGeneration(with: draft)
+        }
+    }
+
+    private func requestGeneration(with draft: InteriorDraft) {
+        guard AIProcessingConsentStore.hasAccepted else {
+            pendingConsentDraft = draft
+            isShowingAIProcessingConsent = true
+            return
+        }
+
+        startGeneration(with: draft)
     }
 
     private func startGeneration(with draft: InteriorDraft) {

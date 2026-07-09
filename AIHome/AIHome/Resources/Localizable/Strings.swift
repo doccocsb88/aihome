@@ -789,6 +789,18 @@ internal enum L10n {
     /// **Wide Framing:** Capture all key angles in a single frame.
     internal static var wideFraming: String { L10n.tr("Localizable", "photo_tips.wide_framing", fallback: "**Wide Framing:** Capture all key angles in a single frame.") }
   }
+  internal enum Privacy {
+    internal enum AiProcessing {
+      /// Cancel
+      internal static var cancel: String { L10n.tr("Localizable", "privacy.ai_processing.cancel", fallback: "Cancel") }
+      /// Continue
+      internal static var `continue`: String { L10n.tr("Localizable", "privacy.ai_processing.continue", fallback: "Continue") }
+      /// To generate your design, HomeGPT sends your selected photo, design choices, and prompt to HomeDesignsAI for AI processing. Do not upload photos containing sensitive personal information.
+      internal static var message: String { L10n.tr("Localizable", "privacy.ai_processing.message", fallback: "To generate your design, HomeGPT sends your selected photo, design choices, and prompt to HomeDesignsAI for AI processing. Do not upload photos containing sensitive personal information.") }
+      /// AI Processing Disclosure
+      internal static var title: String { L10n.tr("Localizable", "privacy.ai_processing.title", fallback: "AI Processing Disclosure") }
+    }
+  }
   internal enum Rating {
     /// Five star rating
     internal static var fiveStarRating: String { L10n.tr("Localizable", "rating.five_star_rating", fallback: "Five star rating") }

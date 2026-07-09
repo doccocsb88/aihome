@@ -28,6 +28,10 @@
 "common.ok" = "ตกลง";
 "common.cancel" = "ยกเลิก";
 "common.delete" = "ลบ";
+"privacy.ai_processing.title" = "การเปิดเผยการประมวลผล AI";
+"privacy.ai_processing.message" = "เพื่อสร้างดีไซน์ของคุณ HomeGPT จะส่งรูปที่เลือก ตัวเลือกดีไซน์ และพรอมต์ไปยัง HomeDesignsAI เพื่อประมวลผลด้วย AI ห้ามอัปโหลดรูปที่มีข้อมูลส่วนบุคคลที่ละเอียดอ่อน";
+"privacy.ai_processing.continue" = "ดำเนินการต่อ";
+"privacy.ai_processing.cancel" = "ยกเลิก";
 "common.close" = "ปิด";
 
 "home.title" = "หน้าแรก";

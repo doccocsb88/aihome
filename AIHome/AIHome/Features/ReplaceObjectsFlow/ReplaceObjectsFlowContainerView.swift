@@ -9,6 +9,8 @@ enum ReplaceObjectsFlowState {
 struct ReplaceObjectsFlowContainerView: View {
     @State private var state: ReplaceObjectsFlowState = .input
     @State private var currentDraft: ReplaceObjectsDraft? = nil
+    @State private var pendingConsentDraft: ReplaceObjectsDraft?
+    @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
@@ -20,7 +22,7 @@ struct ReplaceObjectsFlowContainerView: View {
             switch state {
             case .input:
                 ReplaceObjectsFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
-                    startGeneration(with: draft)
+                    requestGeneration(with: draft)
                 })
             case .loading(let viewModel):
                 GenerationLoadingView(
@@ -50,6 +52,21 @@ struct ReplaceObjectsFlowContainerView: View {
             }
         }
         .generationUsageLimit(isPresented: $isShowingLimitPopup)
+        .aiProcessingConsentSheet(isPresented: $isShowingAIProcessingConsent) {
+            guard let draft = pendingConsentDraft else { return }
+            pendingConsentDraft = nil
+            startGeneration(with: draft)
+        }
+    }
+
+    private func requestGeneration(with draft: ReplaceObjectsDraft) {
+        guard AIProcessingConsentStore.hasAccepted else {
+            pendingConsentDraft = draft
+            isShowingAIProcessingConsent = true
+            return
+        }
+
+        startGeneration(with: draft)
     }
 
     private func startGeneration(with draft: ReplaceObjectsDraft) {

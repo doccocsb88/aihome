@@ -1,3 +1,4 @@
+import AppTrackingTransparency
 import SwiftUI
 
 struct OnboardingIntroPagerView: View {
@@ -41,6 +42,9 @@ struct OnboardingIntroPagerView: View {
         .animation(.easeInOut(duration: 0.28), value: selectedIndex)
         .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
+        .task {
+            await requestTrackingAuthorizationOnFirstPage()
+        }
         .task(id: selectedIndex) {
             guard selectedIndex == trialPageIndex else { return }
             try? await Task.sleep(nanoseconds: 1_000_000_000)
@@ -70,6 +74,23 @@ struct OnboardingIntroPagerView: View {
     private func completeOnboarding() {
         UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
         coordinator.replaceRoot(with: .mainTab)
+    }
+
+    @MainActor
+    private func requestTrackingAuthorizationOnFirstPage() async {
+        guard selectedIndex == 0 else { return }
+        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
+
+        try? await Task.sleep(nanoseconds: 600_000_000)
+        guard selectedIndex == 0 else { return }
+        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            ATTrackingManager.requestTrackingAuthorization { status in
+                AppLogger.logAction("ATT Authorization Requested", details: "\(status.rawValue)")
+                continuation.resume()
+            }
+        }
     }
     
     private var bottomControls: some View {

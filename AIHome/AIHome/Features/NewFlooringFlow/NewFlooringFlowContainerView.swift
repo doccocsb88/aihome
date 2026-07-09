@@ -9,6 +9,8 @@ enum NewFlooringFlowState {
 struct NewFlooringFlowContainerView: View {
     @State private var state: NewFlooringFlowState = .input
     @State private var currentDraft: NewFlooringDraft? = nil
+    @State private var pendingConsentDraft: NewFlooringDraft?
+    @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
@@ -20,7 +22,7 @@ struct NewFlooringFlowContainerView: View {
             switch state {
             case .input:
                 NewFlooringFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
-                    startGeneration(with: draft)
+                    requestGeneration(with: draft)
                 })
             case .loading(let viewModel):
                 GenerationLoadingView(
@@ -50,6 +52,21 @@ struct NewFlooringFlowContainerView: View {
             }
         }
         .generationUsageLimit(isPresented: $isShowingLimitPopup)
+        .aiProcessingConsentSheet(isPresented: $isShowingAIProcessingConsent) {
+            guard let draft = pendingConsentDraft else { return }
+            pendingConsentDraft = nil
+            startGeneration(with: draft)
+        }
+    }
+
+    private func requestGeneration(with draft: NewFlooringDraft) {
+        guard AIProcessingConsentStore.hasAccepted else {
+            pendingConsentDraft = draft
+            isShowingAIProcessingConsent = true
+            return
+        }
+
+        startGeneration(with: draft)
     }
 
     private func startGeneration(with draft: NewFlooringDraft) {
