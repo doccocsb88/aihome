@@ -1,5 +1,9 @@
 import SwiftUI
 
+private enum AIProcessingConsentSheetMetrics {
+    static let height: CGFloat = 390
+}
+
 enum AIProcessingConsentStore {
     private static let hasAcceptedKey = "privacy.aiProcessingConsent.hasAccepted"
 
@@ -14,8 +18,8 @@ enum AIProcessingConsentStore {
 
 struct AIProcessingConsentSheet: View {
     let onContinue: () -> Void
+    let onCancel: () -> Void
 
-    @Environment(\.dismiss) private var dismiss
     @State private var webPageToOpen: AppWebPage?
 
     var body: some View {
@@ -63,20 +67,19 @@ struct AIProcessingConsentSheet: View {
             VStack(spacing: 12) {
                 Button {
                     AIProcessingConsentStore.accept()
-                    dismiss()
                     onContinue()
                 } label: {
                     Text(L10n.Privacy.AiProcessing.continue)
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 14))
-                        .foregroundStyle(Color.DesignSystem.background)
+                        .foregroundStyle(Color.DesignSystem.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 54)
-                        .background(Color.DesignSystem.textPrimary, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .background(Color.DesignSystem.eerieBlack, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
                 .buttonStyle(.plain)
 
                 Button {
-                    dismiss()
+                    onCancel()
                 } label: {
                     Text(L10n.Privacy.AiProcessing.cancel)
                         .font(FontFamily.Roboto.medium.swiftUIFont(size: 14))
@@ -89,9 +92,7 @@ struct AIProcessingConsentSheet: View {
             .padding(.horizontal, 24)
             .padding(.bottom, 8)
         }
-        .background(Color.DesignSystem.background.ignoresSafeArea())
-        .presentationDetents([.height(390)])
-        .presentationDragIndicator(.hidden)
+        .environment(\.isEnabled, true)
         .sheet(item: $webPageToOpen) { webPage in
             AppWebView(title: webPage.title, url: webPage.url)
         }
@@ -104,9 +105,51 @@ private struct AIProcessingConsentSheetModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .sheet(isPresented: $isPresented) {
-                AIProcessingConsentSheet(onContinue: onContinue)
+            .overlay {
+                if isPresented {
+                    GeometryReader { proxy in
+                        ZStack(alignment: .bottom) {
+                            Color.black.opacity(0.22)
+                                .ignoresSafeArea()
+
+                            Color.DesignSystem.background
+                                .overlay(alignment: .top) {
+                                    AIProcessingConsentSheet(
+                                        onContinue: {
+                                            isPresented = false
+                                            onContinue()
+                                        },
+                                        onCancel: {
+                                            isPresented = false
+                                        }
+                                    )
+                                    .frame(height: AIProcessingConsentSheetMetrics.height, alignment: .top)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .frame(
+                                    height: AIProcessingConsentSheetMetrics.height + proxy.safeAreaInsets.bottom,
+                                    alignment: .top
+                                )
+                                .clipShape(
+                                    UnevenRoundedRectangle(
+                                        cornerRadii: .init(
+                                            topLeading: 36,
+                                            bottomLeading: 0,
+                                            bottomTrailing: 0,
+                                            topTrailing: 36
+                                        ),
+                                        style: .continuous
+                                    )
+                                )
+                                .ignoresSafeArea(edges: .bottom)
+                        }
+                        .ignoresSafeArea(edges: .bottom)
+                        .transition(.opacity)
+                        .zIndex(1)
+                    }
+                }
             }
+            .animation(.easeInOut(duration: 0.18), value: isPresented)
     }
 }
 
