@@ -29,7 +29,8 @@
 "common.cancel" = "Cancelar";
 "common.delete" = "Excluir";
 "privacy.ai_processing.title" = "Divulgação de processamento de IA";
-"privacy.ai_processing.message" = "Para gerar seu design, o HomeGPT envia a foto selecionada, as opções de design e o prompt para o HomeDesignsAI para processamento por IA. Não envie fotos com informações pessoais sensíveis.";
+"privacy.ai_processing.message" = "Para gerar seu design, sua foto será enviada ao HomeDesigns AI para processamento. Sua imagem não é armazenada nem usada para treinamento.";
+"privacy.ai_processing.learn_more" = "Saiba mais em nossa";
 "privacy.ai_processing.continue" = "Continuar";
 "privacy.ai_processing.cancel" = "Cancelar";
 "common.close" = "Fechar";

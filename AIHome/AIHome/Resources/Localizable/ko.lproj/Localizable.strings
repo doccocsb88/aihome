@@ -30,7 +30,8 @@
 "common.delete" = "삭제";
 "common.close" = "닫기";
 "privacy.ai_processing.title" = "AI 처리 고지";
-"privacy.ai_processing.message" = "디자인을 생성하기 위해 HomeGPT는 선택한 사진, 디자인 선택, 프롬프트를 AI 처리를 위해 HomeDesignsAI로 전송합니다. 민감한 개인 정보가 포함된 사진은 업로드하지 마세요.";
+"privacy.ai_processing.message" = "디자인을 생성하기 위해 사진이 처리 목적으로 HomeDesigns AI로 전송됩니다. 이미지는 저장되거나 학습에 사용되지 않습니다.";
+"privacy.ai_processing.learn_more" = "자세한 내용은";
 "privacy.ai_processing.continue" = "계속";
 "privacy.ai_processing.cancel" = "취소";
 

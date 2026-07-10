@@ -29,7 +29,8 @@
 "common.cancel" = "İptal";
 "common.delete" = "Sil";
 "privacy.ai_processing.title" = "Yapay zeka işleme bildirimi";
-"privacy.ai_processing.message" = "Tasarımınızı oluşturmak için HomeGPT, seçtiğiniz fotoğrafı, tasarım seçeneklerini ve istemi yapay zeka işlemi için HomeDesignsAI'ye gönderir. Hassas kişisel bilgi içeren fotoğraflar yüklemeyin.";
+"privacy.ai_processing.message" = "Tasarımınızı oluşturmak için fotoğrafınız işleme amacıyla HomeDesigns AI'ye gönderilecektir. Görseliniz saklanmaz veya eğitim için kullanılmaz.";
+"privacy.ai_processing.learn_more" = "Daha fazla bilgi için";
 "privacy.ai_processing.continue" = "Devam et";
 "privacy.ai_processing.cancel" = "İptal";
 "common.close" = "Kapat";

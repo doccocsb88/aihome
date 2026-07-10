@@ -36,7 +36,7 @@ struct WelcomeView: View {
                 termsButton(
                     L10n.Onboarding.Welcome.termsOfUse,
                     title: L10n.Onboarding.Welcome.termsOfUse,
-                    urlString: "https://sites.google.com/billionx.co/homegpt-tos"
+                    url: AppConfig.URL.termsOfService
                 )
                 termsSpacer
                 termsText(L10n.Onboarding.Welcome.Terms.and)
@@ -44,7 +44,7 @@ struct WelcomeView: View {
                 termsButton(
                     L10n.Onboarding.Welcome.privacyPolicy,
                     title: L10n.Onboarding.Welcome.privacyPolicy,
-                    urlString: "https://sites.google.com/billionx.co/homegpt-privacy-policy"
+                    url: AppConfig.URL.privacyPolicy
                 )
                 termsText(L10n.Onboarding.Welcome.Terms.comma)
             }
@@ -68,9 +68,8 @@ struct WelcomeView: View {
             .minimumScaleFactor(0.8)
     }
 
-    private func termsButton(_ text: String, title: String, urlString: String) -> some View {
+    private func termsButton(_ text: String, title: String, url: URL) -> some View {
         Button {
-            guard let url = URL(string: urlString) else { return }
             webPageToOpen = AppWebPage(title: title, url: url)
         } label: {
             Text(text)

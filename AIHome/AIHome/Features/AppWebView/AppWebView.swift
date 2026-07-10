@@ -88,6 +88,6 @@ private struct WebView: UIViewRepresentable {
 #Preview {
     AppWebView(
         title: "Privacy Policy",
-        url: URL(string: "https://sites.google.com/billionx.co/homegpt-privacy-policy")!
+        url: AppConfig.URL.privacyPolicy
     )
 }

@@ -29,7 +29,8 @@
 "common.cancel" = "Отмена";
 "common.delete" = "Удалить";
 "privacy.ai_processing.title" = "Информация об обработке ИИ";
-"privacy.ai_processing.message" = "Чтобы создать ваш дизайн, HomeGPT отправляет выбранное фото, параметры дизайна и запрос в HomeDesignsAI для обработки ИИ. Не загружайте фото с конфиденциальной личной информацией.";
+"privacy.ai_processing.message" = "Чтобы создать ваш дизайн, ваше фото будет отправлено в HomeDesigns AI для обработки. Изображение не сохраняется и не используется для обучения.";
+"privacy.ai_processing.learn_more" = "Подробнее в нашей";
 "privacy.ai_processing.continue" = "Продолжить";
 "privacy.ai_processing.cancel" = "Отмена";
 "common.close" = "Закрыть";

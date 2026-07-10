@@ -30,7 +30,8 @@
 "common.delete" = "削除";
 "common.close" = "閉じる";
 "privacy.ai_processing.title" = "AI処理に関する開示";
-"privacy.ai_processing.message" = "デザインを生成するために、HomeGPT は選択した写真、デザインの選択内容、プロンプトを HomeDesignsAI に送信して AI 処理を行います。機密性の高い個人情報を含む写真はアップロードしないでください。";
+"privacy.ai_processing.message" = "デザインを生成するために、あなたの写真は処理のために HomeDesigns AI に送信されます。画像は保存されず、学習にも使用されません。";
+"privacy.ai_processing.learn_more" = "詳細は";
 "privacy.ai_processing.continue" = "続ける";
 "privacy.ai_processing.cancel" = "キャンセル";
 

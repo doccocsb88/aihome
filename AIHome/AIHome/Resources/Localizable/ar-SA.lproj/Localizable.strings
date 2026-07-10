@@ -29,6 +29,11 @@
 "common.cancel" = "إلغاء";
 "common.delete" = "حذف";
 "common.close" = "إغلاق";
+"privacy.ai_processing.title" = "إفصاح معالجة الذكاء الاصطناعي";
+"privacy.ai_processing.message" = "لإنشاء تصميمك، ستُرسل صورتك إلى HomeDesigns AI للمعالجة. لا يتم تخزين صورتك ولا استخدامها للتدريب.";
+"privacy.ai_processing.learn_more" = "تعرّف على المزيد في";
+"privacy.ai_processing.continue" = "متابعة";
+"privacy.ai_processing.cancel" = "إلغاء";
 
 "home.title" = "الرئيسية";
 "home.advanced_editing" = "تحرير متقدم";

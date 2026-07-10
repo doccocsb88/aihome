@@ -66,7 +66,7 @@ struct SettingsView: View {
                     action: { 
                         webPageToOpen = AppWebPage(
                             title: "Privacy Policy",
-                            url: URL(string: "https://sites.google.com/billionx.co/homegpt-privacy-policy")!
+                            url: AppConfig.URL.privacyPolicy
                         )
                     }
                 )
@@ -78,7 +78,7 @@ struct SettingsView: View {
                     action: { 
                         webPageToOpen = AppWebPage(
                             title: "Terms of Service",
-                            url: URL(string: "https://sites.google.com/billionx.co/homegpt-tos")!
+                            url: AppConfig.URL.termsOfService
                         )
                     }
                 )

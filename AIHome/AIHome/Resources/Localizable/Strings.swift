@@ -796,7 +796,9 @@ internal enum L10n {
       /// Continue
       internal static var `continue`: String { L10n.tr("Localizable", "privacy.ai_processing.continue", fallback: "Continue") }
       /// To generate your design, HomeGPT sends your selected photo, design choices, and prompt to HomeDesignsAI for AI processing. Do not upload photos containing sensitive personal information.
-      internal static var message: String { L10n.tr("Localizable", "privacy.ai_processing.message", fallback: "To generate your design, HomeGPT sends your selected photo, design choices, and prompt to HomeDesignsAI for AI processing. Do not upload photos containing sensitive personal information.") }
+      internal static var message: String { L10n.tr("Localizable", "privacy.ai_processing.message", fallback: "To generate your design, your photo will be sent to HomeDesigns AI for processing. Your image is not stored or used for training.") }
+      /// Learn more in our
+      internal static var learnMore: String { L10n.tr("Localizable", "privacy.ai_processing.learn_more", fallback: "Learn more in our") }
       /// AI Processing Disclosure
       internal static var title: String { L10n.tr("Localizable", "privacy.ai_processing.title", fallback: "AI Processing Disclosure") }
     }
@@ -900,4 +902,3 @@ private final class BundleToken {
   }
 }
 // swiftlint:enable convenience_type
-
