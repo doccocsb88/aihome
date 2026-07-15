@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		042C3EC73007DD190078B903 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3EC63007DD190078B903 /* FirebaseAnalytics */; };
+		042C3EC93007DD190078B903 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3EC83007DD190078B903 /* FirebaseAnalyticsCore */; };
+		042C3ECB3007DD190078B903 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECA3007DD190078B903 /* FirebaseCore */; };
+		042C3ECD3007DD190078B903 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECC3007DD190078B903 /* FirebaseCrashlytics */; };
+		042C3ECF3007DD190078B903 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECE3007DD190078B903 /* FirebaseRemoteConfig */; };
 		04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7712FCACE0006B5B51 /* Adapty */; };
 		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
 		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
@@ -17,9 +22,22 @@
 		04428BE82FCACDD7006B5B51 /* AIHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		042C3ED03007DD190078B903 /* Exceptions for "AIHome" folder in "AIHome" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 04428BE72FCACDD7006B5B51 /* AIHome */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		04428BEA2FCACDD7006B5B51 /* AIHome */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				042C3ED03007DD190078B903 /* Exceptions for "AIHome" folder in "AIHome" target */,
+			);
 			path = AIHome;
 			sourceTree = "<group>";
 		};
@@ -29,9 +47,14 @@
 		04428BE52FCACDD7006B5B51 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				042C3ECF3007DD190078B903 /* FirebaseRemoteConfig in Frameworks */,
 				04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */,
+				042C3EC93007DD190078B903 /* FirebaseAnalyticsCore in Frameworks */,
 				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
 				1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */,
+				042C3ECB3007DD190078B903 /* FirebaseCore in Frameworks */,
+				042C3ECD3007DD190078B903 /* FirebaseCrashlytics in Frameworks */,
+				042C3EC73007DD190078B903 /* FirebaseAnalytics in Frameworks */,
 				2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */,
 			);
 		};
@@ -64,6 +87,7 @@
 				04428BE42FCACDD7006B5B51 /* Sources */,
 				04428BE52FCACDD7006B5B51 /* Frameworks */,
 				04428BE62FCACDD7006B5B51 /* Resources */,
+				0F7A11092FD0000000A1B2C3 /* Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -76,6 +100,11 @@
 				04ADA7742FCACE0006B5B51 /* AdaptyUI */,
 				1F2E3D4C5B6A79800123456A /* Lottie */,
 				2FBCC0032FE7B40000123601 /* FacebookCore */,
+				042C3EC63007DD190078B903 /* FirebaseAnalytics */,
+				042C3EC83007DD190078B903 /* FirebaseAnalyticsCore */,
+				042C3ECA3007DD190078B903 /* FirebaseCore */,
+				042C3ECC3007DD190078B903 /* FirebaseCrashlytics */,
+				042C3ECE3007DD190078B903 /* FirebaseRemoteConfig */,
 			);
 			productName = AIHome;
 			productReference = 04428BE82FCACDD7006B5B51 /* AIHome.app */;
@@ -127,6 +156,7 @@
 				04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
 				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 04428BE92FCACDD7006B5B51 /* Products */;
@@ -145,6 +175,24 @@
 			);
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0F7A11092FD0000000A1B2C3 /* Firebase Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			inputPaths = (
+				"$(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)",
+				"$(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)/Contents/Resources/DWARF/$(TARGET_NAME)",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Firebase Crashlytics";
+			shellPath = /bin/sh;
+			shellScript = (
+				"\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"",
+				"",
+			);
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		04428BE42FCACDD7006B5B51 /* Sources */ = {
@@ -286,23 +334,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3K3C8W9QSC;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
-				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = top_bar_ios;
-				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
-				INFOPLIST_KEY_CFBundleDisplayName = HomeGPT;
-				INFOPLIST_KEY_FacebookAppID = 1231018888626037;
-				INFOPLIST_KEY_FacebookClientToken = e958ad86506583feea414386e39d97c4;
-				INFOPLIST_KEY_FacebookDisplayName = AIHome;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Allow AIHome to take photos for AI room redesigns.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow AIHome to save generated designs to your photo gallery.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allow HomeGPT to use your activity across apps and websites to deliver personalized ads and improve the app experience.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AIHome/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -334,23 +367,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3K3C8W9QSC;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_ADAPTY_ACCESS_LEVEL_ID = premium;
-				INFOPLIST_KEY_ADAPTY_PAYWALL_PLACEMENT_ID = top_bar_ios;
-				INFOPLIST_KEY_ADAPTY_PUBLIC_SDK_KEY = public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l;
-				INFOPLIST_KEY_CFBundleDisplayName = HomeGPT;
-				INFOPLIST_KEY_FacebookAppID = 1231018888626037;
-				INFOPLIST_KEY_FacebookClientToken = e958ad86506583feea414386e39d97c4;
-				INFOPLIST_KEY_FacebookDisplayName = AIHome;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Allow AIHome to take photos for AI room redesigns.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow AIHome to save generated designs to your photo gallery.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Allow HomeGPT to use your activity across apps and websites to deliver personalized ads and improve the app experience.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AIHome/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -394,6 +412,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.16.0;
+			};
+		};
 		04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/adaptyteam/AdaptySDK-iOS.git";
@@ -421,6 +447,31 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		042C3EC63007DD190078B903 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		042C3EC83007DD190078B903 /* FirebaseAnalyticsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsCore;
+		};
+		042C3ECA3007DD190078B903 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		042C3ECC3007DD190078B903 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		042C3ECE3007DD190078B903 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
 		04ADA7712FCACE0006B5B51 /* Adapty */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyB-MuYz2RiRup0cD4IFvblIKOHi1L7UCDM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>137256551735</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.homegpt.ai.interior.redesign</string>
+	<key>PROJECT_ID</key>
+	<string>i001-homegpt</string>
+	<key>STORAGE_BUCKET</key>
+	<string>i001-homegpt.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:137256551735:ios:4ca90d6d13fbf8cf8306b2</string>
+</dict>
+</plist>
