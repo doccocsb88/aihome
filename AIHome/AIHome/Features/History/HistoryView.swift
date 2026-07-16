@@ -74,6 +74,8 @@ struct HistoryView: View {
         }
         .onAppear {
             viewModel.fetchProjects()
+            let state: TrackingManager.HistoryState = viewModel.projects.isEmpty ? .empty : .list
+            TrackingManager.shared.trackScreen(.history, params: ["state": state.rawValue])
         }
         .onDisappear {
             onFilterPresentationChanged(false)
@@ -108,6 +110,7 @@ struct HistoryView: View {
             }
             
             Button(action: {
+                TrackingManager.shared.trackCreateProject()
                 startNewProject()
             }) {
                 HStack(spacing: 8) {

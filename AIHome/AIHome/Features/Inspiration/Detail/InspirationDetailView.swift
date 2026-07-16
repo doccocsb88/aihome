@@ -32,6 +32,9 @@ struct InspirationDetailView: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            TrackingManager.shared.trackScreen(.inspirationDetail, params: ["item_id": viewModel.item.id])
+        }
     }
 
     private func hero(width: CGFloat, height: CGFloat) -> some View {
@@ -130,6 +133,9 @@ struct InspirationDetailView: View {
             }
             .simultaneousGesture(TapGesture().onEnded {
                 AppLogger.logAction("Inspiration Redesign", details: viewModel.item.id)
+                if let feature = TrackingManager.Feature(projectType: categoryProjectType) {
+                    TrackingManager.shared.trackSelectFeature(feature: feature, screen: .inspirationDetail)
+                }
             })
             .buttonStyle(.plain)
             .padding(.horizontal, 35)
@@ -143,7 +149,21 @@ struct InspirationDetailView: View {
 
     private func handleNavigation(for tool: ProjectType) {
         AppLogger.logAction("Inspiration Advanced Tool", details: tool.advancedToolTitle)
+        if let feature = TrackingManager.Feature(projectType: tool) {
+            TrackingManager.shared.trackSelectFeature(feature: feature, screen: .inspirationDetail)
+        }
         coordinator.openFlow(tool)
+    }
+
+    private var categoryProjectType: ProjectType {
+        switch viewModel.item.category {
+        case .interior:
+            return .interior
+        case .exterior:
+            return .exterior
+        case .garden:
+            return .garden
+        }
     }
 
     @ViewBuilder

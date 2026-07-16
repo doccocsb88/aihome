@@ -19,6 +19,7 @@ struct SettingsView: View {
                     icon: "arrow.2.circlepath",
                     title: viewModel.isRestoringPurchase ? L10n.Settings.restoring : L10n.Settings.restorePurchase,
                     action: {
+                        TrackingManager.shared.trackRestorePurchase()
                         Task {
                             await viewModel.restorePurchase()
                         }
@@ -88,6 +89,7 @@ struct SettingsView: View {
                     icon: "ellipsis.message.fill",
                     title: L10n.Settings.feedback,
                     action: { 
+                        TrackingManager.shared.trackSendFeedback()
                         if let url = URL(string: "mailto:support@billionx.co") {
                             UIApplication.shared.open(url)
                         }
@@ -131,6 +133,9 @@ struct SettingsView: View {
         }
         .sheet(item: $webPageToOpen) { webPage in
             AppWebView(title: webPage.title, url: webPage.url)
+        }
+        .onAppear {
+            TrackingManager.shared.trackScreen(.settings)
         }
     }
 }

@@ -23,6 +23,9 @@ struct InteriorFlowContainerView: View {
                 InteriorFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     requestGeneration(with: draft)
                 })
+                .onAppear {
+                    TrackingManager.shared.trackScreen(.photoPicker, params: ["feature": TrackingManager.Feature.interior.rawValue])
+                }
             case .loading(let viewModel):
                 GenerationLoadingView(
                     viewModel: viewModel,
@@ -100,6 +103,16 @@ struct InteriorFlowContainerView: View {
         }
 
         AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType.rawValue), Style: \(displayStyle), Intervention: \(aiIntervention.rawValue)")
+        let startedAt = Date()
+        TrackingManager.shared.trackGenerationStart(
+            feature: .interior,
+            screen: .photoPicker,
+            roomType: roomType.rawValue,
+            style: displayStyle,
+            aiIntervention: interventionLevel.rawValue,
+            trigger: .new
+        )
+        TrackingManager.shared.trackScreen(.generating, params: ["feature": TrackingManager.Feature.interior.rawValue])
 
         let loadingVM = GenerationLoadingViewModel(projectType: .interior, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -137,6 +150,8 @@ struct InteriorFlowContainerView: View {
                 }
                 
                 AppLogger.logAction("Images downloaded successfully")
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationSuccess(feature: .interior, style: displayStyle, durationMs: durationMs)
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
@@ -176,6 +191,8 @@ struct InteriorFlowContainerView: View {
             } catch {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationFail(feature: .interior, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
                     loadingVM.errorMessage = errorMessage

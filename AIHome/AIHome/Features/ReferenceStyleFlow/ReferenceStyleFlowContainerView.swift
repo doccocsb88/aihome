@@ -24,6 +24,9 @@ struct ReferenceStyleFlowContainerView: View {
                 ReferenceStyleFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     requestGeneration(with: draft)
                 })
+                .onAppear {
+                    TrackingManager.shared.trackScreen(.photoPicker, params: ["feature": TrackingManager.Feature.referenceStyle.rawValue])
+                }
             case .loading(let viewModel):
                 GenerationLoadingView(
                     viewModel: viewModel,
@@ -90,6 +93,15 @@ struct ReferenceStyleFlowContainerView: View {
         }
 
         AppLogger.logAction("Start Reference Style Generation", details: "Intervention: \(aiIntervention.rawValue)")
+        let startedAt = Date()
+        TrackingManager.shared.trackGenerationStart(
+            feature: .referenceStyle,
+            screen: .photoPicker,
+            style: "Custom",
+            aiIntervention: interventionLevel.rawValue,
+            trigger: .new
+        )
+        TrackingManager.shared.trackScreen(.generating, params: ["feature": TrackingManager.Feature.referenceStyle.rawValue])
 
         let loadingVM = GenerationLoadingViewModel(projectType: .referenceStyle, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -125,6 +137,8 @@ struct ReferenceStyleFlowContainerView: View {
                 }
 
                 AppLogger.logAction("Images downloaded successfully")
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationSuccess(feature: .referenceStyle, style: "Custom", durationMs: durationMs)
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
@@ -164,6 +178,8 @@ struct ReferenceStyleFlowContainerView: View {
             } catch {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationFail(feature: .referenceStyle, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
                     loadingVM.errorMessage = errorMessage

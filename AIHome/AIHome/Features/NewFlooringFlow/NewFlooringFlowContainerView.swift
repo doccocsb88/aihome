@@ -24,6 +24,9 @@ struct NewFlooringFlowContainerView: View {
                 NewFlooringFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     requestGeneration(with: draft)
                 })
+                .onAppear {
+                    TrackingManager.shared.trackScreen(.photoPicker, params: ["feature": TrackingManager.Feature.newFlooring.rawValue])
+                }
             case .loading(let viewModel):
                 GenerationLoadingView(
                     viewModel: viewModel,
@@ -81,6 +84,14 @@ struct NewFlooringFlowContainerView: View {
         }
 
         AppLogger.logAction("Start New Flooring Generation", details: "Prompt: \(draft.prompt)")
+        let startedAt = Date()
+        TrackingManager.shared.trackGenerationStart(
+            feature: .newFlooring,
+            screen: .photoPicker,
+            style: "Custom",
+            trigger: .new
+        )
+        TrackingManager.shared.trackScreen(.generating, params: ["feature": TrackingManager.Feature.newFlooring.rawValue])
 
         let loadingVM = GenerationLoadingViewModel(projectType: .newFlooring, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -116,6 +127,8 @@ struct NewFlooringFlowContainerView: View {
                 }
 
                 AppLogger.logAction("Images downloaded successfully")
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationSuccess(feature: .newFlooring, style: "Custom", durationMs: durationMs)
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
@@ -155,6 +168,8 @@ struct NewFlooringFlowContainerView: View {
             } catch {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationFail(feature: .newFlooring, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
                     loadingVM.errorMessage = errorMessage

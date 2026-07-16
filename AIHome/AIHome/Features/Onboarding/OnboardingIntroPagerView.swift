@@ -45,7 +45,11 @@ struct OnboardingIntroPagerView: View {
         .task {
             await requestTrackingAuthorizationOnFirstPage()
         }
+        .task {
+            trackCurrentScreen()
+        }
         .task(id: selectedIndex) {
+            trackCurrentScreen()
             guard selectedIndex == trialPageIndex else { return }
             try? await Task.sleep(nanoseconds: 1_000_000_000)
             guard selectedIndex == trialPageIndex else { return }
@@ -90,6 +94,23 @@ struct OnboardingIntroPagerView: View {
                 AppLogger.logAction("ATT Authorization Requested", details: "\(status.rawValue)")
                 continuation.resume()
             }
+        }
+    }
+
+    private func trackCurrentScreen() {
+        switch selectedIndex {
+        case 0:
+            TrackingManager.shared.trackScreen(.welcome)
+        case 1:
+            TrackingManager.shared.trackScreen(.onboarding1)
+        case 2:
+            TrackingManager.shared.trackScreen(.onboarding2)
+        case 3:
+            TrackingManager.shared.trackScreen(.onboarding3)
+        case trialPageIndex:
+            TrackingManager.shared.trackScreen(.trialEnabled)
+        default:
+            break
         }
     }
     

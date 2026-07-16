@@ -89,6 +89,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
         do {
             paywallConfiguration = try await AdaptyPurchaseService.shared.loadSDKPaywallConfiguration(placement: placement)
             isShowingPaywall = true
+            TrackingManager.shared.trackPaywallShown(placement: .init(placement: placement))
         } catch {
             paywallErrorMessage = error.localizedDescription
             isPresented = false
@@ -98,6 +99,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
     private func handlePaywallAction(_ action: AdaptyUI.Action) {
         switch action {
         case .close:
+            TrackingManager.shared.trackPaywallDismiss(placement: .init(placement: placement), method: .close)
             dismissPaywall()
             onClose?()
         case let .openURL(url, _):

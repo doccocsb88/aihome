@@ -23,6 +23,9 @@ struct ExteriorFlowContainerView: View {
                 ExteriorFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     requestGeneration(with: draft)
                 })
+                .onAppear {
+                    TrackingManager.shared.trackScreen(.photoPicker, params: ["feature": TrackingManager.Feature.exterior.rawValue])
+                }
             case .loading(let viewModel):
                 GenerationLoadingView(
                     viewModel: viewModel,
@@ -80,6 +83,15 @@ struct ExteriorFlowContainerView: View {
         }
 
         AppLogger.logAction("Start Exterior Generation", details: "Prompt: \(draft.prompt)")
+        let startedAt = Date()
+        TrackingManager.shared.trackGenerationStart(
+            feature: .exterior,
+            screen: .photoPicker,
+            style: "Modern",
+            aiIntervention: UIInterventionLevel.medium.rawValue,
+            trigger: .new
+        )
+        TrackingManager.shared.trackScreen(.generating, params: ["feature": TrackingManager.Feature.exterior.rawValue])
 
         let loadingVM = GenerationLoadingViewModel(projectType: .exterior, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -117,6 +129,8 @@ struct ExteriorFlowContainerView: View {
                 }
                 
                 AppLogger.logAction("Images downloaded successfully")
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationSuccess(feature: .exterior, style: "Modern", durationMs: durationMs)
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
@@ -156,6 +170,8 @@ struct ExteriorFlowContainerView: View {
             } catch {
                 let failure = failureDetails(for: error)
                 AppLogger.logError("Generation Failed", error: error)
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationFail(feature: .exterior, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
                     loadingVM.errorMessage = failure.message

@@ -63,9 +63,15 @@ struct ResultView: View {
         }
         .ratingPopup(isPresented: $isShowingResultRating, kind: .resultFeedback) {
             AppLogger.logAction("Result Rating", details: "Rate on App Store")
+            TrackingManager.shared.trackRateApp(screen: .resultRating, trigger: .resultRating)
         }
         .onAppear {
+            TrackingManager.shared.trackScreen(.result, params: ["feature": trackingFeature?.rawValue])
             presentResultRatingIfNeeded()
+        }
+        .onChange(of: isShowingResultRating) { _, isShowing in
+            guard isShowing else { return }
+            TrackingManager.shared.trackScreen(.resultRating, params: ["feature": trackingFeature?.rawValue])
         }
     }
 
@@ -282,6 +288,9 @@ struct ResultView: View {
                     message: L10n.Result.SaveSuccess.message
                 )
                 AppLogger.logAction("Result Image Downloaded")
+                if let trackingFeature {
+                    TrackingManager.shared.trackSaveResult(feature: trackingFeature)
+                }
             } catch {
                 alertItem = ResultAlertItem(
                     title: L10n.Result.SaveFailure.title,
@@ -296,6 +305,9 @@ struct ResultView: View {
         shareItem = ResultShareItem(image: image)
         onShare(image)
         AppLogger.logAction("Result Share Sheet Opened")
+        if let trackingFeature {
+            TrackingManager.shared.trackShareResult(feature: trackingFeature)
+        }
     }
 
     private func handleSaveArchive() {
@@ -311,6 +323,9 @@ struct ResultView: View {
             onSaveArchive()
             showArchiveToast()
             AppLogger.logAction("Result Saved To Archive")
+            if let trackingFeature {
+                TrackingManager.shared.trackSaveArchive(feature: trackingFeature)
+            }
         } catch {
             alertItem = ResultAlertItem(
                 title: L10n.Result.SaveFailure.title,
@@ -347,6 +362,10 @@ struct ResultView: View {
         }
 
         isShowingResultRating = true
+    }
+
+    private var trackingFeature: TrackingManager.Feature? {
+        TrackingManager.Feature(projectType: viewModel.project.type)
     }
 }
 

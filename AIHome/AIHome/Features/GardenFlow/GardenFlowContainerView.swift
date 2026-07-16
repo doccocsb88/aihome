@@ -23,6 +23,9 @@ struct GardenFlowContainerView: View {
                 GardenFlowView(initialImage: currentDraft?.sourceImage ?? initialImage, onGenerate: { draft in
                     requestGeneration(with: draft)
                 })
+                .onAppear {
+                    TrackingManager.shared.trackScreen(.photoPicker, params: ["feature": TrackingManager.Feature.garden.rawValue])
+                }
             case .loading(let viewModel):
                 GenerationLoadingView(
                     viewModel: viewModel,
@@ -80,6 +83,16 @@ struct GardenFlowContainerView: View {
         }
 
         AppLogger.logAction("Start Garden Generation", details: "Prompt: \(draft.prompt)")
+        let startedAt = Date()
+        TrackingManager.shared.trackGenerationStart(
+            feature: .garden,
+            screen: .photoPicker,
+            roomType: "Backyard",
+            style: "Modern",
+            aiIntervention: UIInterventionLevel.medium.rawValue,
+            trigger: .new
+        )
+        TrackingManager.shared.trackScreen(.generating, params: ["feature": TrackingManager.Feature.garden.rawValue])
 
         let loadingVM = GenerationLoadingViewModel(projectType: .garden, status: .generating, progressText: L10n.GenerationLoading.generating, canCancel: true, inputImage: sourceImage)
         self.state = .loading(loadingVM)
@@ -117,6 +130,8 @@ struct GardenFlowContainerView: View {
                 }
                 
                 AppLogger.logAction("Images downloaded successfully")
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationSuccess(feature: .garden, style: "Modern", durationMs: durationMs)
 
                 let mockProject = LocalProject(
                     id: UUID().uuidString,
@@ -156,6 +171,8 @@ struct GardenFlowContainerView: View {
             } catch {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
+                let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                TrackingManager.shared.trackGenerationFail(feature: .garden, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
                     loadingVM.errorMessage = errorMessage

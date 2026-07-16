@@ -83,6 +83,7 @@ struct InspirationView: View {
         }
         .onAppear {
             showingDetail = false
+            TrackingManager.shared.trackScreen(.inspiration)
         }
         .onDisappear {
             onFilterPresentationChanged(false)

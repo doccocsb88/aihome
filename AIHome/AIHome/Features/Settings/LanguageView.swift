@@ -36,6 +36,7 @@ struct LanguageView: View {
 
                 Button(L10n.Language.save) {
                     languageManager.applyLanguage(pendingLanguage)
+                    TrackingManager.shared.trackChangeLanguage(languageCode: pendingLanguage)
                     dismiss()
                 }
                 .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
@@ -90,6 +91,7 @@ struct LanguageView: View {
         .background(Color(uiColor: .systemBackground))
         .onAppear {
             pendingLanguage = languageManager.selectedLanguage
+            TrackingManager.shared.trackScreen(.language)
         }
     }
 }

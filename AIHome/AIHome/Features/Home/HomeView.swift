@@ -43,14 +43,19 @@ struct HomeView: View {
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .ratingPopup(isPresented: $isShowingHomeRating, kind: .homeEnjoyment) {
             AppLogger.logAction("Home Rating", details: "Rate on App Store")
+            TrackingManager.shared.trackRateApp(screen: .home, trigger: .homeBanner)
         }
         .onAppear {
             AppLogger.logScreen("HomeView")
+            TrackingManager.shared.trackScreen(.home)
             presentHomeRatingIfNeeded()
         }
     }
     
     private func handleNavigation(for tool: HomeToolItem) {
+        if let feature = TrackingManager.Feature(projectType: tool.projectType) {
+            TrackingManager.shared.trackSelectFeature(feature: feature, screen: .home)
+        }
         coordinator.openFlow(tool.projectType)
     }
 

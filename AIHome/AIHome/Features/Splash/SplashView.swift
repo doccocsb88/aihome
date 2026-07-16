@@ -41,6 +41,7 @@ struct SplashView: View {
         }
         .onAppear {
             AppLogger.logScreen("SplashView")
+            TrackingManager.shared.trackScreen(.splash)
         }
     }
 
