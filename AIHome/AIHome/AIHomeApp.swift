@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import FirebaseCore
+import FirebaseAnalytics
 import FacebookCore
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
@@ -16,6 +17,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         FirebaseApp.configure()
+        let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
+        Analytics.setUserProperty(version, forName: "current_app_version")
         Task { @MainActor in
             await RemoteConfigManager.shared.fetchAndActivate()
         }
