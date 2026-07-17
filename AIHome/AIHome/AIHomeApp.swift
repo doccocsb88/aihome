@@ -16,6 +16,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         FirebaseApp.configure()
+        Task { @MainActor in
+            await RemoteConfigManager.shared.fetchAndActivate()
+        }
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
