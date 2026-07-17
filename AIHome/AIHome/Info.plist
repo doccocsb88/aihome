@@ -28,6 +28,8 @@
 	<string>i001_HomeGPT</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow AIHome to take photos for AI room redesigns.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
