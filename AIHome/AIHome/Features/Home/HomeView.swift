@@ -2,8 +2,13 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
+    @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var isShowingHomeRating = false
     @Environment(AppCoordinator.self) private var coordinator
+
+    private var orderedTools: [HomeToolItem] {
+        viewModel.orderedTools(for: remoteConfigManager.homeFeatureOrder)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -13,31 +18,25 @@ struct HomeView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
                     VStack(alignment: .leading, spacing: 16) {
-                    ForEach(viewModel.primaryTools) { tool in
-                        HomeToolRow(tool: tool) {
-                            handleNavigation(for: tool)
+                        ForEach(Array(orderedTools.enumerated()), id: \.element.id) { index, tool in
+                            if shouldShowAdvancedHeader(before: index) {
+                                Text(L10n.Home.advancedEditing)
+                                    .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
+                                    .foregroundColor(.DesignSystem.silverSand)
+                                    .kerning(1.2)
+                                    .padding(.horizontal)
+                                    .padding(.top, 8)
+                            }
+
+                            HomeToolRow(tool: tool) {
+                                handleNavigation(for: tool)
+                            }
                         }
                     }
+
+                    Spacer(minLength: 60)
                 }
-                
-                VStack(alignment: .leading, spacing: 16) {
-                    Text(L10n.Home.advancedEditing)
-                        .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
-                        .foregroundColor(.DesignSystem.silverSand)
-                        .kerning(1.2)
-                        .padding(.horizontal)
-                        .padding(.top, 8)
-                    
-                    ForEach(viewModel.advancedTools) { tool in
-                        HomeToolRow(tool: tool) {
-                            handleNavigation(for: tool)
-                        }
-                    }
-                }
-                
-                Spacer(minLength: 60)
-            }
-            .padding(.vertical)
+                .padding(.vertical)
             } // Close ScrollView
         } // Close VStack
         .background(Color.DesignSystem.background.ignoresSafeArea())
@@ -57,6 +56,12 @@ struct HomeView: View {
             TrackingManager.shared.trackSelectFeature(feature: feature, screen: .home)
         }
         coordinator.openFlow(tool.projectType)
+    }
+
+    private func shouldShowAdvancedHeader(before index: Int) -> Bool {
+        let tools = orderedTools
+        guard tools.indices.contains(index), tools[index].isPro else { return false }
+        return !tools[..<index].contains { $0.isPro }
     }
 
     private func presentHomeRatingIfNeeded() {

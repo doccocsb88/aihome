@@ -12,6 +12,9 @@ struct RemoveObjectsFlowContainerView: View {
     @State private var pendingConsentDraft: RemoveObjectsDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationStartedAt: Date?
+    @State private var didTrackGenerationTerminalState = false
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -36,9 +39,14 @@ struct RemoveObjectsFlowContainerView: View {
                         }
                     },
                     onCancel: {
+                        trackAbandonedGenerationIfNeeded(feature: .removeObject)
                         state = .input
                     }
                 )
+                .onDisappear {
+                    guard viewModel.status == .generating else { return }
+                    trackAbandonedGenerationIfNeeded(feature: .removeObject)
+                }
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -60,6 +68,10 @@ struct RemoveObjectsFlowContainerView: View {
             pendingConsentDraft = nil
             startGeneration(with: draft)
         }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase != .active else { return }
+            trackAbandonedGenerationIfNeeded(feature: .removeObject)
+        }
     }
 
     private func requestGeneration(with draft: RemoveObjectsDraft) {
@@ -79,12 +91,14 @@ struct RemoveObjectsFlowContainerView: View {
             return
         }
         guard UserManager.shared.canUsePremiumFeature else {
-            isShowingLimitPopup = true
+            presentLimitPopup(for: .removeObject)
             return
         }
 
         AppLogger.logAction("Start Remove Objects Generation", details: "Prompt: \(draft.prompt)")
         let startedAt = Date()
+        generationStartedAt = startedAt
+        didTrackGenerationTerminalState = false
         TrackingManager.shared.trackGenerationStart(
             feature: .removeObject,
             screen: .photoPicker,
@@ -126,6 +140,7 @@ struct RemoveObjectsFlowContainerView: View {
 
                 AppLogger.logAction("Images downloaded successfully")
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationSuccess(feature: .removeObject, style: "Custom", durationMs: durationMs)
 
                 let mockProject = LocalProject(
@@ -142,11 +157,13 @@ struct RemoveObjectsFlowContainerView: View {
                 )
 
                 let didConsumeUsage = await MainActor.run {
+                    let creditBefore = UserManager.shared.freeUsageRemaining
                     guard UserManager.shared.consumeUsageIfAllowed() else {
-                        self.isShowingLimitPopup = true
+                        self.presentLimitPopup(for: .removeObject)
                         self.state = .input
                         return false
                     }
+                    TrackingManager.shared.trackCreditConsumed(feature: .removeObject, creditBefore: creditBefore, creditAfter: UserManager.shared.freeUsageRemaining, isSubscriber: UserManager.shared.isPremium)
                     return true
                 }
                 guard didConsumeUsage else { return }
@@ -167,6 +184,7 @@ struct RemoveObjectsFlowContainerView: View {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationFail(feature: .removeObject, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
@@ -174,5 +192,17 @@ struct RemoveObjectsFlowContainerView: View {
                 }
             }
         }
+    }
+
+    private func presentLimitPopup(for feature: TrackingManager.Feature) {
+        TrackingManager.shared.trackLimitPopup(remainingCredit: UserManager.shared.freeUsageRemaining, feature: feature)
+        isShowingLimitPopup = true
+    }
+
+    private func trackAbandonedGenerationIfNeeded(feature: TrackingManager.Feature) {
+        guard !didTrackGenerationTerminalState, let generationStartedAt else { return }
+        didTrackGenerationTerminalState = true
+        let durationMs = Int(Date().timeIntervalSince(generationStartedAt) * 1000)
+        TrackingManager.shared.trackGenerationFail(feature: feature, errorType: .unknown, durationMs: max(durationMs, 0))
     }
 }

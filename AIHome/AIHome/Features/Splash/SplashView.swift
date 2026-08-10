@@ -1,9 +1,11 @@
+import Combine
 import SwiftUI
 
 struct SplashView: View {
     @Environment(AppCoordinator.self) private var coordinator
     @State private var viewModel = SplashViewModel()
     @State private var progress: CGFloat = 0
+    @State private var navigationCancellable: AnyCancellable?
 
     var body: some View {
         GeometryReader { geometry in
@@ -30,18 +32,42 @@ struct SplashView: View {
         }
         .background(Color.DesignSystem.background.ignoresSafeArea())
         .navigationBarBackButtonHidden()
-        .task {
-            withAnimation(.easeInOut(duration: 1.0)) {
-                progress = 1
-            }
-
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            let nextRoute = viewModel.determineNextRoute()
-            coordinator.push(nextRoute)
-        }
         .onAppear {
             AppLogger.logScreen("SplashView")
             TrackingManager.shared.trackScreen(.splash)
+            startSplashFlowIfNeeded()
+        }
+    }
+
+    @MainActor
+    private func startSplashFlowIfNeeded() {
+        guard navigationCancellable == nil else { return }
+
+        _ = Task { @MainActor in
+            await RemoteConfigManager.shared.fetchAndActivate()
+        }
+
+        navigationCancellable = Publishers.Zip(
+            Just(())
+                .delay(for: .seconds(1), scheduler: DispatchQueue.main),
+            Publishers.Merge(
+                RemoteConfigManager.shared.initialFetchCompletionPublisher,
+                Just(())
+                    .delay(for: .seconds(8), scheduler: DispatchQueue.main)
+                    .eraseToAnyPublisher()
+            )
+            .first()
+        )
+        .sink { _ in
+            withAnimation(.easeInOut(duration: 1.0)) {
+                progress = 1
+            }
+            let nextRoute = viewModel.determineNextRoute()
+            coordinator.push(nextRoute)
+        }
+
+        withAnimation(.easeInOut(duration: 1.0)) {
+            progress = 1
         }
     }
 
@@ -75,6 +101,7 @@ struct SplashView: View {
             }
         }
     }
+
 }
 
 private extension UIImage {

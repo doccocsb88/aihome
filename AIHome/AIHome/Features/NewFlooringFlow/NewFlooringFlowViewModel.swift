@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 class NewFlooringFlowViewModel {
     var draft = NewFlooringDraft()
@@ -12,6 +13,12 @@ class NewFlooringFlowViewModel {
         sampleImages: PhotoSampleAssets.interior,
         ctaTitle: "Continue"
     )
+
+    init() {
+        photoPickerViewModel.onSourceSelected = { source in
+            TrackingManager.shared.trackSelectPhoto(source: source.trackingSource, feature: .newFlooring)
+        }
+    }
     
     var canGenerate: Bool {
         return photoPickerViewModel.selectedImage != nil && !draft.prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty

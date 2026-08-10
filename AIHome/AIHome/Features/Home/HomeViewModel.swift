@@ -1,18 +1,18 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
 final class HomeViewModel {
-    var primaryTools: [HomeToolItem] {
+    func orderedTools(for configuredOrder: [String]) -> [HomeToolItem] {
+        reorderTools(allTools, configuredOrder: configuredOrder)
+    }
+
+    private var allTools: [HomeToolItem] {
         [
             HomeToolItem(id: "interior", title: L10n.Home.Tool.Interior.title, subtitle: L10n.Home.Tool.Interior.subtitle, iconName: "sofa", imageName: "ic_home_interior", projectType: .interior, isPro: false),
             HomeToolItem(id: "exterior", title: L10n.Home.Tool.Exterior.title, subtitle: L10n.Home.Tool.Exterior.subtitle, iconName: "house", imageName: "ic_home_exterior", projectType: .exterior, isPro: false),
-            HomeToolItem(id: "garden", title: L10n.Home.Tool.Garden.title, subtitle: L10n.Home.Tool.Garden.subtitle, iconName: "leaf", imageName: "ic_home_garden", projectType: .garden, isPro: false)
-        ]
-    }
-
-    var advancedTools: [HomeToolItem] {
-        [
+            HomeToolItem(id: "garden", title: L10n.Home.Tool.Garden.title, subtitle: L10n.Home.Tool.Garden.subtitle, iconName: "leaf", imageName: "ic_home_garden", projectType: .garden, isPro: false),
             HomeToolItem(id: "ref_style", title: L10n.Home.Tool.ReferenceStyle.title, subtitle: L10n.Home.Tool.ReferenceStyle.subtitle, iconName: "photo.on.rectangle", imageName: "ic_home_reference", projectType: .referenceStyle, isPro: true),
             HomeToolItem(id: "remove_obj", title: L10n.Home.Tool.RemoveObjects.title, subtitle: L10n.Home.Tool.RemoveObjects.subtitle, iconName: "eraser", imageName: "ic_home_remove_object", projectType: .removeObjects, isPro: true),
             HomeToolItem(id: "replace_obj", title: L10n.Home.Tool.ReplaceObjects.title, subtitle: L10n.Home.Tool.ReplaceObjects.subtitle, iconName: "arrow.2.squarepath", imageName: "ic_home_replace_object", projectType: .replaceObjects, isPro: true),
@@ -24,5 +24,20 @@ final class HomeViewModel {
     func handleToolSelection(_ tool: HomeToolItem) {
         // We will delegate to Coordinator to navigate in future steps
         print("Selected tool: \(tool.title)")
+    }
+
+    private func reorderTools(_ tools: [HomeToolItem], configuredOrder: [String]) -> [HomeToolItem] {
+        guard !configuredOrder.isEmpty else { return tools }
+
+        let indexedTools = Dictionary(uniqueKeysWithValues: tools.map { ($0.id, $0) })
+        var seenIDs = Set<String>()
+        let ordered = configuredOrder.compactMap { id -> HomeToolItem? in
+            guard seenIDs.insert(id).inserted else { return nil }
+            return indexedTools[id]
+        }
+        let fallback = tools.filter { tool in
+            !seenIDs.contains(tool.id)
+        }
+        return ordered + fallback
     }
 }

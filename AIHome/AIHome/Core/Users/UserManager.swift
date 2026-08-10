@@ -22,7 +22,7 @@ final class UserManager {
 
     private(set) var accessState: UserAccessState
     private(set) var freeUsageCount: Int
-    let freeUsageLimit: Int
+    private let defaultFreeUsageLimit: Int
 
     var isPremium: Bool {
         accessState == .premium
@@ -34,6 +34,10 @@ final class UserManager {
 
     var freeUsageRemaining: Int {
         max(freeUsageLimit - freeUsageCount, 0)
+    }
+
+    var freeUsageLimit: Int {
+        RemoteConfigManager.shared.freeCreditCount
     }
 
     var isUsageLocked: Bool {
@@ -49,7 +53,7 @@ final class UserManager {
         freeUsageLimit: Int = 3
     ) {
         self.userDefaults = userDefaults
-        self.freeUsageLimit = freeUsageLimit
+        self.defaultFreeUsageLimit = freeUsageLimit
 
         let cachedPremium = userDefaults.bool(forKey: Keys.isProCached)
         self.accessState = cachedPremium ? .premium : .free

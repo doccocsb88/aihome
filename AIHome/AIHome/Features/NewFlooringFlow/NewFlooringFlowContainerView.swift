@@ -12,6 +12,9 @@ struct NewFlooringFlowContainerView: View {
     @State private var pendingConsentDraft: NewFlooringDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationStartedAt: Date?
+    @State private var didTrackGenerationTerminalState = false
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -36,9 +39,14 @@ struct NewFlooringFlowContainerView: View {
                         }
                     },
                     onCancel: {
+                        trackAbandonedGenerationIfNeeded(feature: .newFlooring)
                         state = .input
                     }
                 )
+                .onDisappear {
+                    guard viewModel.status == .generating else { return }
+                    trackAbandonedGenerationIfNeeded(feature: .newFlooring)
+                }
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -60,6 +68,10 @@ struct NewFlooringFlowContainerView: View {
             pendingConsentDraft = nil
             startGeneration(with: draft)
         }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase != .active else { return }
+            trackAbandonedGenerationIfNeeded(feature: .newFlooring)
+        }
     }
 
     private func requestGeneration(with draft: NewFlooringDraft) {
@@ -79,12 +91,14 @@ struct NewFlooringFlowContainerView: View {
             return
         }
         guard UserManager.shared.canUsePremiumFeature else {
-            isShowingLimitPopup = true
+            presentLimitPopup(for: .newFlooring)
             return
         }
 
         AppLogger.logAction("Start New Flooring Generation", details: "Prompt: \(draft.prompt)")
         let startedAt = Date()
+        generationStartedAt = startedAt
+        didTrackGenerationTerminalState = false
         TrackingManager.shared.trackGenerationStart(
             feature: .newFlooring,
             screen: .photoPicker,
@@ -128,6 +142,7 @@ struct NewFlooringFlowContainerView: View {
 
                 AppLogger.logAction("Images downloaded successfully")
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationSuccess(feature: .newFlooring, style: "Custom", durationMs: durationMs)
 
                 let mockProject = LocalProject(
@@ -144,11 +159,13 @@ struct NewFlooringFlowContainerView: View {
                 )
 
                 let didConsumeUsage = await MainActor.run {
+                    let creditBefore = UserManager.shared.freeUsageRemaining
                     guard UserManager.shared.consumeUsageIfAllowed() else {
-                        self.isShowingLimitPopup = true
+                        self.presentLimitPopup(for: .newFlooring)
                         self.state = .input
                         return false
                     }
+                    TrackingManager.shared.trackCreditConsumed(feature: .newFlooring, creditBefore: creditBefore, creditAfter: UserManager.shared.freeUsageRemaining, isSubscriber: UserManager.shared.isPremium)
                     return true
                 }
                 guard didConsumeUsage else { return }
@@ -169,6 +186,7 @@ struct NewFlooringFlowContainerView: View {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationFail(feature: .newFlooring, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
@@ -176,5 +194,17 @@ struct NewFlooringFlowContainerView: View {
                 }
             }
         }
+    }
+
+    private func presentLimitPopup(for feature: TrackingManager.Feature) {
+        TrackingManager.shared.trackLimitPopup(remainingCredit: UserManager.shared.freeUsageRemaining, feature: feature)
+        isShowingLimitPopup = true
+    }
+
+    private func trackAbandonedGenerationIfNeeded(feature: TrackingManager.Feature) {
+        guard !didTrackGenerationTerminalState, let generationStartedAt else { return }
+        didTrackGenerationTerminalState = true
+        let durationMs = Int(Date().timeIntervalSince(generationStartedAt) * 1000)
+        TrackingManager.shared.trackGenerationFail(feature: feature, errorType: .unknown, durationMs: max(durationMs, 0))
     }
 }

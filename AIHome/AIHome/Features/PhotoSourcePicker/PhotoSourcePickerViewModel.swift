@@ -27,6 +27,12 @@ enum PhotoSampleAssets {
 
 @Observable
 class PhotoSourcePickerViewModel {
+    enum SelectionSource {
+        case gallery
+        case camera
+        case sample
+    }
+
     var title: String
     var subtitle: String?
     var selectedImage: UIImage?
@@ -34,6 +40,7 @@ class PhotoSourcePickerViewModel {
     var sampleImages: [String] // Asset names
     var sampleTitle: String
     var ctaTitle: String
+    var onSourceSelected: ((SelectionSource) -> Void)?
     var canContinue: Bool { selectedImage != nil }
     
     var showCamera: Bool = false
@@ -70,6 +77,7 @@ class PhotoSourcePickerViewModel {
         do {
             if let data = try await imageSelection.loadTransferable(type: Data.self), let image = UIImage(data: data) {
                 self.selectedImage = image
+                self.onSourceSelected?(.gallery)
             }
         } catch {
             print("Failed to load image: \(error)")
@@ -79,6 +87,20 @@ class PhotoSourcePickerViewModel {
     func selectSample(_ imageName: String) {
         if let image = UIImage(named: imageName) {
             self.selectedImage = image
+            onSourceSelected?(.sample)
+        }
+    }
+}
+
+extension PhotoSourcePickerViewModel.SelectionSource {
+    var trackingSource: TrackingManager.PhotoSource {
+        switch self {
+        case .gallery:
+            return .gallery
+        case .camera:
+            return .camera
+        case .sample:
+            return .sample
         }
     }
 }

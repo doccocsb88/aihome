@@ -19,6 +19,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
         Analytics.setUserProperty(version, forName: "current_app_version")
+        _ = RemoteConfigManager.shared
         Task { @MainActor in
             await RemoteConfigManager.shared.fetchAndActivate()
         }

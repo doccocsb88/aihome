@@ -125,6 +125,7 @@ struct PhotoSourcePickerView: View {
         .fullScreenCover(isPresented: $viewModel.showCamera) {
             CameraPickerView { image in
                 viewModel.selectedImage = image
+                viewModel.onSourceSelected?(.camera)
             }
             .ignoresSafeArea()
         }

@@ -20,6 +20,10 @@ final class TrackingManager {
         case settings = "screen_settings"
         case language = "screen_language"
         case photoPicker = "screen_photo_picker"
+        case roomType = "screen_room_type"
+        case stylePicker = "screen_style_picker"
+        case customStyle = "screen_custom_style"
+        case aiIntervention = "screen_ai_intervention"
         case generating = "screen_generating"
         case result = "screen_result"
         case resultRating = "screen_result_rating"
@@ -77,6 +81,23 @@ final class TrackingManager {
         case timeout
         case moderation
         case noCredit = "no_credit"
+        case network
+        case invalidInput = "invalid_input"
+        case server5xx = "server_5xx"
+        case unknown
+    }
+
+    enum ATTStatus: String {
+        case authorized
+        case denied
+        case restricted
+        case notDetermined = "not_determined"
+    }
+
+    enum TrialScreenAction: String {
+        case `continue`
+        case skip
+        case back
     }
 
     private init() {}
@@ -104,6 +125,22 @@ final class TrackingManager {
                 "feature": feature.rawValue
             ]
         )
+    }
+
+    func trackRoomTypeScreen(feature: Feature) {
+        trackScreen(.roomType, params: ["feature": feature.rawValue])
+    }
+
+    func trackStylePickerScreen(feature: Feature) {
+        trackScreen(.stylePicker, params: ["feature": feature.rawValue])
+    }
+
+    func trackCustomStyleScreen(feature: Feature) {
+        trackScreen(.customStyle, params: ["feature": feature.rawValue])
+    }
+
+    func trackAIInterventionScreen(feature: Feature) {
+        trackScreen(.aiIntervention, params: ["feature": feature.rawValue])
     }
 
     func trackSaveResult(feature: Feature) {
@@ -177,13 +214,65 @@ final class TrackingManager {
         )
     }
 
-    func trackGenerationFail(feature: Feature, errorType: GenerationErrorType, durationMs: Int) {
+    func trackGenerationFail(
+        feature: Feature,
+        errorType: GenerationErrorType,
+        durationMs: Int,
+        retryCount: Int = 0
+    ) {
         log(
             name: "generation_fail",
             params: [
                 "feature": feature.rawValue,
                 "error_type": errorType.rawValue,
-                "duration_ms": durationMs
+                "duration_ms": durationMs,
+                "retry_count": retryCount
+            ]
+        )
+    }
+
+    func trackLimitPopup(remainingCredit: Int, feature: Feature) {
+        trackScreen(
+            .limitPopup,
+            params: [
+                "credit_remaining": remainingCredit,
+                "trigger_feature": feature.rawValue
+            ]
+        )
+    }
+
+    func trackCreditConsumed(
+        feature: Feature,
+        creditBefore: Int,
+        creditAfter: Int,
+        isSubscriber: Bool
+    ) {
+        log(
+            name: "credit_consumed",
+            params: [
+                "screen_name": Screen.generating.rawValue,
+                "feature": feature.rawValue,
+                "credit_before": creditBefore,
+                "credit_after": creditAfter,
+                "is_subscriber": isSubscriber
+            ]
+        )
+    }
+
+    func trackATTPromptShown() {
+        log(name: "att_prompt_shown", params: [:])
+    }
+
+    func trackATTResult(status: ATTStatus) {
+        log(name: "att_result", params: ["status": status.rawValue])
+    }
+
+    func trackTrialEnabled(action: TrialScreenAction, timeOnScreenMs: Int) {
+        trackScreen(
+            .trialEnabled,
+            params: [
+                "action": action.rawValue,
+                "time_on_screen_ms": timeOnScreenMs
             ]
         )
     }
@@ -258,6 +347,47 @@ extension TrackingManager.Feature {
     }
 }
 
+extension TrackingManager.GenerationErrorType {
+    init(error: Error) {
+        let nsError = error as NSError
+
+        if let apiError = error as? HomeDesignsAPIError {
+            switch apiError {
+            case .invalidImage, .invalidURL, .invalidResponse:
+                self = .invalidInput
+            case .generationTimedOut:
+                self = .timeout
+            case .temporaryServerUnavailable, .server:
+                self = .server5xx
+            case .apiMessage, .underlying, .decodingFailed, .queueExpired, .unauthorized:
+                self = .apiError
+            }
+            return
+        }
+
+        if nsError.domain == NSURLErrorDomain {
+            switch nsError.code {
+            case NSURLErrorTimedOut:
+                self = .timeout
+            case NSURLErrorNotConnectedToInternet, NSURLErrorNetworkConnectionLost, NSURLErrorCannotConnectToHost:
+                self = .network
+            default:
+                self = .network
+            }
+            return
+        }
+
+        let lowercasedDescription = nsError.localizedDescription.lowercased()
+        if lowercasedDescription.contains("moderation") {
+            self = .moderation
+        } else if lowercasedDescription.contains("credit") || lowercasedDescription.contains("limit") {
+            self = .noCredit
+        } else {
+            self = .unknown
+        }
+    }
+}
+
 extension TrackingManager.PaywallPlacement {
     init(placement: AdaptyPurchaseService.Placement) {
         switch placement {
@@ -273,25 +403,6 @@ extension TrackingManager.PaywallPlacement {
             self = .session
         case .limitToken:
             self = .limitToken
-        }
-    }
-}
-
-extension TrackingManager.GenerationErrorType {
-    init(error: Error) {
-        let nsError = error as NSError
-        if nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorTimedOut {
-            self = .timeout
-            return
-        }
-
-        let message = error.localizedDescription.lowercased()
-        if message.contains("credit") || message.contains("limit") {
-            self = .noCredit
-        } else if message.contains("moderat") {
-            self = .moderation
-        } else {
-            self = .apiError
         }
     }
 }

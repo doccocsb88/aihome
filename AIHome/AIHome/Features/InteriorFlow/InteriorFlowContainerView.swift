@@ -12,6 +12,9 @@ struct InteriorFlowContainerView: View {
     @State private var pendingConsentDraft: InteriorDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationStartedAt: Date?
+    @State private var didTrackGenerationTerminalState = false
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
     var initialImage: UIImage?
@@ -35,9 +38,14 @@ struct InteriorFlowContainerView: View {
                         }
                     },
                     onCancel: {
+                        trackAbandonedGenerationIfNeeded(feature: .interior)
                         state = .input
                     }
                 )
+                .onDisappear {
+                    guard viewModel.status == .generating else { return }
+                    trackAbandonedGenerationIfNeeded(feature: .interior)
+                }
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -58,6 +66,10 @@ struct InteriorFlowContainerView: View {
             guard let draft = pendingConsentDraft else { return }
             pendingConsentDraft = nil
             startGeneration(with: draft)
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase != .active else { return }
+            trackAbandonedGenerationIfNeeded(feature: .interior)
         }
     }
 
@@ -88,7 +100,7 @@ struct InteriorFlowContainerView: View {
             return
         }
         guard UserManager.shared.canUsePremiumFeature else {
-            isShowingLimitPopup = true
+            presentLimitPopup(for: .interior)
             return
         }
         let requestDesignStyle = isCustomStyle ? "Modern" : designStyle.rawValue
@@ -104,6 +116,8 @@ struct InteriorFlowContainerView: View {
 
         AppLogger.logAction("Start Interior Generation", details: "Room: \(roomType.rawValue), Style: \(displayStyle), Intervention: \(aiIntervention.rawValue)")
         let startedAt = Date()
+        generationStartedAt = startedAt
+        didTrackGenerationTerminalState = false
         TrackingManager.shared.trackGenerationStart(
             feature: .interior,
             screen: .photoPicker,
@@ -151,6 +165,7 @@ struct InteriorFlowContainerView: View {
                 
                 AppLogger.logAction("Images downloaded successfully")
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationSuccess(feature: .interior, style: displayStyle, durationMs: durationMs)
 
                 let mockProject = LocalProject(
@@ -167,11 +182,13 @@ struct InteriorFlowContainerView: View {
                 )
 
                 let didConsumeUsage = await MainActor.run {
+                    let creditBefore = UserManager.shared.freeUsageRemaining
                     guard UserManager.shared.consumeUsageIfAllowed() else {
-                        self.isShowingLimitPopup = true
+                        self.presentLimitPopup(for: .interior)
                         self.state = .input
                         return false
                     }
+                    TrackingManager.shared.trackCreditConsumed(feature: .interior, creditBefore: creditBefore, creditAfter: UserManager.shared.freeUsageRemaining, isSubscriber: UserManager.shared.isPremium)
                     return true
                 }
                 guard didConsumeUsage else { return }
@@ -192,6 +209,7 @@ struct InteriorFlowContainerView: View {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationFail(feature: .interior, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
@@ -199,5 +217,17 @@ struct InteriorFlowContainerView: View {
                 }
             }
         }
+    }
+
+    private func presentLimitPopup(for feature: TrackingManager.Feature) {
+        TrackingManager.shared.trackLimitPopup(remainingCredit: UserManager.shared.freeUsageRemaining, feature: feature)
+        isShowingLimitPopup = true
+    }
+
+    private func trackAbandonedGenerationIfNeeded(feature: TrackingManager.Feature) {
+        guard !didTrackGenerationTerminalState, let generationStartedAt else { return }
+        didTrackGenerationTerminalState = true
+        let durationMs = Int(Date().timeIntervalSince(generationStartedAt) * 1000)
+        TrackingManager.shared.trackGenerationFail(feature: feature, errorType: .unknown, durationMs: max(durationMs, 0))
     }
 }

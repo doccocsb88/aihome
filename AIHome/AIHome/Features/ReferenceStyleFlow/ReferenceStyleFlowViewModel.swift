@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 class ReferenceStyleFlowViewModel {
     var draft = ReferenceStyleDraft()
@@ -32,6 +33,15 @@ class ReferenceStyleFlowViewModel {
             return referencePhotoPickerViewModel.selectedImage != nil
         case .intervention:
             return true
+        }
+    }
+
+    init() {
+        sourcePhotoPickerViewModel.onSourceSelected = { source in
+            TrackingManager.shared.trackSelectPhoto(source: source.trackingSource, feature: .referenceStyle)
+        }
+        referencePhotoPickerViewModel.onSourceSelected = { source in
+            TrackingManager.shared.trackSelectPhoto(source: source.trackingSource, feature: .referenceStyle)
         }
     }
     

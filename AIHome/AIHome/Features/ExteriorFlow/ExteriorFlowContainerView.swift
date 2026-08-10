@@ -12,6 +12,9 @@ struct ExteriorFlowContainerView: View {
     @State private var pendingConsentDraft: ExteriorDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationStartedAt: Date?
+    @State private var didTrackGenerationTerminalState = false
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
     var initialImage: UIImage?
@@ -35,9 +38,14 @@ struct ExteriorFlowContainerView: View {
                         }
                     },
                     onCancel: {
+                        trackAbandonedGenerationIfNeeded(feature: .exterior)
                         state = .input
                     }
                 )
+                .onDisappear {
+                    guard viewModel.status == .generating else { return }
+                    trackAbandonedGenerationIfNeeded(feature: .exterior)
+                }
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -59,6 +67,10 @@ struct ExteriorFlowContainerView: View {
             pendingConsentDraft = nil
             startGeneration(with: draft)
         }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase != .active else { return }
+            trackAbandonedGenerationIfNeeded(feature: .exterior)
+        }
     }
 
     private func requestGeneration(with draft: ExteriorDraft) {
@@ -78,12 +90,14 @@ struct ExteriorFlowContainerView: View {
             return
         }
         guard UserManager.shared.canUsePremiumFeature else {
-            isShowingLimitPopup = true
+            presentLimitPopup(for: .exterior)
             return
         }
 
         AppLogger.logAction("Start Exterior Generation", details: "Prompt: \(draft.prompt)")
         let startedAt = Date()
+        generationStartedAt = startedAt
+        didTrackGenerationTerminalState = false
         TrackingManager.shared.trackGenerationStart(
             feature: .exterior,
             screen: .photoPicker,
@@ -130,6 +144,7 @@ struct ExteriorFlowContainerView: View {
                 
                 AppLogger.logAction("Images downloaded successfully")
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationSuccess(feature: .exterior, style: "Modern", durationMs: durationMs)
 
                 let mockProject = LocalProject(
@@ -146,11 +161,13 @@ struct ExteriorFlowContainerView: View {
                 )
 
                 let didConsumeUsage = await MainActor.run {
+                    let creditBefore = UserManager.shared.freeUsageRemaining
                     guard UserManager.shared.consumeUsageIfAllowed() else {
-                        self.isShowingLimitPopup = true
+                        self.presentLimitPopup(for: .exterior)
                         self.state = .input
                         return false
                     }
+                    TrackingManager.shared.trackCreditConsumed(feature: .exterior, creditBefore: creditBefore, creditAfter: UserManager.shared.freeUsageRemaining, isSubscriber: UserManager.shared.isPremium)
                     return true
                 }
                 guard didConsumeUsage else { return }
@@ -171,6 +188,7 @@ struct ExteriorFlowContainerView: View {
                 let failure = failureDetails(for: error)
                 AppLogger.logError("Generation Failed", error: error)
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationFail(feature: .exterior, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
@@ -193,5 +211,17 @@ struct ExteriorFlowContainerView: View {
 
         let message = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
         return (message, true)
+    }
+
+    private func presentLimitPopup(for feature: TrackingManager.Feature) {
+        TrackingManager.shared.trackLimitPopup(remainingCredit: UserManager.shared.freeUsageRemaining, feature: feature)
+        isShowingLimitPopup = true
+    }
+
+    private func trackAbandonedGenerationIfNeeded(feature: TrackingManager.Feature) {
+        guard !didTrackGenerationTerminalState, let generationStartedAt else { return }
+        didTrackGenerationTerminalState = true
+        let durationMs = Int(Date().timeIntervalSince(generationStartedAt) * 1000)
+        TrackingManager.shared.trackGenerationFail(feature: feature, errorType: .unknown, durationMs: max(durationMs, 0))
     }
 }

@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 class InteriorFlowViewModel {
     var draft = InteriorDraft()
@@ -13,6 +14,15 @@ class InteriorFlowViewModel {
         sampleImages: PhotoSampleAssets.interior,
         ctaTitle: L10n.PhotoSource.Interior.cta
     )
+
+    init() {
+        photoPickerViewModel.onSourceSelected = { source in
+            TrackingManager.shared.trackSelectPhoto(
+                source: source.trackingSource,
+                feature: .interior
+            )
+        }
+    }
     
     // Room types from PDF
     let roomTypes: [InteriorRoomType] = [

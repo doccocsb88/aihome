@@ -6,10 +6,14 @@ struct OnboardingIntroPagerView: View {
     @State private var selectedIndex = 0
     @State private var isShowingOnboardingPaywall = false
     @State private var remoteConfigManager = RemoteConfigManager.shared
+    @State private var trialScreenShownAt: Date?
+    @State private var shownPaywallPositions: Set<RemoteConfigManager.OnboardingPaywallPosition> = []
     
-    private let pages = OnboardingIntroPageContent.all
-    private var trialPageIndex: Int { pages.count + 1 }
-    private var lastContentIndex: Int { remoteConfigManager.trialEnable ? trialPageIndex : pages.count }
+    private var pages: [OnboardingIntroPageContent] {
+        OnboardingIntroPageContent.ordered(by: remoteConfigManager.onboardingScreens)
+    }
+
+    private var lastContentIndex: Int { pages.count }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -17,7 +21,7 @@ struct OnboardingIntroPagerView: View {
                 WelcomeView()
                     .tag(0)
                 
-                ForEach(pages) { page in
+                ForEach(Array(pages.enumerated()), id: \.element.id) { offset, page in
                     OnboardingIntroPage(
                         beforeImageName: page.beforeImageName,
                         afterImageName: page.afterImageName,
@@ -25,25 +29,22 @@ struct OnboardingIntroPagerView: View {
                         title: page.title,
                         subtitle: page.subtitle
                     )
-                    .tag(page.index)
+                    .tag(offset + 1)
                 }
                 
-                if remoteConfigManager.trialEnable {
-                    TrialEnabledView()
-                        .tag(trialPageIndex)
-                }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            if selectedIndex != trialPageIndex || !remoteConfigManager.trialEnable {
-                bottomControls
-                    .padding(.bottom, 26)
-                    .transition(.opacity)
-            }
+            bottomControls
+                .padding(.bottom, 26)
+                .transition(.opacity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeInOut(duration: 0.28), value: selectedIndex)
+        .onChange(of: remoteConfigManager.onboardingScreens) { _, _ in
+            clampSelectedIndexToAvailablePages()
+        }
         .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
         .task {
@@ -54,23 +55,27 @@ struct OnboardingIntroPagerView: View {
         }
         .task(id: selectedIndex) {
             trackCurrentScreen()
-            guard remoteConfigManager.trialEnable else { return }
-            guard selectedIndex == trialPageIndex else { return }
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            guard selectedIndex == trialPageIndex else { return }
-            isShowingOnboardingPaywall = true
         }
         .adaptyPaywall(
             isPresented: $isShowingOnboardingPaywall,
             placement: .onboarding,
-            onClose: completeOnboarding,
+            onClose: {
+                trackTrialAction(.skip)
+                if remoteConfigManager.onboardingPaywallDismissible {
+                    continueAfterPaywallDismiss()
+                }
+            },
             onPurchaseCompleted: completeOnboarding,
             onRestoreCompleted: completeOnboarding
         )
     }
     
     private func continueFromCurrentPage() {
-        if remoteConfigManager.trialEnable, selectedIndex == trialPageIndex {
+        if shouldShowPaywallAfterCurrentPage {
+            shownPaywallPositions.insert(remoteConfigManager.onboardingPaywallPosition)
+            trialScreenShownAt = Date()
+            TrackingManager.shared.trackScreen(.trialEnabled)
+            trackTrialAction(.continue)
             isShowingOnboardingPaywall = true
             return
         }
@@ -90,6 +95,29 @@ struct OnboardingIntroPagerView: View {
         coordinator.replaceRoot(with: .mainTab)
     }
 
+    private func clampSelectedIndexToAvailablePages() {
+        selectedIndex = min(selectedIndex, lastContentIndex)
+    }
+
+    private var shouldShowPaywallAfterCurrentPage: Bool {
+        guard remoteConfigManager.trialEnable else { return false }
+        guard selectedIndex > 0, selectedIndex <= pages.count else { return false }
+        let paywallPosition = remoteConfigManager.onboardingPaywallPosition
+        guard !shownPaywallPositions.contains(paywallPosition) else { return false }
+        return pages[selectedIndex - 1].paywallPosition == paywallPosition
+    }
+
+    private func continueAfterPaywallDismiss() {
+        guard selectedIndex < lastContentIndex else {
+            completeOnboarding()
+            return
+        }
+
+        withAnimation(.easeInOut(duration: 0.28)) {
+            selectedIndex = min(selectedIndex + 1, lastContentIndex)
+        }
+    }
+
     @MainActor
     private func requestTrackingAuthorizationOnFirstPage() async {
         guard selectedIndex == 0 else { return }
@@ -100,8 +128,12 @@ struct OnboardingIntroPagerView: View {
         guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            TrackingManager.shared.trackATTPromptShown()
             ATTrackingManager.requestTrackingAuthorization { status in
                 AppLogger.logAction("ATT Authorization Requested", details: "\(status.rawValue)")
+                Task { @MainActor in
+                    TrackingManager.shared.trackATTResult(status: .init(attStatus: status))
+                }
                 continuation.resume()
             }
         }
@@ -111,17 +143,30 @@ struct OnboardingIntroPagerView: View {
         switch selectedIndex {
         case 0:
             TrackingManager.shared.trackScreen(.welcome)
+        case 1...pages.count:
+            trackOnboardingScreen(pages[selectedIndex - 1].index)
+        default:
+            break
+        }
+    }
+
+    private func trackOnboardingScreen(_ index: Int) {
+        switch index {
         case 1:
             TrackingManager.shared.trackScreen(.onboarding1)
         case 2:
             TrackingManager.shared.trackScreen(.onboarding2)
         case 3:
             TrackingManager.shared.trackScreen(.onboarding3)
-        case trialPageIndex where remoteConfigManager.trialEnable:
-            TrackingManager.shared.trackScreen(.trialEnabled)
         default:
             break
         }
+    }
+
+    private func trackTrialAction(_ action: TrackingManager.TrialScreenAction) {
+        guard let trialScreenShownAt else { return }
+        let durationMs = Int(Date().timeIntervalSince(trialScreenShownAt) * 1000)
+        TrackingManager.shared.trackTrialEnabled(action: action, timeOnScreenMs: max(durationMs, 0))
     }
     
     private var bottomControls: some View {
@@ -151,22 +196,18 @@ struct OnboardingIntroPagerView: View {
         if selectedIndex == 0 {
             return L10n.Onboarding.Welcome.getStarted
         }
-        
-        if remoteConfigManager.trialEnable, selectedIndex == trialPageIndex {
-            return L10n.Onboarding.TrialEnabled.startDesigning
-        }
-        
+
         return L10n.Onboarding.continue
     }
     
     private var showsPageIndicator: Bool {
-        selectedIndex > 0 && selectedIndex < min(lastContentIndex, trialPageIndex)
+        selectedIndex > 0 && selectedIndex <= lastContentIndex
     }
     
     private var pageIndicator: some View {
         HStack(spacing: 8) {
-            ForEach(pages) { page in
-                if page.index == selectedIndex {
+            ForEach(Array(pages.enumerated()), id: \.element.id) { offset, _ in
+                if offset + 1 == selectedIndex {
                     Capsule()
                         .fill(Color.DesignSystem.eerieBlack)
                         .frame(width: 24, height: 6)
@@ -180,6 +221,23 @@ struct OnboardingIntroPagerView: View {
         .frame(height: OnboardingLayout.indicatorHeight)
     }
     
+}
+
+private extension TrackingManager.ATTStatus {
+    init(attStatus: ATTrackingManager.AuthorizationStatus) {
+        switch attStatus {
+        case .authorized:
+            self = .authorized
+        case .denied:
+            self = .denied
+        case .restricted:
+            self = .restricted
+        case .notDetermined:
+            self = .notDetermined
+        @unknown default:
+            self = .notDetermined
+        }
+    }
 }
 
 enum OnboardingLayout {
@@ -201,6 +259,19 @@ private struct OnboardingIntroPageContent: Identifiable {
     let subtitle: String
     
     var id: Int { index }
+
+    var paywallPosition: RemoteConfigManager.OnboardingPaywallPosition? {
+        switch index {
+        case 1:
+            return .afterOb1
+        case 2:
+            return .afterOb2
+        case 3:
+            return .afterOb3
+        default:
+            return nil
+        }
+    }
     
     static let all: [OnboardingIntroPageContent] = [
         .init(
@@ -228,6 +299,17 @@ private struct OnboardingIntroPageContent: Identifiable {
             subtitle: L10n.Onboarding.Landscape.subtitle
         )
     ]
+
+    static func ordered(by indexes: [Int]) -> [OnboardingIntroPageContent] {
+        let indexedPages = Dictionary(uniqueKeysWithValues: all.map { ($0.index, $0) })
+        var seenIndexes = Set<Int>()
+        let orderedPages = indexes.compactMap { index -> OnboardingIntroPageContent? in
+            guard seenIndexes.insert(index).inserted else { return nil }
+            return indexedPages[index]
+        }
+
+        return orderedPages.isEmpty ? all : orderedPages
+    }
 }
 
 #Preview {

@@ -59,9 +59,26 @@ struct InteriorFlowView: View {
             if let initialImage {
                 viewModel.applyInitialSourceImage(initialImage)
             }
+            trackCurrentStep()
+        }
+        .onChange(of: viewModel.currentStep) { _, _ in
+            trackCurrentStep()
         }
         .sheet(isPresented: $showingPhotoTips) {
             PhotoTipsView()
+        }
+    }
+
+    private func trackCurrentStep() {
+        switch viewModel.currentStep {
+        case .photoSelection:
+            TrackingManager.shared.trackScreen(.photoPicker, params: ["feature": TrackingManager.Feature.interior.rawValue])
+        case .roomType:
+            TrackingManager.shared.trackRoomTypeScreen(feature: .interior)
+        case .designStyle:
+            TrackingManager.shared.trackStylePickerScreen(feature: .interior)
+        case .intervention:
+            TrackingManager.shared.trackAIInterventionScreen(feature: .interior)
         }
     }
 
@@ -221,6 +238,7 @@ struct InteriorFlowView: View {
                     ForEach(viewModel.designStyles, id: \.self) { style in
                         Button(action: {
                             if style == .noStyle {
+                                TrackingManager.shared.trackCustomStyleScreen(feature: .interior)
                                 customStyleText = viewModel.draft.customStyle ?? ""
                                 showingCustomStyleOverlay = true
                             } else {

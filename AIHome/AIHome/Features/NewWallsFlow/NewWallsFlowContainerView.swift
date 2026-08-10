@@ -12,6 +12,9 @@ struct NewWallsFlowContainerView: View {
     @State private var pendingConsentDraft: NewWallsDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationStartedAt: Date?
+    @State private var didTrackGenerationTerminalState = false
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
 
@@ -36,9 +39,14 @@ struct NewWallsFlowContainerView: View {
                         }
                     },
                     onCancel: {
+                        trackAbandonedGenerationIfNeeded(feature: .newWall)
                         state = .input
                     }
                 )
+                .onDisappear {
+                    guard viewModel.status == .generating else { return }
+                    trackAbandonedGenerationIfNeeded(feature: .newWall)
+                }
             case .result(let viewModel):
                 ResultView(
                     viewModel: viewModel,
@@ -60,6 +68,10 @@ struct NewWallsFlowContainerView: View {
             pendingConsentDraft = nil
             startGeneration(with: draft)
         }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase != .active else { return }
+            trackAbandonedGenerationIfNeeded(feature: .newWall)
+        }
     }
 
     private func requestGeneration(with draft: NewWallsDraft) {
@@ -79,12 +91,14 @@ struct NewWallsFlowContainerView: View {
             return
         }
         guard UserManager.shared.canUsePremiumFeature else {
-            isShowingLimitPopup = true
+            presentLimitPopup(for: .newWall)
             return
         }
 
         AppLogger.logAction("Start New Walls Generation", details: "Prompt: \(draft.prompt)")
         let startedAt = Date()
+        generationStartedAt = startedAt
+        didTrackGenerationTerminalState = false
         TrackingManager.shared.trackGenerationStart(
             feature: .newWall,
             screen: .photoPicker,
@@ -127,6 +141,7 @@ struct NewWallsFlowContainerView: View {
 
                 AppLogger.logAction("Images downloaded successfully")
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationSuccess(feature: .newWall, style: "Custom", durationMs: durationMs)
 
                 let mockProject = LocalProject(
@@ -143,11 +158,13 @@ struct NewWallsFlowContainerView: View {
                 )
 
                 let didConsumeUsage = await MainActor.run {
+                    let creditBefore = UserManager.shared.freeUsageRemaining
                     guard UserManager.shared.consumeUsageIfAllowed() else {
-                        self.isShowingLimitPopup = true
+                        self.presentLimitPopup(for: .newWall)
                         self.state = .input
                         return false
                     }
+                    TrackingManager.shared.trackCreditConsumed(feature: .newWall, creditBefore: creditBefore, creditAfter: UserManager.shared.freeUsageRemaining, isSubscriber: UserManager.shared.isPremium)
                     return true
                 }
                 guard didConsumeUsage else { return }
@@ -168,6 +185,7 @@ struct NewWallsFlowContainerView: View {
                 let errorMessage = (error as? HomeDesignsAPIError)?.localizedDescription ?? error.localizedDescription
                 AppLogger.logError("Generation Failed", error: error)
                 let durationMs = Int(Date().timeIntervalSince(startedAt) * 1000)
+                didTrackGenerationTerminalState = true
                 TrackingManager.shared.trackGenerationFail(feature: .newWall, errorType: .init(error: error), durationMs: durationMs)
                 await MainActor.run {
                     loadingVM.status = .failed
@@ -175,5 +193,17 @@ struct NewWallsFlowContainerView: View {
                 }
             }
         }
+    }
+
+    private func presentLimitPopup(for feature: TrackingManager.Feature) {
+        TrackingManager.shared.trackLimitPopup(remainingCredit: UserManager.shared.freeUsageRemaining, feature: feature)
+        isShowingLimitPopup = true
+    }
+
+    private func trackAbandonedGenerationIfNeeded(feature: TrackingManager.Feature) {
+        guard !didTrackGenerationTerminalState, let generationStartedAt else { return }
+        didTrackGenerationTerminalState = true
+        let durationMs = Int(Date().timeIntervalSince(generationStartedAt) * 1000)
+        TrackingManager.shared.trackGenerationFail(feature: feature, errorType: .unknown, durationMs: max(durationMs, 0))
     }
 }
