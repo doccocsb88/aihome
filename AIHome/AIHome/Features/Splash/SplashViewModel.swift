@@ -8,7 +8,12 @@ final class SplashViewModel {
         UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     }
 
+    @MainActor
     func determineNextRoute() -> AppRoute {
-        return hasSeenOnboarding ? .mainTab : .onboardingIntro
+        guard !hasSeenOnboarding, RemoteConfigManager.shared.onboardingScreens else {
+            return .mainTab
+        }
+
+        return .onboardingIntro
     }
 }

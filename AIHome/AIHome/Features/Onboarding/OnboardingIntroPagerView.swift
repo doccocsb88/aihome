@@ -7,10 +7,10 @@ struct OnboardingIntroPagerView: View {
     @State private var isShowingOnboardingPaywall = false
     @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var trialScreenShownAt: Date?
-    @State private var shownPaywallPositions: Set<RemoteConfigManager.OnboardingPaywallPosition> = []
+    @State private var hasShownOnboardingPaywall = false
     
     private var pages: [OnboardingIntroPageContent] {
-        OnboardingIntroPageContent.ordered(by: remoteConfigManager.onboardingScreens)
+        OnboardingIntroPageContent.all
     }
 
     private var lastContentIndex: Int { pages.count }
@@ -42,9 +42,6 @@ struct OnboardingIntroPagerView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeInOut(duration: 0.28), value: selectedIndex)
-        .onChange(of: remoteConfigManager.onboardingScreens) { _, _ in
-            clampSelectedIndexToAvailablePages()
-        }
         .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
         .task {
@@ -61,9 +58,7 @@ struct OnboardingIntroPagerView: View {
             placement: .onboarding,
             onClose: {
                 trackTrialAction(.skip)
-                if remoteConfigManager.onboardingPaywallDismissible {
-                    continueAfterPaywallDismiss()
-                }
+                continueAfterPaywallDismiss()
             },
             onPurchaseCompleted: completeOnboarding,
             onRestoreCompleted: completeOnboarding
@@ -72,7 +67,7 @@ struct OnboardingIntroPagerView: View {
     
     private func continueFromCurrentPage() {
         if shouldShowPaywallAfterCurrentPage {
-            shownPaywallPositions.insert(remoteConfigManager.onboardingPaywallPosition)
+            hasShownOnboardingPaywall = true
             trialScreenShownAt = Date()
             TrackingManager.shared.trackScreen(.trialEnabled)
             trackTrialAction(.continue)
@@ -95,16 +90,10 @@ struct OnboardingIntroPagerView: View {
         coordinator.replaceRoot(with: .mainTab)
     }
 
-    private func clampSelectedIndexToAvailablePages() {
-        selectedIndex = min(selectedIndex, lastContentIndex)
-    }
-
     private var shouldShowPaywallAfterCurrentPage: Bool {
-        guard remoteConfigManager.trialEnable else { return false }
+        guard !hasShownOnboardingPaywall else { return false }
         guard selectedIndex > 0, selectedIndex <= pages.count else { return false }
-        let paywallPosition = remoteConfigManager.onboardingPaywallPosition
-        guard !shownPaywallPositions.contains(paywallPosition) else { return false }
-        return pages[selectedIndex - 1].paywallPosition == paywallPosition
+        return pages[selectedIndex - 1].index == 3
     }
 
     private func continueAfterPaywallDismiss() {
@@ -259,19 +248,6 @@ private struct OnboardingIntroPageContent: Identifiable {
     let subtitle: String
     
     var id: Int { index }
-
-    var paywallPosition: RemoteConfigManager.OnboardingPaywallPosition? {
-        switch index {
-        case 1:
-            return .afterOb1
-        case 2:
-            return .afterOb2
-        case 3:
-            return .afterOb3
-        default:
-            return nil
-        }
-    }
     
     static let all: [OnboardingIntroPageContent] = [
         .init(
@@ -300,16 +276,6 @@ private struct OnboardingIntroPageContent: Identifiable {
         )
     ]
 
-    static func ordered(by indexes: [Int]) -> [OnboardingIntroPageContent] {
-        let indexedPages = Dictionary(uniqueKeysWithValues: all.map { ($0.index, $0) })
-        var seenIndexes = Set<Int>()
-        let orderedPages = indexes.compactMap { index -> OnboardingIntroPageContent? in
-            guard seenIndexes.insert(index).inserted else { return nil }
-            return indexedPages[index]
-        }
-
-        return orderedPages.isEmpty ? all : orderedPages
-    }
 }
 
 #Preview {

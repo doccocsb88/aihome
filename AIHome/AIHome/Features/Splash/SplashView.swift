@@ -2,6 +2,11 @@ import Combine
 import SwiftUI
 
 struct SplashView: View {
+    private enum RemoteConfigWaitResult: String {
+        case loaded
+        case timeout
+    }
+
     @Environment(AppCoordinator.self) private var coordinator
     @State private var viewModel = SplashViewModel()
     @State private var progress: CGFloat = 0
@@ -47,26 +52,25 @@ struct SplashView: View {
             await RemoteConfigManager.shared.fetchAndActivate()
         }
 
-        navigationCancellable = Publishers.Zip(
+        navigationCancellable = Publishers.Merge(
+            RemoteConfigManager.shared.initialFetchCompletionPublisher
+                .map { RemoteConfigWaitResult.loaded },
             Just(())
-                .delay(for: .seconds(1), scheduler: DispatchQueue.main),
-            Publishers.Merge(
-                RemoteConfigManager.shared.initialFetchCompletionPublisher,
-                Just(())
-                    .delay(for: .seconds(8), scheduler: DispatchQueue.main)
-                    .eraseToAnyPublisher()
-            )
-            .first()
+                .delay(for: .seconds(8), scheduler: DispatchQueue.main)
+                .map { RemoteConfigWaitResult.timeout }
+                .eraseToAnyPublisher()
         )
-        .sink { _ in
-            withAnimation(.easeInOut(duration: 1.0)) {
-                progress = 1
-            }
+        .first()
+        .sink { remoteConfigWaitResult in
             let nextRoute = viewModel.determineNextRoute()
+            AppLogger.logAction(
+                "Splash Route",
+                details: "remote_config=\(remoteConfigWaitResult.rawValue), next_route=\(nextRoute)"
+            )
             coordinator.push(nextRoute)
         }
 
-        withAnimation(.easeInOut(duration: 1.0)) {
+        withAnimation(.linear(duration: 8.0)) {
             progress = 1
         }
     }
