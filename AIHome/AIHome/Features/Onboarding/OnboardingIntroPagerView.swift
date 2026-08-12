@@ -10,7 +10,11 @@ struct OnboardingIntroPagerView: View {
     @State private var hasShownOnboardingPaywall = false
     
     private var pages: [OnboardingIntroPageContent] {
-        OnboardingIntroPageContent.all
+        if remoteConfigManager.onboardingScreens {
+            return OnboardingIntroPageContent.all
+        }
+        
+        return []
     }
 
     private var lastContentIndex: Int { pages.count }

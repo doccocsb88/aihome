@@ -108,11 +108,10 @@ final class RemoteConfigManager {
     }
 
     private func onboardingScreensValue() -> Bool {
-        let rawValue = remoteConfig[Keys.onboardingScreens].stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
         let parsedValue = remoteConfig[Keys.onboardingScreens].boolValue
         AppLogger.logAction(
             "Remote Config onboarding_screens",
-            details: "raw=\(rawValue), parsed=\(parsedValue)"
+            details: "parsed=\(parsedValue)"
         )
         return parsedValue
     }
