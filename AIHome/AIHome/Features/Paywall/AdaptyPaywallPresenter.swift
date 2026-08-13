@@ -113,6 +113,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
         guard !result.isPurchaseCancelled else { return }
 
         AppLogger.logAction("Adapty Paywall Purchase Completed", details: "\(placement.rawValue): \(product.vendorProductId)")
+        TrackingManager.shared.trackMetaPurchase(product: product, placement: .init(placement: placement))
         dismissPaywall()
 
         Task {

@@ -1,3 +1,5 @@
+import Adapty
+import FacebookCore
 import FirebaseAnalytics
 import Foundation
 
@@ -295,6 +297,24 @@ final class TrackingManager {
                 "placement": placement.rawValue,
                 "method": method.rawValue
             ]
+        )
+    }
+
+    func trackMetaPurchase(product: AdaptyPaywallProduct, placement: PaywallPlacement? = nil) {
+        let amount = NSDecimalNumber(decimal: product.price).doubleValue
+        let currency = product.currencyCode?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard let currency, !currency.isEmpty else {
+            AppLogger.logError("Meta Purchase Event skipped: missing currency for \(product.vendorProductId)")
+            return
+        }
+
+        AppEvents.shared.logPurchase(amount: amount, currency: currency)
+
+        let placementDetails = placement.map { " placement=\($0.rawValue)" } ?? ""
+        AppLogger.logAction(
+            "Meta Purchase Event Logged",
+            details: "\(product.vendorProductId) amount=\(amount) currency=\(currency)\(placementDetails)"
         )
     }
 
