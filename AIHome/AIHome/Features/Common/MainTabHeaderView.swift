@@ -44,7 +44,9 @@ struct MainTabHeaderView: View {
     }
 
     private var proButton: some View {
-        AdaptyPaywallButton(placement: placement) { isLoading in
+        AdaptyPaywallButton(placement: placement, onClose: {
+            AdsManager.shared.showInterstitialCloseIap {}
+        }) { isLoading in
             HStack(spacing: 6) {
                 if isLoading {
                     ProgressView()
@@ -68,10 +70,11 @@ struct MainTabHeaderView: View {
 
 struct AdaptyPaywallButton<Label: View>: View {
     var placement: AdaptyPurchaseService.Placement = .proButton
+    var onClose: () -> Void = {}
     @ViewBuilder var label: (_ isLoading: Bool) -> Label
 
     var body: some View {
-        AdaptyPaywallPresenter(placement: placement) { present, isLoading in
+        AdaptyPaywallPresenter(placement: placement, onClose: onClose) { present, isLoading in
             Button(action: present) {
                 label(isLoading)
             }

@@ -87,7 +87,9 @@ struct InteriorFlowView: View {
             HStack {
                 Button(action: {
                     if viewModel.currentStep == .photoSelection {
-                        dismiss()
+                        AdsManager.shared.showInterstitialCloseEdit {
+                            dismiss()
+                        }
                     } else {
                         viewModel.previousStep()
                     }
@@ -113,7 +115,9 @@ struct InteriorFlowView: View {
 
                 Button(action: {
                     if viewModel.currentStep != .photoSelection {
-                        dismiss()
+                        AdsManager.shared.showInterstitialCloseEdit {
+                            dismiss()
+                        }
                     } else {
                         showingPhotoTips = true
                     }

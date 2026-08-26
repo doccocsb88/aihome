@@ -16,7 +16,9 @@ struct ExteriorFlowView: View {
             canGenerate: viewModel.canGenerate,
             photoTipsStyle: .exterior,
             onBack: {
-                dismiss()
+                AdsManager.shared.showInterstitialCloseEdit {
+                    dismiss()
+                }
             },
             onGenerate: {
                 viewModel.draft.sourceImage = viewModel.photoPickerViewModel.selectedImage

@@ -1,5 +1,5 @@
 {
-  "originHash" : "b2b56653c38bd24623d4c260e81ff26a31d51d5504c9c8b979fc1e304da8f3f3",
+  "originHash" : "4d722d46015ea1db5559c23753e1bf94676c1b5828c09b4382675e1207b9b17a",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "3e33dd27dd4c69bd81c7c81fe61d8ccf58846902",
         "version" : "11.3.1"
+      }
+    },
+    {
+      "identity" : "applovin-max-swift-package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package.git",
+      "state" : {
+        "revision" : "13a8425875bfc9727338781ee02f0b549c9b7735",
+        "version" : "10.3.7"
       }
     },
     {

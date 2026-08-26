@@ -14,6 +14,7 @@
 		042C3ECF3007DD190078B903 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECE3007DD190078B903 /* FirebaseRemoteConfig */; };
 		04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7712FCACE0006B5B51 /* Adapty */; };
 		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
+		5A1B2C3D4E5F678900ABCDE1 /* AppLovinSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */; };
 		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
 		2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBCC0032FE7B40000123601 /* FacebookCore */; };
 /* End PBXBuildFile section */
@@ -51,6 +52,7 @@
 				04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */,
 				042C3EC93007DD190078B903 /* FirebaseAnalyticsCore in Frameworks */,
 				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
+				5A1B2C3D4E5F678900ABCDE1 /* AppLovinSDK in Frameworks */,
 				1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */,
 				042C3ECB3007DD190078B903 /* FirebaseCore in Frameworks */,
 				042C3ECD3007DD190078B903 /* FirebaseCrashlytics in Frameworks */,
@@ -98,6 +100,7 @@
 			packageProductDependencies = (
 				04ADA7712FCACE0006B5B51 /* Adapty */,
 				04ADA7742FCACE0006B5B51 /* AdaptyUI */,
+				5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */,
 				1F2E3D4C5B6A79800123456A /* Lottie */,
 				2FBCC0032FE7B40000123601 /* FacebookCore */,
 				042C3EC63007DD190078B903 /* FirebaseAnalytics */,
@@ -154,6 +157,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
+				5A1B2C3D4E5F678900ABCDEF /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package" */,
 				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
@@ -345,7 +349,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.homegpt.ai.interior.redesign;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -378,7 +387,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.homegpt.ai.interior.redesign;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -426,6 +440,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.15.7;
+			};
+		};
+		5A1B2C3D4E5F678900ABCDEF /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.3.6;
 			};
 		};
 		1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
@@ -481,6 +503,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */;
 			productName = AdaptyUI;
+		};
+		5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A1B2C3D4E5F678900ABCDEF /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package" */;
+			productName = AppLovinSDK;
 		};
 		1F2E3D4C5B6A79800123456A /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

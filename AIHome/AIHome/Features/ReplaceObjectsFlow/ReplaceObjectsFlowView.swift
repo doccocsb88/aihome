@@ -15,7 +15,9 @@ struct ReplaceObjectsFlowView: View {
             photoPickerViewModel: viewModel.photoPickerViewModel,
             canGenerate: viewModel.canGenerate,
             onBack: {
-                dismiss()
+                AdsManager.shared.showInterstitialCloseEdit {
+                    dismiss()
+                }
             },
             onGenerate: {
                 viewModel.prepareDraft()

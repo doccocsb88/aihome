@@ -49,7 +49,9 @@ struct HistoryView: View {
             ResultView(
                 viewModel: presentation.viewModel,
                 onRegenerate: {
-                    openFlow(for: presentation.project.type)
+                    AdsManager.shared.showRewardedRegenerateIfNeeded {
+                        openFlow(for: presentation.project.type)
+                    }
                 },
                 onDownload: { _ in },
                 onShare: { _ in },
@@ -59,7 +61,9 @@ struct HistoryView: View {
                     resultPresentation = nil
                 },
                 onClose: {
-                    resultPresentation = nil
+                    AdsManager.shared.showInterstitialCloseResult {
+                        resultPresentation = nil
+                    }
                 }
             )
         }

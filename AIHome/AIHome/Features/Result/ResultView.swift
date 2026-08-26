@@ -79,7 +79,9 @@ struct ResultView: View {
     private var headerView: some View {
         HStack {
             if userManager.isFreeUser {
-                AdaptyPaywallButton(placement: .proButton) { isLoading in
+                AdaptyPaywallButton(placement: .proButton, onClose: {
+                    AdsManager.shared.showInterstitialCloseIap {}
+                }) { isLoading in
                     HStack(spacing: 5) {
                         if isLoading {
                             ProgressView()
@@ -496,7 +498,9 @@ private enum ResultWatermarkRenderer {
 
 private struct RemoveWatermarkButton: View {
     var body: some View {
-        AdaptyPaywallButton(placement: .watermark) { isLoading in
+        AdaptyPaywallButton(placement: .watermark, onClose: {
+            AdsManager.shared.showInterstitialCloseIap {}
+        }) { isLoading in
             HStack(spacing: 4) {
                 if isLoading {
                     ProgressView()

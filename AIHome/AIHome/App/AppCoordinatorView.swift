@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AppCoordinatorView: View {
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(\.scenePhase) private var scenePhase
     @State private var coordinator = AppCoordinator()
 
     var body: some View {
@@ -21,6 +22,9 @@ struct AppCoordinatorView: View {
         // Rebuilds localized UI while keeping coordinator state (tab, navigation path).
         .id(languageManager.localeRefreshID)
         .environment(coordinator)
+        .onChange(of: scenePhase) { _, phase in
+            AdsManager.shared.handleScenePhaseChange(phase)
+        }
     }
 }
 

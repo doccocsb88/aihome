@@ -51,14 +51,20 @@ struct ReferenceStyleFlowContainerView: View {
                 ResultView(
                     viewModel: viewModel,
                     onRegenerate: {
-                        state = .input
+                        AdsManager.shared.showRewardedRegenerateIfNeeded {
+                            state = .input
+                        }
                     },
                     onDownload: { _ in },
                     onShare: { _ in },
                     onSaveArchive: { },
                     onRemoveWatermark: { },
                     onToolSelected: { _, _ in },
-                    onClose: { dismiss() }
+                    onClose: {
+                        AdsManager.shared.showInterstitialCloseResult {
+                            dismiss()
+                        }
+                    }
                 )
             }
         }
@@ -66,7 +72,9 @@ struct ReferenceStyleFlowContainerView: View {
         .aiProcessingConsentSheet(isPresented: $isShowingAIProcessingConsent) {
             guard let draft = pendingConsentDraft else { return }
             pendingConsentDraft = nil
-            startGeneration(with: draft)
+            AdsManager.shared.showRewardedGenerateIfNeeded {
+                startGeneration(with: draft)
+            }
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase != .active else { return }
@@ -81,7 +89,9 @@ struct ReferenceStyleFlowContainerView: View {
             return
         }
 
-        startGeneration(with: draft)
+        AdsManager.shared.showRewardedGenerateIfNeeded {
+            startGeneration(with: draft)
+        }
     }
 
     private func startGeneration(with draft: ReferenceStyleDraft) {

@@ -14,6 +14,15 @@ final class RemoteConfigManager {
         static let homeFeatureOrder = "home_feature_order"
         static let freeCreditCount = "free_credit_count"
         static let onboardingScreens = "onboarding_screens"
+        static let maxEnable = "max_enable"
+        static let maxOpenSplashEnable = "max_open_splash_enable"
+        static let maxOpenResumeEnable = "max_open_resume_enable"
+        static let maxRewardedGenerateEnable = "max_rewarded_generate_enable"
+        static let maxRewardedRegenerateEnable = "max_rewarded_regenerate_enable"
+        static let maxInterCloseEditEnable = "max_inter_close_edit_enable"
+        static let maxInterCloseIapEnable = "max_inter_close_iap_enable"
+        static let maxInterCloseResultEnable = "max_inter_close_result_enable"
+        static let maxAdsIntervalSeconds = "max_ads_interval_seconds"
     }
 
     private let remoteConfig: RemoteConfig
@@ -23,6 +32,15 @@ final class RemoteConfigManager {
     private(set) var homeFeatureOrder: [String]
     private(set) var freeCreditCount: Int
     private(set) var onboardingScreens: Bool
+    private(set) var maxEnable: Bool
+    private(set) var maxOpenSplashEnable: Bool
+    private(set) var maxOpenResumeEnable: Bool
+    private(set) var maxRewardedGenerateEnable: Bool
+    private(set) var maxRewardedRegenerateEnable: Bool
+    private(set) var maxInterCloseEditEnable: Bool
+    private(set) var maxInterCloseIapEnable: Bool
+    private(set) var maxInterCloseResultEnable: Bool
+    private(set) var maxAdsIntervalSeconds: Int
     private(set) var hasCompletedInitialFetch: Bool
 
     private init(remoteConfig: RemoteConfig = .remoteConfig()) {
@@ -31,6 +49,15 @@ final class RemoteConfigManager {
         self.homeFeatureOrder = ["interior", "exterior", "garden", "ref_style", "remove_obj", "replace_obj", "new_flooring", "new_walls"]
         self.freeCreditCount = 3
         self.onboardingScreens = true
+        self.maxEnable = true
+        self.maxOpenSplashEnable = true
+        self.maxOpenResumeEnable = true
+        self.maxRewardedGenerateEnable = true
+        self.maxRewardedRegenerateEnable = true
+        self.maxInterCloseEditEnable = true
+        self.maxInterCloseIapEnable = true
+        self.maxInterCloseResultEnable = true
+        self.maxAdsIntervalSeconds = 30
         self.hasCompletedInitialFetch = false
         configureDefaults()
         syncValues()
@@ -81,7 +108,16 @@ final class RemoteConfigManager {
             Keys.trialEnable: false as NSObject,
             Keys.homeFeatureOrder: homeFeatureOrderJSON as NSString,
             Keys.freeCreditCount: freeCreditCount as NSNumber,
-            Keys.onboardingScreens: onboardingScreens as NSObject
+            Keys.onboardingScreens: onboardingScreens as NSObject,
+            Keys.maxEnable: maxEnable as NSObject,
+            Keys.maxOpenSplashEnable: maxOpenSplashEnable as NSObject,
+            Keys.maxOpenResumeEnable: maxOpenResumeEnable as NSObject,
+            Keys.maxRewardedGenerateEnable: maxRewardedGenerateEnable as NSObject,
+            Keys.maxRewardedRegenerateEnable: maxRewardedRegenerateEnable as NSObject,
+            Keys.maxInterCloseEditEnable: maxInterCloseEditEnable as NSObject,
+            Keys.maxInterCloseIapEnable: maxInterCloseIapEnable as NSObject,
+            Keys.maxInterCloseResultEnable: maxInterCloseResultEnable as NSObject,
+            Keys.maxAdsIntervalSeconds: maxAdsIntervalSeconds as NSNumber
         ])
     }
 
@@ -90,10 +126,19 @@ final class RemoteConfigManager {
         homeFeatureOrder = homeFeatureOrderValue(fallback: homeFeatureOrder)
         freeCreditCount = max(remoteConfig[Keys.freeCreditCount].numberValue.intValue, 0)
         onboardingScreens = onboardingScreensValue()
+        maxEnable = remoteConfig[Keys.maxEnable].boolValue
+        maxOpenSplashEnable = remoteConfig[Keys.maxOpenSplashEnable].boolValue
+        maxOpenResumeEnable = remoteConfig[Keys.maxOpenResumeEnable].boolValue
+        maxRewardedGenerateEnable = remoteConfig[Keys.maxRewardedGenerateEnable].boolValue
+        maxRewardedRegenerateEnable = remoteConfig[Keys.maxRewardedRegenerateEnable].boolValue
+        maxInterCloseEditEnable = remoteConfig[Keys.maxInterCloseEditEnable].boolValue
+        maxInterCloseIapEnable = remoteConfig[Keys.maxInterCloseIapEnable].boolValue
+        maxInterCloseResultEnable = remoteConfig[Keys.maxInterCloseResultEnable].boolValue
+        maxAdsIntervalSeconds = max(remoteConfig[Keys.maxAdsIntervalSeconds].numberValue.intValue, 0)
         syncAnalyticsUserProperties()
         AppLogger.logAction(
             "Remote Config syncValues",
-            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount)"
+            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), maxEnable=\(maxEnable), maxAdsIntervalSeconds=\(maxAdsIntervalSeconds)"
         )
     }
 
@@ -153,5 +198,14 @@ final class RemoteConfigManager {
         Analytics.setUserProperty(homeFeatureOrderString, forName: "rc_home_feature_order")
         Analytics.setUserProperty(String(freeCreditCount), forName: "rc_free_credit")
         Analytics.setUserProperty(onboardingScreens ? "true" : "false", forName: "rc_onboarding_screens")
+        Analytics.setUserProperty(maxEnable ? "true" : "false", forName: "rc_max_enable")
+        Analytics.setUserProperty(maxOpenSplashEnable ? "true" : "false", forName: "rc_max_open_splash")
+        Analytics.setUserProperty(maxOpenResumeEnable ? "true" : "false", forName: "rc_max_open_resume")
+        Analytics.setUserProperty(maxRewardedGenerateEnable ? "true" : "false", forName: "rc_max_rewarded_generate")
+        Analytics.setUserProperty(maxRewardedRegenerateEnable ? "true" : "false", forName: "rc_max_rewarded_regenerate")
+        Analytics.setUserProperty(maxInterCloseEditEnable ? "true" : "false", forName: "rc_max_inter_close_edit")
+        Analytics.setUserProperty(maxInterCloseIapEnable ? "true" : "false", forName: "rc_max_inter_close_iap")
+        Analytics.setUserProperty(maxInterCloseResultEnable ? "true" : "false", forName: "rc_max_inter_close_result")
+        Analytics.setUserProperty(String(maxAdsIntervalSeconds), forName: "rc_max_ads_interval_seconds")
     }
 }

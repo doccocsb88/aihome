@@ -15,7 +15,9 @@ struct GardenFlowView: View {
             photoPickerViewModel: viewModel.photoPickerViewModel,
             canGenerate: viewModel.canGenerate,
             onBack: {
-                dismiss()
+                AdsManager.shared.showInterstitialCloseEdit {
+                    dismiss()
+                }
             },
             onGenerate: {
                 viewModel.draft.sourceImage = viewModel.photoPickerViewModel.selectedImage

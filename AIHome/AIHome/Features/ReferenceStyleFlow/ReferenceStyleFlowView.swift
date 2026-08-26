@@ -55,7 +55,9 @@ struct ReferenceStyleFlowView: View {
             HStack {
                 Button(action: {
                     if viewModel.currentStep == .sourceImage {
-                        dismiss()
+                        AdsManager.shared.showInterstitialCloseEdit {
+                            dismiss()
+                        }
                     } else {
                         viewModel.previousStep()
                     }
@@ -81,7 +83,9 @@ struct ReferenceStyleFlowView: View {
 
                 Button(action: {
                     if viewModel.currentStep != .sourceImage {
-                        dismiss()
+                        AdsManager.shared.showInterstitialCloseEdit {
+                            dismiss()
+                        }
                     } else {
                         showingPhotoTips = true
                     }

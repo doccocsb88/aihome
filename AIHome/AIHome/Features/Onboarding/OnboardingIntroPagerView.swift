@@ -80,8 +80,10 @@ struct OnboardingIntroPagerView: View {
             isPresented: $isShowingOnboardingPaywall,
             placement: .onboarding,
             onClose: {
-                trackTrialAction(.skip)
-                continueAfterPaywallDismiss()
+                AdsManager.shared.showInterstitialCloseIap {
+                    trackTrialAction(.skip)
+                    continueAfterPaywallDismiss()
+                }
             },
             onPurchaseCompleted: completeOnboarding,
             onRestoreCompleted: completeOnboarding

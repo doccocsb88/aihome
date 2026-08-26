@@ -67,7 +67,9 @@ struct SplashView: View {
                 "Splash Route",
                 details: "remote_config=\(remoteConfigWaitResult.rawValue), next_route=\(nextRoute)"
             )
-            coordinator.push(nextRoute)
+            AdsManager.shared.showAppOpenSplashIfReady {
+                coordinator.push(nextRoute)
+            }
         }
 
         withAnimation(.linear(duration: 8.0)) {
