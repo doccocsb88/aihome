@@ -622,6 +622,26 @@ extension AdsManager: MARewardedAdDelegate {
 
     func didRewardUser(for ad: MAAd, with reward: MAReward) {
         AppLogger.logAction("MAX rewarded", details: "\(ad.adUnitIdentifier) \(reward.amount) \(reward.label)")
+        guard let placement = placement(for: ad.adUnitIdentifier) else { return }
+
+        let limitBefore = UserManager.shared.freeUsageLimit
+        let remainingBefore = UserManager.shared.freeUsageRemaining
+        let bonusBefore = UserManager.shared.bonusFreeUsageCount
+        guard UserManager.shared.grantFreeUsage() else {
+            AppLogger.logAction("MAX reward grant skipped", details: "\(placement.rawValue) no quota change")
+            return
+        }
+
+        TrackingManager.shared.trackRewardEarned(
+            placement: placement,
+            adUnitIdentifier: ad.adUnitIdentifier,
+            limitBefore: limitBefore,
+            limitAfter: UserManager.shared.freeUsageLimit,
+            remainingBefore: remainingBefore,
+            remainingAfter: UserManager.shared.freeUsageRemaining,
+            bonusBefore: bonusBefore,
+            bonusAfter: UserManager.shared.bonusFreeUsageCount
+        )
     }
 }
 

@@ -14,6 +14,7 @@ final class UserManager {
     private enum Keys {
         static let isProCached = "isProCached"
         static let freeUsageCount = "freeUsageCount"
+        static let freeUsageBonusCount = "freeUsageBonusCount"
         static let freeGenerationsRemaining = "freeGenerationsRemaining"
         static let hasMigratedRemainingUsage = "hasMigratedRemainingUsage"
     }
@@ -22,6 +23,7 @@ final class UserManager {
 
     private(set) var accessState: UserAccessState
     private(set) var freeUsageCount: Int
+    private(set) var bonusFreeUsageCount: Int
     private let defaultFreeUsageLimit: Int
 
     var isPremium: Bool {
@@ -37,7 +39,7 @@ final class UserManager {
     }
 
     var freeUsageLimit: Int {
-        RemoteConfigManager.shared.freeCreditCount
+        RemoteConfigManager.shared.freeCreditCount + bonusFreeUsageCount
     }
 
     var isUsageLocked: Bool {
@@ -57,6 +59,7 @@ final class UserManager {
 
         let cachedPremium = userDefaults.bool(forKey: Keys.isProCached)
         self.accessState = cachedPremium ? .premium : .free
+        self.bonusFreeUsageCount = UserManager.loadFreeUsageBonusCount(userDefaults: userDefaults)
         self.freeUsageCount = UserManager.loadFreeUsageCount(
             userDefaults: userDefaults,
             freeUsageLimit: freeUsageLimit
@@ -80,6 +83,18 @@ final class UserManager {
     }
 
     @discardableResult
+    func grantFreeUsage() -> Bool {
+        guard isFreeUser else {
+            return false
+        }
+
+        let previousLimit = freeUsageLimit
+        bonusFreeUsageCount = max(bonusFreeUsageCount + 1, 0)
+        persistUsage()
+        return freeUsageLimit != previousLimit
+    }
+
+    @discardableResult
     func consumeUsageIfAllowed() -> Bool {
         guard canUsePremiumFeature else {
             return false
@@ -98,6 +113,7 @@ final class UserManager {
 
     func resetFreeUsage() {
         freeUsageCount = 0
+        bonusFreeUsageCount = 0
         persistUsage()
     }
 
@@ -112,7 +128,16 @@ final class UserManager {
 
     private func persistUsage() {
         userDefaults.set(freeUsageCount, forKey: Keys.freeUsageCount)
+        userDefaults.set(bonusFreeUsageCount, forKey: Keys.freeUsageBonusCount)
         userDefaults.set(freeUsageRemaining, forKey: Keys.freeGenerationsRemaining)
+    }
+
+    private static func loadFreeUsageBonusCount(userDefaults: UserDefaults) -> Int {
+        if let savedBonusCount = userDefaults.object(forKey: Keys.freeUsageBonusCount) as? Int {
+            return max(savedBonusCount, 0)
+        }
+
+        return 0
     }
 
     private static func loadFreeUsageCount(

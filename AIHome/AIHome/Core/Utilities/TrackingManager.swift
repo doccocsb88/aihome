@@ -261,6 +261,31 @@ final class TrackingManager {
         )
     }
 
+    func trackRewardEarned(
+        placement: AdsPlacement,
+        adUnitIdentifier: String,
+        limitBefore: Int,
+        limitAfter: Int,
+        remainingBefore: Int,
+        remainingAfter: Int,
+        bonusBefore: Int,
+        bonusAfter: Int
+    ) {
+        log(
+            name: "reward_earned",
+            params: [
+                "placement": placement.rawValue,
+                "ad_unit": adUnitIdentifier,
+                "limit_before": limitBefore,
+                "limit_after": limitAfter,
+                "remaining_before": remainingBefore,
+                "remaining_after": remainingAfter,
+                "bonus_before": bonusBefore,
+                "bonus_after": bonusAfter
+            ]
+        )
+    }
+
     func trackATTPromptShown() {
         log(name: "att_prompt_shown", params: [:])
     }
