@@ -100,24 +100,34 @@ final class AdsManager: NSObject {
         )
     }
 
-    func showRewardedGenerateIfNeeded(completion: @escaping () -> Void) {
+    @discardableResult
+    func showRewardedGenerateIfNeeded(completion: @escaping () -> Void) -> Bool {
         AppLogger.logAction("MAX request rewarded generate", details: adsRequestDetails(for: .rewardedGenerate))
-        presentFullscreenAd(
+        guard shouldShowRewardedAds(for: .rewardedGenerate) else {
+            completion()
+            return true
+        }
+
+        presentRewardedAdWhenReady(
             placement: .rewardedGenerate,
-            placementName: AdsPlacement.rewardedGenerate.rawValue,
-            completion: completion,
-            markColdStartCompletedAfterDismissal: false
+            completion: completion
         )
+        return true
     }
 
-    func showRewardedRegenerateIfNeeded(completion: @escaping () -> Void) {
+    @discardableResult
+    func showRewardedRegenerateIfNeeded(completion: @escaping () -> Void) -> Bool {
         AppLogger.logAction("MAX request rewarded regenerate", details: adsRequestDetails(for: .rewardedRegenerate))
-        presentFullscreenAd(
+        guard shouldShowRewardedAds(for: .rewardedRegenerate) else {
+            completion()
+            return true
+        }
+
+        presentRewardedAdWhenReady(
             placement: .rewardedRegenerate,
-            placementName: AdsPlacement.rewardedRegenerate.rawValue,
-            completion: completion,
-            markColdStartCompletedAfterDismissal: false
+            completion: completion
         )
+        return true
     }
 
     func showInterstitialCloseEdit(completion: @escaping () -> Void) {
@@ -220,6 +230,10 @@ final class AdsManager: NSObject {
 
     private var shouldShowAdsForCurrentUser: Bool {
         UserManager.shared.isFreeUser && isAdsGloballyEnabled && hasMetPaywallDismissGate
+    }
+
+    private var shouldShowRewardedAdsForCurrentUser: Bool {
+        UserManager.shared.isFreeUser && isAdsGloballyEnabled && hasMetPaywallDismissGate && UserManager.shared.isUsageLocked
     }
 
     private var adsIntervalSeconds: TimeInterval {
@@ -411,6 +425,39 @@ final class AdsManager: NSObject {
     private func hasValidAdUnitIdentifier(for placement: AdsPlacement) -> Bool {
         guard let adUnitIdentifier = adUnitIdentifier(for: placement) else { return false }
         return !adUnitIdentifier.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func shouldShowRewardedAds(for placement: AdsPlacement) -> Bool {
+        guard placement.adKind == .rewarded else { return false }
+        return shouldShowRewardedAdsForCurrentUser
+    }
+
+    private func isRewardedAdReady(for placement: AdsPlacement) -> Bool {
+        rewardedAd(for: placement)?.isReady ?? false
+    }
+
+    private func presentRewardedAdWhenReady(placement: AdsPlacement, completion: @escaping () -> Void) {
+        Task { @MainActor in
+            let deadline = Date().addingTimeInterval(8)
+
+            while Date() < deadline {
+                guard isRewardedAdReady(for: placement) else {
+                    loadIfNeeded(placement: placement)
+                    try? await Task.sleep(nanoseconds: 250_000_000)
+                    continue
+                }
+
+                presentFullscreenAd(
+                    placement: placement,
+                    placementName: placement.rawValue,
+                    completion: completion,
+                    markColdStartCompletedAfterDismissal: false
+                )
+                return
+            }
+
+            AppLogger.logAction("MAX rewarded skipped", details: "\(placement.rawValue) not ready before deadline")
+        }
     }
 
     private func adUnitIdentifier(for placement: AdsPlacement) -> String? {
