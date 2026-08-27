@@ -23,6 +23,7 @@ final class RemoteConfigManager {
         static let maxInterCloseIapEnable = "max_inter_close_iap_enable"
         static let maxInterCloseResultEnable = "max_inter_close_result_enable"
         static let maxAdsIntervalSeconds = "max_ads_interval_seconds"
+        static let maxPaywallDismissCountBeforeAds = "max_paywall_dismiss_count_before_ads"
     }
 
     private let remoteConfig: RemoteConfig
@@ -41,6 +42,7 @@ final class RemoteConfigManager {
     private(set) var maxInterCloseIapEnable: Bool
     private(set) var maxInterCloseResultEnable: Bool
     private(set) var maxAdsIntervalSeconds: Int
+    private(set) var maxPaywallDismissCountBeforeAds: Int
     private(set) var hasCompletedInitialFetch: Bool
 
     private init(remoteConfig: RemoteConfig = .remoteConfig()) {
@@ -58,6 +60,7 @@ final class RemoteConfigManager {
         self.maxInterCloseIapEnable = true
         self.maxInterCloseResultEnable = true
         self.maxAdsIntervalSeconds = 30
+        self.maxPaywallDismissCountBeforeAds = 3
         self.hasCompletedInitialFetch = false
         configureDefaults()
         syncValues()
@@ -117,7 +120,8 @@ final class RemoteConfigManager {
             Keys.maxInterCloseEditEnable: maxInterCloseEditEnable as NSObject,
             Keys.maxInterCloseIapEnable: maxInterCloseIapEnable as NSObject,
             Keys.maxInterCloseResultEnable: maxInterCloseResultEnable as NSObject,
-            Keys.maxAdsIntervalSeconds: maxAdsIntervalSeconds as NSNumber
+            Keys.maxAdsIntervalSeconds: maxAdsIntervalSeconds as NSNumber,
+            Keys.maxPaywallDismissCountBeforeAds: maxPaywallDismissCountBeforeAds as NSNumber
         ])
     }
 
@@ -135,10 +139,11 @@ final class RemoteConfigManager {
         maxInterCloseIapEnable = remoteConfig[Keys.maxInterCloseIapEnable].boolValue
         maxInterCloseResultEnable = remoteConfig[Keys.maxInterCloseResultEnable].boolValue
         maxAdsIntervalSeconds = max(remoteConfig[Keys.maxAdsIntervalSeconds].numberValue.intValue, 0)
+        maxPaywallDismissCountBeforeAds = max(remoteConfig[Keys.maxPaywallDismissCountBeforeAds].numberValue.intValue, 0)
         syncAnalyticsUserProperties()
         AppLogger.logAction(
             "Remote Config syncValues",
-            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), maxEnable=\(maxEnable), maxAdsIntervalSeconds=\(maxAdsIntervalSeconds)"
+            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), maxEnable=\(maxEnable), maxAdsIntervalSeconds=\(maxAdsIntervalSeconds), maxPaywallDismissCountBeforeAds=\(maxPaywallDismissCountBeforeAds)"
         )
     }
 
@@ -207,5 +212,6 @@ final class RemoteConfigManager {
         Analytics.setUserProperty(maxInterCloseIapEnable ? "true" : "false", forName: "rc_max_inter_close_iap")
         Analytics.setUserProperty(maxInterCloseResultEnable ? "true" : "false", forName: "rc_max_inter_close_result")
         Analytics.setUserProperty(String(maxAdsIntervalSeconds), forName: "rc_max_ads_interval_seconds")
+        Analytics.setUserProperty(String(maxPaywallDismissCountBeforeAds), forName: "rc_max_paywall_dismiss_count_before_ads")
     }
 }

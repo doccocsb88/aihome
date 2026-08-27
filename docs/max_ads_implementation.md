@@ -79,6 +79,7 @@ Ad chỉ được chạy khi đồng thời thỏa:
 
 - remote config global `max_enable = true`
 - remote config cho slot đó = `true`
+- số lần paywall dismiss đã đạt ngưỡng remote config
 - user là free user
 
 Nếu bất kỳ điều kiện nào fail, action tiếp tục ngay mà không show ad.
@@ -134,6 +135,7 @@ Sau khi initialize thành công:
 - `max_inter_close_iap_enable`
 - `max_inter_close_result_enable`
 - `max_ads_interval_seconds`
+- `max_paywall_dismiss_count_before_ads`
 
 ### 5.3 Default value
 
@@ -142,6 +144,10 @@ Tất cả mặc định là `true`.
 Riêng khoảng cách giữa các lần show ad:
 
 - `max_ads_interval_seconds` mặc định là `30`
+
+Riêng điều kiện chờ paywall:
+
+- `max_paywall_dismiss_count_before_ads` mặc định là `3`
 
 Ý nghĩa:
 
@@ -161,6 +167,7 @@ Các giá trị remote config được sync sang analytics property:
 - `rc_max_inter_close_iap_enable`
 - `rc_max_inter_close_result_enable`
 - `rc_max_ads_interval_seconds`
+- `rc_max_paywall_dismiss_count_before_ads`
 
 ---
 
@@ -381,7 +388,23 @@ Mục tiêu:
 - giữ trải nghiệm flow tự nhiên hơn
 - vẫn cho phép backend điều chỉnh nhanh nếu muốn giảm/tăng tần suất
 
-### 8.5 Retry khi load fail
+### 8.5 Paywall gate
+
+Ngoài interval, ads còn bị chặn bởi số lần paywall dismiss.
+
+Logic:
+
+- mỗi lần paywall được dismiss, app tăng một counter local
+- khi counter chưa đạt `max_paywall_dismiss_count_before_ads`, ads sẽ không load và không show
+- khi counter đạt ngưỡng, AdsManager tự unlock và preload lại toàn bộ slot
+
+Điểm quan trọng:
+
+- gate này áp dụng cho toàn bộ fullscreen ads
+- nếu người dùng chưa thấy đủ số lần paywall, ngay cả app open splash cũng sẽ bị chặn
+- nếu `max_paywall_dismiss_count_before_ads = 0`, gate này coi như tắt
+
+### 8.6 Retry khi load fail
 
 Nếu load ad fail:
 
@@ -399,6 +422,7 @@ Hiện tại retry delay tăng theo:
 ### 9.1 File mới
 
 - [`AIHome/AIHome/Core/Utilities/AdsManager.swift`](../AIHome/AIHome/Core/Utilities/AdsManager.swift)
+- [`AIHome/AIHome/Core/Utilities/PaywallExposureTracker.swift`](../AIHome/AIHome/Core/Utilities/PaywallExposureTracker.swift)
 
 ### 9.2 File cập nhật
 
@@ -418,6 +442,7 @@ Hiện tại retry delay tăng theo:
 - [`AIHome/AIHome/Features/NewWallsFlow/NewWallsFlowContainerView.swift`](../AIHome/AIHome/Features/NewWallsFlow/NewWallsFlowContainerView.swift)
 - [`AIHome/AIHome/Features/NewWallsFlow/NewWallsFlowView.swift`](../AIHome/AIHome/Features/NewWallsFlow/NewWallsFlowView.swift)
 - [`AIHome/AIHome/Features/Onboarding/OnboardingIntroPagerView.swift`](../AIHome/AIHome/Features/Onboarding/OnboardingIntroPagerView.swift)
+- [`AIHome/AIHome/Features/Paywall/AdaptyPaywallPresenter.swift`](../AIHome/AIHome/Features/Paywall/AdaptyPaywallPresenter.swift)
 - [`AIHome/AIHome/Features/ReferenceStyleFlow/ReferenceStyleFlowContainerView.swift`](../AIHome/AIHome/Features/ReferenceStyleFlow/ReferenceStyleFlowContainerView.swift)
 - [`AIHome/AIHome/Features/ReferenceStyleFlow/ReferenceStyleFlowView.swift`](../AIHome/AIHome/Features/ReferenceStyleFlow/ReferenceStyleFlowView.swift)
 - [`AIHome/AIHome/Features/RemoveObjectsFlow/RemoveObjectsFlowContainerView.swift`](../AIHome/AIHome/Features/RemoveObjectsFlow/RemoveObjectsFlowContainerView.swift)
@@ -476,6 +501,7 @@ Sau khi merge, app nên hoạt động như sau:
 - Nếu muốn tắt toàn bộ ads, set `max_enable = false`
 - Nếu muốn tắt từng slot, chỉ cần toggle key tương ứng trên remote config
 - Nếu muốn chỉnh tần suất show ads, set `max_ads_interval_seconds`
+- Nếu muốn điều khiển lúc bắt đầu cho ads, set `max_paywall_dismiss_count_before_ads`
 - Các flow hiện tại đang gọi ads ở layer UI / coordinator để giữ logic gốc ít bị ảnh hưởng
 - Nếu bổ sung slot mới, nên đi theo pattern:
   1. thêm case trong `Slot`

@@ -100,6 +100,8 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
         switch action {
         case .close:
             TrackingManager.shared.trackPaywallDismiss(placement: .init(placement: placement), method: .close)
+            PaywallExposureTracker.recordDismiss()
+            AdsManager.shared.handlePaywallExposureUpdated()
             dismissPaywall()
             onClose?()
         case let .openURL(url, _):
@@ -119,6 +121,8 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
             TrackingManager.shared.trackMetaPurchase(product: product, placement: .init(placement: placement))
         }
 
+        PaywallExposureTracker.recordDismiss()
+        AdsManager.shared.handlePaywallExposureUpdated()
         dismissPaywall()
 
         Task {
@@ -137,6 +141,8 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
         userManager.setPremiumStatus(AdaptyPurchaseService.shared.hasPremiumAccess(profile))
 
         if let onRestoreCompleted {
+            PaywallExposureTracker.recordDismiss()
+            AdsManager.shared.handlePaywallExposureUpdated()
             dismissPaywall()
             onRestoreCompleted()
         }

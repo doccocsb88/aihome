@@ -44,8 +44,8 @@ final class AdsManager: NSObject {
         static let sdkKey = "J2ks4TF6rLetzM0TgPvggyqLiCRTUJ1afPHWi0la24rZnZOul9gyfkD4JtAmbcua43fHqHHBzV20zrbR6Ilz5G"
     }
 
-    private var appOpenSplashAd: MAAppOpenAd?
-    private var appOpenResumeAd: MAAppOpenAd?
+    private var appOpenSplashAd: MAInterstitialAd?
+    private var appOpenResumeAd: MAInterstitialAd?
     private var rewardedGenerateAd: MARewardedAd?
     private var rewardedRegenerateAd: MARewardedAd?
     private var interCloseEditAd: MAInterstitialAd?
@@ -59,6 +59,7 @@ final class AdsManager: NSObject {
     private var isPresentingFullscreenAd = false
     private var didCompleteColdStart = false
     private var lastFullscreenAdPresentedAt: Date?
+    private var didUnlockAdsAfterPaywallGate = false
 
     private override init() {
         super.init()
@@ -68,15 +69,16 @@ final class AdsManager: NSObject {
         guard !hasInitializedSDK else { return }
         hasInitializedSDK = true
 
-        let initConfig = ALSdkInitializationConfiguration.configuration(withSdkKey: Configuration.sdkKey) { builder in
-            builder.mediationProvider = ALMediationProviderMAX
+        guard let sdk = ALSdk.shared(withKey: Configuration.sdkKey) else {
+            AppLogger.logAction("MAX SDK unavailable", details: "missing sdk instance")
+            return
         }
 
-        ALSdk.shared().initialize(with: initConfig) { [weak self] _ in
-            Task { @MainActor in
-                self?.prepareAds()
-            }
+        sdk.mediationProvider = ALMediationProviderMAX
+        sdk.initializeSdk(completionHandler: { [weak self] _ in
+            self?.prepareAds()
         }
+        )
     }
 
     func markColdStartFinished() {
@@ -136,6 +138,15 @@ final class AdsManager: NSObject {
         presentInterstitialAd(slot: .interCloseResult, placement: Slot.interCloseResult.rawValue, completion: completion)
     }
 
+    func handlePaywallExposureUpdated() {
+        guard isAdsGloballyEnabled else { return }
+        guard hasMetPaywallDismissGate else { return }
+        guard !didUnlockAdsAfterPaywallGate else { return }
+
+        didUnlockAdsAfterPaywallGate = true
+        loadAllAds()
+    }
+
     private func handleDidBecomeActive() {
         guard didCompleteColdStart else {
             hasHandledFirstForegroundActivation = true
@@ -156,6 +167,16 @@ final class AdsManager: NSObject {
             return
         }
 
+        guard hasMetPaywallDismissGate else {
+            AppLogger.logAction(
+                "MAX waiting for paywall gate",
+                details: "dismissCount=\(PaywallExposureTracker.dismissCount), threshold=\(paywallDismissThreshold)"
+            )
+            return
+        }
+
+        didUnlockAdsAfterPaywallGate = true
+
         appOpenSplashAd = makeAppOpenAd(for: .openSplash)
         appOpenResumeAd = makeAppOpenAd(for: .openResume)
         rewardedGenerateAd = makeRewardedAd(for: .rewardedGenerate)
@@ -172,11 +193,20 @@ final class AdsManager: NSObject {
     }
 
     private var shouldShowAdsForCurrentUser: Bool {
-        UserManager.shared.isFreeUser && isAdsGloballyEnabled
+        UserManager.shared.isFreeUser && isAdsGloballyEnabled && hasMetPaywallDismissGate
     }
 
     private var adsIntervalSeconds: TimeInterval {
         TimeInterval(RemoteConfigManager.shared.maxAdsIntervalSeconds)
+    }
+
+    private var paywallDismissThreshold: Int {
+        RemoteConfigManager.shared.maxPaywallDismissCountBeforeAds
+    }
+
+    private var hasMetPaywallDismissGate: Bool {
+        guard paywallDismissThreshold > 0 else { return true }
+        return PaywallExposureTracker.dismissCount >= paywallDismissThreshold
     }
 
     private var canPresentFullscreenAdNow: Bool {
@@ -193,8 +223,8 @@ final class AdsManager: NSObject {
         return Date().timeIntervalSince(lastFullscreenAdPresentedAt) >= adsIntervalSeconds
     }
 
-    private func makeAppOpenAd(for slot: Slot) -> MAAppOpenAd {
-        let ad = MAAppOpenAd(adUnitIdentifier: slot.adUnitID)
+    private func makeAppOpenAd(for slot: Slot) -> MAInterstitialAd {
+        let ad = MAInterstitialAd(adUnitIdentifier: slot.adUnitID)
         ad.delegate = self
         return ad
     }
@@ -300,7 +330,7 @@ final class AdsManager: NSObject {
             completion()
         })
         isPresentingFullscreenAd = true
-        ad.show(forPlacement: placement, customData: nil)
+        ad.show(forPlacement: placement)
     }
 
     private func presentInterstitialAd(
@@ -326,7 +356,7 @@ final class AdsManager: NSObject {
 
         pendingActions[slot] = PendingAction(completion: completion)
         isPresentingFullscreenAd = true
-        ad.show(forPlacement: placement, customData: nil)
+        ad.show(forPlacement: placement)
     }
 
     private func presentRewardedAd(
@@ -352,7 +382,7 @@ final class AdsManager: NSObject {
 
         pendingActions[slot] = PendingAction(completion: completion)
         isPresentingFullscreenAd = true
-        ad.show(forPlacement: placement, customData: nil)
+        ad.show(forPlacement: placement)
     }
 
     private func isSlotEnabled(_ slot: Slot) -> Bool {
@@ -374,7 +404,7 @@ final class AdsManager: NSObject {
         }
     }
 
-    private func appOpenAd(for slot: Slot) -> MAAppOpenAd? {
+    private func appOpenAd(for slot: Slot) -> MAInterstitialAd? {
         switch slot {
         case .openSplash:
             appOpenSplashAd
@@ -443,12 +473,12 @@ extension AdsManager: MAAdDelegate {
     }
 
     func didFailToLoadAd(forAdUnitIdentifier adUnitIdentifier: String, withError error: MAError) {
-        AppLogger.logError("MAX load failed", error: error)
+        AppLogger.logAction("MAX load failed", details: "\(adUnitIdentifier): \(error.code) \(error.message)")
         handleRetry(for: adUnitIdentifier)
     }
 
     func didDisplay(_ ad: MAAd) {
-        AppLogger.logAction("MAX displayed", details: "\(ad.adUnitIdentifier) / \(ad.format.label)")
+        AppLogger.logAction("MAX displayed", details: "\(ad.adUnitIdentifier) / \(ad.format)")
         lastFullscreenAdPresentedAt = Date()
     }
 
@@ -462,13 +492,21 @@ extension AdsManager: MAAdDelegate {
     }
 
     func didFail(toDisplay ad: MAAd, withError error: MAError) {
-        AppLogger.logError("MAX display failed", error: error)
+        AppLogger.logAction("MAX display failed", details: "\(ad.adUnitIdentifier): \(error.code) \(error.message)")
         finishFullscreenAd(for: ad.adUnitIdentifier)
     }
 }
 
 extension AdsManager: MARewardedAdDelegate {
-    func didRewardUser(for ad: MAAd, reward: MAReward) {
+    func didStartRewardedVideo(for ad: MAAd) {
+        AppLogger.logAction("MAX rewarded video started", details: ad.adUnitIdentifier)
+    }
+
+    func didCompleteRewardedVideo(for ad: MAAd) {
+        AppLogger.logAction("MAX rewarded video completed", details: ad.adUnitIdentifier)
+    }
+
+    func didRewardUser(for ad: MAAd, with reward: MAReward) {
         AppLogger.logAction("MAX rewarded", details: "\(ad.adUnitIdentifier) \(reward.amount) \(reward.label)")
     }
 }
