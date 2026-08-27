@@ -447,7 +447,7 @@
 			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.3.6;
+				minimumVersion = 13.6.0;
 			};
 		};
 		1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {

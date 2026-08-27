@@ -60,7 +60,7 @@ final class RemoteConfigManager {
         self.maxInterCloseIapEnable = true
         self.maxInterCloseResultEnable = true
         self.maxAdsIntervalSeconds = 30
-        self.maxPaywallDismissCountBeforeAds = 3
+        self.maxPaywallDismissCountBeforeAds = 0
         self.hasCompletedInitialFetch = false
         configureDefaults()
         syncValues()
