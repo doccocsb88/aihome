@@ -4,6 +4,44 @@ import Combine
 import Foundation
 import Observation
 
+struct AdsPlacementsConfig: Codable, Equatable {
+    var enabled: Bool
+    var openSplashEnabled: Bool
+    var openResumeEnabled: Bool
+    var rewardedGenerateEnabled: Bool
+    var rewardedRegenerateEnabled: Bool
+    var interCloseEditEnabled: Bool
+    var interCloseIapEnabled: Bool
+    var interCloseResultEnabled: Bool
+    var adsIntervalSeconds: Int
+    var paywallDismissCountBeforeAds: Int
+
+    static let defaultValue = AdsPlacementsConfig(
+        enabled: true,
+        openSplashEnabled: true,
+        openResumeEnabled: true,
+        rewardedGenerateEnabled: true,
+        rewardedRegenerateEnabled: true,
+        interCloseEditEnabled: true,
+        interCloseIapEnabled: true,
+        interCloseResultEnabled: true,
+        adsIntervalSeconds: 30,
+        paywallDismissCountBeforeAds: 0
+    )
+
+    var jsonString: String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+
+        guard let data = try? encoder.encode(self),
+              let json = String(data: data, encoding: .utf8) else {
+            return "{}"
+        }
+        return json
+    }
+}
+
 @MainActor
 @Observable
 final class RemoteConfigManager {
@@ -15,6 +53,7 @@ final class RemoteConfigManager {
         static let freeCreditCount = "free_credit_count"
         static let onboardingScreens = "onboarding_screens"
         static let homeGPTProviderKind = "home_gpt_provider_kind"
+        static let adsPlacements = "ads_placements"
         static let maxEnable = "max_enable"
         static let maxOpenSplashEnable = "max_open_splash_enable"
         static let maxOpenResumeEnable = "max_open_resume_enable"
@@ -35,16 +74,7 @@ final class RemoteConfigManager {
     private(set) var freeCreditCount: Int
     private(set) var onboardingScreens: Bool
     private(set) var homeGPTProviderKind: HomeGPTProviderKind
-    private(set) var maxEnable: Bool
-    private(set) var maxOpenSplashEnable: Bool
-    private(set) var maxOpenResumeEnable: Bool
-    private(set) var maxRewardedGenerateEnable: Bool
-    private(set) var maxRewardedRegenerateEnable: Bool
-    private(set) var maxInterCloseEditEnable: Bool
-    private(set) var maxInterCloseIapEnable: Bool
-    private(set) var maxInterCloseResultEnable: Bool
-    private(set) var maxAdsIntervalSeconds: Int
-    private(set) var maxPaywallDismissCountBeforeAds: Int
+    private(set) var adsPlacements: AdsPlacementsConfig
     private(set) var hasCompletedInitialFetch: Bool
 
     private init(remoteConfig: RemoteConfig = .remoteConfig()) {
@@ -54,16 +84,7 @@ final class RemoteConfigManager {
         self.freeCreditCount = 3
         self.onboardingScreens = true
         self.homeGPTProviderKind = .homeAIBackend
-        self.maxEnable = true
-        self.maxOpenSplashEnable = true
-        self.maxOpenResumeEnable = true
-        self.maxRewardedGenerateEnable = true
-        self.maxRewardedRegenerateEnable = true
-        self.maxInterCloseEditEnable = true
-        self.maxInterCloseIapEnable = true
-        self.maxInterCloseResultEnable = true
-        self.maxAdsIntervalSeconds = 30
-        self.maxPaywallDismissCountBeforeAds = 0
+        self.adsPlacements = .defaultValue
         self.hasCompletedInitialFetch = false
         configureDefaults()
         syncValues()
@@ -116,16 +137,17 @@ final class RemoteConfigManager {
             Keys.freeCreditCount: freeCreditCount as NSNumber,
             Keys.onboardingScreens: onboardingScreens as NSObject,
             Keys.homeGPTProviderKind: homeGPTProviderKind.rawValue as NSString,
-            Keys.maxEnable: maxEnable as NSObject,
-            Keys.maxOpenSplashEnable: maxOpenSplashEnable as NSObject,
-            Keys.maxOpenResumeEnable: maxOpenResumeEnable as NSObject,
-            Keys.maxRewardedGenerateEnable: maxRewardedGenerateEnable as NSObject,
-            Keys.maxRewardedRegenerateEnable: maxRewardedRegenerateEnable as NSObject,
-            Keys.maxInterCloseEditEnable: maxInterCloseEditEnable as NSObject,
-            Keys.maxInterCloseIapEnable: maxInterCloseIapEnable as NSObject,
-            Keys.maxInterCloseResultEnable: maxInterCloseResultEnable as NSObject,
-            Keys.maxAdsIntervalSeconds: maxAdsIntervalSeconds as NSNumber,
-            Keys.maxPaywallDismissCountBeforeAds: maxPaywallDismissCountBeforeAds as NSNumber
+            Keys.adsPlacements: adsPlacementsJSON as NSString,
+            Keys.maxEnable: adsPlacements.enabled as NSObject,
+            Keys.maxOpenSplashEnable: adsPlacements.openSplashEnabled as NSObject,
+            Keys.maxOpenResumeEnable: adsPlacements.openResumeEnabled as NSObject,
+            Keys.maxRewardedGenerateEnable: adsPlacements.rewardedGenerateEnabled as NSObject,
+            Keys.maxRewardedRegenerateEnable: adsPlacements.rewardedRegenerateEnabled as NSObject,
+            Keys.maxInterCloseEditEnable: adsPlacements.interCloseEditEnabled as NSObject,
+            Keys.maxInterCloseIapEnable: adsPlacements.interCloseIapEnabled as NSObject,
+            Keys.maxInterCloseResultEnable: adsPlacements.interCloseResultEnabled as NSObject,
+            Keys.maxAdsIntervalSeconds: adsPlacements.adsIntervalSeconds as NSNumber,
+            Keys.maxPaywallDismissCountBeforeAds: adsPlacements.paywallDismissCountBeforeAds as NSNumber
         ])
     }
 
@@ -135,21 +157,51 @@ final class RemoteConfigManager {
         freeCreditCount = max(remoteConfig[Keys.freeCreditCount].numberValue.intValue, 0)
         onboardingScreens = onboardingScreensValue()
         homeGPTProviderKind = homeGPTProviderKindValue(fallback: homeGPTProviderKind)
-        maxEnable = remoteConfig[Keys.maxEnable].boolValue
-        maxOpenSplashEnable = remoteConfig[Keys.maxOpenSplashEnable].boolValue
-        maxOpenResumeEnable = remoteConfig[Keys.maxOpenResumeEnable].boolValue
-        maxRewardedGenerateEnable = remoteConfig[Keys.maxRewardedGenerateEnable].boolValue
-        maxRewardedRegenerateEnable = remoteConfig[Keys.maxRewardedRegenerateEnable].boolValue
-        maxInterCloseEditEnable = remoteConfig[Keys.maxInterCloseEditEnable].boolValue
-        maxInterCloseIapEnable = remoteConfig[Keys.maxInterCloseIapEnable].boolValue
-        maxInterCloseResultEnable = remoteConfig[Keys.maxInterCloseResultEnable].boolValue
-        maxAdsIntervalSeconds = max(remoteConfig[Keys.maxAdsIntervalSeconds].numberValue.intValue, 0)
-        maxPaywallDismissCountBeforeAds = max(remoteConfig[Keys.maxPaywallDismissCountBeforeAds].numberValue.intValue, 0)
+        adsPlacements = adsPlacementsValue()
         HomeGPTProviderRegistry.applyRemoteDefault(homeGPTProviderKind)
         syncAnalyticsUserProperties()
         AppLogger.logAction(
             "Remote Config syncValues",
-            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), homeGPTProviderKind=\(homeGPTProviderKind.rawValue), maxEnable=\(maxEnable), maxAdsIntervalSeconds=\(maxAdsIntervalSeconds), maxPaywallDismissCountBeforeAds=\(maxPaywallDismissCountBeforeAds)"
+            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), homeGPTProviderKind=\(homeGPTProviderKind.rawValue), adsPlacements=\(adsPlacements.jsonString)"
+        )
+    }
+
+    private func adsPlacementsValue() -> AdsPlacementsConfig {
+        let rawValue = remoteConfig[Keys.adsPlacements].stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !rawValue.isEmpty,
+           let data = rawValue.data(using: .utf8),
+           let parsedValue: AdsPlacementsConfig = {
+               let decoder = JSONDecoder()
+               decoder.keyDecodingStrategy = .convertFromSnakeCase
+               return (try? decoder.decode(AdsPlacementsConfig.self, from: data))
+           }() {
+            AppLogger.logAction(
+                "Remote Config ads_placements",
+                details: "raw=\(rawValue), parsed=\(parsedValue.jsonString)"
+            )
+            return parsedValue
+        }
+
+        let legacyValue = legacyAdsPlacementsValue()
+        AppLogger.logAction(
+            "Remote Config ads_placements",
+            details: "raw=\(rawValue), parsed_legacy=\(legacyValue.jsonString)"
+        )
+        return legacyValue
+    }
+
+    private func legacyAdsPlacementsValue() -> AdsPlacementsConfig {
+        AdsPlacementsConfig(
+            enabled: remoteConfig[Keys.maxEnable].boolValue,
+            openSplashEnabled: remoteConfig[Keys.maxOpenSplashEnable].boolValue,
+            openResumeEnabled: remoteConfig[Keys.maxOpenResumeEnable].boolValue,
+            rewardedGenerateEnabled: remoteConfig[Keys.maxRewardedGenerateEnable].boolValue,
+            rewardedRegenerateEnabled: remoteConfig[Keys.maxRewardedRegenerateEnable].boolValue,
+            interCloseEditEnabled: remoteConfig[Keys.maxInterCloseEditEnable].boolValue,
+            interCloseIapEnabled: remoteConfig[Keys.maxInterCloseIapEnable].boolValue,
+            interCloseResultEnabled: remoteConfig[Keys.maxInterCloseResultEnable].boolValue,
+            adsIntervalSeconds: max(remoteConfig[Keys.maxAdsIntervalSeconds].numberValue.intValue, 0),
+            paywallDismissCountBeforeAds: max(remoteConfig[Keys.maxPaywallDismissCountBeforeAds].numberValue.intValue, 0)
         )
     }
 
@@ -213,6 +265,21 @@ final class RemoteConfigManager {
         }
         return json
     }
+
+    private var adsPlacementsJSON: String {
+        adsPlacements.jsonString
+    }
+
+    var maxEnable: Bool { adsPlacements.enabled }
+    var maxOpenSplashEnable: Bool { adsPlacements.openSplashEnabled }
+    var maxOpenResumeEnable: Bool { adsPlacements.openResumeEnabled }
+    var maxRewardedGenerateEnable: Bool { adsPlacements.rewardedGenerateEnabled }
+    var maxRewardedRegenerateEnable: Bool { adsPlacements.rewardedRegenerateEnabled }
+    var maxInterCloseEditEnable: Bool { adsPlacements.interCloseEditEnabled }
+    var maxInterCloseIapEnable: Bool { adsPlacements.interCloseIapEnabled }
+    var maxInterCloseResultEnable: Bool { adsPlacements.interCloseResultEnabled }
+    var maxAdsIntervalSeconds: Int { adsPlacements.adsIntervalSeconds }
+    var maxPaywallDismissCountBeforeAds: Int { adsPlacements.paywallDismissCountBeforeAds }
 
     private func syncAnalyticsUserProperties() {
         Analytics.setUserProperty(trialEnable ? "on" : "off", forName: "rc_trial_screen")
