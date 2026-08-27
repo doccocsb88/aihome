@@ -78,6 +78,31 @@ For most source images:
 - preserve aspect ratio
 - avoid HEIC upload directly; convert to JPEG/PNG first
 
+### Home AI Backend Config
+
+For the new backend provider, use:
+
+| | |
+|---|---|
+| **Base URL** | `https://aiart.billionx.co` |
+| **Xác thực** | Header `Authorization: Api-Key <key>` |
+| **Key dành cho dev** | `mhj9xxGV.Thk4JCaeUriamUBn2iDSq184sCJrEIYM` |
+| **Định dạng** | `multipart/form-data` khi gửi ảnh, JSON khi nhận trạng thái |
+
+Recommended environment variable:
+
+```text
+HOME_AI_BACKEND_API_KEY
+```
+
+Postman variable:
+
+```text
+api_key
+```
+
+The collection already maps `api_key` into the `Authorization: Api-Key {{api_key}}` header.
+
 ---
 
 ## 3. Endpoint Summary
@@ -1145,3 +1170,132 @@ HomeDesignsAI APIs are sufficient for the AI-related features shown in the desig
 - HD Export: `/full_hd`
 
 Non-AI product features such as onboarding, paywall, free credits, history, archive, favorites, settings, language, and restore purchase are app-side/local features and do not require HomeDesignsAI API calls.
+
+---
+
+## 23. API Provider Strategy
+
+The app now supports more than one API provider behind the same service facade.
+The intent is to keep all existing feature call sites unchanged while making it easy to switch backends.
+
+### Service Layer Shape
+
+```swift
+HomeGPTAIService (facade)
+└── HomeGPTGenerationProviderProtocol (strategy)
+    ├── LegacyHomeDesignsProvider
+    └── HomeAIDeepArtProvider
+```
+
+`HomeGPTAIService` stays as the public entry point used by feature screens and view models.
+It forwards every request to the currently selected provider.
+
+### Provider Kinds
+
+```swift
+public enum HomeGPTProviderKind: String, Codable, CaseIterable {
+    case legacyHomeDesigns = "legacy_home_designs"
+    case homeAIBackend = "home_ai_backend"
+}
+```
+
+Recommended default:
+- `home_ai_backend`
+
+Legacy fallback:
+- `legacy_home_designs`
+
+### Switching Rules
+
+Provider selection is resolved in this order:
+
+1. Environment variable `HOME_GPT_PROVIDER_KIND`
+2. Local override stored in `UserDefaults`
+3. Remote Config default
+4. Fallback default `home_ai_backend`
+
+This means:
+- CI / debugging can force a provider with environment variables.
+- The app can persist a local override for testing.
+- Remote Config can set the default provider for all users.
+
+### Remote Config Key
+
+Use this Remote Config key:
+
+```text
+home_gpt_provider_kind
+```
+
+Accepted values:
+- `home_ai_backend`
+- `legacy_home_designs`
+
+Recommended Remote Config default:
+- `home_ai_backend`
+
+### Current App Behavior
+
+- Provider setting is currently hidden from the Settings UI.
+- The backend provider is still selectable in code and via Remote Config.
+- The app currently starts on `home_ai_backend` so the new backend can be tested immediately.
+
+### Local Override Storage
+
+Local override is stored in:
+
+```text
+UserDefaults key: home_gpt_provider_kind_override
+```
+
+Use this only for developer/testing flows.
+If you want to return to remote-controlled behavior, clear the local override and let Remote Config decide.
+
+### New Backend Contract
+
+The new backend uses the async job flow:
+
+```http
+POST /deepart/jobs
+GET  /deepart/jobs/{job_id}
+```
+
+Create-job response:
+- `job_id`
+- `poll_after_ms`
+- optional `message`
+
+Poll response:
+- `status`
+- `result_url`
+- optional `error`
+- optional `poll_after_ms`
+
+Feature mapping used by the app:
+
+| App feature | Backend `feature` |
+|---|---|
+| Interior | `interior` |
+| Exterior | `exterior` |
+| Garden | `garden` |
+| Reference Style | `stylematch` |
+| Remove Objects | `remove` |
+| Replace Objects | `replace` |
+| New Flooring | `flooring` |
+| New Walls | `walls` |
+
+### Implementation Notes
+
+- Keep `HomeGPTAIService` as the only type used by views and view models.
+- Add new provider implementations behind `HomeGPTGenerationProviderProtocol`.
+- Preserve the legacy provider as a fallback so no existing flow breaks.
+- Do not change the feature call sites when adding another provider later.
+- Keep provider-specific auth logic inside the provider, not in the UI.
+
+### Suggested Testing Checklist
+
+- Launch app with `home_ai_backend` selected.
+- Verify interior generation goes through `/deepart/jobs`.
+- Verify polling stops on `completed` and downloads `result_url`.
+- Switch Remote Config default to `legacy_home_designs` and confirm fallback still works.
+- Verify feature screens do not depend on the provider type directly.

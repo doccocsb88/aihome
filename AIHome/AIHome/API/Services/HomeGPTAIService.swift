@@ -1,243 +1,71 @@
 import Foundation
 
-public class HomeGPTAIService: HomeGPTAIServiceProtocol {
-    public static let shared: HomeGPTAIService = {
-        let config = HomeDesignsAPIConfig(
-            baseURL: APIConstants.homeDesignsBaseURL,
-            authMode: .bearer(token: APIConstants.homeDesignsAPIKey)
-        )
-        let client = HomeDesignsAPIClient(config: config)
-        return HomeGPTAIService(client: client)
-    }()
-    
-    private let client: HomeDesignsAPIClientProtocol
-    
-    public init(client: HomeDesignsAPIClientProtocol) {
-        self.client = client
-    }
+public final class HomeGPTAIService: HomeGPTAIServiceProtocol {
+    public static let shared = HomeGPTAIService()
 
-    private func submitPerfectRedesign(_ request: PerfectRedesignRequest) async throws -> QueueResponse {
-        do {
-            return try await client.perfectRedesign(request)
-        } catch {
-            guard isTransient(error) else { throw error }
+    private let providerResolver: () -> any HomeGPTGenerationProviderProtocol
 
-            AppLogger.logAction("Retry Perfect Redesign", details: "Retrying once in 10 seconds")
-            try await Task.sleep(nanoseconds: 10_000_000_000)
-            return try await client.perfectRedesign(request)
+    public init(
+        providerResolver: @escaping () -> any HomeGPTGenerationProviderProtocol = {
+            HomeGPTProviderFactory.sharedProvider()
         }
+    ) {
+        self.providerResolver = providerResolver
     }
 
-    private func checkPerfectRedesignStatus(queueId: String) async throws -> StatusCheckResponse {
-        let maxRetryCount = 3
-        var retryCount = 0
-
-        while true {
-            do {
-                return try await client.checkPerfectRedesignStatus(queueId: queueId)
-            } catch {
-                guard isTransient(error), retryCount < maxRetryCount else { throw error }
-
-                let delaySeconds = 2 << retryCount
-                retryCount += 1
-                AppLogger.logAction(
-                    "Retry Redesign Status",
-                    details: "Attempt \(retryCount)/\(maxRetryCount) in \(delaySeconds) seconds"
-                )
-                try await Task.sleep(nanoseconds: UInt64(delaySeconds) * 1_000_000_000)
-            }
-        }
+    public convenience init(provider: any HomeGPTGenerationProviderProtocol) {
+        self.init(providerResolver: { provider })
     }
 
-    private func isTransient(_ error: Error) -> Bool {
-        if let apiError = error as? HomeDesignsAPIError,
-           case .temporaryServerUnavailable = apiError {
-            return true
-        }
+    private var provider: any HomeGPTGenerationProviderProtocol {
+        providerResolver()
+    }
 
-        guard let urlError = error as? URLError else { return false }
-        return urlError.code == .timedOut || urlError.code == .networkConnectionLost
+    public static var selectedProviderKind: HomeGPTProviderKind {
+        HomeGPTProviderRegistry.selectedKind
     }
-    
-    private func pollForRedesignResult(queueId: String) async throws -> [String] {
-        let deadline = Date().addingTimeInterval(10 * 60)
-        
-        while Date() < deadline {
-            let status = try await checkPerfectRedesignStatus(queueId: queueId)
-            switch status.resolvedStatus {
-            case .success:
-                return status.outputImages ?? []
-            case .failed:
-                throw HomeDesignsAPIError.apiMessage(status.message ?? "Generation failed")
-            case .inQueue, .starting, .processing:
-                try await Task.sleep(nanoseconds: 4_000_000_000)
-            case .unknown:
-                throw HomeDesignsAPIError.apiMessage("Unknown status: \(status.status ?? "")")
-            }
-        }
-        throw HomeDesignsAPIError.generationTimedOut
+
+    public static func useProvider(_ kind: HomeGPTProviderKind) {
+        HomeGPTProviderRegistry.selectedKind = kind
     }
-    
+
     public func generateInterior(request: InteriorGenerationInput) async throws -> [String] {
-        let req = PerfectRedesignRequest(
-            image: request.image,
-            designType: .interior,
-            aiIntervention: request.aiIntervention,
-            noDesign: request.noDesign,
-            designStyle: request.designStyle,
-            roomType: request.roomType,
-            customInstruction: request.customInstruction
-        )
-        let queue = try await submitPerfectRedesign(req)
-        if let msg = queue.message, queue.resolvedQueueId == nil {
-            throw HomeDesignsAPIError.apiMessage(msg)
-        }
-        guard let qid = queue.resolvedQueueId else { throw HomeDesignsAPIError.apiMessage("No queue ID") }
-        return try await pollForRedesignResult(queueId: qid)
+        try await provider.generateInterior(request: request)
     }
-    
+
     public func generateExterior(request: ExteriorGenerationInput) async throws -> [String] {
-        let req = PerfectRedesignRequest(
-            image: request.image,
-            designType: .exterior,
-            aiIntervention: request.aiIntervention,
-            noDesign: request.noDesign,
-            designStyle: request.designStyle,
-            houseAngle: request.houseAngle,
-            customInstruction: request.customInstruction
-        )
-        let queue = try await submitPerfectRedesign(req)
-        guard let qid = queue.resolvedQueueId else { throw HomeDesignsAPIError.apiMessage("No queue ID") }
-        return try await pollForRedesignResult(queueId: qid)
+        try await provider.generateExterior(request: request)
     }
-    
+
     public func generateGarden(request: GardenGenerationInput) async throws -> [String] {
-        let req = PerfectRedesignRequest(
-            image: request.image,
-            designType: .garden,
-            aiIntervention: request.aiIntervention,
-            noDesign: request.noDesign,
-            designStyle: request.designStyle,
-            gardenType: request.gardenType,
-            customInstruction: request.customInstruction
-        )
-        let queue = try await submitPerfectRedesign(req)
-        guard let qid = queue.resolvedQueueId else { throw HomeDesignsAPIError.apiMessage("No queue ID") }
-        return try await pollForRedesignResult(queueId: qid)
+        try await provider.generateGarden(request: request)
     }
-    
+
     public func generateReferenceStyle(request: ReferenceStyleInput) async throws -> [String] {
-        let req = DesignTransferRequest(
-            image: request.image,
-            styleImage: request.styleImage,
-            aiIntervention: request.aiIntervention
-        )
-        let res = try await client.designTransfer(req)
-        return res.outputImages
+        try await provider.generateReferenceStyle(request: request)
     }
-    
+
     public func removeObjects(request: RemoveObjectsInput) async throws -> [String] {
-        let labels = PromptMaskLabelMapper.labels(for: request.prompt)
-        guard !labels.isEmpty else { throw HomeDesignsAPIError.apiMessage("Could not determine labels from prompt") }
-        
-        let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
-        let maskRes = try await client.createMaskImage(maskReq)
-        if let error = maskRes.error {
-            throw HomeDesignsAPIError.apiMessage(error)
-        }
-        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
-        
-        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
-        
-        let removalReq = FurnitureRemovalRequest(image: request.image, maskedImage: .pngData(maskData, filename: "mask.png"))
-        let result = try await client.furnitureRemoval(removalReq)
-        return result.outputImages
+        try await provider.removeObjects(request: request)
     }
-    
+
     public func replaceObjects(request: ReplaceObjectsInput) async throws -> [String] {
-        let labels = PromptMaskLabelMapper.labels(for: request.prompt)
-        guard !labels.isEmpty else { throw HomeDesignsAPIError.apiMessage("Could not determine labels from prompt") }
-        
-        let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
-        let maskRes = try await client.createMaskImage(maskReq)
-        if let error = maskRes.error {
-            throw HomeDesignsAPIError.apiMessage(error)
-        }
-        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
-        
-        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
-        
-        // Use change_color_textures
-        let changeReq = ChangeColorTexturesRequest(
-            designType: .interior,
-            image: request.image,
-            maskedImage: .pngData(maskData, filename: "mask.png"),
-            noDesign: request.noDesign,
-            prompt: request.prompt
-        )
-        let result = try await client.changeColorTextures(changeReq)
-        return result.outputImages
+        try await provider.replaceObjects(request: request)
     }
-    
+
     public func generateNewFlooring(request: NewFlooringInput) async throws -> [String] {
-        if let texture = request.textureImage {
-            let req = FloorEditorRequest(image: request.image, textureImage: texture, noOfTexture: request.noOfTexture)
-            let result = try await client.floorEditor(req)
-            return result.outputImages
-        } else {
-            // Fallback
-            let labels = ["floor"]
-            let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
-            let maskRes = try await client.createMaskImage(maskReq)
-            if let error = maskRes.error {
-            throw HomeDesignsAPIError.apiMessage(error)
-        }
-        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
-        
-        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
-            
-            let changeReq = ChangeColorTexturesRequest(
-                designType: .interior,
-                image: request.image,
-                maskedImage: .pngData(maskData, filename: "mask.png"),
-                noDesign: 1, // Defaulting to 1 for fallback
-                prompt: "Change the floor to: \(request.prompt)"
-            )
-            let result = try await client.changeColorTextures(changeReq)
-            return result.outputImages
-        }
+        try await provider.generateNewFlooring(request: request)
     }
-    
+
     public func generateNewWalls(request: NewWallsInput) async throws -> [String] {
-        let labels = ["wall"]
-        let maskReq = CreateMaskImageRequest(image: request.image, labels: labels)
-        let maskRes = try await client.createMaskImage(maskReq)
-        if let error = maskRes.error {
-            throw HomeDesignsAPIError.apiMessage(error)
-        }
-        guard let maskUrlString = maskRes.maskedImageURL, let maskUrl = URL(string: maskUrlString) else { throw HomeDesignsAPIError.apiMessage("Mask generation failed") }
-        
-        let (maskData, _) = try await URLSession.shared.data(from: maskUrl)
-        
-        let changeReq = ChangeColorTexturesRequest(
-            designType: .interior,
-            image: request.image,
-            maskedImage: .pngData(maskData, filename: "mask.png"),
-            noDesign: request.noDesign,
-            prompt: "Change the wall to: \(request.prompt)"
-        )
-        let result = try await client.changeColorTextures(changeReq)
-        return result.outputImages
+        try await provider.generateNewWalls(request: request)
     }
-    
+
     public func findFurniture(image: HomeDesignsImageSource, countryCode: String?) async throws -> FurnitureFinderResponse {
-        let req = FurnitureFinderRequest(image: image, countryCode: countryCode)
-        return try await client.furnitureFinder(req)
+        try await provider.findFurniture(image: image, countryCode: countryCode)
     }
-    
+
     public func upscale(image: HomeDesignsImageSource) async throws -> [String] {
-        let req = FullHDRequest(image: image)
-        let result = try await client.fullHD(req)
-        return result.outputImages
+        try await provider.upscale(image: image)
     }
 }

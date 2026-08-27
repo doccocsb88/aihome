@@ -14,6 +14,7 @@ final class RemoteConfigManager {
         static let homeFeatureOrder = "home_feature_order"
         static let freeCreditCount = "free_credit_count"
         static let onboardingScreens = "onboarding_screens"
+        static let homeGPTProviderKind = "home_gpt_provider_kind"
         static let maxEnable = "max_enable"
         static let maxOpenSplashEnable = "max_open_splash_enable"
         static let maxOpenResumeEnable = "max_open_resume_enable"
@@ -33,6 +34,7 @@ final class RemoteConfigManager {
     private(set) var homeFeatureOrder: [String]
     private(set) var freeCreditCount: Int
     private(set) var onboardingScreens: Bool
+    private(set) var homeGPTProviderKind: HomeGPTProviderKind
     private(set) var maxEnable: Bool
     private(set) var maxOpenSplashEnable: Bool
     private(set) var maxOpenResumeEnable: Bool
@@ -51,6 +53,7 @@ final class RemoteConfigManager {
         self.homeFeatureOrder = ["interior", "exterior", "garden", "ref_style", "remove_obj", "replace_obj", "new_flooring", "new_walls"]
         self.freeCreditCount = 3
         self.onboardingScreens = true
+        self.homeGPTProviderKind = .homeAIBackend
         self.maxEnable = true
         self.maxOpenSplashEnable = true
         self.maxOpenResumeEnable = true
@@ -112,6 +115,7 @@ final class RemoteConfigManager {
             Keys.homeFeatureOrder: homeFeatureOrderJSON as NSString,
             Keys.freeCreditCount: freeCreditCount as NSNumber,
             Keys.onboardingScreens: onboardingScreens as NSObject,
+            Keys.homeGPTProviderKind: homeGPTProviderKind.rawValue as NSString,
             Keys.maxEnable: maxEnable as NSObject,
             Keys.maxOpenSplashEnable: maxOpenSplashEnable as NSObject,
             Keys.maxOpenResumeEnable: maxOpenResumeEnable as NSObject,
@@ -130,6 +134,7 @@ final class RemoteConfigManager {
         homeFeatureOrder = homeFeatureOrderValue(fallback: homeFeatureOrder)
         freeCreditCount = max(remoteConfig[Keys.freeCreditCount].numberValue.intValue, 0)
         onboardingScreens = onboardingScreensValue()
+        homeGPTProviderKind = homeGPTProviderKindValue(fallback: homeGPTProviderKind)
         maxEnable = remoteConfig[Keys.maxEnable].boolValue
         maxOpenSplashEnable = remoteConfig[Keys.maxOpenSplashEnable].boolValue
         maxOpenResumeEnable = remoteConfig[Keys.maxOpenResumeEnable].boolValue
@@ -140,11 +145,22 @@ final class RemoteConfigManager {
         maxInterCloseResultEnable = remoteConfig[Keys.maxInterCloseResultEnable].boolValue
         maxAdsIntervalSeconds = max(remoteConfig[Keys.maxAdsIntervalSeconds].numberValue.intValue, 0)
         maxPaywallDismissCountBeforeAds = max(remoteConfig[Keys.maxPaywallDismissCountBeforeAds].numberValue.intValue, 0)
+        HomeGPTProviderRegistry.applyRemoteDefault(homeGPTProviderKind)
         syncAnalyticsUserProperties()
         AppLogger.logAction(
             "Remote Config syncValues",
-            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), maxEnable=\(maxEnable), maxAdsIntervalSeconds=\(maxAdsIntervalSeconds), maxPaywallDismissCountBeforeAds=\(maxPaywallDismissCountBeforeAds)"
+            details: "trialEnable=\(trialEnable), freeCreditCount=\(freeCreditCount), homeGPTProviderKind=\(homeGPTProviderKind.rawValue), maxEnable=\(maxEnable), maxAdsIntervalSeconds=\(maxAdsIntervalSeconds), maxPaywallDismissCountBeforeAds=\(maxPaywallDismissCountBeforeAds)"
         )
+    }
+
+    private func homeGPTProviderKindValue(fallback: HomeGPTProviderKind) -> HomeGPTProviderKind {
+        let rawValue = remoteConfig[Keys.homeGPTProviderKind].stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        let parsedValue = HomeGPTProviderKind(rawValue: rawValue) ?? fallback
+        AppLogger.logAction(
+            "Remote Config home_gpt_provider_kind",
+            details: "raw=\(rawValue), parsed=\(parsedValue.rawValue)"
+        )
+        return parsedValue
     }
 
     private func homeFeatureOrderValue(fallback: [String]) -> [String] {

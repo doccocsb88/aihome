@@ -3,11 +3,56 @@ import Observation
 
 @Observable
 final class SettingsViewModel {
+    var providerKind: HomeGPTProviderKind {
+        didSet {
+            guard providerKind != oldValue else { return }
+            HomeGPTProviderRegistry.use(providerKind)
+        }
+    }
+
     var selectedLanguage: String {
         LanguageManager.shared.selectedLanguage
     }
     var isRestoringPurchase: Bool = false
     var purchaseMessage: String?
+
+    init() {
+        providerKind = HomeGPTProviderRegistry.selectedKind
+    }
+
+    var providerTitle: String {
+        providerKind.displayName
+    }
+
+    var remoteProviderTitle: String {
+        RemoteConfigManager.shared.homeGPTProviderKind.displayName
+    }
+
+    var isUsingLocalProviderOverride: Bool {
+        HomeGPTProviderRegistry.hasLocalOverride
+    }
+
+    var usesHomeAIBackend: Bool {
+        providerKind == .homeAIBackend
+    }
+
+    func setUsesHomeAIBackend(_ enabled: Bool) {
+        let newKind: HomeGPTProviderKind = enabled ? .homeAIBackend : .legacyHomeDesigns
+        guard newKind != providerKind else { return }
+        providerKind = newKind
+    }
+
+    func followRemoteDefault() {
+        HomeGPTProviderRegistry.clearLocalOverride()
+        providerKind = HomeGPTProviderRegistry.selectedKind
+    }
+
+    func syncProviderFromRemoteDefault() {
+        guard !HomeGPTProviderRegistry.hasLocalOverride else { return }
+        let remoteKind = RemoteConfigManager.shared.homeGPTProviderKind
+        guard providerKind != remoteKind else { return }
+        providerKind = remoteKind
+    }
     
     func restorePurchase() async {
         guard !isRestoringPurchase else { return }

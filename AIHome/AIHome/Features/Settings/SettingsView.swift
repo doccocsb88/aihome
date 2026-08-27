@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(LanguageManager.self) private var languageManager
+    @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var viewModel = SettingsViewModel()
     @State private var webPageToOpen: AppWebPage?
 
@@ -136,6 +137,10 @@ struct SettingsView: View {
         }
         .onAppear {
             TrackingManager.shared.trackScreen(.settings)
+            viewModel.syncProviderFromRemoteDefault()
+        }
+        .onChange(of: remoteConfigManager.homeGPTProviderKind) { _, _ in
+            viewModel.syncProviderFromRemoteDefault()
         }
     }
 }
