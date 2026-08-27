@@ -47,6 +47,7 @@ struct SplashView: View {
     @MainActor
     private func startSplashFlowIfNeeded() {
         guard navigationCancellable == nil else { return }
+        let splashDeadline = Date().addingTimeInterval(8)
 
         _ = Task { @MainActor in
             await RemoteConfigManager.shared.fetchAndActivate()
@@ -60,14 +61,14 @@ struct SplashView: View {
                 .map { RemoteConfigWaitResult.timeout }
                 .eraseToAnyPublisher()
         )
-        .first()
+            .first()
         .sink { remoteConfigWaitResult in
             let nextRoute = viewModel.determineNextRoute()
             AppLogger.logAction(
                 "Splash Route",
                 details: "remote_config=\(remoteConfigWaitResult.rawValue), next_route=\(nextRoute)"
             )
-            AdsManager.shared.showAppOpenSplashIfReady {
+            AdsManager.shared.showAppOpenSplashIfReady(deadline: splashDeadline) {
                 coordinator.push(nextRoute)
             }
         }

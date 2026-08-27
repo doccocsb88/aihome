@@ -131,22 +131,43 @@ Sau khi initialize thành công:
 ```json
 {
   "enabled": true,
-  "open_ads": {
-    "enabled": true,
-    "ads_id": "05a37b30d8cee5ff"
-  },
-  "inter_ads": {
-    "enabled": true,
-    "ads_id": "2024866b95177a63"
-  },
-  "rewarded_ads": {
-    "enabled": true,
-    "generate_ads_id": "d4c21fc7205f62a0",
-    "regenerate_ads_id": "a3a09e4d782ed80b"
-  },
-  "banner_ads": {
-    "enabled": false,
-    "ads_id": ""
+  "placements": {
+    "open_splash": {
+      "enabled": true,
+      "ads_id": "05a37b30d8cee5ff"
+    },
+    "open_resume": {
+      "enabled": true,
+      "ads_id": "ccb2f614ccdfd440"
+    },
+    "rewarded_generate": {
+      "enabled": true,
+      "ads_id": "d4c21fc7205f62a0"
+    },
+    "rewarded_regenerate": {
+      "enabled": true,
+      "ads_id": "a3a09e4d782ed80b"
+    },
+    "inter_close_edit": {
+      "enabled": true,
+      "ads_id": "2024866b95177a63"
+    },
+    "inter_close_iap": {
+      "enabled": true,
+      "ads_id": "cc3c5cb6f6a84a14"
+    },
+    "inter_close_result": {
+      "enabled": true,
+      "ads_id": "34a8c80d44b9af2d"
+    },
+    "banner_home": {
+      "enabled": false,
+      "ads_id": ""
+    },
+    "banner_result": {
+      "enabled": false,
+      "ads_id": ""
+    }
   }
 }
 ```
@@ -172,34 +193,25 @@ Sau khi initialize thành công:
 ### 5.4 Default value
 
 - `ads_info.enabled` mặc định là `true`
-- `ads_info.open_ads.enabled` mặc định là `true`
-- `ads_info.inter_ads.enabled` mặc định là `true`
-- `ads_info.rewarded_ads.enabled` mặc định là `true`
-- `ads_info.banner_ads.enabled` mặc định là `false`
+- mỗi placement fullscreen mặc định `enabled = true`
+- mỗi placement banner mặc định `enabled = false`
 - `ads_gate.interval_seconds` mặc định là `30`
 - `ads_gate.paywall_dismiss_count_before_ads` mặc định là `0`
 
 Ý nghĩa:
 
-- nếu chưa fetch remote config, app vẫn có thể chạy ads theo default JSON
+- nếu chưa fetch remote config, app vẫn có thể chạy ads theo default JSON local
 - backend chỉ cần cập nhật 2 key để tắt bật toàn bộ ads
+- mỗi placement có thể trỏ tới một `ads_id` riêng, không cần gom theo nhóm cũ
 
-### 5.5 Legacy fallback
+### 5.5 Không dùng fallback cũ
 
-Trong giai đoạn chuyển đổi, app vẫn hiểu các key cũ như:
+Implementation hiện tại chỉ đọc:
 
-- `max_enable`
-- `max_open_splash_enable`
-- `max_open_resume_enable`
-- `max_rewarded_generate_enable`
-- `max_rewarded_regenerate_enable`
-- `max_inter_close_edit_enable`
-- `max_inter_close_iap_enable`
-- `max_inter_close_result_enable`
-- `max_ads_interval_seconds`
-- `max_paywall_dismiss_count_before_ads`
+- `ads_info`
+- `ads_gate`
 
-Nhưng key chính nên dùng là `ads_info` và `ads_gate`.
+Không còn đọc các key MAX cũ theo kiểu rời rạc nữa.
 
 ---
 

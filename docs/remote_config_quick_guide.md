@@ -21,22 +21,43 @@ Mục tiêu là để team có thể mở Firebase Remote Config và set giá tr
 ```json
 {
   "enabled": true,
-  "open_ads": {
-    "enabled": true,
-    "ads_id": "05a37b30d8cee5ff"
-  },
-  "inter_ads": {
-    "enabled": true,
-    "ads_id": "2024866b95177a63"
-  },
-  "rewarded_ads": {
-    "enabled": true,
-    "generate_ads_id": "d4c21fc7205f62a0",
-    "regenerate_ads_id": "a3a09e4d782ed80b"
-  },
-  "banner_ads": {
-    "enabled": false,
-    "ads_id": ""
+  "placements": {
+    "open_splash": {
+      "enabled": true,
+      "ads_id": "05a37b30d8cee5ff"
+    },
+    "open_resume": {
+      "enabled": true,
+      "ads_id": "ccb2f614ccdfd440"
+    },
+    "rewarded_generate": {
+      "enabled": true,
+      "ads_id": "d4c21fc7205f62a0"
+    },
+    "rewarded_regenerate": {
+      "enabled": true,
+      "ads_id": "a3a09e4d782ed80b"
+    },
+    "inter_close_edit": {
+      "enabled": true,
+      "ads_id": "2024866b95177a63"
+    },
+    "inter_close_iap": {
+      "enabled": true,
+      "ads_id": "cc3c5cb6f6a84a14"
+    },
+    "inter_close_result": {
+      "enabled": true,
+      "ads_id": "34a8c80d44b9af2d"
+    },
+    "banner_home": {
+      "enabled": false,
+      "ads_id": ""
+    },
+    "banner_result": {
+      "enabled": false,
+      "ads_id": ""
+    }
   }
 }
 ```
@@ -62,10 +83,8 @@ Mục tiêu là để team có thể mở Firebase Remote Config và set giá tr
 ### Ghi chú nhanh
 
 - `ads_info.enabled = false` thì toàn bộ ads dừng.
-- `open_ads.enabled = false` thì splash và resume open ad đều dừng.
-- `inter_ads.enabled = false` thì cả 3 interstitial trigger đều dừng.
-- `rewarded_ads.enabled = false` thì generate/regenerate rewarded dừng.
-- `banner_ads.enabled` hiện được giữ sẵn cho tương lai.
+- Mỗi placement có `enabled` và `ads_id` riêng.
+- Thiếu placement trong JSON thì app coi như placement đó tắt.
 - `ads_gate.placements` là enum string, dùng để bật/tắt trigger theo placement.
 - `paywall_dismiss_count_before_ads = 0` nghĩa là gate paywall coi như tắt.
 - Ads chỉ hiện cho free user theo logic hiện tại.

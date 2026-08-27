@@ -12,37 +12,71 @@ enum AdsPlacement: String, Codable, CaseIterable, Equatable {
     case interCloseEdit = "inter_close_edit"
     case interCloseIap = "inter_close_iap"
     case interCloseResult = "inter_close_result"
+    case bannerHome = "banner_home"
+    case bannerResult = "banner_result"
+
+    var adKind: AdsAdKind {
+        switch self {
+        case .openSplash, .openResume:
+            return .appOpen
+        case .rewardedGenerate, .rewardedRegenerate:
+            return .rewarded
+        case .interCloseEdit, .interCloseIap, .interCloseResult:
+            return .interstitial
+        case .bannerHome, .bannerResult:
+            return .banner
+        }
+    }
+
+    var isFullscreen: Bool {
+        adKind != .banner
+    }
 }
 
-struct AdsTypeConfig: Codable, Equatable {
+enum AdsAdKind {
+    case appOpen
+    case interstitial
+    case rewarded
+    case banner
+}
+
+struct AdsPlacementConfig: Codable, Equatable {
     var enabled: Bool
     var adsId: String
 
-    static let empty = AdsTypeConfig(enabled: false, adsId: "")
-}
-
-struct RewardedAdsConfig: Codable, Equatable {
-    var enabled: Bool
-    var generateAdsId: String
-    var regenerateAdsId: String
-
-    static let empty = RewardedAdsConfig(enabled: false, generateAdsId: "", regenerateAdsId: "")
+    static let empty = AdsPlacementConfig(enabled: false, adsId: "")
 }
 
 struct AdsInfoConfig: Codable, Equatable {
     var enabled: Bool
-    var openAds: AdsTypeConfig
-    var interAds: AdsTypeConfig
-    var rewardedAds: RewardedAdsConfig
-    var bannerAds: AdsTypeConfig
+    var placements: [AdsPlacement: AdsPlacementConfig]
 
     static let defaultValue = AdsInfoConfig(
         enabled: true,
-        openAds: .init(enabled: true, adsId: "05a37b30d8cee5ff"),
-        interAds: .init(enabled: true, adsId: "2024866b95177a63"),
-        rewardedAds: .init(enabled: true, generateAdsId: "d4c21fc7205f62a0", regenerateAdsId: "a3a09e4d782ed80b"),
-        bannerAds: .init(enabled: false, adsId: "")
+        placements: [
+            .openSplash: .init(enabled: true, adsId: "05a37b30d8cee5ff"),
+            .openResume: .init(enabled: true, adsId: "ccb2f614ccdfd440"),
+            .rewardedGenerate: .init(enabled: true, adsId: "d4c21fc7205f62a0"),
+            .rewardedRegenerate: .init(enabled: true, adsId: "a3a09e4d782ed80b"),
+            .interCloseEdit: .init(enabled: true, adsId: "2024866b95177a63"),
+            .interCloseIap: .init(enabled: true, adsId: "cc3c5cb6f6a84a14"),
+            .interCloseResult: .init(enabled: true, adsId: "34a8c80d44b9af2d"),
+            .bannerHome: .init(enabled: false, adsId: ""),
+            .bannerResult: .init(enabled: false, adsId: "")
+        ]
     )
+
+    func placementConfig(for placement: AdsPlacement) -> AdsPlacementConfig {
+        placements[placement] ?? .empty
+    }
+
+    func isEnabled(for placement: AdsPlacement) -> Bool {
+        enabled && placementConfig(for: placement).enabled
+    }
+
+    func adsId(for placement: AdsPlacement) -> String {
+        placementConfig(for: placement).adsId
+    }
 
     var jsonString: String {
         let encoder = JSONEncoder()
@@ -85,6 +119,10 @@ struct AdsGateConfig: Codable, Equatable {
     }
 }
 
+private enum RemoteConfigCachePolicy {
+    static let minimumFetchInterval: TimeInterval = 60 * 60
+}
+
 @MainActor
 @Observable
 final class RemoteConfigManager {
@@ -98,17 +136,6 @@ final class RemoteConfigManager {
         static let homeGPTProviderKind = "home_gpt_provider_kind"
         static let adsInfo = "ads_info"
         static let adsGate = "ads_gate"
-        static let legacyAdsPlacements = "ads_placements"
-        static let maxEnable = "max_enable"
-        static let maxOpenSplashEnable = "max_open_splash_enable"
-        static let maxOpenResumeEnable = "max_open_resume_enable"
-        static let maxRewardedGenerateEnable = "max_rewarded_generate_enable"
-        static let maxRewardedRegenerateEnable = "max_rewarded_regenerate_enable"
-        static let maxInterCloseEditEnable = "max_inter_close_edit_enable"
-        static let maxInterCloseIapEnable = "max_inter_close_iap_enable"
-        static let maxInterCloseResultEnable = "max_inter_close_result_enable"
-        static let maxAdsIntervalSeconds = "max_ads_interval_seconds"
-        static let maxPaywallDismissCountBeforeAds = "max_paywall_dismiss_count_before_ads"
     }
 
     private let remoteConfig: RemoteConfig
@@ -176,7 +203,7 @@ final class RemoteConfigManager {
 
     private func configureDefaults() {
         let settings = RemoteConfigSettings()
-        settings.minimumFetchInterval = 0
+        settings.minimumFetchInterval = RemoteConfigCachePolicy.minimumFetchInterval
         remoteConfig.configSettings = settings
         remoteConfig.setDefaults([
             Keys.trialEnable: false as NSObject,
@@ -236,7 +263,7 @@ final class RemoteConfigManager {
                let decoder = JSONDecoder()
                decoder.keyDecodingStrategy = .convertFromSnakeCase
                return (try? decoder.decode(AdsGateConfig.self, from: data))
-           }() {
+            }() {
             AppLogger.logAction(
                 "Remote Config ads_gate",
                 details: "raw=\(rawValue), parsed=\(parsedValue.jsonString)"
@@ -244,75 +271,11 @@ final class RemoteConfigManager {
             return parsedValue
         }
 
-        if let legacyGate = legacyAdsGateFromPlacementsValue() {
-            AppLogger.logAction(
-                "Remote Config ads_gate",
-                details: "raw=\(rawValue), parsed_legacy=\(legacyGate.jsonString)"
-            )
-            return legacyGate
-        }
-
         AppLogger.logAction(
             "Remote Config ads_gate",
             details: "raw=\(rawValue), parsed_default=\(AdsGateConfig.defaultValue.jsonString)"
         )
         return AdsGateConfig.defaultValue
-    }
-
-    private func legacyAdsGateFromPlacementsValue() -> AdsGateConfig? {
-        let rawValue = remoteConfig[Keys.legacyAdsPlacements].stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !rawValue.isEmpty,
-           let data = rawValue.data(using: .utf8),
-           let parsedValue: LegacyAdsPlacementsConfig = {
-               let decoder = JSONDecoder()
-               decoder.keyDecodingStrategy = .convertFromSnakeCase
-               return (try? decoder.decode(LegacyAdsPlacementsConfig.self, from: data))
-            }() {
-            return parsedValue.asGateConfig
-        }
-
-        let hasLegacyValues =
-            hasNonStaticValue(for: Keys.maxEnable) ||
-            hasNonStaticValue(for: Keys.maxOpenSplashEnable) ||
-            hasNonStaticValue(for: Keys.maxOpenResumeEnable) ||
-            hasNonStaticValue(for: Keys.maxRewardedGenerateEnable) ||
-            hasNonStaticValue(for: Keys.maxRewardedRegenerateEnable) ||
-            hasNonStaticValue(for: Keys.maxInterCloseEditEnable) ||
-            hasNonStaticValue(for: Keys.maxInterCloseIapEnable) ||
-            hasNonStaticValue(for: Keys.maxInterCloseResultEnable) ||
-            hasNonStaticValue(for: Keys.maxAdsIntervalSeconds) ||
-            hasNonStaticValue(for: Keys.maxPaywallDismissCountBeforeAds)
-
-        if hasLegacyValues {
-            return AdsGateConfig(
-                intervalSeconds: max(remoteConfig[Keys.maxAdsIntervalSeconds].numberValue.intValue, 0),
-                paywallDismissCountBeforeAds: max(remoteConfig[Keys.maxPaywallDismissCountBeforeAds].numberValue.intValue, 0),
-                placements: AdsPlacement.allCases.filter { placement in
-                    switch placement {
-                    case .openSplash:
-                        return remoteConfig[Keys.maxOpenSplashEnable].boolValue
-                    case .openResume:
-                        return remoteConfig[Keys.maxOpenResumeEnable].boolValue
-                    case .rewardedGenerate:
-                        return remoteConfig[Keys.maxRewardedGenerateEnable].boolValue
-                    case .rewardedRegenerate:
-                        return remoteConfig[Keys.maxRewardedRegenerateEnable].boolValue
-                    case .interCloseEdit:
-                        return remoteConfig[Keys.maxInterCloseEditEnable].boolValue
-                    case .interCloseIap:
-                        return remoteConfig[Keys.maxInterCloseIapEnable].boolValue
-                    case .interCloseResult:
-                        return remoteConfig[Keys.maxInterCloseResultEnable].boolValue
-                    }
-                }
-            )
-        }
-
-        return nil
-    }
-
-    private func hasNonStaticValue(for key: String) -> Bool {
-        remoteConfig.configValue(forKey: key).source != .static
     }
 
     private func homeGPTProviderKindValue(fallback: HomeGPTProviderKind) -> HomeGPTProviderKind {
@@ -384,66 +347,19 @@ final class RemoteConfigManager {
         adsGate.jsonString
     }
 
-    var maxEnable: Bool { adsInfo.enabled }
-    var maxOpenSplashEnable: Bool { adsInfo.openAds.enabled }
-    var maxOpenResumeEnable: Bool { adsInfo.openAds.enabled }
-    var maxRewardedGenerateEnable: Bool { adsInfo.rewardedAds.enabled }
-    var maxRewardedRegenerateEnable: Bool { adsInfo.rewardedAds.enabled }
-    var maxInterCloseEditEnable: Bool { adsInfo.interAds.enabled }
-    var maxInterCloseIapEnable: Bool { adsInfo.interAds.enabled }
-    var maxInterCloseResultEnable: Bool { adsInfo.interAds.enabled }
-    var maxAdsIntervalSeconds: Int { adsGate.intervalSeconds }
-    var maxPaywallDismissCountBeforeAds: Int { adsGate.paywallDismissCountBeforeAds }
-
     private func syncAnalyticsUserProperties() {
         Analytics.setUserProperty(trialEnable ? "on" : "off", forName: "rc_trial_screen")
         Analytics.setUserProperty(homeFeatureOrderString, forName: "rc_home_feature_order")
         Analytics.setUserProperty(String(freeCreditCount), forName: "rc_free_credit")
         Analytics.setUserProperty(onboardingScreens ? "true" : "false", forName: "rc_onboarding_screens")
-        Analytics.setUserProperty(maxEnable ? "true" : "false", forName: "rc_ads_info_enabled")
-        Analytics.setUserProperty(maxOpenSplashEnable ? "true" : "false", forName: "rc_ads_open_enabled")
-        Analytics.setUserProperty(maxInterCloseEditEnable ? "true" : "false", forName: "rc_ads_inter_enabled")
-        Analytics.setUserProperty(maxRewardedGenerateEnable ? "true" : "false", forName: "rc_ads_rewarded_enabled")
-        Analytics.setUserProperty(adsInfo.bannerAds.enabled ? "true" : "false", forName: "rc_ads_banner_enabled")
-        Analytics.setUserProperty(String(maxAdsIntervalSeconds), forName: "rc_ads_gate_interval_seconds")
-        Analytics.setUserProperty(String(maxPaywallDismissCountBeforeAds), forName: "rc_ads_gate_paywall_dismiss_count_before_ads")
-    }
-}
+        Analytics.setUserProperty(adsInfo.enabled ? "true" : "false", forName: "rc_ads_info_enabled")
 
-private struct LegacyAdsPlacementsConfig: Codable {
-    var enabled: Bool
-    var openSplashEnabled: Bool
-    var openResumeEnabled: Bool
-    var rewardedGenerateEnabled: Bool
-    var rewardedRegenerateEnabled: Bool
-    var interCloseEditEnabled: Bool
-    var interCloseIapEnabled: Bool
-    var interCloseResultEnabled: Bool
-    var adsIntervalSeconds: Int
-    var paywallDismissCountBeforeAds: Int
+        for placement in AdsPlacement.allCases {
+            let enabledValue = adsInfo.isEnabled(for: placement) ? "true" : "false"
+            Analytics.setUserProperty(enabledValue, forName: "rc_ads_\(placement.rawValue)_enabled")
+        }
 
-    var asGateConfig: AdsGateConfig {
-        AdsGateConfig(
-            intervalSeconds: adsIntervalSeconds,
-            paywallDismissCountBeforeAds: paywallDismissCountBeforeAds,
-            placements: AdsPlacement.allCases.filter { placement in
-                switch placement {
-                case .openSplash:
-                    return openSplashEnabled
-                case .openResume:
-                    return openResumeEnabled
-                case .rewardedGenerate:
-                    return rewardedGenerateEnabled
-                case .rewardedRegenerate:
-                    return rewardedRegenerateEnabled
-                case .interCloseEdit:
-                    return interCloseEditEnabled
-                case .interCloseIap:
-                    return interCloseIapEnabled
-                case .interCloseResult:
-                    return interCloseResultEnabled
-                }
-            }
-        )
+        Analytics.setUserProperty(String(adsGate.intervalSeconds), forName: "rc_ads_gate_interval_seconds")
+        Analytics.setUserProperty(String(adsGate.paywallDismissCountBeforeAds), forName: "rc_ads_gate_paywall_dismiss_count_before_ads")
     }
 }
