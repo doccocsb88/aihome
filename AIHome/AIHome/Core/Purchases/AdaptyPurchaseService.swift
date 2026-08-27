@@ -1,6 +1,5 @@
 import Adapty
 import AdaptyUI
-import FirebaseAnalytics
 import Foundation
 
 enum PurchaseActivationResult {
@@ -44,8 +43,6 @@ final class AdaptyPurchaseService {
         static let publicSDKKey = "public_live_Z9bFijzJ.C3HmFcRBviO4VivLzi7l"
         static let placementId = Placement.proButton.rawValue
         static let accessLevelId = "premium"
-        static let facebookIntegrationKey = "facebook_anonymous_id"
-        static let firebaseIntegrationKey = "firebase_app_instance_id"
     }
 
     private let userDefaults: UserDefaults
@@ -77,8 +74,7 @@ final class AdaptyPurchaseService {
                 .build()
 
             try await Adapty.activate(with: config)
-            try await syncFacebookAnonymousID()
-            try await syncFirebaseAppInstanceID()
+            await TrackingBootstrap.shared.syncAdaptyIntegrationIdentifiers()
             try await AdaptyUI.activate()
         }
     }
@@ -178,35 +174,6 @@ final class AdaptyPurchaseService {
     private func cachePremiumStatus(_ isActive: Bool) {
         userDefaults.set(isActive, forKey: "isProCached")
         UserManager.shared.setPremiumStatus(isActive)
-    }
-
-    private func syncFirebaseAppInstanceID() async throws {
-        guard let appInstanceID = Analytics.appInstanceID(),
-              !appInstanceID.isEmpty else {
-            AppLogger.logError("Missing Firebase App Instance ID")
-            return
-        }
-
-        try await Adapty.setIntegrationIdentifier(
-            key: Defaults.firebaseIntegrationKey,
-            value: appInstanceID
-        )
-        AppLogger.logAction("Adapty Firebase Integration Synced")
-    }
-
-    private func syncFacebookAnonymousID() async throws {
-        let anonymousID = AppEvents.shared.anonymousID.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard !anonymousID.isEmpty else {
-            AppLogger.logError("Missing Facebook Anonymous ID")
-            return
-        }
-
-        try await Adapty.setIntegrationIdentifier(
-            key: Defaults.facebookIntegrationKey,
-            value: anonymousID
-        )
-        AppLogger.logAction("Adapty Facebook Integration Synced")
     }
 
     private func infoValue(for key: String, defaultValue: String = "") -> String {
