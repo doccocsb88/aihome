@@ -9,34 +9,65 @@ Mục tiêu là để team có thể mở Firebase Remote Config và set giá tr
 
 ## 1. Ads Keys
 
-### 1.1 Một key duy nhất
+### 1.1 Hai config chính
 
 | Key | Type | Default trong app | Ý nghĩa |
 |---|---|---:|---|
-| `ads_placements` | `String` | JSON mặc định | Gom toàn bộ cấu hình ads vào một JSON |
+| `ads_info` | `String` | JSON mặc định | Bật/tắt từng nhóm ads và set `ads_id` cho từng nhóm |
+| `ads_gate` | `String` | JSON mặc định | Điều khiển interval, paywall gate và placements |
 
-### 1.2 JSON mẫu
+### 1.2 `ads_info` JSON mẫu
 
 ```json
 {
   "enabled": true,
-  "open_splash_enabled": true,
-  "open_resume_enabled": true,
-  "rewarded_generate_enabled": true,
-  "rewarded_regenerate_enabled": true,
-  "inter_close_edit_enabled": true,
-  "inter_close_iap_enabled": true,
-  "inter_close_result_enabled": true,
-  "ads_interval_seconds": 30,
-  "paywall_dismiss_count_before_ads": 0
+  "open_ads": {
+    "enabled": true,
+    "ads_id": "05a37b30d8cee5ff"
+  },
+  "inter_ads": {
+    "enabled": true,
+    "ads_id": "2024866b95177a63"
+  },
+  "rewarded_ads": {
+    "enabled": true,
+    "generate_ads_id": "d4c21fc7205f62a0",
+    "regenerate_ads_id": "a3a09e4d782ed80b"
+  },
+  "banner_ads": {
+    "enabled": false,
+    "ads_id": ""
+  }
+}
+```
+
+### 1.3 `ads_gate` JSON mẫu
+
+```json
+{
+  "interval_seconds": 30,
+  "paywall_dismiss_count_before_ads": 0,
+  "placements": [
+    "open_splash",
+    "open_resume",
+    "rewarded_generate",
+    "rewarded_regenerate",
+    "inter_close_edit",
+    "inter_close_iap",
+    "inter_close_result"
+  ]
 }
 ```
 
 ### Ghi chú nhanh
 
-- Nếu `enabled = false`, toàn bộ ads sẽ dừng.
-- Nếu `open_splash_enabled = false`, splash ad sẽ không load và không show.
-- Nếu `paywall_dismiss_count_before_ads = 0`, gate paywall coi như tắt.
+- `ads_info.enabled = false` thì toàn bộ ads dừng.
+- `open_ads.enabled = false` thì splash và resume open ad đều dừng.
+- `inter_ads.enabled = false` thì cả 3 interstitial trigger đều dừng.
+- `rewarded_ads.enabled = false` thì generate/regenerate rewarded dừng.
+- `banner_ads.enabled` hiện được giữ sẵn cho tương lai.
+- `ads_gate.placements` là enum string, dùng để bật/tắt trigger theo placement.
+- `paywall_dismiss_count_before_ads = 0` nghĩa là gate paywall coi như tắt.
 - Ads chỉ hiện cho free user theo logic hiện tại.
 
 ## 2. API Provider Keys
@@ -72,14 +103,16 @@ Thông tin backend mới đã được đưa vào code iOS để dùng chung:
 1. Vào Firebase Remote Config.
 2. Tạo key theo đúng tên ở trên.
 3. Chọn đúng type:
-   - `String` cho `ads_placements` JSON
+   - `String` cho `ads_info` JSON
+   - `String` cho `ads_gate` JSON
    - `String` cho provider kind
 4. Publish cấu hình.
 5. Không cần tạo từng key ads rời rạc nữa.
 
 ## 5. Khuyến nghị giá trị khởi đầu
 
-- `ads_placements = { ... JSON mẫu ở trên ... }`
+- `ads_info = { ... JSON mẫu ở trên ... }`
+- `ads_gate = { ... JSON mẫu ở trên ... }`
 - `home_gpt_provider_kind = home_ai_backend`
 
 ## 6. Chỗ đọc trong code

@@ -77,9 +77,9 @@ Vai trò của `AdsManager`:
 
 Ad chỉ được chạy khi đồng thời thỏa:
 
-- `ads_placements.enabled = true`
-- field của slot đó trong `ads_placements` = `true`
-- `ads_placements.paywall_dismiss_count_before_ads` đã đạt ngưỡng
+- `ads_info.enabled = true`
+- nhóm ads tương ứng trong `ads_info` bật
+- `ads_gate.paywall_dismiss_count_before_ads` đã đạt ngưỡng
 - user là free user
 
 Nếu bất kỳ điều kiện nào fail, action tiếp tục ngay mà không show ad.
@@ -119,42 +119,72 @@ Sau khi initialize thành công:
 
 ## 5. Remote Config
 
-Để kiểm soát ads, `RemoteConfigManager` hiện đọc một key JSON duy nhất:
+Để kiểm soát ads, `RemoteConfigManager` hiện đọc 2 key JSON:
 
 ### 5.1 Key chính
 
-- `ads_placements`
+- `ads_info`
+- `ads_gate`
 
-### 5.2 JSON mẫu
+### 5.2 `ads_info` JSON mẫu
 
 ```json
 {
   "enabled": true,
-  "open_splash_enabled": true,
-  "open_resume_enabled": true,
-  "rewarded_generate_enabled": true,
-  "rewarded_regenerate_enabled": true,
-  "inter_close_edit_enabled": true,
-  "inter_close_iap_enabled": true,
-  "inter_close_result_enabled": true,
-  "ads_interval_seconds": 30,
-  "paywall_dismiss_count_before_ads": 0
+  "open_ads": {
+    "enabled": true,
+    "ads_id": "05a37b30d8cee5ff"
+  },
+  "inter_ads": {
+    "enabled": true,
+    "ads_id": "2024866b95177a63"
+  },
+  "rewarded_ads": {
+    "enabled": true,
+    "generate_ads_id": "d4c21fc7205f62a0",
+    "regenerate_ads_id": "a3a09e4d782ed80b"
+  },
+  "banner_ads": {
+    "enabled": false,
+    "ads_id": ""
+  }
 }
 ```
 
-### 5.3 Default value
+### 5.3 `ads_gate` JSON mẫu
 
-- `enabled` mặc định là `true`
-- tất cả placement mặc định là `true`
-- `ads_interval_seconds` mặc định là `30`
-- `paywall_dismiss_count_before_ads` mặc định là `0`
+```json
+{
+  "interval_seconds": 30,
+  "paywall_dismiss_count_before_ads": 0,
+  "placements": [
+    "open_splash",
+    "open_resume",
+    "rewarded_generate",
+    "rewarded_regenerate",
+    "inter_close_edit",
+    "inter_close_iap",
+    "inter_close_result"
+  ]
+}
+```
+
+### 5.4 Default value
+
+- `ads_info.enabled` mặc định là `true`
+- `ads_info.open_ads.enabled` mặc định là `true`
+- `ads_info.inter_ads.enabled` mặc định là `true`
+- `ads_info.rewarded_ads.enabled` mặc định là `true`
+- `ads_info.banner_ads.enabled` mặc định là `false`
+- `ads_gate.interval_seconds` mặc định là `30`
+- `ads_gate.paywall_dismiss_count_before_ads` mặc định là `0`
 
 Ý nghĩa:
 
 - nếu chưa fetch remote config, app vẫn có thể chạy ads theo default JSON
-- backend chỉ cần cập nhật một key duy nhất để tắt bật từng slot
+- backend chỉ cần cập nhật 2 key để tắt bật toàn bộ ads
 
-### 5.4 Legacy fallback
+### 5.5 Legacy fallback
 
 Trong giai đoạn chuyển đổi, app vẫn hiểu các key cũ như:
 
@@ -169,7 +199,7 @@ Trong giai đoạn chuyển đổi, app vẫn hiểu các key cũ như:
 - `max_ads_interval_seconds`
 - `max_paywall_dismiss_count_before_ads`
 
-Nhưng key chính nên dùng là `ads_placements`.
+Nhưng key chính nên dùng là `ads_info` và `ads_gate`.
 
 ---
 
@@ -372,7 +402,7 @@ Hệ thống có thêm một cooldown chung cho mọi fullscreen ad:
 
 Remote config key:
 
-- `ads_placements.ads_interval_seconds`
+- `ads_gate.interval_seconds`
 
 Default:
 
@@ -397,14 +427,14 @@ Ngoài interval, ads còn bị chặn bởi số lần paywall dismiss.
 Logic:
 
 - mỗi lần paywall được dismiss, app tăng một counter local
-- khi counter chưa đạt `ads_placements.paywall_dismiss_count_before_ads`, ads sẽ không load và không show
+- khi counter chưa đạt `ads_gate.paywall_dismiss_count_before_ads`, ads sẽ không load và không show
 - khi counter đạt ngưỡng, AdsManager tự unlock và preload lại toàn bộ slot
 
 Điểm quan trọng:
 
 - gate này áp dụng cho toàn bộ fullscreen ads
 - nếu người dùng chưa thấy đủ số lần paywall, ngay cả app open splash cũng sẽ bị chặn
-- nếu `ads_placements.paywall_dismiss_count_before_ads = 0`, gate này coi như tắt
+- nếu `ads_gate.paywall_dismiss_count_before_ads = 0`, gate này coi như tắt
 
 ### 8.6 Retry khi load fail
 
@@ -500,15 +530,15 @@ Sau khi merge, app nên hoạt động như sau:
 
 ## 12. Ghi chú kỹ thuật cho người maintain
 
-- Nếu muốn tắt toàn bộ ads, set `ads_placements.enabled = false`
-- Nếu muốn tắt từng slot, set field tương ứng trong `ads_placements`
-- Nếu muốn chỉnh tần suất show ads, set `ads_placements.ads_interval_seconds`
-- Nếu muốn điều khiển lúc bắt đầu cho ads, set `ads_placements.paywall_dismiss_count_before_ads`
+- Nếu muốn tắt toàn bộ ads, set `ads_info.enabled = false`
+- Nếu muốn tắt group open/inter/rewarded/banner, set field tương ứng trong `ads_info`
+- Nếu muốn chỉnh tần suất show ads, set `ads_gate.interval_seconds`
+- Nếu muốn điều khiển lúc bắt đầu cho ads, set `ads_gate.paywall_dismiss_count_before_ads`
 - Các flow hiện tại đang gọi ads ở layer UI / coordinator để giữ logic gốc ít bị ảnh hưởng
 - Nếu bổ sung slot mới, nên đi theo pattern:
   1. thêm case trong `Slot`
-  2. thêm ad unit id
-  3. thêm field vào JSON `ads_placements`
+  2. thêm placement string vào `AdsPlacement`
+  3. thêm field vào JSON `ads_info` hoặc `ads_gate` tùy loại config
   4. preload trong `prepareAds()`
   5. expose method public tương ứng
   6. gắn trigger ở view / coordinator

@@ -16,22 +16,26 @@ final class AdsManager: NSObject {
         case interCloseIap
         case interCloseResult
 
-        var adUnitID: String {
+        var placement: String {
+            rawValue
+        }
+
+        var adUnitIdentifier: String {
             switch self {
             case .openSplash:
-                return "05a37b30d8cee5ff"
+                return RemoteConfigManager.shared.adsInfo.openAds.adsId
             case .openResume:
-                return "ccb2f614ccdfd440"
+                return RemoteConfigManager.shared.adsInfo.openAds.adsId
             case .rewardedGenerate:
-                return "d4c21fc7205f62a0"
+                return RemoteConfigManager.shared.adsInfo.rewardedAds.generateAdsId
             case .rewardedRegenerate:
-                return "a3a09e4d782ed80b"
+                return RemoteConfigManager.shared.adsInfo.rewardedAds.regenerateAdsId
             case .interCloseEdit:
-                return "2024866b95177a63"
+                return RemoteConfigManager.shared.adsInfo.interAds.adsId
             case .interCloseIap:
-                return "cc3c5cb6f6a84a14"
+                return RemoteConfigManager.shared.adsInfo.interAds.adsId
             case .interCloseResult:
-                return "34a8c80d44b9af2d"
+                return RemoteConfigManager.shared.adsInfo.interAds.adsId
             }
         }
     }
@@ -44,15 +48,13 @@ final class AdsManager: NSObject {
         static let sdkKey = "J2ks4TF6rLetzM0TgPvggyqLiCRTUJ1afPHWi0la24rZnZOul9gyfkD4JtAmbcua43fHqHHBzV20zrbR6Ilz5G"
     }
 
-    private var appOpenSplashAd: MAAppOpenAd?
-    private var appOpenResumeAd: MAAppOpenAd?
+    private var appOpenAd: MAAppOpenAd?
     private var rewardedGenerateAd: MARewardedAd?
     private var rewardedRegenerateAd: MARewardedAd?
-    private var interCloseEditAd: MAInterstitialAd?
-    private var interCloseIapAd: MAInterstitialAd?
-    private var interCloseResultAd: MAInterstitialAd?
+    private var interstitialAd: MAInterstitialAd?
     private var pendingActions: [Slot: PendingAction] = [:]
     private var retryAttempts: [Slot: Int] = [:]
+    private var activeFullscreenSlot: Slot?
     private var hasInitializedSDK = false
     private var hasHandledFirstForegroundActivation = false
     private var hasShownResumeThisForeground = false
@@ -199,13 +201,10 @@ final class AdsManager: NSObject {
 
         didUnlockAdsAfterPaywallGate = true
 
-        appOpenSplashAd = makeAppOpenAd(for: .openSplash)
-        appOpenResumeAd = makeAppOpenAd(for: .openResume)
+        appOpenAd = makeAppOpenAd()
         rewardedGenerateAd = makeRewardedAd(for: .rewardedGenerate)
         rewardedRegenerateAd = makeRewardedAd(for: .rewardedRegenerate)
-        interCloseEditAd = makeInterstitialAd(for: .interCloseEdit)
-        interCloseIapAd = makeInterstitialAd(for: .interCloseIap)
-        interCloseResultAd = makeInterstitialAd(for: .interCloseResult)
+        interstitialAd = makeInterstitialAd()
 
         loadAllAds()
     }
@@ -245,20 +244,26 @@ final class AdsManager: NSObject {
         return Date().timeIntervalSince(lastFullscreenAdPresentedAt) >= adsIntervalSeconds
     }
 
-    private func makeAppOpenAd(for slot: Slot) -> MAAppOpenAd {
-        let ad = MAAppOpenAd(adUnitIdentifier: slot.adUnitID)
+    private func makeAppOpenAd() -> MAAppOpenAd? {
+        let adUnitIdentifier = Slot.openSplash.adUnitIdentifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !adUnitIdentifier.isEmpty else { return nil }
+        let ad = MAAppOpenAd(adUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
         return ad
     }
 
-    private func makeInterstitialAd(for slot: Slot) -> MAInterstitialAd {
-        let ad = MAInterstitialAd(adUnitIdentifier: slot.adUnitID)
+    private func makeInterstitialAd() -> MAInterstitialAd? {
+        let adUnitIdentifier = Slot.interCloseEdit.adUnitIdentifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !adUnitIdentifier.isEmpty else { return nil }
+        let ad = MAInterstitialAd(adUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
         return ad
     }
 
-    private func makeRewardedAd(for slot: Slot) -> MARewardedAd {
-        let ad = MARewardedAd.shared(withAdUnitIdentifier: slot.adUnitID)
+    private func makeRewardedAd(for slot: Slot) -> MARewardedAd? {
+        let adUnitIdentifier = slot.adUnitIdentifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !adUnitIdentifier.isEmpty else { return nil }
+        let ad = MARewardedAd.shared(withAdUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
         return ad
     }
@@ -266,12 +271,9 @@ final class AdsManager: NSObject {
     private func loadAllAds() {
         AppLogger.logAction("MAX loadAllAds", details: "starting preload")
         loadIfNeeded(slot: .openSplash)
-        loadIfNeeded(slot: .openResume)
         loadIfNeeded(slot: .rewardedGenerate)
         loadIfNeeded(slot: .rewardedRegenerate)
         loadIfNeeded(slot: .interCloseEdit)
-        loadIfNeeded(slot: .interCloseIap)
-        loadIfNeeded(slot: .interCloseResult)
     }
 
     private func loadIfNeeded(slot: Slot) {
@@ -281,56 +283,38 @@ final class AdsManager: NSObject {
             return
         }
 
+        guard isSlotEnabled(slot) else {
+            AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
+            return
+        }
+
+        guard hasValidAdUnitIdentifier(for: slot) else {
+            AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) missing ad unit id")
+            return
+        }
+
         switch slot {
         case .openSplash:
-            guard RemoteConfigManager.shared.maxOpenSplashEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
-            AppLogger.logAction("MAX load", details: "\(slot.rawValue) appOpenSplashAd.load()")
-            appOpenSplashAd?.load()
+            AppLogger.logAction("MAX load", details: "\(slot.rawValue) appOpenAd.load()")
+            appOpenAd?.load()
         case .openResume:
-            guard RemoteConfigManager.shared.maxOpenResumeEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
-            AppLogger.logAction("MAX load", details: "\(slot.rawValue) appOpenResumeAd.load()")
-            appOpenResumeAd?.load()
+            AppLogger.logAction("MAX load", details: "\(slot.rawValue) appOpenAd.load()")
+            appOpenAd?.load()
         case .rewardedGenerate:
-            guard RemoteConfigManager.shared.maxRewardedGenerateEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
             AppLogger.logAction("MAX load", details: "\(slot.rawValue) rewardedGenerateAd.load()")
             rewardedGenerateAd?.load()
         case .rewardedRegenerate:
-            guard RemoteConfigManager.shared.maxRewardedRegenerateEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
             AppLogger.logAction("MAX load", details: "\(slot.rawValue) rewardedRegenerateAd.load()")
             rewardedRegenerateAd?.load()
         case .interCloseEdit:
-            guard RemoteConfigManager.shared.maxInterCloseEditEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
-            AppLogger.logAction("MAX load", details: "\(slot.rawValue) interCloseEditAd.load()")
-            interCloseEditAd?.load()
+            AppLogger.logAction("MAX load", details: "\(slot.rawValue) interstitialAd.load()")
+            interstitialAd?.load()
         case .interCloseIap:
-            guard RemoteConfigManager.shared.maxInterCloseIapEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
-            AppLogger.logAction("MAX load", details: "\(slot.rawValue) interCloseIapAd.load()")
-            interCloseIapAd?.load()
+            AppLogger.logAction("MAX load", details: "\(slot.rawValue) interstitialAd.load()")
+            interstitialAd?.load()
         case .interCloseResult:
-            guard RemoteConfigManager.shared.maxInterCloseResultEnable else {
-                AppLogger.logAction("MAX load skipped", details: "\(slot.rawValue) disabled by remote config")
-                return
-            }
-            AppLogger.logAction("MAX load", details: "\(slot.rawValue) interCloseResultAd.load()")
-            interCloseResultAd?.load()
+            AppLogger.logAction("MAX load", details: "\(slot.rawValue) interstitialAd.load()")
+            interstitialAd?.load()
         }
     }
 
@@ -377,7 +361,7 @@ final class AdsManager: NSObject {
             return
         }
 
-        guard let ad = appOpenAd(for: slot), ad.isReady else {
+        guard let ad = appOpenAd, ad.isReady else {
             AppLogger.logAction("MAX present skipped", details: "\(slot.rawValue) ad not ready")
             if markColdStartCompletedAfterDismissal {
                 didCompleteColdStart = true
@@ -394,6 +378,7 @@ final class AdsManager: NSObject {
             }
             completion()
         })
+        activeFullscreenSlot = slot
         isPresentingFullscreenAd = true
         ad.show(forPlacement: placement)
     }
@@ -419,7 +404,7 @@ final class AdsManager: NSObject {
             return
         }
 
-        guard let ad = interstitialAd(for: slot), ad.isReady else {
+        guard let ad = interstitialAd, ad.isReady else {
             AppLogger.logAction("MAX present skipped", details: "\(slot.rawValue) ad not ready")
             loadIfNeeded(slot: slot)
             completion()
@@ -428,6 +413,7 @@ final class AdsManager: NSObject {
 
         AppLogger.logAction("MAX present", details: "\(slot.rawValue) showing ad")
         pendingActions[slot] = PendingAction(completion: completion)
+        activeFullscreenSlot = slot
         isPresentingFullscreenAd = true
         ad.show(forPlacement: placement)
     }
@@ -462,51 +448,33 @@ final class AdsManager: NSObject {
 
         AppLogger.logAction("MAX present", details: "\(slot.rawValue) showing ad")
         pendingActions[slot] = PendingAction(completion: completion)
+        activeFullscreenSlot = slot
         isPresentingFullscreenAd = true
         ad.show(forPlacement: placement)
     }
 
     private func isSlotEnabled(_ slot: Slot) -> Bool {
+        let adsInfo = RemoteConfigManager.shared.adsInfo
         switch slot {
         case .openSplash:
-            RemoteConfigManager.shared.maxOpenSplashEnable
+            return adsInfo.enabled && adsInfo.openAds.enabled
         case .openResume:
-            RemoteConfigManager.shared.maxOpenResumeEnable
+            return adsInfo.enabled && adsInfo.openAds.enabled
         case .rewardedGenerate:
-            RemoteConfigManager.shared.maxRewardedGenerateEnable
+            return adsInfo.enabled && adsInfo.rewardedAds.enabled
         case .rewardedRegenerate:
-            RemoteConfigManager.shared.maxRewardedRegenerateEnable
+            return adsInfo.enabled && adsInfo.rewardedAds.enabled
         case .interCloseEdit:
-            RemoteConfigManager.shared.maxInterCloseEditEnable
+            return adsInfo.enabled && adsInfo.interAds.enabled
         case .interCloseIap:
-            RemoteConfigManager.shared.maxInterCloseIapEnable
+            return adsInfo.enabled && adsInfo.interAds.enabled
         case .interCloseResult:
-            RemoteConfigManager.shared.maxInterCloseResultEnable
+            return adsInfo.enabled && adsInfo.interAds.enabled
         }
     }
 
-    private func appOpenAd(for slot: Slot) -> MAAppOpenAd? {
-        switch slot {
-        case .openSplash:
-            appOpenSplashAd
-        case .openResume:
-            appOpenResumeAd
-        default:
-            nil
-        }
-    }
-
-    private func interstitialAd(for slot: Slot) -> MAInterstitialAd? {
-        switch slot {
-        case .interCloseEdit:
-            interCloseEditAd
-        case .interCloseIap:
-            interCloseIapAd
-        case .interCloseResult:
-            interCloseResultAd
-        default:
-            nil
-        }
+    private func hasValidAdUnitIdentifier(for slot: Slot) -> Bool {
+        !slot.adUnitIdentifier.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     private func rewardedAd(for slot: Slot) -> MARewardedAd? {
@@ -521,13 +489,14 @@ final class AdsManager: NSObject {
     }
 
     private func slot(for adUnitIdentifier: String) -> Slot? {
-        Slot.allCases.first { $0.adUnitID == adUnitIdentifier }
+        Slot.allCases.first { $0.adUnitIdentifier == adUnitIdentifier }
     }
 
-    private func finishFullscreenAd(for adUnitIdentifier: String) {
-        guard let slot = slot(for: adUnitIdentifier) else { return }
+    private func finishFullscreenAd() {
+        guard let slot = activeFullscreenSlot else { return }
+        activeFullscreenSlot = nil
         isPresentingFullscreenAd = false
-        AppLogger.logAction("MAX finish fullscreen", details: "\(slot.rawValue) adUnit=\(adUnitIdentifier)")
+        AppLogger.logAction("MAX finish fullscreen", details: "\(slot.rawValue) adUnit=\(slot.adUnitIdentifier)")
 
         if let pending = pendingActions.removeValue(forKey: slot) {
             AppLogger.logAction("MAX pending completion", details: "\(slot.rawValue)")
@@ -556,6 +525,7 @@ final class AdsManager: NSObject {
         [
             "global=\(isAdsGloballyEnabled)",
             "slotEnabled=\(isSlotEnabled(slot))",
+            "adUnitConfigured=\(hasValidAdUnitIdentifier(for: slot))",
             "paywallDismissCount=\(PaywallExposureTracker.dismissCount)",
             "paywallThreshold=\(paywallDismissThreshold)",
             "metPaywallGate=\(hasMetPaywallDismissGate)",
@@ -591,12 +561,12 @@ extension AdsManager: MAAdDelegate {
 
     func didHide(_ ad: MAAd) {
         AppLogger.logAction("MAX hidden", details: "\(ad.adUnitIdentifier)")
-        finishFullscreenAd(for: ad.adUnitIdentifier)
+        finishFullscreenAd()
     }
 
     func didFail(toDisplay ad: MAAd, withError error: MAError) {
         AppLogger.logAction("MAX display failed", details: "\(ad.adUnitIdentifier): \(error.code) \(error.message)")
-        finishFullscreenAd(for: ad.adUnitIdentifier)
+        finishFullscreenAd()
     }
 }
 
