@@ -47,16 +47,19 @@ public final class HomeAIDeepArtProvider: HomeGPTGenerationProviderProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
     private let fallbackProvider: any HomeGPTGenerationProviderProtocol
+    private let appCheckService: any FirebaseAppCheckProviding
 
     public init(
         baseURL: URL = APIConstants.homeAIBackendBaseURL,
         apiKey: String? = nil,
         fallbackProvider: any HomeGPTGenerationProviderProtocol = LegacyHomeDesignsProvider(),
-        session: URLSession? = nil
+        session: URLSession? = nil,
+        appCheckService: any FirebaseAppCheckProviding = FirebaseAppCheckService.shared
     ) {
         let resolvedAPIKey = apiKey ?? HomeAIBackendCredentials.apiKey
         self.config = APIConfig(baseURL: baseURL, apiKey: resolvedAPIKey?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "")
         self.fallbackProvider = fallbackProvider
+        self.appCheckService = appCheckService
 
         if let session {
             self.session = session
@@ -74,7 +77,7 @@ public final class HomeAIDeepArtProvider: HomeGPTGenerationProviderProtocol {
         path: String,
         method: String,
         builder: MultipartFormDataBuilder? = nil
-    ) throws -> URLRequest {
+    ) async throws -> URLRequest {
         guard !config.apiKey.isEmpty else {
             throw HomeDesignsAPIError.underlying("Missing \(APIConstants.HomeAIBackend.apiKeyEnvironmentKey)")
         }
@@ -87,6 +90,10 @@ public final class HomeAIDeepArtProvider: HomeGPTGenerationProviderProtocol {
         request.httpMethod = method
         request.setValue("\(APIConstants.HomeAIBackend.authorizationHeaderName) \(config.apiKey)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        if let token = await appCheckService.token() {
+            request.setValue(token, forHTTPHeaderField: "X-Firebase-AppCheck")
+        }
 
         if let builder {
             request.setValue("multipart/form-data; boundary=\(builder.boundary)", forHTTPHeaderField: "Content-Type")
@@ -159,7 +166,7 @@ public final class HomeAIDeepArtProvider: HomeGPTGenerationProviderProtocol {
             builder.appendImageSource(value, fieldName: key)
         }
 
-        let request = try makeRequest(path: "/deepart/jobs", method: "POST", builder: builder)
+        let request = try await makeRequest(path: "/deepart/jobs", method: "POST", builder: builder)
         let created: JobCreatedResponse = try await perform(request: request)
 
         if let message = created.message, created.jobID == nil {
@@ -210,7 +217,7 @@ public final class HomeAIDeepArtProvider: HomeGPTGenerationProviderProtocol {
     }
 
     private func fetchJobStatus(jobID: String) async throws -> JobStatusResponse {
-        let request = try makeRequest(path: "/deepart/jobs/\(jobID)", method: "GET")
+        let request = try await makeRequest(path: "/deepart/jobs/\(jobID)", method: "GET")
 
         do {
             return try await perform(request: request)

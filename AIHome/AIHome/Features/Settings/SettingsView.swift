@@ -1,10 +1,12 @@
 import SwiftUI
+import UIKit
 
 struct SettingsView: View {
     @Environment(LanguageManager.self) private var languageManager
     @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var viewModel = SettingsViewModel()
     @State private var webPageToOpen: AppWebPage?
+    @State private var appCheckDebugMessage: String?
 
     private var appVersionText: String {
         let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
@@ -96,6 +98,23 @@ struct SettingsView: View {
                         }
                     }
                 )
+
+#if DEBUG
+                SettingRow(
+                    icon: "checkmark.seal.fill",
+                    title: "Test App Check",
+                    action: {
+                        Task {
+                            if let token = await viewModel.fetchAppCheckToken() {
+                                UIPasteboard.general.string = token
+                                appCheckDebugMessage = "App Check token copied to clipboard."
+                            } else {
+                                appCheckDebugMessage = "Could not fetch App Check token."
+                            }
+                        }
+                    }
+                )
+#endif
                 
                 // Footer
                 VStack(spacing: 8) {
@@ -131,6 +150,17 @@ struct SettingsView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(viewModel.purchaseMessage ?? "")
+        }
+        .alert(
+            "App Check",
+            isPresented: Binding(
+                get: { appCheckDebugMessage != nil },
+                set: { if !$0 { appCheckDebugMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(appCheckDebugMessage ?? "")
         }
         .sheet(item: $webPageToOpen) { webPage in
             AppWebView(title: webPage.title, url: webPage.url)

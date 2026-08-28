@@ -103,6 +103,26 @@ api_key
 
 The collection already maps `api_key` into the `Authorization: Api-Key {{api_key}}` header.
 
+### Firebase App Check
+
+The backend also expects Firebase App Check on every request to `https://aiart.billionx.co`.
+
+App-side behavior:
+
+- keep the existing `Authorization: Api-Key <key>` header
+- add `X-Firebase-AppCheck: <token>` when the token is available
+- fetch the token through Firebase App Check before sending the request
+- if the token is not available yet, the app may still continue while backend is in `log` mode
+
+Recommended request shape:
+
+```http
+Authorization: Api-Key <key>
+X-Firebase-AppCheck: <firebase_app_check_token>
+```
+
+In iOS, the app should bootstrap `AppCheckProviderFactory` before `FirebaseApp.configure()`, then read the token from Firebase App Check in the networking layer.
+
 ---
 
 ## 3. Endpoint Summary

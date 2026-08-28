@@ -79,4 +79,8 @@ final class SettingsViewModel {
     func sendFeedback() {
         // Implement feedback
     }
+
+    func fetchAppCheckToken() async -> String? {
+        await FirebaseAppCheckService.shared.token()
+    }
 }

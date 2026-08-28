@@ -10,6 +10,7 @@
 		042C3EC73007DD190078B903 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3EC63007DD190078B903 /* FirebaseAnalytics */; };
 		042C3EC93007DD190078B903 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3EC83007DD190078B903 /* FirebaseAnalyticsCore */; };
 		042C3ECB3007DD190078B903 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECA3007DD190078B903 /* FirebaseCore */; };
+		042C3ED13007DD190078B903 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ED23007DD190078B903 /* FirebaseAppCheck */; };
 		042C3ECD3007DD190078B903 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECC3007DD190078B903 /* FirebaseCrashlytics */; };
 		042C3ECF3007DD190078B903 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 042C3ECE3007DD190078B903 /* FirebaseRemoteConfig */; };
 		04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7712FCACE0006B5B51 /* Adapty */; };
@@ -49,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			files = (
 				042C3ECF3007DD190078B903 /* FirebaseRemoteConfig in Frameworks */,
+				042C3ED13007DD190078B903 /* FirebaseAppCheck in Frameworks */,
 				04ADA7702FCACE0006B5B51 /* Adapty in Frameworks */,
 				042C3EC93007DD190078B903 /* FirebaseAnalyticsCore in Frameworks */,
 				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
@@ -105,6 +107,7 @@
 				2FBCC0032FE7B40000123601 /* FacebookCore */,
 				042C3EC63007DD190078B903 /* FirebaseAnalytics */,
 				042C3EC83007DD190078B903 /* FirebaseAnalyticsCore */,
+				042C3ED23007DD190078B903 /* FirebaseAppCheck */,
 				042C3ECA3007DD190078B903 /* FirebaseCore */,
 				042C3ECC3007DD190078B903 /* FirebaseCrashlytics */,
 				042C3ECE3007DD190078B903 /* FirebaseRemoteConfig */,
@@ -483,6 +486,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		042C3ED23007DD190078B903 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
 		};
 		042C3ECC3007DD190078B903 /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
