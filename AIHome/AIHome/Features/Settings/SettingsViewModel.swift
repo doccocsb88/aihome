@@ -32,6 +32,10 @@ final class SettingsViewModel {
         HomeGPTProviderRegistry.hasLocalOverride
     }
 
+    var canShowProviderMenu: Bool {
+        !AppEnvironmentService.shared.isAppStore
+    }
+
     var usesHomeAIBackend: Bool {
         providerKind == .homeAIBackend
     }
@@ -40,6 +44,11 @@ final class SettingsViewModel {
         let newKind: HomeGPTProviderKind = enabled ? .homeAIBackend : .legacyHomeDesigns
         guard newKind != providerKind else { return }
         providerKind = newKind
+    }
+
+    func selectProvider(_ kind: HomeGPTProviderKind) {
+        guard providerKind != kind else { return }
+        providerKind = kind
     }
 
     func followRemoteDefault() {

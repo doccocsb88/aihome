@@ -99,6 +99,37 @@ struct SettingsView: View {
                     }
                 )
 
+                if viewModel.canShowProviderMenu {
+                    Menu {
+                        ForEach(HomeGPTProviderKind.allCases, id: \.self) { kind in
+                            Button {
+                                viewModel.selectProvider(kind)
+                            } label: {
+                                HStack {
+                                    Text(kind.displayName)
+                                    if viewModel.providerKind == kind {
+                                        Spacer()
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
+
+                        if viewModel.isUsingLocalProviderOverride {
+                            Button("Follow Remote Default") {
+                                viewModel.followRemoteDefault()
+                            }
+                        }
+                    } label: {
+                        SettingMenuLabel(
+                            icon: "server.rack",
+                            title: "API Provider",
+                            subtitle: viewModel.providerTitle
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+
 #if DEBUG
                 SettingRow(
                     icon: "checkmark.seal.fill",
@@ -208,6 +239,45 @@ struct SettingRow: View {
             )
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct SettingMenuLabel: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.system(size: 18))
+                .foregroundColor(.primary)
+                .frame(width: 44, height: 44)
+                .background(Color(uiColor: .systemGray6))
+                .clipShape(Circle())
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
+                    .foregroundColor(.primary)
+                Text(subtitle)
+                    .font(FontFamily.Roboto.regular.swiftUIFont(size: 12))
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(Color(uiColor: .systemGray3))
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.DesignSystem.brightGray, lineWidth: 1)
+                .background(RoundedRectangle(cornerRadius: 24).fill(Color(uiColor: .systemBackground)))
+        )
     }
 }
 

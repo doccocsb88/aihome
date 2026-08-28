@@ -1,6 +1,9 @@
 import FirebaseAppCheck
 import FirebaseCore
 import Foundation
+#if canImport(Darwin)
+import Darwin
+#endif
 
 public protocol FirebaseAppCheckProviding {
     func token() async -> String?
@@ -8,12 +11,23 @@ public protocol FirebaseAppCheckProviding {
 
 enum FirebaseAppCheckBootstrap {
     private static var hasConfiguredProvider = false
+    private static let simulatorDebugToken = "3DFE6A8B-6D01-4678-BD73-58997F08B973"
 
     static func configureProviderIfNeeded() {
         guard !hasConfiguredProvider else { return }
         hasConfiguredProvider = true
+#if targetEnvironment(simulator) || DEBUG
+        setDebugTokenIfNeeded()
+#endif
         AppCheck.setAppCheckProviderFactory(FirebaseAppCheckProviderFactory())
     }
+
+#if targetEnvironment(simulator) || DEBUG
+    private static func setDebugTokenIfNeeded() {
+        guard let cString = simulatorDebugToken.cString(using: .utf8) else { return }
+        setenv("AppCheckDebugToken", cString, 1)
+    }
+#endif
 }
 
 private final class FirebaseAppCheckProviderFactory: NSObject, AppCheckProviderFactory {

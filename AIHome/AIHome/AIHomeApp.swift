@@ -18,6 +18,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         FirebaseAppCheckBootstrap.configureProviderIfNeeded()
         FirebaseApp.configure()
+        AppLogger.logAction("App Environment", details: AppEnvironmentService.shared.current.displayName)
         let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
         Analytics.setUserProperty(version, forName: "current_app_version")
         _ = RemoteConfigManager.shared
