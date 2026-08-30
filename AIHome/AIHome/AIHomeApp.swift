@@ -30,6 +30,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
+        Task { @MainActor in
+            MetaPurchaseReporter.shared.start()
+        }
         return true
     }
 }
