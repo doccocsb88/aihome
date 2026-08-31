@@ -16,13 +16,16 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        AdsManager.shared.configureIfNeeded()
+
         FirebaseAppCheckBootstrap.configureProviderIfNeeded()
-        FirebaseApp.configure()
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
         AppLogger.logAction("App Environment", details: AppEnvironmentService.shared.current.displayName)
         let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
         Analytics.setUserProperty(version, forName: "current_app_version")
         _ = RemoteConfigManager.shared
-        AdsManager.shared.configureIfNeeded()
         Task { @MainActor in
             await RemoteConfigManager.shared.fetchAndActivate()
         }
@@ -57,6 +60,9 @@ struct AIHomeApp: App {
     }()
 
     init() {
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
         RatingPromptTracker.recordSessionOpen()
         AdaptyPurchaseService.shared.configure()
     }

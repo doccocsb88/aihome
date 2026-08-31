@@ -1,13 +1,15 @@
-import AppTrackingTransparency
 import SwiftUI
 
 struct OnboardingIntroPagerView: View {
     @Environment(AppCoordinator.self) private var coordinator
     @State private var selectedIndex = 0
     @State private var isShowingOnboardingPaywall = false
-    @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var trialScreenShownAt: Date?
     @State private var hasShownOnboardingPaywall = false
+
+    private var remoteConfigManager: RemoteConfigManager {
+        .shared
+    }
     
     private var pages: [OnboardingIntroPageContent] {
         if remoteConfigManager.onboardingScreens {
@@ -55,9 +57,6 @@ struct OnboardingIntroPagerView: View {
         .animation(.easeInOut(duration: 0.28), value: selectedIndex)
         .ignoresSafeArea(edges: .all)
         .navigationBarBackButtonHidden()
-        .task {
-            await requestTrackingAuthorizationOnFirstPage()
-        }
         .task {
             trackCurrentScreen()
         }
@@ -122,27 +121,6 @@ struct OnboardingIntroPagerView: View {
 
         withAnimation(.easeInOut(duration: 0.28)) {
             selectedIndex = min(selectedIndex + 1, lastContentIndex)
-        }
-    }
-
-    @MainActor
-    private func requestTrackingAuthorizationOnFirstPage() async {
-        guard selectedIndex == 0 else { return }
-        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
-
-        try? await Task.sleep(nanoseconds: 600_000_000)
-        guard selectedIndex == 0 else { return }
-        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
-
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            TrackingManager.shared.trackATTPromptShown()
-            ATTrackingManager.requestTrackingAuthorization { status in
-                AppLogger.logAction("ATT Authorization Requested", details: "\(status.rawValue)")
-                Task { @MainActor in
-                    TrackingManager.shared.trackATTResult(status: .init(attStatus: status))
-                }
-                continuation.resume()
-            }
         }
     }
 
@@ -237,23 +215,6 @@ struct OnboardingIntroPagerView: View {
         .frame(height: OnboardingLayout.indicatorHeight)
     }
     
-}
-
-private extension TrackingManager.ATTStatus {
-    init(attStatus: ATTrackingManager.AuthorizationStatus) {
-        switch attStatus {
-        case .authorized:
-            self = .authorized
-        case .denied:
-            self = .denied
-        case .restricted:
-            self = .restricted
-        case .notDetermined:
-            self = .notDetermined
-        @unknown default:
-            self = .notDetermined
-        }
-    }
 }
 
 enum OnboardingLayout {

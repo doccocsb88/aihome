@@ -49,6 +49,15 @@ J2ks4TF6rLetzM0TgPvggyqLiCRTUJ1afPHWi0la24rZnZOul9gyfkD4JtAmbcua43fHqHHBzV20zrbR
 | `inter_close_iap` | Interstitial | `cc3c5cb6f6a84a14` | Show khi user close màn IAP/Sub |
 | `inter_close_result` | Interstitial | `34a8c80d44b9af2d` | Show khi user close màn Result về Home |
 
+### 2.3 Mediated networks
+
+Project hiện đã thêm các MAX mediation adapters sau qua Swift Package Manager:
+
+- Google AdMob: `AppLovinMediationGoogleAdapter`
+- Meta Audience Network: `AppLovinMediationFacebookAdapter`
+- Pangle: `AppLovinMediationByteDanceAdapter`
+- Mintegral: `AppLovinMediationMintegralAdapter`
+
 ---
 
 ## 3. Kiến trúc tổng quan

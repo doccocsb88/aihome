@@ -1,4 +1,4 @@
-import AppLovinSDK
+@preconcurrency import AppLovinSDK
 import Foundation
 import SwiftUI
 import UIKit
@@ -29,6 +29,7 @@ final class AdsManager: NSObject {
     private var didCompleteColdStart = false
     private var lastFullscreenAdPresentedAt: Date?
     private var didUnlockAdsAfterPaywallGate = false
+    private var consentFlowUserGeographyRawValue: Int = 0
 
     private override init() {
         super.init()
@@ -44,6 +45,15 @@ final class AdsManager: NSObject {
         )
 
         let sdk = ALSdk.shared()
+        let settings = sdk.settings
+        settings.termsAndPrivacyPolicyFlowSettings.isEnabled = true
+        settings.termsAndPrivacyPolicyFlowSettings.privacyPolicyURL = AppConfig.URL.privacyPolicy
+        settings.termsAndPrivacyPolicyFlowSettings.termsOfServiceURL = AppConfig.URL.termsOfService
+        settings.termsAndPrivacyPolicyFlowSettings.shouldShowTermsAndPrivacyPolicyAlertInGDPR = true
+#if DEBUG
+        settings.termsAndPrivacyPolicyFlowSettings.debugUserGeography = ALConsentFlowUserGeography(rawValue: 1) ?? .unknown
+#endif
+
         let initConfig = ALSdkInitializationConfiguration(sdkKey: Configuration.sdkKey) { builder in
             builder.mediationProvider = ALMediationProviderMAX
         }
@@ -51,9 +61,14 @@ final class AdsManager: NSObject {
         AppLogger.logAction("MAX SDK initializing", details: "sdkKey=\(Configuration.sdkKey.prefix(6))...")
         sdk.initialize(with: initConfig) { [weak self] (_: ALSdkConfiguration) in
             DispatchQueue.main.async {
+                self?.consentFlowUserGeographyRawValue = ALSdk.shared().configuration.consentFlowUserGeography.rawValue
                 self?.prepareAds()
             }
         }
+    }
+
+    var isGDPRRegion: Bool {
+        consentFlowUserGeographyRawValue == 1 || AppEnvironmentService.shared.isDebug
     }
 
     func markColdStartFinished() {

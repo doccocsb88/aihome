@@ -18,6 +18,11 @@
 		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
 		2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBCC0032FE7B40000123601 /* FacebookCore */; };
 		5A1B2C3D4E5F678900ABCDE1 /* AppLovinSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */; };
+		5A1B2C3D4E5F678900ABCDE2 /* AppLovinMediationGoogleAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE3 /* AppLovinMediationGoogleAdapter */; };
+		5A1B2C3D4E5F678900ABCDE4 /* AppLovinMediationFacebookAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE5 /* AppLovinMediationFacebookAdapter */; };
+		5A1B2C3D4E5F678900ABCDE6 /* AppLovinMediationByteDanceAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE7 /* AppLovinMediationByteDanceAdapter */; };
+		5A1B2C3D4E5F678900ABCDE8 /* AppLovinMediationMintegralAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE9 /* AppLovinMediationMintegralAdapter */; };
+		5A1B2C3D4E5F678900ABCDEA /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDEB /* GoogleUserMessagingPlatform */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +60,11 @@
 				042C3EC93007DD190078B903 /* FirebaseAnalyticsCore in Frameworks */,
 				04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */,
 				5A1B2C3D4E5F678900ABCDE1 /* AppLovinSDK in Frameworks */,
+				5A1B2C3D4E5F678900ABCDE2 /* AppLovinMediationGoogleAdapter in Frameworks */,
+				5A1B2C3D4E5F678900ABCDE4 /* AppLovinMediationFacebookAdapter in Frameworks */,
+				5A1B2C3D4E5F678900ABCDE6 /* AppLovinMediationByteDanceAdapter in Frameworks */,
+				5A1B2C3D4E5F678900ABCDE8 /* AppLovinMediationMintegralAdapter in Frameworks */,
+				5A1B2C3D4E5F678900ABCDEA /* GoogleUserMessagingPlatform in Frameworks */,
 				1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */,
 				042C3ECB3007DD190078B903 /* FirebaseCore in Frameworks */,
 				042C3ECD3007DD190078B903 /* FirebaseCrashlytics in Frameworks */,
@@ -103,6 +113,11 @@
 				04ADA7712FCACE0006B5B51 /* Adapty */,
 				04ADA7742FCACE0006B5B51 /* AdaptyUI */,
 				5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */,
+				5A1B2C3D4E5F678900ABCDE3 /* AppLovinMediationGoogleAdapter */,
+				5A1B2C3D4E5F678900ABCDE5 /* AppLovinMediationFacebookAdapter */,
+				5A1B2C3D4E5F678900ABCDE7 /* AppLovinMediationByteDanceAdapter */,
+				5A1B2C3D4E5F678900ABCDE9 /* AppLovinMediationMintegralAdapter */,
+				5A1B2C3D4E5F678900ABCDEB /* GoogleUserMessagingPlatform */,
 				1F2E3D4C5B6A79800123456A /* Lottie */,
 				2FBCC0032FE7B40000123601 /* FacebookCore */,
 				042C3EC63007DD190078B903 /* FirebaseAnalytics */,
@@ -161,6 +176,11 @@
 			packageReferences = (
 				04ADA7722FCACE0006B5B51 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
 				5A1B2C3D4E5F678900ABCDEF /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package" */,
+				5A1B2C3D4E5F678900ABCD10 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Google" */,
+				5A1B2C3D4E5F678900ABCD11 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Meta" */,
+				5A1B2C3D4E5F678900ABCD12 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Pangle" */,
+				5A1B2C3D4E5F678900ABCD13 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Mintegral" */,
+				5A1B2C3D4E5F678900ABCD14 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
 				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
@@ -463,6 +483,46 @@
 				minimumVersion = 18.1.0;
 			};
 		};
+		5A1B2C3D4E5F678900ABCD10 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Google" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Google.git";
+			requirement = {
+				kind = exactVersion;
+				version = 13080000.0.0;
+			};
+		};
+		5A1B2C3D4E5F678900ABCD11 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Meta" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Meta.git";
+			requirement = {
+				kind = exactVersion;
+				version = 6210100.0.0;
+			};
+		};
+		5A1B2C3D4E5F678900ABCD12 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Pangle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Pangle.git";
+			requirement = {
+				kind = exactVersion;
+				version = 709010100.0.0;
+			};
+		};
+		5A1B2C3D4E5F678900ABCD13 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Mintegral" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Mintegral.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		5A1B2C3D4E5F678900ABCD14 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
 		5A1B2C3D4E5F678900ABCDEF /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppLovin/AppLovin-MAX-Swift-Package.git";
@@ -528,6 +588,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5A1B2C3D4E5F678900ABCDEF /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package" */;
 			productName = AppLovinSDK;
+		};
+		5A1B2C3D4E5F678900ABCDE3 /* AppLovinMediationGoogleAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A1B2C3D4E5F678900ABCD10 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Google" */;
+			productName = AppLovinMediationGoogleAdapter;
+		};
+		5A1B2C3D4E5F678900ABCDE5 /* AppLovinMediationFacebookAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A1B2C3D4E5F678900ABCD11 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Meta" */;
+			productName = AppLovinMediationFacebookAdapter;
+		};
+		5A1B2C3D4E5F678900ABCDE7 /* AppLovinMediationByteDanceAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A1B2C3D4E5F678900ABCD12 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Pangle" */;
+			productName = AppLovinMediationByteDanceAdapter;
+		};
+		5A1B2C3D4E5F678900ABCDE9 /* AppLovinMediationMintegralAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A1B2C3D4E5F678900ABCD13 /* XCRemoteSwiftPackageReference "AppLovin-MAX-Swift-Package-Mintegral" */;
+			productName = AppLovinMediationMintegralAdapter;
+		};
+		5A1B2C3D4E5F678900ABCDEB /* GoogleUserMessagingPlatform */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A1B2C3D4E5F678900ABCD14 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */;
+			productName = GoogleUserMessagingPlatform;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

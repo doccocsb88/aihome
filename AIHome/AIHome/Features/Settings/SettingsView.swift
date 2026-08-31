@@ -1,12 +1,16 @@
+import AppLovinSDK
 import SwiftUI
 import UIKit
 
 struct SettingsView: View {
     @Environment(LanguageManager.self) private var languageManager
-    @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var viewModel = SettingsViewModel()
     @State private var webPageToOpen: AppWebPage?
     @State private var appCheckDebugMessage: String?
+
+    private var remoteConfigManager: RemoteConfigManager {
+        .shared
+    }
 
     private var appVersionText: String {
         let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
@@ -72,6 +76,34 @@ struct SettingsView: View {
                             title: "Privacy Policy",
                             url: AppConfig.URL.privacyPolicy
                         )
+                    }
+                )
+
+                // GDPR Consent
+                SettingRow(
+                    icon: "hand.raised.fill",
+                    title: "GDPR Consent",
+                    isEnabled: AdsManager.shared.isGDPRRegion,
+                    action: {
+                        let cmpService = ALSdk.shared().cmpService
+                        guard cmpService.hasSupportedCMP() else {
+                            AppLogger.logAction(
+                                "MAX CMP unavailable",
+                                details: "no supported CMP integrated"
+                            )
+                            return
+                        }
+
+                        cmpService.showCMPForExistingUser { error in
+                            if let error {
+                                AppLogger.logAction(
+                                    "MAX CMP failed",
+                                    details: "code=\(error.code.rawValue), cmpCode=\(error.cmpCode), message=\(error.message)"
+                                )
+                            } else {
+                                AppLogger.logAction("MAX CMP presented", details: "existing user flow shown")
+                            }
+                        }
                     }
                 )
                 
@@ -209,6 +241,7 @@ struct SettingsView: View {
 struct SettingRow: View {
     let icon: String
     let title: String
+    var isEnabled: Bool = true
     let action: () -> Void
     
     var body: some View {
@@ -216,20 +249,20 @@ struct SettingRow: View {
             HStack(spacing: 16) {
                 Image(systemName: icon)
                     .font(.system(size: 18))
-                    .foregroundColor(.primary)
+                    .foregroundColor(isEnabled ? .primary : .secondary)
                     .frame(width: 44, height: 44)
                     .background(Color(uiColor: .systemGray6))
                     .clipShape(Circle())
                 
                 Text(title)
                     .font(FontFamily.Roboto.medium.swiftUIFont(size: 16))
-                    .foregroundColor(.primary)
+                    .foregroundColor(isEnabled ? .primary : .secondary)
                 
                 Spacer()
                 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color(uiColor: .systemGray3))
+                    .foregroundColor(isEnabled ? Color(uiColor: .systemGray3) : Color(uiColor: .systemGray4))
             }
             .padding()
             .background(
@@ -238,6 +271,7 @@ struct SettingRow: View {
                     .background(RoundedRectangle(cornerRadius: 24).fill(Color(uiColor: .systemBackground)))
             )
         }
+        .disabled(!isEnabled)
         .buttonStyle(PlainButtonStyle())
     }
 }

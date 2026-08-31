@@ -2,9 +2,12 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
-    @State private var remoteConfigManager = RemoteConfigManager.shared
     @State private var isShowingHomeRating = false
     @Environment(AppCoordinator.self) private var coordinator
+
+    private var remoteConfigManager: RemoteConfigManager {
+        .shared
+    }
 
     private var orderedTools: [HomeToolItem] {
         viewModel.orderedTools(for: remoteConfigManager.homeFeatureOrder)
