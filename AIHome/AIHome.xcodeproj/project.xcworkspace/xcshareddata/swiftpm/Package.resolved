@@ -1,5 +1,5 @@
 {
-  "originHash" : "41847351e18805212767cdc3d77e50074bac41a192dbb27d77a9ec129eaf386e",
+  "originHash" : "31a25551f58ba70fdb9ffaf2c7e241d7c9cf9966de0e189f95962f2421f5a856",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -20,15 +20,6 @@
       }
     },
     {
-      "identity" : "adsglobalpackage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bytedance/AdsGlobalPackage.git",
-      "state" : {
-        "revision" : "0d62519f394ab6322dc56aa93609188e8887d076",
-        "version" : "7.9.1-release.1"
-      }
-    },
-    {
       "identity" : "app-check",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
@@ -38,66 +29,12 @@
       }
     },
     {
-      "identity" : "applovin-max-swift-package",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package.git",
-      "state" : {
-        "revision" : "02544c3400d228cce5718e22f71f8d02787ba91e",
-        "version" : "13.6.4"
-      }
-    },
-    {
-      "identity" : "applovin-max-swift-package-google",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Google.git",
-      "state" : {
-        "revision" : "2b17ec8ef436b62253459eaf4bebbf21a214dc18",
-        "version" : "13080000.0.0"
-      }
-    },
-    {
-      "identity" : "applovin-max-swift-package-meta",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Meta.git",
-      "state" : {
-        "revision" : "dae578120691a5d680c780052bdf189171920203",
-        "version" : "6210100.0.0"
-      }
-    },
-    {
-      "identity" : "applovin-max-swift-package-mintegral",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Mintegral.git",
-      "state" : {
-        "branch" : "master",
-        "revision" : "14001c7d02ff4cd77a42fd5c97f68bdb4410e269"
-      }
-    },
-    {
-      "identity" : "applovin-max-swift-package-pangle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package-Pangle.git",
-      "state" : {
-        "revision" : "56cf5652a16f1ca4ec20f25e4021a1ccd1add8fb",
-        "version" : "709010100.0.0"
-      }
-    },
-    {
       "identity" : "facebook-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/facebook/facebook-ios-sdk.git",
       "state" : {
         "revision" : "3818dd2ccb6547c6d320ff68a1bd599789c3a44f",
         "version" : "18.1.0"
-      }
-    },
-    {
-      "identity" : "fbaudiencenetwork",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/facebook/FBAudienceNetwork.git",
-      "state" : {
-        "revision" : "0b7bd807fff993055838e6d6a410eddf590c09ac",
-        "version" : "6.21.1"
       }
     },
     {
@@ -191,15 +128,6 @@
       }
     },
     {
-      "identity" : "mintegraladsdk-swift-package",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Mintegral-official/MintegralAdSDK-Swift-Package.git",
-      "state" : {
-        "revision" : "71e78da3d6070792c2216fef333daa652411f3a7",
-        "version" : "8.1.7"
-      }
-    },
-    {
       "identity" : "nanopb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/nanopb.git",
@@ -215,24 +143,6 @@
       "state" : {
         "revision" : "f4a19a3c313dc2616c70bb49d29a799fb16be837",
         "version" : "2.4.1"
-      }
-    },
-    {
-      "identity" : "swift-package-manager-google-mobile-ads",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
-      "state" : {
-        "revision" : "3b18c931f304a7688308409f182ff28d14f908e2",
-        "version" : "13.8.0"
-      }
-    },
-    {
-      "identity" : "swift-package-manager-google-user-messaging-platform",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
-      "state" : {
-        "revision" : "13b248eaa73b7826f0efb1bcf455e251d65ecb1b",
-        "version" : "3.1.0"
       }
     }
   ],
