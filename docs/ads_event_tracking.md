@@ -27,11 +27,11 @@ Ads funnel duoc tach thanh hai lop: intent cua app va callback that tu MAX.
 |---|---|---|
 | App intent | Product flow muon show ad | `ad_show_requested`, `ad_show_skipped` |
 | MAX loading | App request inventory tu mediation | `ad_load_requested`, `ad_load_skipped`, `ad_loaded`, `ad_load_failed` |
-| MAX display | SDK that su present ad | `ad_impression`, `ad_display_failed`, `ad_clicked`, `ad_hidden` |
+| MAX display | SDK that su present ad | `ad_displayed`, `ad_display_failed`, `ad_clicked`, `ad_hidden` |
 | Reward | Lifecycle rewarded video va grant quota | `ad_reward_started`, `ad_reward_completed`, `ad_reward_granted`, `ad_reward_skipped` |
-| Revenue | Impression-level ads revenue tu MAX | `ad_revenue_paid` |
+| Revenue | Impression-level ads revenue tu MAX, gui vao GA4 event chuan | `ad_impression`, `ad_revenue_skipped` |
 
-Luu y quan trong: `ad_impression` chi duoc log tu MAX display callback. Day la signal client-side gan nhat voi viec ad that su hien. `ad_show_requested` khong phai impression.
+Luu y quan trong: `ad_impression` duoc log tu `MAAdRevenueDelegate.didPayRevenue` de GA4/Firebase nhan du `value` va `currency`. `ad_show_requested` khong phai impression. `ad_displayed` la signal debug tu display callback, khong dung de tinh ad revenue.
 
 ## 3. Placements
 
@@ -57,7 +57,7 @@ Luu y quan trong: `ad_impression` chi duoc log tu MAX display callback. Day la s
 | `ad_load_skipped` | App khong gui load request xuong MAX | Thuong do gate, config, paid user, hoac missing ad unit |
 | `ad_loaded` | MAX bao ad da load xong | Inventory san sang cho placement |
 | `ad_load_failed` | MAX bao load fail | Co MAX error code/message va waterfall metadata neu co |
-| `ad_impression` | MAX display callback | Dung lam client impression event |
+| `ad_displayed` | MAX display callback | Dung de debug lifecycle display, khong mang revenue |
 | `ad_display_failed` | MAX fail khi display ad da load | Co display error details |
 | `ad_clicked` | User click ad | Callback tu MAX |
 | `ad_hidden` | Fullscreen ad bi dismiss/hidden | Dung de complete pending action va preload tiep |
@@ -65,7 +65,8 @@ Luu y quan trong: `ad_impression` chi duoc log tu MAX display callback. Day la s
 | `ad_reward_completed` | Rewarded video hoan tat | Chua dong nghia quota da grant |
 | `ad_reward_granted` | App grant free usage sau reward callback | Event moi cho ads schema |
 | `ad_reward_skipped` | Reward callback co nhung quota khong doi | Co `skip_reason` |
-| `ad_revenue_paid` | MAX bao impression-level revenue | Co `revenue_usd`, `value`, `currency=USD` |
+| `ad_impression` | MAX bao impression-level revenue trong `didPayRevenue` | Event chuan de GA4 tinh Ad revenue/ARPU/LTV, co `revenue_usd`, `value`, `currency=USD` |
+| `ad_revenue_skipped` | MAX revenue callback tra revenue khong hop le | Khong gui vao `ad_impression` de tranh lam sai GA4 revenue |
 | `ad_banner_expanded` | Banner expand | Chi cho banner placement |
 | `ad_banner_collapsed` | Banner collapse | Chi cho banner placement |
 
@@ -77,7 +78,7 @@ Moi ads event deu co:
 
 | Parameter | Vi du | Y nghia |
 |---|---|---|
-| `ad_platform` | `applovin_max` | Mediation platform |
+| `ad_platform` | `AppLovin` | Mediation platform theo Firebase/AppLovin sample |
 | `placement` | `rewarded_generate` | Product placement |
 | `ad_kind` | `rewarded` | Mot trong `app_open`, `interstitial`, `rewarded`, `banner` |
 
@@ -163,6 +164,7 @@ Reward params:
 | `rewarded_not_ready_before_deadline` | Rewarded ad khong ready trong wait window |
 | `app_open_not_ready_before_deadline` | Splash app-open ad khong ready truoc deadline |
 | `no_quota_change` | Reward callback co nhung app quota khong doi |
+| `invalid_revenue` | MAX revenue callback tra `revenue_usd < 0` |
 
 ## 7. Dashboard De Xuat
 
@@ -172,15 +174,16 @@ Group by `placement`:
 
 1. `ad_show_requested`
 2. `ad_show_skipped`
-3. `ad_impression`
+3. `ad_displayed`
 4. `ad_display_failed`
-5. `ad_revenue_paid`
+5. `ad_impression`
 
 Metric nen tao:
 
 - Show attempt rate: `ad_show_requested / active users`
 - Show skip rate: `ad_show_skipped / ad_show_requested`
-- Impression rate: `ad_impression / ad_show_requested`
+- Display rate: `ad_displayed / ad_show_requested`
+- Revenue impression rate: `ad_impression / ad_show_requested`
 - Display failure rate: `ad_display_failed / ad_loaded`
 - Revenue per impression: `sum(revenue_usd) / ad_impression`
 
@@ -202,7 +205,7 @@ Metric nen tao:
 
 ### 7.3 Revenue quality
 
-Group `ad_revenue_paid` theo:
+Group `ad_impression` theo:
 
 - `placement`
 - `ad_kind`
@@ -223,14 +226,15 @@ Check theo thu tu:
 2. `ad_show_skipped` co cao khong? Group theo `skip_reason`.
 3. `ad_load_requested` co thap khong? Config hoac eligibility dang chan load.
 4. `ad_load_failed` co cao khong? Group theo `error_code`, `ad_source`, va waterfall fields.
-5. `ad_loaded` tot nhung `ad_impression` thap? App load duoc nhung khong present, hoac cooldown/gating dang chan show.
+5. `ad_loaded` tot nhung `ad_displayed` thap? App load duoc nhung khong present, hoac cooldown/gating dang chan show.
+6. `ad_displayed` tot nhung `ad_impression` thap? Revenue callback khong ve hoac revenue precision/value khong hop le.
 
 ### 8.2 Rewarded ad khong unlock generation
 
 Check:
 
 1. Co `ad_show_requested` cho `rewarded_generate` hoac `rewarded_regenerate`.
-2. Co `ad_impression` cho rewarded placement.
+2. Co `ad_displayed` cho rewarded placement.
 3. Co `ad_reward_started` va `ad_reward_completed`.
 4. Co `ad_reward_granted` va quota params thay doi.
 5. Neu co `ad_reward_skipped`, xem `skip_reason`.
@@ -240,9 +244,10 @@ Check:
 Check:
 
 1. Co `ad_impression`.
-2. Co `ad_revenue_paid` cho cung `placement`.
+2. `value` va `currency` co trong event `ad_impression`.
 3. `revenue_precision` khong rong.
-4. MAX dashboard da bat impression-level revenue cho mediated network.
+4. Khong co nhieu `ad_revenue_skipped` voi `skip_reason=invalid_revenue`.
+5. MAX dashboard da bat impression-level revenue cho mediated network.
 
 ## 9. Ghi Chu Implement
 
@@ -251,4 +256,3 @@ Check:
 - `MAAdRevenueDelegate` duoc set cho app-open, rewarded, interstitial va banner ad objects.
 - String co nguy co high-cardinality duoc truncate truoc khi gui len Firebase.
 - Purchase, trial va subscription revenue tiep tuc thuoc ve Adapty signals, khong track bang MAX hoac client Facebook purchase events.
-

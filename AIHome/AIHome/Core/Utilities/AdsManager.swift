@@ -889,6 +889,20 @@ extension AdsManager: MARewardedAdDelegate {
 extension AdsManager: MAAdRevenueDelegate {
     func didPayRevenue(for ad: MAAd) {
         guard let placement = placement(for: ad.adUnitIdentifier) else { return }
+        guard ad.revenue >= 0 else {
+            trackAdEvent(
+                .revenueSkipped,
+                placement: placement,
+                ad: ad,
+                params: [
+                    "skip_reason": "invalid_revenue",
+                    "revenue_usd": ad.revenue,
+                    "revenue_precision": ad.revenuePrecision
+                ]
+            )
+            return
+        }
+
         trackAdEvent(
             .revenuePaid,
             placement: placement,

@@ -107,11 +107,12 @@ final class TrackingManager {
         case loadSkipped = "ad_load_skipped"
         case loaded = "ad_loaded"
         case loadFailed = "ad_load_failed"
-        case displayed = "ad_impression"
+        case displayed = "ad_displayed"
         case displayFailed = "ad_display_failed"
         case clicked = "ad_clicked"
         case hidden = "ad_hidden"
-        case revenuePaid = "ad_revenue_paid"
+        case revenuePaid = "ad_impression"
+        case revenueSkipped = "ad_revenue_skipped"
         case rewardStarted = "ad_reward_started"
         case rewardCompleted = "ad_reward_completed"
         case rewardGranted = "ad_reward_granted"
@@ -316,7 +317,7 @@ final class TrackingManager {
 
     private func adBaseParams(placement: AdsPlacement) -> [String: Any?] {
         [
-            "ad_platform": "applovin_max",
+            "ad_platform": "AppLovin",
             "placement": placement.rawValue,
             "ad_kind": placement.adKind.trackingValue
         ]
