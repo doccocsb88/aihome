@@ -61,6 +61,7 @@ final class AdsManager: NSObject {
         AppLogger.logAction("MAX SDK initializing", details: "sdkKey=\(Configuration.sdkKey.prefix(6))...")
         sdk.initialize(with: initConfig) { [weak self] (_: ALSdkConfiguration) in
             DispatchQueue.main.async {
+                TrackingBootstrap.shared.consentFlowDidComplete()
                 self?.consentFlowUserGeographyRawValue = ALSdk.shared().configuration.consentFlowUserGeography.rawValue
                 self?.prepareAds()
             }
@@ -87,9 +88,11 @@ final class AdsManager: NSObject {
     }
 
     func showAppOpenSplashIfReady(deadline: Date? = nil, completion: @escaping () -> Void) {
+        trackAdEvent(.showRequested, placement: .openSplash, params: adStateParams(for: .openSplash))
         AppLogger.logAction("MAX request app open splash", details: adsRequestDetails(for: .openSplash))
 
         guard hasSeenOnboarding else {
+            trackAdEvent(.showSkipped, placement: .openSplash, params: adStateParams(for: .openSplash, extra: ["skip_reason": "first_app_launch"]))
             AppLogger.logAction("MAX splash skipped", details: "first app launch")
             completion()
             return
@@ -102,9 +105,16 @@ final class AdsManager: NSObject {
     }
 
     func showAppOpenResumeIfReady() {
+        trackAdEvent(.showRequested, placement: .openResume, params: adStateParams(for: .openResume))
         AppLogger.logAction("MAX request app open resume", details: adsRequestDetails(for: .openResume))
-        guard didCompleteColdStart else { return }
-        guard !hasShownResumeThisForeground else { return }
+        guard didCompleteColdStart else {
+            trackAdEvent(.showSkipped, placement: .openResume, params: adStateParams(for: .openResume, extra: ["skip_reason": "cold_start_not_finished"]))
+            return
+        }
+        guard !hasShownResumeThisForeground else {
+            trackAdEvent(.showSkipped, placement: .openResume, params: adStateParams(for: .openResume, extra: ["skip_reason": "already_shown_this_foreground"]))
+            return
+        }
 
         hasShownResumeThisForeground = true
         presentFullscreenAd(
@@ -117,8 +127,10 @@ final class AdsManager: NSObject {
 
     @discardableResult
     func showRewardedGenerateIfNeeded(completion: @escaping () -> Void) -> Bool {
+        trackAdEvent(.showRequested, placement: .rewardedGenerate, params: adStateParams(for: .rewardedGenerate))
         AppLogger.logAction("MAX request rewarded generate", details: adsRequestDetails(for: .rewardedGenerate))
         guard shouldShowRewardedAds(for: .rewardedGenerate) else {
+            trackAdEvent(.showSkipped, placement: .rewardedGenerate, params: adStateParams(for: .rewardedGenerate, extra: ["skip_reason": "not_usage_locked_or_ineligible"]))
             completion()
             return true
         }
@@ -132,8 +144,10 @@ final class AdsManager: NSObject {
 
     @discardableResult
     func showRewardedRegenerateIfNeeded(completion: @escaping () -> Void) -> Bool {
+        trackAdEvent(.showRequested, placement: .rewardedRegenerate, params: adStateParams(for: .rewardedRegenerate))
         AppLogger.logAction("MAX request rewarded regenerate", details: adsRequestDetails(for: .rewardedRegenerate))
         guard shouldShowRewardedAds(for: .rewardedRegenerate) else {
+            trackAdEvent(.showSkipped, placement: .rewardedRegenerate, params: adStateParams(for: .rewardedRegenerate, extra: ["skip_reason": "not_usage_locked_or_ineligible"]))
             completion()
             return true
         }
@@ -146,6 +160,7 @@ final class AdsManager: NSObject {
     }
 
     func showInterstitialCloseEdit(completion: @escaping () -> Void) {
+        trackAdEvent(.showRequested, placement: .interCloseEdit, params: adStateParams(for: .interCloseEdit))
         AppLogger.logAction("MAX request inter close edit", details: adsRequestDetails(for: .interCloseEdit))
         presentFullscreenAd(
             placement: .interCloseEdit,
@@ -156,6 +171,7 @@ final class AdsManager: NSObject {
     }
 
     func showInterstitialCloseIap(completion: @escaping () -> Void) {
+        trackAdEvent(.showRequested, placement: .interCloseIap, params: adStateParams(for: .interCloseIap))
         AppLogger.logAction("MAX request inter close iap", details: adsRequestDetails(for: .interCloseIap))
         presentFullscreenAd(
             placement: .interCloseIap,
@@ -166,6 +182,7 @@ final class AdsManager: NSObject {
     }
 
     func showInterstitialCloseResult(completion: @escaping () -> Void) {
+        trackAdEvent(.showRequested, placement: .interCloseResult, params: adStateParams(for: .interCloseResult))
         AppLogger.logAction("MAX request inter close result", details: adsRequestDetails(for: .interCloseResult))
         presentFullscreenAd(
             placement: .interCloseResult,
@@ -177,10 +194,23 @@ final class AdsManager: NSObject {
 
     func bannerView(for placement: AdsPlacement) -> MAAdView? {
         guard placement.adKind == .banner else { return nil }
-        guard shouldShowAdsForCurrentUser else { return nil }
-        guard isPlacementAllowedByGate(placement) else { return nil }
-        guard isPlacementEnabled(placement) else { return nil }
-        guard hasValidAdUnitIdentifier(for: placement) else { return nil }
+        trackAdEvent(.showRequested, placement: placement, params: adStateParams(for: placement))
+        guard shouldShowAdsForCurrentUser else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "user_or_gate_not_eligible"]))
+            return nil
+        }
+        guard isPlacementAllowedByGate(placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "placement_not_allowed_by_gate"]))
+            return nil
+        }
+        guard isPlacementEnabled(placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "placement_disabled"]))
+            return nil
+        }
+        guard hasValidAdUnitIdentifier(for: placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "missing_ad_unit"]))
+            return nil
+        }
 
         let adView = bannerAd(for: placement)
         adView?.placement = placement.rawValue
@@ -291,23 +321,28 @@ final class AdsManager: NSObject {
     }
 
     private func loadIfNeeded(placement: AdsPlacement) {
+        trackAdEvent(.loadRequested, placement: placement, params: adStateParams(for: placement))
         AppLogger.logAction("MAX loadIfNeeded", details: "\(placement.rawValue) \(adsRequestDetails(for: placement))")
         guard shouldShowAdsForCurrentUser else {
+            trackAdEvent(.loadSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "user_or_gate_not_eligible"]))
             AppLogger.logAction("MAX load skipped", details: "\(placement.rawValue) user/gate not eligible")
             return
         }
 
         guard isPlacementAllowedByGate(placement) else {
+            trackAdEvent(.loadSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "placement_not_allowed_by_gate"]))
             AppLogger.logAction("MAX load skipped", details: "\(placement.rawValue) not allowed by gate")
             return
         }
 
         guard isPlacementEnabled(placement) else {
+            trackAdEvent(.loadSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "placement_disabled"]))
             AppLogger.logAction("MAX load skipped", details: "\(placement.rawValue) disabled by remote config")
             return
         }
 
         guard hasValidAdUnitIdentifier(for: placement) else {
+            trackAdEvent(.loadSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "missing_ad_unit"]))
             AppLogger.logAction("MAX load skipped", details: "\(placement.rawValue) missing ad unit id")
             return
         }
@@ -344,6 +379,7 @@ final class AdsManager: NSObject {
             details: "\(placement.rawValue) placement=\(placementName), \(adsRequestDetails(for: placement))"
         )
         guard shouldShowAdsForCurrentUser else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "user_or_gate_not_eligible"]))
             AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) user/gate not eligible")
             if markColdStartCompletedAfterDismissal {
                 didCompleteColdStart = true
@@ -353,6 +389,7 @@ final class AdsManager: NSObject {
         }
 
         guard isPlacementAllowedByGate(placement), isPlacementEnabled(placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "placement_disabled_or_gated"]))
             AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) disabled or gated")
             if markColdStartCompletedAfterDismissal {
                 didCompleteColdStart = true
@@ -362,6 +399,7 @@ final class AdsManager: NSObject {
         }
 
         guard canPresentFullscreenAdNow(for: placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "cooldown_active"]))
             AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) cooldown active")
             if markColdStartCompletedAfterDismissal {
                 didCompleteColdStart = true
@@ -371,6 +409,7 @@ final class AdsManager: NSObject {
         }
 
         guard !isPresentingFullscreenAd else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "another_fullscreen_showing"]))
             AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) another fullscreen ad is already showing")
             completion()
             return
@@ -379,6 +418,7 @@ final class AdsManager: NSObject {
         switch placement.adKind {
         case .appOpen:
             guard let ad = appOpenAd(for: placement), ad.isReady else {
+                trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "ad_not_ready"]))
                 AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) ad not ready")
                 if markColdStartCompletedAfterDismissal {
                     didCompleteColdStart = true
@@ -400,6 +440,7 @@ final class AdsManager: NSObject {
             ad.show(forPlacement: placementName)
         case .rewarded:
             guard let ad = rewardedAd(for: placement), ad.isReady else {
+                trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "ad_not_ready"]))
                 AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) ad not ready")
                 loadIfNeeded(placement: placement)
                 completion()
@@ -413,6 +454,7 @@ final class AdsManager: NSObject {
             ad.show(forPlacement: placementName)
         case .interstitial:
             guard let ad = interstitialAd(for: placement), ad.isReady else {
+                trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "ad_not_ready"]))
                 AppLogger.logAction("MAX present skipped", details: "\(placement.rawValue) ad not ready")
                 loadIfNeeded(placement: placement)
                 completion()
@@ -471,6 +513,7 @@ final class AdsManager: NSObject {
                 return
             }
 
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "rewarded_not_ready_before_deadline"]))
             AppLogger.logAction("MAX rewarded skipped", details: "\(placement.rawValue) not ready before deadline")
         }
     }
@@ -490,6 +533,7 @@ final class AdsManager: NSObject {
 
         let ad = MAAppOpenAd(adUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
+        ad.revenueDelegate = self
         appOpenAds[placement] = ad
         return ad
     }
@@ -504,6 +548,7 @@ final class AdsManager: NSObject {
 
         let ad = MARewardedAd.shared(withAdUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
+        ad.revenueDelegate = self
         rewardedAds[placement] = ad
         return ad
     }
@@ -518,6 +563,7 @@ final class AdsManager: NSObject {
 
         let ad = MAInterstitialAd(adUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
+        ad.revenueDelegate = self
         interstitialAds[placement] = ad
         return ad
     }
@@ -532,6 +578,7 @@ final class AdsManager: NSObject {
 
         let ad = MAAdView(adUnitIdentifier: adUnitIdentifier)
         ad.delegate = self
+        ad.revenueDelegate = self
         ad.placement = placement.rawValue
         bannerAds[placement] = ad
         return ad
@@ -572,6 +619,89 @@ final class AdsManager: NSObject {
         }
     }
 
+    private func trackAdEvent(
+        _ event: TrackingManager.AdEvent,
+        placement: AdsPlacement,
+        ad: MAAd? = nil,
+        adUnitIdentifier: String? = nil,
+        error: MAError? = nil,
+        params: [String: Any?] = [:]
+    ) {
+        var eventParams = params
+        eventParams["ad_unit_name"] = ad?.adUnitIdentifier ?? adUnitIdentifier ?? self.adUnitIdentifier(for: placement)
+
+        if let ad {
+            eventParams["ad_format"] = ad.format.label.lowercased()
+            eventParams["ad_source"] = truncated(ad.networkName)
+            eventParams["network_placement"] = truncated(ad.networkPlacement)
+            eventParams["creative_id"] = truncated(ad.creativeIdentifier)
+            eventParams["dsp_name"] = truncated(ad.dspName)
+            eventParams["dsp_id"] = truncated(ad.dspIdentifier)
+            eventParams["request_latency_ms"] = milliseconds(ad.requestLatency)
+            eventParams["waterfall_name"] = truncated(ad.waterfall.name)
+            eventParams["waterfall_test"] = truncated(ad.waterfall.testName)
+            eventParams["waterfall_latency_ms"] = milliseconds(ad.waterfall.latency)
+        }
+
+        if let error {
+            eventParams["error_code"] = Int(error.code.rawValue)
+            eventParams["error_message"] = truncated(error.message)
+            eventParams["mediated_error_code"] = error.mediatedNetworkErrorCode
+            eventParams["mediated_error_message"] = truncated(error.mediatedNetworkErrorMessage)
+            eventParams["request_latency_ms"] = milliseconds(error.requestLatency)
+            eventParams["waterfall_name"] = truncated(error.waterfall?.name)
+            eventParams["waterfall_test"] = truncated(error.waterfall?.testName)
+            eventParams["waterfall_latency_ms"] = milliseconds(error.waterfall?.latency)
+        }
+
+        TrackingManager.shared.trackAdEvent(event, placement: placement, params: eventParams)
+    }
+
+    private func adStateParams(for placement: AdsPlacement, extra: [String: Any?] = [:]) -> [String: Any?] {
+        var params: [String: Any?] = [
+            "ad_unit_name": adUnitIdentifier(for: placement),
+            "is_free_user": UserManager.shared.isFreeUser,
+            "is_usage_locked": UserManager.shared.isUsageLocked,
+            "ads_global_enabled": isAdsGloballyEnabled,
+            "placement_enabled": isPlacementEnabled(placement),
+            "gate_allowed": isPlacementAllowedByGate(placement),
+            "ad_unit_configured": hasValidAdUnitIdentifier(for: placement),
+            "paywall_dismiss_count": paywallDismissCount,
+            "paywall_threshold": paywallDismissThreshold,
+            "met_paywall_gate": hasMetPaywallDismissGate,
+            "cooldown_ready": canPresentFullscreenAdNow(for: placement),
+            "presenting_fullscreen": isPresentingFullscreenAd,
+            "cold_start_done": didCompleteColdStart,
+            "resume_shown": hasShownResumeThisForeground,
+            "ad_ready": isAdReady(for: placement)
+        ]
+        extra.forEach { params[$0.key] = $0.value }
+        return params
+    }
+
+    private func isAdReady(for placement: AdsPlacement) -> Bool {
+        switch placement.adKind {
+        case .appOpen:
+            return appOpenAds[placement]?.isReady ?? false
+        case .rewarded:
+            return rewardedAds[placement]?.isReady ?? false
+        case .interstitial:
+            return interstitialAds[placement]?.isReady ?? false
+        case .banner:
+            return bannerAds[placement] != nil
+        }
+    }
+
+    private func milliseconds(_ interval: TimeInterval?) -> Int? {
+        guard let interval, interval > 0 else { return nil }
+        return Int((interval * 1_000).rounded())
+    }
+
+    private func truncated(_ value: String?, limit: Int = 100) -> String? {
+        guard let value, !value.isEmpty else { return nil }
+        return String(value.prefix(limit))
+    }
+
     private func adsRequestDetails(for placement: AdsPlacement) -> String {
         [
             "global=\(isAdsGloballyEnabled)",
@@ -597,18 +727,21 @@ final class AdsManager: NSObject {
         let placement: AdsPlacement = .openSplash
 
         guard shouldShowAdsForCurrentUser else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "user_or_gate_not_eligible"]))
             AppLogger.logAction("MAX splash skipped", details: "user/gate not eligible")
             completion()
             return
         }
 
         guard isPlacementAllowedByGate(placement), isPlacementEnabled(placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "placement_disabled_or_gated"]))
             AppLogger.logAction("MAX splash skipped", details: "disabled or gated")
             completion()
             return
         }
 
         guard hasValidAdUnitIdentifier(for: placement) else {
+            trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "missing_ad_unit"]))
             AppLogger.logAction("MAX splash skipped", details: "missing ad unit id")
             completion()
             return
@@ -630,6 +763,7 @@ final class AdsManager: NSObject {
             try? await Task.sleep(nanoseconds: 250_000_000)
         }
 
+        trackAdEvent(.showSkipped, placement: placement, params: adStateParams(for: placement, extra: ["skip_reason": "app_open_not_ready_before_deadline"]))
         AppLogger.logAction("MAX splash skipped", details: "open_splash not ready before deadline")
         completion()
     }
@@ -639,17 +773,26 @@ extension AdsManager: MAAdDelegate {
     func didLoad(_ ad: MAAd) {
         guard let placement = placement(for: ad.adUnitIdentifier) else { return }
         retryAttempts[placement] = 0
+        trackAdEvent(.loaded, placement: placement, ad: ad)
         AppLogger.logAction("MAX loaded", details: "\(placement.rawValue) adUnit=\(ad.adUnitIdentifier)")
     }
 
     func didFailToLoadAd(forAdUnitIdentifier adUnitIdentifier: String, withError error: MAError) {
         AppLogger.logAction("MAX load failed", details: "\(adUnitIdentifier): \(error.code) \(error.message)")
         guard let placement = placement(for: adUnitIdentifier) else { return }
+        trackAdEvent(
+            .loadFailed,
+            placement: placement,
+            adUnitIdentifier: adUnitIdentifier,
+            error: error,
+            params: ["next_retry_attempt": (retryAttempts[placement] ?? 0) + 1]
+        )
         handleRetry(for: placement)
     }
 
     func didDisplay(_ ad: MAAd) {
         guard let placement = placement(for: ad.adUnitIdentifier) else { return }
+        trackAdEvent(.displayed, placement: placement, ad: ad)
         AppLogger.logAction("MAX displayed", details: "\(ad.adUnitIdentifier) / \(ad.format)")
         if placement.isFullscreen {
             lastFullscreenAdPresentedAt = Date()
@@ -657,17 +800,22 @@ extension AdsManager: MAAdDelegate {
     }
 
     func didClick(_ ad: MAAd) {
+        if let placement = placement(for: ad.adUnitIdentifier) {
+            trackAdEvent(.clicked, placement: placement, ad: ad)
+        }
         AppLogger.logAction("MAX clicked", details: "\(ad.adUnitIdentifier)")
     }
 
     func didHide(_ ad: MAAd) {
         guard let placement = placement(for: ad.adUnitIdentifier) else { return }
+        trackAdEvent(.hidden, placement: placement, ad: ad)
         AppLogger.logAction("MAX hidden", details: "\(ad.adUnitIdentifier)")
         finishFullscreenAd(for: placement)
     }
 
     func didFail(toDisplay ad: MAAd, withError error: MAError) {
         guard let placement = placement(for: ad.adUnitIdentifier) else { return }
+        trackAdEvent(.displayFailed, placement: placement, ad: ad, error: error)
         AppLogger.logAction("MAX display failed", details: "\(ad.adUnitIdentifier): \(error.code) \(error.message)")
         finishFullscreenAd(for: placement)
     }
@@ -675,10 +823,16 @@ extension AdsManager: MAAdDelegate {
 
 extension AdsManager: MARewardedAdDelegate {
     func didStartRewardedVideo(for ad: MAAd) {
+        if let placement = placement(for: ad.adUnitIdentifier) {
+            trackAdEvent(.rewardStarted, placement: placement, ad: ad)
+        }
         AppLogger.logAction("MAX rewarded video started", details: ad.adUnitIdentifier)
     }
 
     func didCompleteRewardedVideo(for ad: MAAd) {
+        if let placement = placement(for: ad.adUnitIdentifier) {
+            trackAdEvent(.rewardCompleted, placement: placement, ad: ad)
+        }
         AppLogger.logAction("MAX rewarded video completed", details: ad.adUnitIdentifier)
     }
 
@@ -690,10 +844,35 @@ extension AdsManager: MARewardedAdDelegate {
         let remainingBefore = UserManager.shared.freeUsageRemaining
         let bonusBefore = UserManager.shared.bonusFreeUsageCount
         guard UserManager.shared.grantFreeUsage() else {
+            trackAdEvent(
+                .rewardSkipped,
+                placement: placement,
+                ad: ad,
+                params: [
+                    "skip_reason": "no_quota_change",
+                    "reward_amount": reward.amount,
+                    "reward_label": reward.label
+                ]
+            )
             AppLogger.logAction("MAX reward grant skipped", details: "\(placement.rawValue) no quota change")
             return
         }
 
+        trackAdEvent(
+            .rewardGranted,
+            placement: placement,
+            ad: ad,
+            params: [
+                "reward_amount": reward.amount,
+                "reward_label": reward.label,
+                "limit_before": limitBefore,
+                "limit_after": UserManager.shared.freeUsageLimit,
+                "remaining_before": remainingBefore,
+                "remaining_after": UserManager.shared.freeUsageRemaining,
+                "bonus_before": bonusBefore,
+                "bonus_after": UserManager.shared.bonusFreeUsageCount
+            ]
+        )
         TrackingManager.shared.trackRewardEarned(
             placement: placement,
             adUnitIdentifier: ad.adUnitIdentifier,
@@ -707,12 +886,35 @@ extension AdsManager: MARewardedAdDelegate {
     }
 }
 
+extension AdsManager: MAAdRevenueDelegate {
+    func didPayRevenue(for ad: MAAd) {
+        guard let placement = placement(for: ad.adUnitIdentifier) else { return }
+        trackAdEvent(
+            .revenuePaid,
+            placement: placement,
+            ad: ad,
+            params: [
+                "revenue_usd": ad.revenue,
+                "revenue_precision": ad.revenuePrecision,
+                "value": ad.revenue,
+                "currency": "USD"
+            ]
+        )
+    }
+}
+
 extension AdsManager: MAAdViewAdDelegate {
     func didExpand(_ ad: MAAd) {
+        if let placement = placement(for: ad.adUnitIdentifier) {
+            trackAdEvent(.bannerExpanded, placement: placement, ad: ad)
+        }
         AppLogger.logAction("MAX banner expanded", details: ad.adUnitIdentifier)
     }
 
     func didCollapse(_ ad: MAAd) {
+        if let placement = placement(for: ad.adUnitIdentifier) {
+            trackAdEvent(.bannerCollapsed, placement: placement, ad: ad)
+        }
         AppLogger.logAction("MAX banner collapsed", details: ad.adUnitIdentifier)
     }
 }

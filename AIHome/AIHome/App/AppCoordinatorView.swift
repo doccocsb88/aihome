@@ -22,6 +22,11 @@ struct AppCoordinatorView: View {
         // Rebuilds localized UI while keeping coordinator state (tab, navigation path).
         .id(languageManager.localeRefreshID)
         .environment(coordinator)
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            if phase == .active {
+                TrackingBootstrap.shared.applicationDidBecomeActive()
+            }
+        }
         .onChange(of: scenePhase) { _, phase in
             AdsManager.shared.handleScenePhaseChange(phase)
         }

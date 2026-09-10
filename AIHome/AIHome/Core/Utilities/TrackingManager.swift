@@ -1,4 +1,3 @@
-import FacebookCore
 import FirebaseAnalytics
 import Foundation
 
@@ -99,6 +98,26 @@ final class TrackingManager {
         case `continue`
         case skip
         case back
+    }
+
+    enum AdEvent: String {
+        case showRequested = "ad_show_requested"
+        case showSkipped = "ad_show_skipped"
+        case loadRequested = "ad_load_requested"
+        case loadSkipped = "ad_load_skipped"
+        case loaded = "ad_loaded"
+        case loadFailed = "ad_load_failed"
+        case displayed = "ad_impression"
+        case displayFailed = "ad_display_failed"
+        case clicked = "ad_clicked"
+        case hidden = "ad_hidden"
+        case revenuePaid = "ad_revenue_paid"
+        case rewardStarted = "ad_reward_started"
+        case rewardCompleted = "ad_reward_completed"
+        case rewardGranted = "ad_reward_granted"
+        case rewardSkipped = "ad_reward_skipped"
+        case bannerExpanded = "ad_banner_expanded"
+        case bannerCollapsed = "ad_banner_collapsed"
     }
 
     private init() {}
@@ -285,6 +304,24 @@ final class TrackingManager {
         )
     }
 
+    func trackAdEvent(
+        _ event: AdEvent,
+        placement: AdsPlacement,
+        params: [String: Any?] = [:]
+    ) {
+        var eventParams = adBaseParams(placement: placement)
+        params.forEach { eventParams[$0.key] = $0.value }
+        log(name: event.rawValue, params: eventParams)
+    }
+
+    private func adBaseParams(placement: AdsPlacement) -> [String: Any?] {
+        [
+            "ad_platform": "applovin_max",
+            "placement": placement.rawValue,
+            "ad_kind": placement.adKind.trackingValue
+        ]
+    }
+
     func trackATTPromptShown() {
         log(name: "att_prompt_shown", params: [:])
     }
@@ -324,29 +361,6 @@ final class TrackingManager {
         )
     }
 
-    func trackMetaPurchase(
-        productID: String,
-        amount: Double,
-        currency: String,
-        source: String,
-        transactionID: String,
-        originalTransactionID: String
-    ) {
-        let currency = currency.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard amount > 0, !currency.isEmpty else {
-            AppLogger.logError("Meta Purchase Event skipped: invalid value for \(productID)")
-            return
-        }
-
-        AppEvents.shared.logPurchase(amount: amount, currency: currency)
-
-        AppLogger.logAction(
-            "Meta Purchase Event Logged",
-            details: "\(productID) amount=\(amount) currency=\(currency) source=\(source) transaction_id=\(transactionID) original_transaction_id=\(originalTransactionID)"
-        )
-    }
-
     private func log(name: String, params: [String: Any?]) {
         Analytics.logEvent(name, parameters: sanitize(params))
     }
@@ -368,6 +382,21 @@ final class TrackingManager {
             }
         }
         return sanitized
+    }
+}
+
+private extension AdsAdKind {
+    var trackingValue: String {
+        switch self {
+        case .appOpen:
+            return "app_open"
+        case .interstitial:
+            return "interstitial"
+        case .rewarded:
+            return "rewarded"
+        case .banner:
+            return "banner"
+        }
     }
 }
 

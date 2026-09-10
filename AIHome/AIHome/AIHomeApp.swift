@@ -33,9 +33,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
-        Task { @MainActor in
-            MetaPurchaseReporter.shared.start()
-        }
+        TrackingBootstrap.shared.facebookDidInitialize()
         return true
     }
 }
@@ -60,6 +58,7 @@ struct AIHomeApp: App {
     }()
 
     init() {
+        TrackingBootstrap.shared.configureFacebook()
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
