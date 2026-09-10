@@ -5,6 +5,8 @@
 > Scope: setup AppLovin MAX for AI Home and wire all ad triggers requested in the screenshot.
 >
 > Audience: engineers maintaining the iOS app.
+>
+> Related: [`ads_event_tracking.md`](ads_event_tracking.md) documents the Firebase event schema for ads funnel, impression, reward, and revenue tracking.
 
 ## 1. Mục tiêu
 
