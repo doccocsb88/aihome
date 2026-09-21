@@ -5,6 +5,7 @@ import SwiftUI
 struct AdaptyPaywallPresenter<Content: View>: View {
     var placement: AdaptyPurchaseService.Placement = .proButton
     var onClose: (() -> Void)?
+    var onLoadFailure: (() -> Void)?
     var onPurchaseCompleted: (() -> Void)?
     var onRestoreCompleted: (() -> Void)?
     @ViewBuilder var content: (_ present: @escaping () -> Void, _ isLoading: Bool) -> Content
@@ -19,6 +20,7 @@ struct AdaptyPaywallPresenter<Content: View>: View {
                 isLoading: $isLoading,
                 placement: placement,
                 onClose: onClose,
+                onLoadFailure: onLoadFailure,
                 onPurchaseCompleted: onPurchaseCompleted,
                 onRestoreCompleted: onRestoreCompleted
             )
@@ -35,6 +37,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
 
     var placement: AdaptyPurchaseService.Placement
     var onClose: (() -> Void)?
+    var onLoadFailure: (() -> Void)?
     var onPurchaseCompleted: (() -> Void)?
     var onRestoreCompleted: (() -> Void)?
 
@@ -91,8 +94,13 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
             isShowingPaywall = true
             TrackingManager.shared.trackPaywallShown(placement: .init(placement: placement))
         } catch {
-            paywallErrorMessage = error.localizedDescription
             isPresented = false
+            AppLogger.logError("Failed to load Adapty flow: \(placement.rawValue)", error: error)
+            if let onLoadFailure {
+                onLoadFailure()
+            } else {
+                paywallErrorMessage = error.localizedDescription
+            }
         }
     }
 
@@ -166,6 +174,7 @@ extension View {
         isLoading: Binding<Bool> = .constant(false),
         placement: AdaptyPurchaseService.Placement,
         onClose: (() -> Void)? = nil,
+        onLoadFailure: (() -> Void)? = nil,
         onPurchaseCompleted: (() -> Void)? = nil,
         onRestoreCompleted: (() -> Void)? = nil
     ) -> some View {
@@ -175,6 +184,7 @@ extension View {
                 isLoading: isLoading,
                 placement: placement,
                 onClose: onClose,
+                onLoadFailure: onLoadFailure,
                 onPurchaseCompleted: onPurchaseCompleted,
                 onRestoreCompleted: onRestoreCompleted
             )

@@ -84,6 +84,7 @@ struct OnboardingIntroPagerView: View {
                     continueAfterPaywallDismiss()
                 }
             },
+            onLoadFailure: completeOnboarding,
             onPurchaseCompleted: completeOnboarding,
             onRestoreCompleted: completeOnboarding
         )

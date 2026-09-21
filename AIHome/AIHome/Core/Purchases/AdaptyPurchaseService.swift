@@ -31,12 +31,12 @@ final class AdaptyPurchaseService {
     static let shared = AdaptyPurchaseService()
 
     enum Placement: String, CaseIterable {
-        case bannerSettings = "banner_settings_ios"
-        case limitToken = "limit_token_ios"
-        case proButton = "pro_button_ios"
-        case watermark = "watermark_ios"
-        case session = "session_ios"
-        case onboarding = "onboarding_ios"
+        case bannerSettings = "flow_banner_settings_ios"
+        case limitToken = "flow_limit_token_ios"
+        case proButton = "flow_pro_button_ios"
+        case watermark = "flow_watermark_ios"
+        case session = "flow_session_ios"
+        case onboarding = "flow_onboarding_ios"
     }
 
     private enum Defaults {
@@ -53,7 +53,7 @@ final class AdaptyPurchaseService {
     }
 
     private var placementId: String {
-        infoValue(for: "ADAPTY_PAYWALL_PLACEMENT_ID", defaultValue: Defaults.placementId)
+        infoValue(for: "ADAPTY_FLOW_PLACEMENT_ID", defaultValue: Defaults.placementId)
     }
 
     private var accessLevelId: String {

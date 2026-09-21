@@ -2,7 +2,10 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
+    @State private var userManager = UserManager.shared
     @State private var isShowingHomeRating = false
+    @State private var isShowingSessionFlow = false
+    @State private var hasCheckedSessionFlow = false
     @Environment(AppCoordinator.self) private var coordinator
 
     private var remoteConfigManager: RemoteConfigManager {
@@ -47,10 +50,26 @@ struct HomeView: View {
             AppLogger.logAction("Home Rating", details: "Rate on App Store")
             TrackingManager.shared.trackRateApp(screen: .home, trigger: .homeBanner)
         }
+        .adaptyPaywall(isPresented: $isShowingSessionFlow, placement: .session)
         .onAppear {
             AppLogger.logScreen("HomeView")
             TrackingManager.shared.trackScreen(.home)
-            presentHomeRatingIfNeeded()
+        }
+        .task {
+            guard !hasCheckedSessionFlow else { return }
+            await userManager.refreshPremiumStatus()
+            guard !Task.isCancelled else { return }
+            guard coordinator.selectedTab == .home, coordinator.path.isEmpty else { return }
+            hasCheckedSessionFlow = true
+
+            if RatingPromptTracker.shouldPresentSessionFlow(
+                isPremium: userManager.isPremium,
+                hasSeenOnboarding: UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+            ) {
+                isShowingSessionFlow = true
+            } else {
+                presentHomeRatingIfNeeded()
+            }
         }
     }
     
