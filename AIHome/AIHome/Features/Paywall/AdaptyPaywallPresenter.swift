@@ -41,7 +41,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
     @State private var userManager = UserManager.shared
     @State private var isLoadingPaywall = false
     @State private var isShowingPaywall = false
-    @State private var paywallConfiguration: AdaptyUI.PaywallConfiguration?
+    @State private var flowConfiguration: AdaptyUI.FlowConfiguration?
     @State private var paywallErrorMessage: String?
 
     func body(content: Content) -> some View {
@@ -52,16 +52,16 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
                     await presentPaywall()
                 }
             }
-            .paywall(
+            .flow(
                 isPresented: $isShowingPaywall,
                 fullScreen: true,
-                paywallConfiguration: paywallConfiguration,
+                flowConfiguration: flowConfiguration,
                 didPerformAction: handlePaywallAction,
                 didFinishPurchase: handlePurchase,
                 didFailPurchase: handlePurchaseFailure,
                 didFinishRestore: handleRestore,
                 didFailRestore: handleRestoreFailure,
-                didFailRendering: handleRenderingFailure
+                didReceiveError: handleRenderingFailure
             )
             .alert(
                 "Paywall",
@@ -87,7 +87,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
         }
 
         do {
-            paywallConfiguration = try await AdaptyPurchaseService.shared.loadSDKPaywallConfiguration(placement: placement)
+            flowConfiguration = try await AdaptyPurchaseService.shared.loadSDKFlowConfiguration(placement: placement)
             isShowingPaywall = true
             TrackingManager.shared.trackPaywallShown(placement: .init(placement: placement))
         } catch {
@@ -112,7 +112,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
     }
 
     private func handlePurchase(_ product: AdaptyPaywallProduct, result: AdaptyPurchaseResult) {
-        guard !result.isPurchaseCancelled else { return }
+        guard result.isPurchaseSuccess else { return }
 
         AppLogger.logAction("Adapty Paywall Purchase Completed", details: "\(placement.rawValue): \(product.vendorProductId)")
 

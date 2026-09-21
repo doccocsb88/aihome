@@ -19,9 +19,9 @@ enum PurchaseServiceError: LocalizedError {
         case .missingPublicSDKKey:
             "Adapty Public SDK Key is not configured."
         case .missingPlacementId:
-            "Adapty paywall placement is not configured."
+            "Adapty flow placement is not configured."
         case .noProducts:
-            "No products are available for this paywall."
+            "No products are available for this flow."
         }
     }
 }
@@ -82,8 +82,8 @@ final class AdaptyPurchaseService {
     func loadPaywallProducts(placementId: String? = nil) async throws -> [AdaptyPaywallProduct] {
         try await ensureActivated()
 
-        let paywall = try await loadPaywall(placementId: placementId)
-        let products = try await Adapty.getPaywallProducts(paywall: paywall)
+        let flow = try await loadFlow(placementId: placementId)
+        let products = try await Adapty.getPaywallProducts(flow: flow)
 
         guard !products.isEmpty else {
             throw PurchaseServiceError.noProducts
@@ -96,29 +96,29 @@ final class AdaptyPurchaseService {
         try await loadPaywallProducts(placementId: placement.rawValue)
     }
 
-    func loadSDKPaywallConfiguration(placementId: String? = nil) async throws -> AdaptyUI.PaywallConfiguration {
+    func loadSDKFlowConfiguration(placementId: String? = nil) async throws -> AdaptyUI.FlowConfiguration {
         try await ensureActivated()
 
-        let paywall = try await loadPaywall(placementId: placementId)
-        return try await AdaptyUI.getPaywallConfiguration(forPaywall: paywall)
+        let flow = try await loadFlow(placementId: placementId)
+        return try await AdaptyUI.getFlowConfiguration(forFlow: flow)
     }
 
-    func loadSDKPaywallConfiguration(placement: Placement) async throws -> AdaptyUI.PaywallConfiguration {
-        try await loadSDKPaywallConfiguration(placementId: placement.rawValue)
+    func loadSDKFlowConfiguration(placement: Placement) async throws -> AdaptyUI.FlowConfiguration {
+        try await loadSDKFlowConfiguration(placementId: placement.rawValue)
     }
 
     func availablePlacementIds() -> [String] {
         Placement.allCases.map(\.rawValue)
     }
 
-    private func loadPaywall(placementId: String? = nil) async throws -> AdaptyPaywall {
+    private func loadFlow(placementId: String? = nil) async throws -> AdaptyFlow {
         let resolvedPlacementId = placementId ?? self.placementId
 
         guard !resolvedPlacementId.isEmpty else {
             throw PurchaseServiceError.missingPlacementId
         }
 
-        return try await Adapty.getPaywall(placementId: resolvedPlacementId)
+        return try await Adapty.getFlow(placementId: resolvedPlacementId)
     }
 
     func makePurchase(product: AdaptyPaywallProduct) async throws -> PurchaseActivationResult {

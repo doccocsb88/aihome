@@ -9,11 +9,6 @@ import UIKit
 final class TrackingBootstrap {
     static let shared = TrackingBootstrap()
 
-    private enum Defaults {
-        static let facebookIntegrationKey = "facebook_anonymous_id"
-        static let firebaseIntegrationKey = "firebase_app_instance_id"
-    }
-
     private var isFacebookInitialized = false
     private var hasCompletedConsentFlow = false
     private var lastReportedATTStatus: ATTrackingManager.AuthorizationStatus?
@@ -85,10 +80,7 @@ final class TrackingBootstrap {
         }
 
         do {
-            try await Adapty.setIntegrationIdentifier(
-                key: Defaults.facebookIntegrationKey,
-                value: anonymousID
-            )
+            try await Adapty.setIntegrationIdentifier(.facebookAnonymousId(anonymousID))
             AppLogger.logAction("Adapty Facebook Integration Synced")
         } catch {
             AppLogger.logError("Failed to sync Facebook Anonymous ID", error: error)
@@ -103,10 +95,7 @@ final class TrackingBootstrap {
         }
 
         do {
-            try await Adapty.setIntegrationIdentifier(
-                key: Defaults.firebaseIntegrationKey,
-                value: appInstanceID
-            )
+            try await Adapty.setIntegrationIdentifier(.firebaseAppInstanceId(appInstanceID))
             AppLogger.logAction("Adapty Firebase Integration Synced")
         } catch {
             AppLogger.logError("Failed to sync Firebase App Instance ID", error: error)
