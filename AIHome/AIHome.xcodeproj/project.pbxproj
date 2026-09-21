@@ -17,6 +17,7 @@
 		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
 		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
 		2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBCC0032FE7B40000123601 /* FacebookCore */; };
+		7A1A00012F00000000000001 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1A00032F00000000000001 /* TikTokBusinessSDK */; };
 		5A1B2C3D4E5F678900ABCDE1 /* AppLovinSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */; };
 		5A1B2C3D4E5F678900ABCDE2 /* AppLovinMediationGoogleAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE3 /* AppLovinMediationGoogleAdapter */; };
 		5A1B2C3D4E5F678900ABCDE4 /* AppLovinMediationFacebookAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE5 /* AppLovinMediationFacebookAdapter */; };
@@ -70,6 +71,7 @@
 				042C3ECD3007DD190078B903 /* FirebaseCrashlytics in Frameworks */,
 				042C3EC73007DD190078B903 /* FirebaseAnalytics in Frameworks */,
 				2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */,
+				7A1A00012F00000000000001 /* TikTokBusinessSDK in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				5A1B2C3D4E5F678900ABCDEB /* GoogleUserMessagingPlatform */,
 				1F2E3D4C5B6A79800123456A /* Lottie */,
 				2FBCC0032FE7B40000123601 /* FacebookCore */,
+				7A1A00032F00000000000001 /* TikTokBusinessSDK */,
 				042C3EC63007DD190078B903 /* FirebaseAnalytics */,
 				042C3EC83007DD190078B903 /* FirebaseAnalyticsCore */,
 				042C3ED23007DD190078B903 /* FirebaseAppCheck */,
@@ -183,6 +186,7 @@
 				5A1B2C3D4E5F678900ABCD14 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
 				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				7A1A00022F00000000000001 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */,
 				042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 90;
@@ -366,6 +370,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AIHome/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TIKTOK_SDK_ACCESS_TOKEN = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -405,6 +410,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AIHome/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				TIKTOK_SDK_ACCESS_TOKEN = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -451,6 +457,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7A1A00022F00000000000001 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tiktok/tiktok-business-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.7.2;
+			};
+		};
 		042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -534,6 +548,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7A1A00032F00000000000001 /* TikTokBusinessSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A1A00022F00000000000001 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */;
+			productName = TikTokBusinessSDK;
+		};
 		042C3EC63007DD190078B903 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
