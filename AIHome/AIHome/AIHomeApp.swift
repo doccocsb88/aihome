@@ -10,7 +10,6 @@ import SwiftData
 import FirebaseCore
 import FirebaseAnalytics
 import FacebookCore
-import TikTokBusinessSDK
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
