@@ -1,6 +1,7 @@
 import Adapty
 import AdaptyUI
 import Foundation
+import StoreKit
 
 enum PurchaseActivationResult {
     case active
@@ -130,9 +131,13 @@ final class AdaptyPurchaseService {
             return .cancelled
         case .pending:
             return .pending
-        case let .success(profile, _):
+        case let .success(profile, transaction):
             let hasAccess = hasPremiumAccess(profile)
             cachePremiumStatus(hasAccess)
+            PurchaseTrackingCoordinator.trackPurchase(
+                product: product,
+                eventId: String(transaction.unsafePayloadValue.id)
+            )
             return hasAccess ? .active : .inactive
         }
     }
