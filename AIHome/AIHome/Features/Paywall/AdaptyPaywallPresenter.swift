@@ -7,6 +7,7 @@ struct AdaptyPaywallPresenter<Content: View>: View {
     var placement: AdaptyPurchaseService.Placement = .proButton
     var onClose: (() -> Void)?
     var onLoadFailure: (() -> Void)?
+    var onRenderingFailure: (() -> Void)?
     var onPurchaseCompleted: (() -> Void)?
     var onRestoreCompleted: (() -> Void)?
     @ViewBuilder var content: (_ present: @escaping () -> Void, _ isLoading: Bool) -> Content
@@ -22,6 +23,7 @@ struct AdaptyPaywallPresenter<Content: View>: View {
                 placement: placement,
                 onClose: onClose,
                 onLoadFailure: onLoadFailure,
+                onRenderingFailure: onRenderingFailure,
                 onPurchaseCompleted: onPurchaseCompleted,
                 onRestoreCompleted: onRestoreCompleted
             )
@@ -39,6 +41,7 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
     var placement: AdaptyPurchaseService.Placement
     var onClose: (() -> Void)?
     var onLoadFailure: (() -> Void)?
+    var onRenderingFailure: (() -> Void)?
     var onPurchaseCompleted: (() -> Void)?
     var onRestoreCompleted: (() -> Void)?
 
@@ -163,8 +166,12 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
 
     private func handleRenderingFailure(_ error: AdaptyUIError) {
         AppLogger.logAction("Adapty Paywall Rendering Failed", details: "\(placement.rawValue): \(error.localizedDescription)")
-        paywallErrorMessage = error.localizedDescription
         dismissPaywall()
+        if let onRenderingFailure {
+            onRenderingFailure()
+        } else {
+            paywallErrorMessage = error.localizedDescription
+        }
     }
 
     private func dismissPaywall() {
@@ -180,6 +187,7 @@ extension View {
         placement: AdaptyPurchaseService.Placement,
         onClose: (() -> Void)? = nil,
         onLoadFailure: (() -> Void)? = nil,
+        onRenderingFailure: (() -> Void)? = nil,
         onPurchaseCompleted: (() -> Void)? = nil,
         onRestoreCompleted: (() -> Void)? = nil
     ) -> some View {
@@ -190,6 +198,7 @@ extension View {
                 placement: placement,
                 onClose: onClose,
                 onLoadFailure: onLoadFailure,
+                onRenderingFailure: onRenderingFailure,
                 onPurchaseCompleted: onPurchaseCompleted,
                 onRestoreCompleted: onRestoreCompleted
             )

@@ -63,6 +63,7 @@ struct AIHomeApp: App {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
+        FirstGenerationPaywallGate.recordAppOpen()
         RatingPromptTracker.recordSessionOpen()
         AdaptyPurchaseService.shared.configure()
     }

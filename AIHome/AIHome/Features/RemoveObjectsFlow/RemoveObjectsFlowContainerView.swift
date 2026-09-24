@@ -12,6 +12,7 @@ struct RemoveObjectsFlowContainerView: View {
     @State private var pendingConsentDraft: RemoveObjectsDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationAccess = GenerationAccessCoordinator()
     @State private var generationStartedAt: Date?
     @State private var didTrackGenerationTerminalState = false
     @Environment(\.scenePhase) private var scenePhase
@@ -69,10 +70,11 @@ struct RemoveObjectsFlowContainerView: View {
             }
         }
         .generationUsageLimit(isPresented: $isShowingLimitPopup)
+        .firstGenerationPaywall(coordinator: generationAccess)
         .aiProcessingConsentSheet(isPresented: $isShowingAIProcessingConsent) {
             guard let draft = pendingConsentDraft else { return }
             pendingConsentDraft = nil
-            AdsManager.shared.showRewardedGenerateIfNeeded {
+            generationAccess.requestGeneration {
                 startGeneration(with: draft)
             }
         }
@@ -89,7 +91,7 @@ struct RemoveObjectsFlowContainerView: View {
             return
         }
 
-        AdsManager.shared.showRewardedGenerateIfNeeded {
+        generationAccess.requestGeneration {
             startGeneration(with: draft)
         }
     }

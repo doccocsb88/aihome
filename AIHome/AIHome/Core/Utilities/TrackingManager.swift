@@ -64,6 +64,7 @@ final class TrackingManager {
         case watermark
         case session
         case limitToken = "limit_token"
+        case firstGeneration = "first_generation"
     }
 
     enum PaywallDismissMethod: String {
@@ -482,6 +483,8 @@ extension TrackingManager.PaywallPlacement {
             self = .session
         case .limitToken:
             self = .limitToken
+        case .firstGeneration:
+            self = .firstGeneration
         }
     }
 }

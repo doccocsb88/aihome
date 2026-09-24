@@ -12,6 +12,7 @@ struct GardenFlowContainerView: View {
     @State private var pendingConsentDraft: GardenDraft?
     @State private var isShowingAIProcessingConsent = false
     @State private var isShowingLimitPopup = false
+    @State private var generationAccess = GenerationAccessCoordinator()
     @State private var generationStartedAt: Date?
     @State private var didTrackGenerationTerminalState = false
     @Environment(\.scenePhase) private var scenePhase
@@ -68,10 +69,11 @@ struct GardenFlowContainerView: View {
             }
         }
         .generationUsageLimit(isPresented: $isShowingLimitPopup)
+        .firstGenerationPaywall(coordinator: generationAccess)
         .aiProcessingConsentSheet(isPresented: $isShowingAIProcessingConsent) {
             guard let draft = pendingConsentDraft else { return }
             pendingConsentDraft = nil
-            AdsManager.shared.showRewardedGenerateIfNeeded {
+            generationAccess.requestGeneration {
                 startGeneration(with: draft)
             }
         }
@@ -88,7 +90,7 @@ struct GardenFlowContainerView: View {
             return
         }
 
-        AdsManager.shared.showRewardedGenerateIfNeeded {
+        generationAccess.requestGeneration {
             startGeneration(with: draft)
         }
     }

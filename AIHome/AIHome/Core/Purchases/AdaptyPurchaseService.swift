@@ -38,6 +38,7 @@ final class AdaptyPurchaseService {
         case watermark = "flow_watermark_ios"
         case session = "flow_session_ios"
         case onboarding = "flow_onboarding_ios"
+        case firstGeneration = "flow_first_gen_ios"
     }
 
     private enum Defaults {
