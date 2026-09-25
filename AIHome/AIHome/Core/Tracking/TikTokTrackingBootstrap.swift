@@ -60,4 +60,18 @@ enum TikTokTrackingBootstrap {
             details: "\(event.productId): \(price.stringValue) \(event.currencyCode ?? "")"
         )
     }
+
+    static func trackAppEvent(_ event: AppEventTrackingEvent) {
+        guard TikTokBusiness.isInitialized() else {
+            AppLogger.logAction("TikTok Event Skipped", details: "SDK is not initialized: \(event.name)")
+            return
+        }
+
+        let tikTokEvent = TikTokBaseEvent(
+            eventName: event.name,
+            properties: event.properties,
+            eventId: event.eventId
+        )
+        TikTokBusiness.trackTTEvent(tikTokEvent)
+    }
 }
