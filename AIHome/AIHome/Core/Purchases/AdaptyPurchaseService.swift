@@ -73,9 +73,12 @@ final class AdaptyPurchaseService {
         activationTask = Task {
             let config = AdaptyConfiguration
                 .builder(withAPIKey: publicSDKKey)
+                .with(adaptyAttributionEnabled: true)
                 .build()
 
+            Adapty.delegate = NewsBreakAdaptyDelegate.shared
             try await Adapty.activate(with: config)
+            await NewsBreakAttributionService.shared.preparePendingBodyAndFlush()
             await TrackingBootstrap.shared.syncAdaptyIntegrationIdentifiers()
             try await AdaptyUI.activate()
         }

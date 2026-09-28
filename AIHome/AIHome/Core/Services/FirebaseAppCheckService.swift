@@ -7,6 +7,13 @@ import Darwin
 
 public protocol FirebaseAppCheckProviding {
     func token() async -> String?
+    func token(forcingRefresh: Bool) async -> String?
+}
+
+public extension FirebaseAppCheckProviding {
+    func token(forcingRefresh: Bool) async -> String? {
+        await token()
+    }
 }
 
 enum FirebaseAppCheckBootstrap {
@@ -49,8 +56,12 @@ public final class FirebaseAppCheckService: FirebaseAppCheckProviding {
     private init() {}
 
     public func token() async -> String? {
+        await token(forcingRefresh: false)
+    }
+
+    public func token(forcingRefresh: Bool) async -> String? {
         do {
-            let appCheckToken = try await AppCheck.appCheck().token(forcingRefresh: false)
+            let appCheckToken = try await AppCheck.appCheck().token(forcingRefresh: forcingRefresh)
             return appCheckToken.token
         } catch {
             AppLogger.logError("Firebase App Check token fetch failed", error: error)

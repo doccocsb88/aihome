@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        NewsBreakAttributionService.shared.markLaunch()
         AirbridgeTrackingService.shared.configure()
         AdsManager.shared.configureIfNeeded()
 
@@ -75,8 +76,10 @@ struct AIHomeApp: App {
     }()
 
     init() {
+        NewsBreakAttributionService.shared.markLaunch()
         AirbridgeTrackingService.shared.configure()
         TrackingBootstrap.shared.configureFacebook()
+        FirebaseAppCheckBootstrap.configureProviderIfNeeded()
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
