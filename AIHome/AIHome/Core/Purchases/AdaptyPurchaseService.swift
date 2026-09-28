@@ -132,14 +132,9 @@ final class AdaptyPurchaseService {
             return .cancelled
         case .pending:
             return .pending
-        case let .success(profile, transaction):
+        case let .success(profile, _):
             let hasAccess = hasPremiumAccess(profile)
             cachePremiumStatus(hasAccess)
-            PurchaseTrackingCoordinator.trackPurchase(
-                product: product,
-                profile: profile,
-                eventId: String(transaction.unsafePayloadValue.id)
-            )
             return hasAccess ? .active : .inactive
         }
     }
@@ -150,7 +145,6 @@ final class AdaptyPurchaseService {
         let profile = try await Adapty.restorePurchases()
         let hasAccess = hasPremiumAccess(profile)
         cachePremiumStatus(hasAccess)
-        PurchaseTrackingCoordinator.evaluateProfile(profile)
         return hasAccess
     }
 
@@ -160,7 +154,6 @@ final class AdaptyPurchaseService {
         let profile = try await Adapty.getProfile()
         let hasAccess = hasPremiumAccess(profile)
         cachePremiumStatus(hasAccess)
-        PurchaseTrackingCoordinator.evaluateProfile(profile)
         return hasAccess
     }
 

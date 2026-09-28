@@ -127,13 +127,6 @@ private struct AdaptyPaywallPresentationModifier: ViewModifier {
         guard result.isPurchaseSuccess else { return }
 
         AppLogger.logAction("Adapty Paywall Purchase Completed", details: "\(placement.rawValue): \(product.vendorProductId)")
-        if let profile = result.profile {
-            PurchaseTrackingCoordinator.trackPurchase(
-                product: product,
-                profile: profile,
-                eventId: result.transaction.map { String($0.id) }
-            )
-        }
 
         PaywallExposureTracker.recordDismiss()
         AdsManager.shared.handlePaywallExposureUpdated()

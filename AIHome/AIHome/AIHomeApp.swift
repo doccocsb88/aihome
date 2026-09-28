@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        AirbridgeTrackingService.shared.configure()
         AdsManager.shared.configureIfNeeded()
 
         FirebaseAppCheckBootstrap.configureProviderIfNeeded()
@@ -34,8 +35,23 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             didFinishLaunchingWithOptions: launchOptions
         )
         TrackingBootstrap.shared.facebookDidInitialize()
-        TikTokTrackingBootstrap.configure()
         return true
+    }
+
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        AirbridgeTrackingService.shared.handleOpenURL(url)
+    }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        AirbridgeTrackingService.shared.handleUserActivity(userActivity)
     }
 }
 
@@ -59,6 +75,7 @@ struct AIHomeApp: App {
     }()
 
     init() {
+        AirbridgeTrackingService.shared.configure()
         TrackingBootstrap.shared.configureFacebook()
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()

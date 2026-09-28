@@ -22,9 +22,17 @@ struct AppCoordinatorView: View {
         // Rebuilds localized UI while keeping coordinator state (tab, navigation path).
         .id(languageManager.localeRefreshID)
         .environment(coordinator)
+        .onOpenURL { url in
+            AirbridgeTrackingService.shared.handleOpenURL(url)
+            AirbridgeDeepLinkRouter.shared.consumePendingRoute(with: coordinator)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .airbridgeDeepLinkPending)) { _ in
+            AirbridgeDeepLinkRouter.shared.consumePendingRoute(with: coordinator)
+        }
         .onChange(of: scenePhase, initial: true) { _, phase in
             if phase == .active {
                 TrackingBootstrap.shared.applicationDidBecomeActive()
+                AirbridgeDeepLinkRouter.shared.consumePendingRoute(with: coordinator)
             }
         }
         .onChange(of: scenePhase) { _, phase in

@@ -364,7 +364,9 @@ final class TrackingManager {
     }
 
     private func log(name: String, params: [String: Any?]) {
-        Analytics.logEvent(name, parameters: sanitize(params))
+        let sanitizedParams = sanitize(params)
+        Analytics.logEvent(name, parameters: sanitizedParams)
+        AirbridgeTrackingService.shared.trackAnalyticsEvent(name: name, parameters: sanitizedParams)
     }
 
     private func sanitize(_ params: [String: Any?]) -> [String: Any] {

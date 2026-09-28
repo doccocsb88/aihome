@@ -1,5 +1,5 @@
 {
-  "originHash" : "39871a2a8b0af76eb383bff85857fed8993a362934ef07e1ada6542321706e03",
+  "originHash" : "963a76e706573b825b1ab75495cb0db59741e3af344f030549b06949aa12e5aa",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "0d62519f394ab6322dc56aa93609188e8887d076",
         "version" : "7.9.1-release.1"
+      }
+    },
+    {
+      "identity" : "airbridge-ios-sdk-deployment",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ab180/airbridge-ios-sdk-deployment.git",
+      "state" : {
+        "revision" : "dcef6b3589142c4b566c02333ffcd3c78e58ed81",
+        "version" : "4.11.1"
       }
     },
     {
@@ -233,15 +242,6 @@
       "state" : {
         "revision" : "13b248eaa73b7826f0efb1bcf455e251d65ecb1b",
         "version" : "3.1.0"
-      }
-    },
-    {
-      "identity" : "tiktok-business-ios-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tiktok/tiktok-business-ios-sdk.git",
-      "state" : {
-        "revision" : "2a3a35560c2c0547f74869c58160946e29c0932c",
-        "version" : "1.7.2"
       }
     }
   ],

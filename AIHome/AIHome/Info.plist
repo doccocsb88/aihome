@@ -18,6 +18,17 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.homegpt.ai.interior.redesign</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>homegpt</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
@@ -28,10 +39,12 @@
 	<string>e958ad86506583feea414386e39d97c4</string>
 	<key>FacebookDisplayName</key>
 	<string>i001_HomeGPT</string>
-	<key>TikTokAppSecret</key>
-	<string>$(TIKTOK_APP_SECRET)</string>
 	<key>AppLovinSdkKey</key>
 	<string>J2ks4TF6rLetzM0TgPvggyqLiCRTUJ1afPHWi0la24rZnZOul9gyfkD4JtAmbcua43fHqHHBzV20zrbR6Ilz5G</string>
+	<key>AIRBRIDGE_APP_NAME</key>
+	<string>i001</string>
+	<key>AIRBRIDGE_SDK_TOKEN</key>
+	<string>f8c69c1e4aa8436ba7a3e279d435079e</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-4411723136147727~4842215093</string>
 	<key>SKAdNetworkItems</key>

@@ -69,6 +69,7 @@ final class TrackingBootstrap {
     func syncAdaptyIntegrationIdentifiers() async {
         await syncFacebookAnonymousID()
         await syncFirebaseAppInstanceID()
+        syncAirbridgeDeviceID()
     }
 
     private func syncFacebookAnonymousID() async {
@@ -100,5 +101,9 @@ final class TrackingBootstrap {
         } catch {
             AppLogger.logError("Failed to sync Firebase App Instance ID", error: error)
         }
+    }
+
+    private func syncAirbridgeDeviceID() {
+        AirbridgeTrackingService.shared.syncAdaptyIntegrationIdentifier()
     }
 }
