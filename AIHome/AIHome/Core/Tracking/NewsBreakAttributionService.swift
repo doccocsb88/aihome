@@ -38,6 +38,9 @@ final class NewsBreakAttributionService {
 
     func markLaunch() {
         ensureInstallMarkerIfNeeded()
+#if DEBUG
+        debugLog("launch; environment=\(isSandbox ? "sandbox" : "production"); sent=\(userDefaults.bool(forKey: Keys.sent)); pending=\(userDefaults.data(forKey: Keys.pendingBody) != nil)")
+#endif
         Task {
             await preparePendingBodyIfPossible()
             await flush()
@@ -47,6 +50,25 @@ final class NewsBreakAttributionService {
     func handleInstallationDetails(_ details: AdaptyInstallationDetails) {
         ensureInstallMarkerIfNeeded()
 
+#if DEBUG
+        guard !userDefaults.bool(forKey: Keys.sent) else {
+            debugLog("installation details ignored; already sent")
+            return
+        }
+        guard userDefaults.data(forKey: Keys.pendingBody) == nil else {
+            debugLog("installation details ignored; request already pending")
+            return
+        }
+        guard let payload = details.payload?.dictionary,
+              let clickId = payload["deferred_data_sub1"] as? String else {
+            debugLog("installation details ignored; no NewsBreak click ID")
+            return
+        }
+        guard isValidClickId(clickId) else {
+            debugLog("installation details ignored; click ID is empty or unresolved macro")
+            return
+        }
+#else
         guard !userDefaults.bool(forKey: Keys.sent),
               userDefaults.data(forKey: Keys.pendingBody) == nil,
               let payload = details.payload?.dictionary,
@@ -54,8 +76,12 @@ final class NewsBreakAttributionService {
               isValidClickId(clickId) else {
             return
         }
+#endif
 
         storePendingPayloadIfNeeded(details.payload)
+#if DEBUG
+        debugLog("valid click ID received; preparing request")
+#endif
 
         Task {
             await preparePendingBodyIfPossible(payload: payload)
@@ -83,9 +109,14 @@ final class NewsBreakAttributionService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        if let token = await FirebaseAppCheckService.shared.token(forcingRefresh: attempt > 0) {
-            request.setValue(token, forHTTPHeaderField: "X-Firebase-AppCheck")
+        guard let token = await FirebaseAppCheckService.shared.token(forcingRefresh: attempt > 0) else {
+#if DEBUG
+            debugLog("App Check token unavailable; retaining pending request")
+#endif
+            await retryOrKeepPending(attempt: attempt, statusCode: nil)
+            return
         }
+        request.setValue(token, forHTTPHeaderField: "X-Firebase-AppCheck")
 
         request.httpBody = body
 
@@ -104,21 +135,38 @@ final class NewsBreakAttributionService {
             userDefaults.removeObject(forKey: Keys.pendingPayload)
             userDefaults.set(true, forKey: Keys.sent)
             AppLogger.logAction("NewsBreak Attribution Sent", details: "\(statusCode)")
+#if DEBUG
+            debugLog("request accepted; pending body cleared")
+#endif
         case 400, 403, 409, 422:
             userDefaults.removeObject(forKey: Keys.pendingBody)
             userDefaults.removeObject(forKey: Keys.pendingPayload)
             userDefaults.set(true, forKey: Keys.sent)
             AppLogger.logAction("NewsBreak Attribution Rejected", details: "\(statusCode)")
+#if DEBUG
+            debugLog("request rejected permanently; status=\(statusCode)")
+#endif
         default:
-            guard attempt < 5 else {
-                AppLogger.logAction("NewsBreak Attribution Pending", details: "status \(statusCode)")
-                return
-            }
-
-            let delaySeconds = min(32, 2 * (1 << attempt))
-            try? await Task.sleep(nanoseconds: UInt64(delaySeconds) * 1_000_000_000)
-            await performFlush(attempt: attempt + 1)
+            await retryOrKeepPending(attempt: attempt, statusCode: statusCode)
         }
+    }
+
+    private func retryOrKeepPending(attempt: Int, statusCode: Int?) async {
+        guard attempt < 5 else {
+            let details = statusCode.map(String.init) ?? "App Check token unavailable"
+            AppLogger.logAction("NewsBreak Attribution Pending", details: "status \(details)")
+#if DEBUG
+            debugLog("retry limit reached; request retained for next launch")
+#endif
+            return
+        }
+
+        let delaySeconds = min(32, 2 * (1 << attempt))
+#if DEBUG
+        debugLog("retry \(attempt + 1)/5 in \(delaySeconds)s; status=\(statusCode.map(String.init) ?? "no App Check token")")
+#endif
+        try? await Task.sleep(nanoseconds: UInt64(delaySeconds) * 1_000_000_000)
+        await performFlush(attempt: attempt + 1)
     }
 
     private func preparePendingBodyIfPossible(payload: [String: Any]? = nil) async {
@@ -139,6 +187,9 @@ final class NewsBreakAttributionService {
             let body = makeRequestBody(payload: payload, clickId: clickId, profile: profile)
             let data = try JSONSerialization.data(withJSONObject: body, options: [])
             userDefaults.set(data, forKey: Keys.pendingBody)
+#if DEBUG
+            debugLog("request body persisted; request_id=\(body["request_id"] as? String ?? "unknown")")
+#endif
         } catch {
             AppLogger.logError("NewsBreak attribution body preparation failed", error: error)
         }
@@ -178,6 +229,9 @@ final class NewsBreakAttributionService {
         userDefaults.set(UUID().uuidString.lowercased(), forKey: Keys.installationId)
         userDefaults.set(isoFormatter.string(from: Date()), forKey: Keys.firstOpenAt)
         userDefaults.set(state.rawValue, forKey: Keys.isNewInstall)
+#if DEBUG
+        debugLog("install marker created; is_new_install=\(state.rawValue)")
+#endif
     }
 
     private func storePendingPayloadIfNeeded(_ payload: AdaptyInstallationDetails.Payload?) {
@@ -245,6 +299,12 @@ final class NewsBreakAttributionService {
         guard !trimmedValue.contains("__"), !trimmedValue.contains("{") else { return "" }
         return trimmedValue
     }
+
+#if DEBUG
+    private func debugLog(_ message: String) {
+        print("[NewsBreak] \(message)")
+    }
+#endif
 }
 
 final class NewsBreakAdaptyDelegate: AdaptyDelegate {
