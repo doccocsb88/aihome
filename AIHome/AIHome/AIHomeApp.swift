@@ -24,6 +24,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
+        TrackingBootstrap.shared.configureFacebook()
         AppLogger.logAction("App Environment", details: AppEnvironmentService.shared.current.displayName)
         let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
         Analytics.setUserProperty(version, forName: "current_app_version")
@@ -78,7 +79,6 @@ struct AIHomeApp: App {
     init() {
         NewsBreakAttributionService.shared.markLaunch()
         AirbridgeTrackingService.shared.configure()
-        TrackingBootstrap.shared.configureFacebook()
         FirebaseAppCheckBootstrap.configureProviderIfNeeded()
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()

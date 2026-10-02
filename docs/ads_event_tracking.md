@@ -17,7 +17,7 @@ Bo tracking nay giup tra loi bon cau hoi thuc te:
 - Neu app da request inventory, MAX load duoc, fail, display, hay co revenue khong?
 - Ket qua den tu placement, format, network, creative va waterfall nao?
 
-Revenue event cua purchase, trial va subscription khong duoc track tu client ads flow. Cac signal in-app purchase nay van nen di theo Adapty, bao gom integration Adapty to Meta.
+Revenue event cua purchase, trial va subscription khong duoc track tu client ads flow. Meta SDK automatic app event logging duoc bat cho install, app activation va in-app purchase; Adapty Meta integration van co the gui cung purchase signals.
 
 ## 2. Mo Hinh Funnel
 
@@ -255,4 +255,4 @@ Check:
 - `AdsManager` so huu AppLovin MAX delegates va map MAX ad unit id ve `AdsPlacement`.
 - `MAAdRevenueDelegate` duoc set cho app-open, rewarded, interstitial va banner ad objects.
 - String co nguy co high-cardinality duoc truncate truoc khi gui len Firebase.
-- Purchase, trial va subscription revenue tiep tuc thuoc ve Adapty signals, khong track bang MAX hoac client Facebook purchase events.
+- Purchase, trial va subscription khong track bang MAX. Facebook SDK automatic in-app purchase logging va Adapty Meta integration co the cung gui purchase signals; Meta Events Manager dashboard co the filter theo event source.

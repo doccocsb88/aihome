@@ -16,8 +16,8 @@ final class TrackingBootstrap {
     private init() {}
 
     func configureFacebook() {
-        // Adapty's Meta integration owns all subscription and purchase events.
-        Settings.shared.isAutoLogAppEventsEnabled = false
+        // Enable Meta's install, app activation, and in-app purchase event logging.
+        Settings.shared.isAutoLogAppEventsEnabled = true
     }
 
     func facebookDidInitialize() {
