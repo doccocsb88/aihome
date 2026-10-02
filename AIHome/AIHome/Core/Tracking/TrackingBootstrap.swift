@@ -3,6 +3,8 @@ import AppTrackingTransparency
 import FacebookCore
 import FirebaseAnalytics
 import Foundation
+import StoreKit
+import TikTokBusinessSDK
 import UIKit
 
 @MainActor
@@ -12,12 +14,109 @@ final class TrackingBootstrap {
     private var isFacebookInitialized = false
     private var hasCompletedConsentFlow = false
     private var lastReportedATTStatus: ATTrackingManager.AuthorizationStatus?
+    private var storeKitTransactionTask: Task<Void, Never>?
+    private let trackingDefaults = UserDefaults.standard
+
+    private enum PurchaseTrackingKeys {
+        static let startedTransactions = "ads.startedSubscriptionTransactions"
+        static let trialTransactions = "ads.trialSubscriptionTransactions"
+        static let convertedTrialTransactions = "ads.convertedTrialTransactions"
+    }
 
     private init() {}
 
     func configureFacebook() {
         // Enable Meta's install, app activation, and in-app purchase event logging.
         Settings.shared.isAutoLogAppEventsEnabled = true
+    }
+
+    func configureTikTok() {
+        guard let appID = infoValue(for: "TikTokAppleAppID"),
+              let tikTokAppID = infoValue(for: "TikTokAppID"),
+              let appSecret = infoValue(for: "TikTokAppSecret"),
+              let config = TikTokConfig(
+                accessToken: appSecret,
+                appId: appID,
+                tiktokAppId: tikTokAppID
+              ) else {
+            AppLogger.logAction("TikTok App Events SDK Skipped", details: "Missing TikTok SDK configuration")
+            return
+        }
+
+        // Airbridge owns SKAN conversion value updates. Keep TikTok lifecycle and
+        // StoreKit purchase auto-logging enabled; manual events below add trial/subscription semantics.
+        config.disableSKAdNetworkSupport()
+        TikTokBusiness.initializeSdk(config) { success, error in
+            if success {
+                AppLogger.logAction("TikTok App Events SDK Initialized")
+                Task { @MainActor in
+                    self.startStoreKitTransactionTracking()
+                }
+            } else {
+                AppLogger.logError("TikTok App Events SDK Initialization Failed", error: error)
+            }
+        }
+    }
+
+    private func startStoreKitTransactionTracking() {
+        guard storeKitTransactionTask == nil else { return }
+
+        storeKitTransactionTask = Task { [weak self] in
+            let updatesTask = Task { [weak self] in
+                for await result in Transaction.updates {
+                    guard let self else { return }
+                    await self.processTransaction(result)
+                }
+            }
+
+            for await result in Transaction.currentEntitlements {
+                guard let self else { return }
+                await self.processTransaction(result)
+            }
+
+            await updatesTask.value
+        }
+    }
+
+    private func processTransaction(_ result: VerificationResult<Transaction>) async {
+        guard case let .verified(transaction) = result,
+              transaction.productType == .autoRenewable else { return }
+
+        let transactionID = String(transaction.originalID)
+        let started = trackingDefaults.stringArray(forKey: PurchaseTrackingKeys.startedTransactions) ?? []
+        let trials = trackingDefaults.stringArray(forKey: PurchaseTrackingKeys.trialTransactions) ?? []
+        let converted = trackingDefaults.stringArray(forKey: PurchaseTrackingKeys.convertedTrialTransactions) ?? []
+
+        if transaction.offerType == .introductory {
+            guard !trials.contains(transactionID) else { return }
+            trackingDefaults.set(trials + [transactionID], forKey: PurchaseTrackingKeys.trialTransactions)
+            trackingDefaults.set(started + [transactionID], forKey: PurchaseTrackingKeys.startedTransactions)
+            trackStandardEvent("StartTrial")
+            return
+        }
+
+        if trials.contains(transactionID) {
+            guard !converted.contains(transactionID) else { return }
+            trackingDefaults.set(converted + [transactionID], forKey: PurchaseTrackingKeys.convertedTrialTransactions)
+            trackStandardEvent("Subscribe")
+            return
+        }
+
+        guard !started.contains(transactionID) else { return }
+        trackingDefaults.set(started + [transactionID], forKey: PurchaseTrackingKeys.startedTransactions)
+        trackStandardEvent("Subscribe")
+    }
+
+    private func trackStandardEvent(_ eventName: String) {
+        AppEvents.shared.logEvent(AppEvents.Name(eventName))
+        TikTokBusiness.trackTTEvent(TikTokBaseEvent(eventName: eventName))
+        AppLogger.logAction("Ads Standard Event", details: eventName)
+    }
+
+    private func infoValue(for key: String) -> String? {
+        guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String else { return nil }
+        let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmedValue.isEmpty ? nil : trimmedValue
     }
 
     func facebookDidInitialize() {
@@ -34,7 +133,7 @@ final class TrackingBootstrap {
         guard isFacebookInitialized,
               UIApplication.shared.applicationState == .active else { return }
 
-        // Preserve session/install reporting with automatic purchase logging disabled.
+        // Preserve Meta session/install reporting alongside its automatic purchase logging.
         AppEvents.shared.activateApp()
         reportATTStatusIfNeeded()
     }

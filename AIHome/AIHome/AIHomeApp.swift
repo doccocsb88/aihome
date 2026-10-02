@@ -25,6 +25,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             FirebaseApp.configure()
         }
         TrackingBootstrap.shared.configureFacebook()
+        TrackingBootstrap.shared.configureTikTok()
         AppLogger.logAction("App Environment", details: AppEnvironmentService.shared.current.displayName)
         let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0"
         Analytics.setUserProperty(version, forName: "current_app_version")

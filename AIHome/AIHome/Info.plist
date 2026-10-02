@@ -39,6 +39,12 @@
 	<string>e958ad86506583feea414386e39d97c4</string>
 	<key>FacebookDisplayName</key>
 	<string>i001_HomeGPT</string>
+	<key>TikTokAppleAppID</key>
+	<string>6777677408</string>
+	<key>TikTokAppID</key>
+	<string>7690794243492790292</string>
+	<key>TikTokAppSecret</key>
+	<string>TTEs6jyLcWNoPnBq31wllcjPlruWvT6Q</string>
 	<key>AppLovinSdkKey</key>
 	<string>J2ks4TF6rLetzM0TgPvggyqLiCRTUJ1afPHWi0la24rZnZOul9gyfkD4JtAmbcua43fHqHHBzV20zrbR6Ilz5G</string>
 	<key>AIRBRIDGE_APP_NAME</key>
