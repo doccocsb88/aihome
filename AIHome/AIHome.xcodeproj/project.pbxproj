@@ -25,6 +25,7 @@
 		5A1B2C3D4E5F678900ABCDE8 /* AppLovinMediationMintegralAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE9 /* AppLovinMediationMintegralAdapter */; };
 		5A1B2C3D4E5F678900ABCDEA /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDEB /* GoogleUserMessagingPlatform */; };
 		AB1800012FEA000000000001 /* Airbridge in Frameworks */ = {isa = PBXBuildFile; productRef = AB1800032FEA000000000001 /* Airbridge */; };
+		E1A2B3C4D5E6F708192A3B4C /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E1A2B3C4D5E6F708192A3B4D /* TikTokBusinessSDK */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -191,6 +192,7 @@
 				1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				2FBCC0022FE7B40000123601 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				042C3EC53007DD190078B903 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E1A2B3C4D5E6F708192A3B4E /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 04428BE92FCACDD7006B5B51 /* Products */;
