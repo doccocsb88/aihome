@@ -17,7 +17,6 @@
 		04ADA7732FCACE0006B5B51 /* AdaptyUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04ADA7742FCACE0006B5B51 /* AdaptyUI */; };
 		1F2E3D4C5B6A798001234568 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1F2E3D4C5B6A79800123456A /* Lottie */; };
 		2FBCC0012FE7B40000123601 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBCC0032FE7B40000123601 /* FacebookCore */; };
-		E1A2B3C4D5E6F708192A3B4C /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E1A2B3C4D5E6F708192A3B4D /* TikTokBusinessSDK */; };
 		5A1B2C3D4E5F678900ABCDE1 /* AppLovinSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE0 /* AppLovinSDK */; };
 		5A1B2C3D4E5F678900ABCDE2 /* AppLovinMediationGoogleAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE3 /* AppLovinMediationGoogleAdapter */; };
 		5A1B2C3D4E5F678900ABCDE4 /* AppLovinMediationFacebookAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1B2C3D4E5F678900ABCDE5 /* AppLovinMediationFacebookAdapter */; };
@@ -379,7 +378,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -419,7 +418,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -477,6 +476,8 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.1.0;
 			};
+			traits = (
+			);
 		};
 		1F2E3D4C5B6A798001234569 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
