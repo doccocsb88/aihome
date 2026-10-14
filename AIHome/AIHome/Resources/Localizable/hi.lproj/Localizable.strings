@@ -29,7 +29,7 @@
 "common.cancel" = "रद्द करें";
 "common.delete" = "हटाएँ";
 "privacy.ai_processing.title" = "एआई प्रोसेसिंग प्रकटीकरण";
-"privacy.ai_processing.message" = "अपना डिज़ाइन बनाने के लिए, HomeGPT आपकी चुनी हुई फोटो, डिज़ाइन विकल्प और प्रॉम्प्ट को AI प्रोसेसिंग के लिए HomeDesignsAI को भेजता है। संवेदनशील व्यक्तिगत जानकारी वाली फ़ोटो अपलोड न करें।";
+"privacy.ai_processing.message" = "अपना डिज़ाइन बनाने के लिए, Decor AI आपकी चुनी हुई फोटो, डिज़ाइन विकल्प और प्रॉम्प्ट को AI प्रोसेसिंग के लिए HomeDesignsAI को भेजता है। संवेदनशील व्यक्तिगत जानकारी वाली फ़ोटो अपलोड न करें।";
 "privacy.ai_processing.continue" = "जारी रखें";
 "privacy.ai_processing.cancel" = "रद्द करें";
 "common.close" = "बंद करें";
@@ -66,7 +66,7 @@
 
 "onboarding.continue" = "जारी रखें";
 "onboarding.after" = "बाद में";
-"onboarding.welcome.title" = "HomeGPT में आपका स्वागत है";
+"onboarding.welcome.title" = "Decor AI में आपका स्वागत है";
 "onboarding.welcome.subtitle" = "AI के साथ अपने स्थान को बदलें";
 "onboarding.welcome.get_started" = "शुरू करें";
 "onboarding.welcome.terms_of_use" = "उपयोग की शर्तें";
@@ -98,7 +98,7 @@ Pro के साथ असीमित सुविधाएँ, डिज़�
 तेज़ प्रोसेसिंग अनलॉक करें।";
 "limit.upgrade_now" = "अभी अपग्रेड करें";
 
-"rating.home_enjoyment.title" = "HomeGPT का आनंद ले रहे हैं?";
+"rating.home_enjoyment.title" = "Decor AI का आनंद ले रहे हैं?";
 "rating.result_feedback.title" = "आपकी प्रतिक्रिया =
 बेहतर डिज़ाइन";
 "rating.home_enjoyment.message" = "अपने अनुभव को रेट करें और AI होम डिज़ाइन के भविष्य को बनाने में हमारी मदद करें। इसमें बस एक सेकंड लगता है!";

@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "続ける";
 "onboarding.after" = "変更後";
-"onboarding.welcome.title" = "HomeGPT へようこそ";
+"onboarding.welcome.title" = "Decor AI へようこそ";
 "onboarding.welcome.subtitle" = "AI で空間を変身させましょう";
 "onboarding.welcome.get_started" = "始める";
 "onboarding.welcome.terms_of_use" = "利用規約";
@@ -99,7 +99,7 @@ Pro で無制限の機能、デザイン、
 より高速な処理をアンロックしましょう。";
 "limit.upgrade_now" = "今すぐアップグレード";
 
-"rating.home_enjoyment.title" = "HomeGPT をお楽しみいただけていますか？";
+"rating.home_enjoyment.title" = "Decor AI をお楽しみいただけていますか？";
 "rating.result_feedback.title" = "あなたのフィードバック =
 より良いデザイン";
 "rating.home_enjoyment.message" = "体験を評価して、AI ホームデザインの未来を一緒に築きましょう。ほんの一瞬で完了します！";

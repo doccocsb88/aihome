@@ -37,7 +37,7 @@
 
 "onboarding.continue" = "Continuar";
 "onboarding.after" = "Después";
-"onboarding.welcome.title" = "Bienvenido a HomeGPT";
+"onboarding.welcome.title" = "Bienvenido a Decor AI";
 "onboarding.welcome.subtitle" = "Transforma tu espacio con IA";
 "onboarding.welcome.get_started" = "Comenzar";
 "onboarding.welcome.terms_of_use" = "Términos de uso";
@@ -69,7 +69,7 @@ Desbloquea funciones ilimitadas, diseños y
 procesamiento más rápido con Pro.";
 "limit.upgrade_now" = "Mejorar Ahora";
 
-"rating.home_enjoyment.title" = "¿Disfrutando de HomeGPT?";
+"rating.home_enjoyment.title" = "¿Disfrutando de Decor AI?";
 "rating.result_feedback.title" = "Tus comentarios =
 mejores diseños";
 "rating.home_enjoyment.message" = "Califica tu experiencia y ayúdanos a construir el futuro del diseño de hogares con IA. ¡Solo toma un segundo!";

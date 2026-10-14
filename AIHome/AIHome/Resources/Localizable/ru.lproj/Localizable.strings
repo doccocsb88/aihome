@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "Продолжить";
 "onboarding.after" = "После";
-"onboarding.welcome.title" = "Добро пожаловать в HomeGPT";
+"onboarding.welcome.title" = "Добро пожаловать в Decor AI";
 "onboarding.welcome.subtitle" = "Преобразите своё пространство с помощью ИИ";
 "onboarding.welcome.get_started" = "Начать";
 "onboarding.welcome.terms_of_use" = "Условия использования";
@@ -99,7 +99,7 @@
 более быструю обработку с Pro.";
 "limit.upgrade_now" = "Обновить сейчас";
 
-"rating.home_enjoyment.title" = "Нравится HomeGPT?";
+"rating.home_enjoyment.title" = "Нравится Decor AI?";
 "rating.result_feedback.title" = "Ваш отзыв =
 лучшие дизайны";
 "rating.home_enjoyment.message" = "Оцените свой опыт и помогите нам построить будущее ИИ-дизайна для дома. Это займёт всего секунду!";

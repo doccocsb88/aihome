@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "Teruskan";
 "onboarding.after" = "Selepas";
-"onboarding.welcome.title" = "Selamat datang ke HomeGPT";
+"onboarding.welcome.title" = "Selamat datang ke Decor AI";
 "onboarding.welcome.subtitle" = "Ubah ruang anda dengan AI";
 "onboarding.welcome.get_started" = "Mulakan";
 "onboarding.welcome.terms_of_use" = "Terma penggunaan";
@@ -99,7 +99,7 @@ Buka kunci ciri, reka bentuk tanpa had &
 pemprosesan lebih pantas dengan Pro.";
 "limit.upgrade_now" = "Naik Taraf Sekarang";
 
-"rating.home_enjoyment.title" = "Menikmati HomeGPT?";
+"rating.home_enjoyment.title" = "Menikmati Decor AI?";
 "rating.result_feedback.title" = "Maklum balas anda =
 reka bentuk lebih baik";
 "rating.home_enjoyment.message" = "Nilai pengalaman anda dan bantu kami membina masa depan reka bentuk rumah AI. Ia hanya mengambil masa sesaat!";

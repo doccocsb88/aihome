@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>HomeGPT</string>
+	<string>Decor AI</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -38,7 +38,7 @@
 	<key>FacebookClientToken</key>
 	<string>e958ad86506583feea414386e39d97c4</string>
 	<key>FacebookDisplayName</key>
-	<string>i001_HomeGPT</string>
+	<string>i001_DecorAI</string>
 	<key>TikTokAppleAppID</key>
 	<string>6777677408</string>
 	<key>TikTokAppID</key>
@@ -265,7 +265,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Allow AIHome to save generated designs to your photo gallery.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Allow HomeGPT to use your activity across apps and websites to deliver personalized ads and improve the app experience.</string>
+	<string>Allow Decor AI to use your activity across apps and websites to deliver personalized ads and improve the app experience.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

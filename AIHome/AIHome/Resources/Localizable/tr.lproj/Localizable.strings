@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "Devam Et";
 "onboarding.after" = "Sonra";
-"onboarding.welcome.title" = "HomeGPT'ye hoş geldiniz";
+"onboarding.welcome.title" = "Decor AI'ye hoş geldiniz";
 "onboarding.welcome.subtitle" = "Alanınızı yapay zekâ ile dönüştürün";
 "onboarding.welcome.get_started" = "Başla";
 "onboarding.welcome.terms_of_use" = "Kullanım koşulları";
@@ -99,7 +99,7 @@ Pro ile sınırsız özellik, tasarım ve
 daha hızlı işlemenin kilidini açın.";
 "limit.upgrade_now" = "Şimdi Yükselt";
 
-"rating.home_enjoyment.title" = "HomeGPT'den keyif alıyor musunuz?";
+"rating.home_enjoyment.title" = "Decor AI'den keyif alıyor musunuz?";
 "rating.result_feedback.title" = "Geri bildiriminiz =
 daha iyi tasarımlar";
 "rating.home_enjoyment.message" = "Deneyiminizi değerlendirin ve yapay zekâ ev tasarımının geleceğini birlikte inşa etmemize yardımcı olun. Sadece bir saniye sürer!";

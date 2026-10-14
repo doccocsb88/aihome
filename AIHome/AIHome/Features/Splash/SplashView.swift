@@ -22,7 +22,7 @@ struct SplashView: View {
                     .frame(width: 128, height: 128)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
 
-                Text("HomeGPT")
+                Text("Decor AI")
                     .font(FontFamily.Roboto.bold.swiftUIFont(size: 34))
                     .foregroundColor(Color.DesignSystem.eerieBlack)
                     .padding(.top, 28)

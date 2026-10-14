@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "계속";
 "onboarding.after" = "변경 후";
-"onboarding.welcome.title" = "HomeGPT에 오신 것을 환영합니다";
+"onboarding.welcome.title" = "Decor AI에 오신 것을 환영합니다";
 "onboarding.welcome.subtitle" = "AI로 공간을 변신시키세요";
 "onboarding.welcome.get_started" = "시작하기";
 "onboarding.welcome.terms_of_use" = "이용 약관";
@@ -99,7 +99,7 @@ Pro로 무제한 기능, 디자인 및
 더 빠른 처리를 잠금 해제하세요.";
 "limit.upgrade_now" = "지금 업그레이드";
 
-"rating.home_enjoyment.title" = "HomeGPT가 마음에 드시나요?";
+"rating.home_enjoyment.title" = "Decor AI가 마음에 드시나요?";
 "rating.result_feedback.title" = "당신의 피드백 =
 더 나은 디자인";
 "rating.home_enjoyment.message" = "경험을 평가하고 AI 홈 디자인의 미래를 함께 만들어 주세요. 단 몇 초면 됩니다!";

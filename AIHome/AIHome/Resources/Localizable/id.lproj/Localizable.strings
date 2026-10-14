@@ -29,7 +29,7 @@
 "common.cancel" = "Batal";
 "common.delete" = "Hapus";
 "privacy.ai_processing.title" = "Pengungkapan pemrosesan AI";
-"privacy.ai_processing.message" = "Untuk menghasilkan desain Anda, HomeGPT mengirim foto yang dipilih, pilihan desain, dan prompt Anda ke HomeDesignsAI untuk diproses AI. Jangan unggah foto yang berisi informasi pribadi sensitif.";
+"privacy.ai_processing.message" = "Untuk menghasilkan desain Anda, Decor AI mengirim foto yang dipilih, pilihan desain, dan prompt Anda ke HomeDesignsAI untuk diproses AI. Jangan unggah foto yang berisi informasi pribadi sensitif.";
 "privacy.ai_processing.continue" = "Lanjutkan";
 "privacy.ai_processing.cancel" = "Batal";
 "common.close" = "Tutup";
@@ -66,7 +66,7 @@
 
 "onboarding.continue" = "Lanjutkan";
 "onboarding.after" = "Sesudah";
-"onboarding.welcome.title" = "Selamat datang di HomeGPT";
+"onboarding.welcome.title" = "Selamat datang di Decor AI";
 "onboarding.welcome.subtitle" = "Ubah ruang Anda dengan AI";
 "onboarding.welcome.get_started" = "Mulai";
 "onboarding.welcome.terms_of_use" = "Ketentuan penggunaan";
@@ -98,7 +98,7 @@ Buka fitur, desain tak terbatas &
 pemrosesan lebih cepat dengan Pro.";
 "limit.upgrade_now" = "Tingkatkan Sekarang";
 
-"rating.home_enjoyment.title" = "Menikmati HomeGPT?";
+"rating.home_enjoyment.title" = "Menikmati Decor AI?";
 "rating.result_feedback.title" = "Masukan Anda =
 desain lebih baik";
 "rating.home_enjoyment.message" = "Beri nilai pengalaman Anda dan bantu kami membangun masa depan desain rumah AI. Hanya butuh sedetik!";

@@ -717,8 +717,8 @@ internal enum L10n {
       internal static var subtitle: String { L10n.tr("Localizable", "onboarding.welcome.subtitle", fallback: "Transform your space with AI") }
       /// Terms of use
       internal static var termsOfUse: String { L10n.tr("Localizable", "onboarding.welcome.terms_of_use", fallback: "Terms of use") }
-      /// Welcome to HomeGPT
-      internal static var title: String { L10n.tr("Localizable", "onboarding.welcome.title", fallback: "Welcome to HomeGPT") }
+      /// Welcome to Decor AI
+      internal static var title: String { L10n.tr("Localizable", "onboarding.welcome.title", fallback: "Welcome to Decor AI") }
       internal enum Terms {
         /// and
         internal static var and: String { L10n.tr("Localizable", "onboarding.welcome.terms.and", fallback: "and") }
@@ -795,7 +795,7 @@ internal enum L10n {
       internal static var cancel: String { L10n.tr("Localizable", "privacy.ai_processing.cancel", fallback: "Cancel") }
       /// Continue
       internal static var `continue`: String { L10n.tr("Localizable", "privacy.ai_processing.continue", fallback: "Continue") }
-      /// To generate your design, HomeGPT sends your selected photo, design choices, and prompt to HomeDesignsAI for AI processing. Do not upload photos containing sensitive personal information.
+      /// To generate your design, your photo will be sent to HomeDesigns AI for processing. Your image is not stored or used for training.
       internal static var message: String { L10n.tr("Localizable", "privacy.ai_processing.message", fallback: "To generate your design, your photo will be sent to HomeDesigns AI for processing. Your image is not stored or used for training.") }
       /// Learn more in our
       internal static var learnMore: String { L10n.tr("Localizable", "privacy.ai_processing.learn_more", fallback: "Learn more in our") }
@@ -817,8 +817,8 @@ internal enum L10n {
     internal enum HomeEnjoyment {
       /// Rate your experience and help us build the future of AI home design. It only takes a second!
       internal static var message: String { L10n.tr("Localizable", "rating.home_enjoyment.message", fallback: "Rate your experience and help us build the future of AI home design. It only takes a second!") }
-      /// Enjoying HomeGPT?
-      internal static var title: String { L10n.tr("Localizable", "rating.home_enjoyment.title", fallback: "Enjoying HomeGPT?") }
+      /// Enjoying Decor AI?
+      internal static var title: String { L10n.tr("Localizable", "rating.home_enjoyment.title", fallback: "Enjoying Decor AI?") }
     }
     internal enum ResultFeedback {
       /// We'd love to hear your thoughts! If you're enjoying the transformations, please consider leaving a rating. Your feedback helps us build a more powerful AI experience for you.

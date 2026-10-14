@@ -30,7 +30,7 @@
 "common.delete" = "Elimina";
 "common.close" = "Chiudi";
 "privacy.ai_processing.title" = "Informativa sull'elaborazione AI";
-"privacy.ai_processing.message" = "Per generare il tuo design, HomeGPT invia la foto selezionata, le scelte di design e il prompt a HomeDesignsAI per l'elaborazione AI. Non caricare foto contenenti informazioni personali sensibili.";
+"privacy.ai_processing.message" = "Per generare il tuo design, Decor AI invia la foto selezionata, le scelte di design e il prompt a HomeDesignsAI per l'elaborazione AI. Non caricare foto contenenti informazioni personali sensibili.";
 "privacy.ai_processing.continue" = "Continua";
 "privacy.ai_processing.cancel" = "Annulla";
 
@@ -66,7 +66,7 @@
 
 "onboarding.continue" = "Continua";
 "onboarding.after" = "Dopo";
-"onboarding.welcome.title" = "Benvenuto in HomeGPT";
+"onboarding.welcome.title" = "Benvenuto in Decor AI";
 "onboarding.welcome.subtitle" = "Trasforma il tuo spazio con l'IA";
 "onboarding.welcome.get_started" = "Inizia";
 "onboarding.welcome.terms_of_use" = "Termini di utilizzo";
@@ -98,7 +98,7 @@ Sblocca funzionalità illimitate, design ed
 elaborazione più veloce con Pro.";
 "limit.upgrade_now" = "Aggiorna ora";
 
-"rating.home_enjoyment.title" = "Ti piace HomeGPT?";
+"rating.home_enjoyment.title" = "Ti piace Decor AI?";
 "rating.result_feedback.title" = "Il tuo feedback =
 design migliori";
 "rating.home_enjoyment.message" = "Valuta la tua esperienza e aiutaci a costruire il futuro del design della casa con l'IA. Ci vuole solo un secondo!";

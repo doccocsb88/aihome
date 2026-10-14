@@ -181,7 +181,7 @@ struct SettingsView: View {
                 
                 // Footer
                 VStack(spacing: 8) {
-                    Text("HOMEGPT - AI INTERIOR DESIGN")
+                    Text("DECOR AI - AI INTERIOR DESIGN")
                         .font(FontFamily.Roboto.bold.swiftUIFont(size: 12))
                         .foregroundColor(.secondary)
                         .tracking(1.5)

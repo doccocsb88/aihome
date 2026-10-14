@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "ดำเนินการต่อ";
 "onboarding.after" = "หลัง";
-"onboarding.welcome.title" = "ยินดีต้อนรับสู่ HomeGPT";
+"onboarding.welcome.title" = "ยินดีต้อนรับสู่ Decor AI";
 "onboarding.welcome.subtitle" = "เปลี่ยนโฉมพื้นที่ของคุณด้วย AI";
 "onboarding.welcome.get_started" = "เริ่มต้นใช้งาน";
 "onboarding.welcome.terms_of_use" = "ข้อกำหนดการใช้งาน";
@@ -99,7 +99,7 @@
 การประมวลผลที่เร็วขึ้นด้วย Pro";
 "limit.upgrade_now" = "อัปเกรดเลย";
 
-"rating.home_enjoyment.title" = "สนุกกับ HomeGPT ไหม?";
+"rating.home_enjoyment.title" = "สนุกกับ Decor AI ไหม?";
 "rating.result_feedback.title" = "ความคิดเห็นของคุณ =
 ดีไซน์ที่ดีขึ้น";
 "rating.home_enjoyment.message" = "ให้คะแนนประสบการณ์ของคุณและช่วยเราสร้างอนาคตของการออกแบบบ้านด้วย AI ใช้เวลาแค่วินาทีเดียว!";

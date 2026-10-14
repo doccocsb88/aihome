@@ -67,7 +67,7 @@
 
 "onboarding.continue" = "Continue";
 "onboarding.after" = "After";
-"onboarding.welcome.title" = "Welcome to HomeGPT";
+"onboarding.welcome.title" = "Welcome to Decor AI";
 "onboarding.welcome.subtitle" = "Transform your space with AI";
 "onboarding.welcome.get_started" = "Get Started";
 "onboarding.welcome.terms_of_use" = "Terms of use";
@@ -99,7 +99,7 @@ Unlock unlimited features, designs &
 faster processing with Pro.";
 "limit.upgrade_now" = "Upgrade Now";
 
-"rating.home_enjoyment.title" = "Enjoying HomeGPT?";
+"rating.home_enjoyment.title" = "Enjoying Decor AI?";
 "rating.result_feedback.title" = "Your feedback =
 better designs";
 "rating.home_enjoyment.message" = "Rate your experience and help us build the future of AI home design. It only takes a second!";
